@@ -8,7 +8,10 @@ const AppRootNavigator = createNativeStackNavigator();
 export function AppRootNavigation () {
     return (
         <NavigationContainer>
-            <AppRootNavigator.Navigator>
+            <AppRootNavigator.Navigator
+                screenOptions = {{
+                    headerShown: false,
+                }} >
                 <AppRootNavigator.Screen 
                     name = "WelcomeScreen"
                     component = { WelcomeScreen }
