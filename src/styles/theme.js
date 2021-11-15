@@ -22,8 +22,8 @@ export const THEME = {
     SCREEN_WIDTH,
     SCREEN_HEIGHT,
     FONT_MINI: normalize(12),
-    FONT_SMALL: normalize(15),
-    FONT_MEDIUM: normalize(17),
-    FONT_LARGE: normalize(25),
-    FONT_XLARGE: normalize(35),
+    FONT_SMALL: normalize(17),
+    FONT_MEDIUM: normalize(20),
+    FONT_LARGE: normalize(30),
+    FONT_XLARGE: normalize(40),
 }
