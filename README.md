@@ -1,2 +1,2 @@
 # President
-A text ZX SPECTRUM game will be written on React
+React native debut project
