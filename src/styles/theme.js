@@ -26,4 +26,6 @@ export const THEME = {
     FONT_MEDIUM: normalize(20),
     FONT_LARGE: normalize(30),
     FONT_XLARGE: normalize(40),
+    V_MARGIN10: SCREEN_HEIGHT / 74,
+    H_MARGIN10: SCREEN_WIDTH / 39
 }
