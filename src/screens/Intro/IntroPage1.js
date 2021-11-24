@@ -4,13 +4,13 @@ import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
 
 export const IntroPage1 = ({ navigation }) => {
-    const animSpring = useRef(new Animated.Value(5)).current;
-    const animOpacity = useRef(new Animated.Value(0)).current;
+    const animHeaderSpring = useRef(new Animated.Value(5)).current;
+    const animNextButtonOpacity = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         Animated.sequence([
             Animated.spring(
-                animSpring,
+                animHeaderSpring,
                 {
                     toValue: 1,
                     tension: 2,
@@ -18,14 +18,14 @@ export const IntroPage1 = ({ navigation }) => {
                 }
             ),
             Animated.timing(
-                animOpacity,
+                animNextButtonOpacity,
                 {
                     toValue: 1,
                     delay: 1200,
                     useNativeDriver: true
                 }
             )]).start();
-    }, [animSpring, animOpacity]);
+    }, [animHeaderSpring, animNextButtonOpacity]);
 
     const moveToNextIntroPage = () => {
         navigation.navigate('IntroPage2');
@@ -33,24 +33,24 @@ export const IntroPage1 = ({ navigation }) => {
 
     return (
         <View style={ styles.container } >
-            <Animated.View style={{ opacity: animOpacity }}>
-                <Image resizeMode='center' style={ styles.image } source={ require('../../assets/images/jentleman.png') } />
-            </Animated.View>
             <View>
-                <Animated.View style={{ transform: [{ scale: animSpring }] }}>
+                <Image resizeMode='center' style={ styles.image } source={ require('../../assets/images/jentleman.png') } />
+            </View>
+            <View>
+                <Animated.View style={{ transform: [{ scale: animHeaderSpring }] }}>
                     <Text style={ styles.header }>ДОБРО</Text>
                     <Text style={ styles.header }>ПОЖАЛОВАТЬ</Text> 
                 </Animated.View>
-                <Animated.View style={{ transform: [{ scale: animSpring }] }}>
+                <Animated.View style={{ transform: [{ scale: animHeaderSpring }] }}>
                     <Text style={ styles.text }>в нашу страну, где каждый может стать президентом!!!</Text>
                 </Animated.View>
             </View>
-            <Animated.View style={{ opacity: animOpacity }}>
+            <Animated.View style={{ opacity: animNextButtonOpacity }}>
                 <Button buttonStyle={ styles.nextButton } titleStyle={ styles.nextButtonTitle } type="outline" title="Дальше ➞" onPress={ moveToNextIntroPage } />
             </Animated.View>
-            <Animated.View style={{ opacity: animOpacity }}>
+            <View>
                 <Image resizeMode='center' style={ styles.dots }  source={ require('../../assets/images/dotspage1.png') } />
-            </Animated.View>
+            </View>
             <Button buttonStyle={ styles.missButton } titleStyle={ styles.missButtonTitle } type="outline" title="Пропустить заставку" />
         </View>
     )

@@ -1,36 +1,85 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, Animated } from 'react-native';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
 
 export const IntroPage2 = () => {
-    const animSpring = useRef(new Animated.Value(0)).current;
+    const currentPosessionListIndex = useRef(0);
+    const [index, setIndex] = useState(0);
+    const animHeader = useRef(new Animated.Value(0)).current;
+    const animPosessionList = useRef(new Animated.Value(0)).current;
+    const animNextButton = useRef(new Animated.Value(0)).current;
 
-    useEffect(() => {
+    const posessionList = ['КВАРТИРУ', 'МАШИНУ'];
+    const posessionListPictures = [
+        require('../../assets/images/flat.png'), 
+        require('../../assets/images/car.png')
+    ];
+
+    const animateNextButton = () => {
+        Animated.timing(
+            animNextButton,
+            {
+                toValue: 1,
+                delay: 1200,
+                useNativeDriver: true
+            }
+        ).start();
+    }
+
+    const animatePosessionList = () => {
         Animated.sequence([
             Animated.spring(
-                animSpring,
+                animPosessionList,
                 {
                     toValue: 1,
                     tension: 2,
                     useNativeDriver: true
                 }
             ),
-            ]).start();
-    }, [animSpring]);
+            Animated.spring(
+                animPosessionList,
+                {
+                    toValue: 0,
+                    delay: 1200,
+                    tension: 2,
+                    useNativeDriver: true
+                }
+        )]).start((finish) => {
+            if(currentPosessionListIndex.current < posessionList.length - 1) {
+                currentPosessionListIndex.current++;
+                setIndex(index + 1);
+                animatePosessionList();
+            }
+            if(finish) animateNextButton();
+        });
+    }
+
+    useEffect(() => {
+        Animated.spring(
+            animHeader,
+            {
+                toValue: 1,
+                tension: 2,
+                useNativeDriver: true
+            }
+        ).start(() => {
+            animatePosessionList();
+        });
+    }, [animHeader]);
 
     return (
         <View style={ styles.container } >
-            <Animated.View style={{ transform: [{ scale: animSpring }] }}>
+            <Animated.View style={{ transform: [{ scale: animHeader }] }}>
                 <Text style={ styles.header }>ПРЕДСТАВЬТЕ, ЧТО ВЫ ИМЕЕТЕ:</Text>
             </Animated.View>
-            <View>
-                <Image resizeMode='contain' style={ styles.image }  source={ require('../../assets/images/flat.png') } />
-                <Text style={ styles.header }>КВАРТИРУ</Text>
-            </View>
-            <View>
+            <Animated.View style={{ transform: [{ scale: animPosessionList }] }}>
+                <Image resizeMode='contain' style={ styles.image }  source={ posessionListPictures[currentPosessionListIndex.current] } />
+                <Text style={ styles.header }>{ posessionList[currentPosessionListIndex.current] }</Text>
+            </Animated.View>
+            <Animated.View style={{ opacity: animNextButton }}>
                 <Button buttonStyle={ styles.nextButton } titleStyle={ styles.nextButtonTitle } type="outline" title="Дальше ➞" />
-            </View>
+            </Animated.View>
             <View>
                 <Image resizeMode='center' style={ styles.dots }  source={ require('../../assets/images/dotspage2.png') } />
             </View>
@@ -56,8 +105,8 @@ const styles = StyleSheet.create({
         marginTop: THEME.V_MARGIN10
     },
     image: {
-        width: THEME.SCREEN_WIDTH / 1.8, 
-        height: THEME.SCREEN_HEIGHT / 1.8,
+        width: THEME.SCREEN_WIDTH / 1.8,  //1.8
+        height: THEME.SCREEN_HEIGHT / 1.8, // 1.8
         marginTop: - 8 * THEME.V_MARGIN10,
         marginBottom: - 11 * THEME.V_MARGIN10
     },
