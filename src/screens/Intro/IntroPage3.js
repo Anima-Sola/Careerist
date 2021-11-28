@@ -3,20 +3,19 @@ import { StyleSheet, Text, View, Image, Animated } from 'react-native';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
 
-export const IntroPage2 = ({ navigation }) => {
-    const currentPosessionListIndex = useRef(0);                           
+export const IntroPage3 = () => {
+    const currentEmployeesListIndex = useRef(0);                           
     const [, updateState] = useState();                                 //Just for rerendering
     const forceUpdate = useCallback(() => updateState({}), []);
     const animHeader = useRef(new Animated.Value(0)).current;
-    const animPosessionList = useRef(new Animated.Value(0)).current;
+    const animEmployeesList = useRef(new Animated.Value(0)).current;
     const animNextButton = useRef(new Animated.Value(0)).current;
 
-    
-    const posessionList = ['КВАРТИРУ', 'МАШИНУ', 'ВИЛЛУ', 'ЯХТУ', 'САМОЛЕТ'];
-    const posessionListPictures = [
-        require('../../assets/images/PosessionList/flat.png'), 
-        require('../../assets/images/PosessionList/car.png'),
-        require('../../assets/images/PosessionList/villa.png'),
+    const employeesList = ['МАКЛЕР', 'ВРАЧ', 'АДВОКАТ', 'ДЕТЕКТИВ', 'ЛИЧНАЯ ОХРАНА'];
+    const employeesListPictures = [
+        require('../../assets/images/EmployeesList/makler.png'), 
+        require('../../assets/images/EmployeesList/doctor.png'),
+        require('../../assets/images/EmployeesList/lawyer.png'),
         require('../../assets/images/PosessionList/yacht.png'),
         require('../../assets/images/PosessionList/plane.png'),
     ];
@@ -31,9 +30,9 @@ export const IntroPage2 = ({ navigation }) => {
         ).start();
     }
 
-    const hidePosessionListItem = () => {
+    const hideEmployeesListItem = () => {
         Animated.spring(
-            animPosessionList,
+            animEmployeesList,
             {
                 toValue: 0,
                 delay: 1200,
@@ -41,21 +40,21 @@ export const IntroPage2 = ({ navigation }) => {
                 useNativeDriver: true
             }
         ).start(() => {
-            currentPosessionListIndex.current++;
+            currentEmployeesListIndex.current++;
             forceUpdate();
-            showPosessionListItem();
+            showEmployeesListItem();
         });
     }
 
-    const showPosessionListItem = () => {
+    const showEmployeesListItem = () => {
         Animated.spring(
-            animPosessionList,
+            animEmployeesList,
             {
                 toValue: 1,
                 tension: 2,
                 useNativeDriver: true
             }).start(() => {
-                (currentPosessionListIndex.current < posessionList.length - 1) ? hidePosessionListItem() : animateNextButton();
+                (currentEmployeesListIndex.current < employeesList.length - 1) ? hideEmployeesListItem() : animateNextButton();
             }
         )
     }
@@ -69,28 +68,24 @@ export const IntroPage2 = ({ navigation }) => {
                 useNativeDriver: true
             }
         ).start(() => {
-            showPosessionListItem();
+            showEmployeesListItem();
         });
     }, [animHeader]);
-
-    const moveToNextIntroPage = () => {
-        navigation.navigate('IntroPage3');
-    }
 
     return (
         <View style={ styles.container } >
             <Animated.View style={{ transform: [{ scale: animHeader }] }}>
-                <Text style={ styles.header }>ПРЕДСТАВЬТЕ, ЧТО ВЫ ИМЕЕТЕ:</Text>
+                <Text style={ styles.header }>У ВАС В ПОДЧИНЕНИИ:</Text>
             </Animated.View>
-            <Animated.View style={{ transform: [{ scale: animPosessionList }] }}>
-                <Image resizeMode='contain' style={ styles.image }  source={ posessionListPictures[currentPosessionListIndex.current] } />
-                <Text style={ styles.header }>{ posessionList[currentPosessionListIndex.current] }</Text>
+            <Animated.View style={{ transform: [{ scale: animEmployeesList }] }}>
+                <Image resizeMode='contain' style={ styles.image }  source={ employeesListPictures[currentEmployeesListIndex.current] } />
+                <Text style={ styles.header }>{ employeesList[currentEmployeesListIndex.current] }</Text>
             </Animated.View>
             <Animated.View style={{ opacity: animNextButton }}>
-                <Button buttonStyle={ styles.nextButton } titleStyle={ styles.nextButtonTitle } type="outline" title="Дальше ➞" onPress={ moveToNextIntroPage } />
+                <Button buttonStyle={ styles.nextButton } titleStyle={ styles.nextButtonTitle } type="outline" title="Дальше ➞" />
             </Animated.View>
             <View>
-                <Image resizeMode='center' style={ styles.dots }  source={ require('../../assets/images/dotspage2.png') } />
+                <Image resizeMode='center' style={ styles.dots }  source={ require('../../assets/images/dotspage3.png') } />
             </View>
             <Button buttonStyle={ styles.missButton } titleStyle={ styles.missButtonTitle } type="outline" title="Пропустить заставку" />
         </View>
