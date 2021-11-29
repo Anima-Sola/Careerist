@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
         fontWeight: "100",
         fontSize: THEME.FONT_LARGE,
         textAlign: 'center',
-        marginTop: THEME.V_MARGIN10
+        marginTop: THEME.V_MARGIN10,
     },
     image: {
         width: THEME.SCREEN_WIDTH / 1.4,

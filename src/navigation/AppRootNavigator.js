@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { IntroPage1 } from "../screens/Intro/IntroPage1";
 import { IntroPage2 } from "../screens/Intro/IntroPage2";
 import { IntroPage3 } from "../screens/Intro/IntroPage3";
+import { IntroPage4 } from "../screens/Intro/IntroPage4";
 
 const AppRootNavigator = createNativeStackNavigator();
 
@@ -25,6 +26,10 @@ export function AppRootNavigation () {
                 <AppRootNavigator.Screen 
                     name = "IntroPage3"
                     component = { IntroPage3 }
+                />
+                <AppRootNavigator.Screen 
+                    name = "IntroPage4"
+                    component = { IntroPage4 }
                 />
             </AppRootNavigator.Navigator>
         </NavigationContainer>

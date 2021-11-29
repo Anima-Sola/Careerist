@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, Animated } from 'react-native';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
 
-export const IntroPage3 = ({ navigation }) => {
+export const IntroPage4 = ({ navigate }) => {
     const currentEmployeesListIndex = useRef(0);                           
     const [, updateState] = useState();                                 //Just for rerendering
     const forceUpdate = useCallback(() => updateState({}), []);
@@ -11,7 +11,7 @@ export const IntroPage3 = ({ navigation }) => {
     const animEmployeesList = useRef(new Animated.Value(0)).current;
     const animNextButton = useRef(new Animated.Value(0)).current;
 
-    const employeesList = ['МАКЛЕР', 'ВРАЧ', 'АДВОКАТ', 'ДЕТЕКТИВ', 'ЛИЧНАЯ ОХРАНА'];
+    const employeesList = ['БАР', 'РЕСТОРАН', 'МАГАЗИН', 'ОТЕЛЬ', 'ЗАВОД'];
     const employeesListPictures = [
         require('../../assets/images/EmployeesList/makler.png'), 
         require('../../assets/images/EmployeesList/doctor.png'),
@@ -72,21 +72,17 @@ export const IntroPage3 = ({ navigation }) => {
         });
     }, [animHeader]);
 
-    const moveToNextIntroPage = () => {
-        navigation.navigate('IntroPage4');
-    }
-
     return (
         <View style={ styles.container } >
             <Animated.View style={{ transform: [{ scale: animHeader }] }}>
-                <Text style={ styles.header }>У ВАС В ПОДЧИНЕНИИ:</Text>
+                <Text style={ styles.header }>В ВАШЕМ ВЛАДЕНИИ:</Text>
             </Animated.View>
             <Animated.View style={{ transform: [{ scale: animEmployeesList }] }}>
                 <Image resizeMode='contain' style={ styles.image }  source={ employeesListPictures[currentEmployeesListIndex.current] } />
                 <Text style={ styles.header }>{ employeesList[currentEmployeesListIndex.current] }</Text>
             </Animated.View>
             <Animated.View style={{ opacity: animNextButton }}>
-                <Button buttonStyle={ styles.nextButton } titleStyle={ styles.nextButtonTitle } type="outline" title="Дальше ➞"  onPress={ moveToNextIntroPage } />
+                <Button buttonStyle={ styles.nextButton } titleStyle={ styles.nextButtonTitle } type="outline" title="Дальше ➞" />
             </Animated.View>
             <View>
                 <Image resizeMode='center' style={ styles.dots }  source={ require('../../assets/images/dotspage3.png') } />
@@ -111,6 +107,8 @@ const styles = StyleSheet.create({
         fontSize: THEME.FONT_LARGE,
         textAlign: 'center',
         marginTop: THEME.V_MARGIN10,
+        marginLeft: THEME.H_MARGIN10,
+        marginRight: THEME.H_MARGIN10,
     },
     image: {
         width: THEME.SCREEN_WIDTH / 1.4,
