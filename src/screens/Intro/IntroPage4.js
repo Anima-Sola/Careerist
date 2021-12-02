@@ -4,20 +4,20 @@ import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
 
 export const IntroPage4 = ({ navigate }) => {
-    const currentEmployeesListIndex = useRef(0);                           
+    const currentEstateListIndex = useRef(0);                           
     const [, updateState] = useState();                                 //Just for rerendering
     const forceUpdate = useCallback(() => updateState({}), []);
     const animHeader = useRef(new Animated.Value(0)).current;
-    const animEmployeesList = useRef(new Animated.Value(0)).current;
+    const animEstateList = useRef(new Animated.Value(0)).current;
     const animNextButton = useRef(new Animated.Value(0)).current;
 
-    const employeesList = ['БАР', 'РЕСТОРАН', 'МАГАЗИН', 'ОТЕЛЬ', 'ЗАВОД'];
-    const employeesListPictures = [
-        require('../../assets/images/EmployeesList/makler.png'), 
-        require('../../assets/images/EmployeesList/doctor.png'),
-        require('../../assets/images/EmployeesList/lawyer.png'),
-        require('../../assets/images/EmployeesList/detective.png'),
-        require('../../assets/images/EmployeesList/security.png'),
+    const EstateList = ['БАР', 'РЕСТОРАН', 'МАГАЗИН', 'ОТЕЛЬ', 'ЗАВОД'];
+    const EstateListPictures = [
+        require('../../assets/images/EstateList/bar.png'), 
+        require('../../assets/images/EstateList/restraunt.png'),
+        require('../../assets/images/EstateList/shop.png'),
+        require('../../assets/images/EstateList/hotel.png'),
+        require('../../assets/images/EstateList/plant.png'),
     ];
 
     const animateNextButton = () => {
@@ -30,9 +30,9 @@ export const IntroPage4 = ({ navigate }) => {
         ).start();
     }
 
-    const hideEmployeesListItem = () => {
+    const hideEstateListItem = () => {
         Animated.spring(
-            animEmployeesList,
+            animEstateList,
             {
                 toValue: 0,
                 delay: 1200,
@@ -40,21 +40,21 @@ export const IntroPage4 = ({ navigate }) => {
                 useNativeDriver: true
             }
         ).start(() => {
-            currentEmployeesListIndex.current++;
+            currentEstateListIndex.current++;
             forceUpdate();
-            showEmployeesListItem();
+            showEstateListItem();
         });
     }
 
-    const showEmployeesListItem = () => {
+    const showEstateListItem = () => {
         Animated.spring(
-            animEmployeesList,
+            animEstateList,
             {
                 toValue: 1,
                 tension: 2,
                 useNativeDriver: true
             }).start(() => {
-                (currentEmployeesListIndex.current < employeesList.length - 1) ? hideEmployeesListItem() : animateNextButton();
+                (currentEstateListIndex.current < EstateList.length - 1) ? hideEstateListItem() : animateNextButton();
             }
         )
     }
@@ -68,7 +68,7 @@ export const IntroPage4 = ({ navigate }) => {
                 useNativeDriver: true
             }
         ).start(() => {
-            showEmployeesListItem();
+            showEstateListItem();
         });
     }, [animHeader]);
 
@@ -77,15 +77,15 @@ export const IntroPage4 = ({ navigate }) => {
             <Animated.View style={{ transform: [{ scale: animHeader }] }}>
                 <Text style={ styles.header }>В ВАШЕМ ВЛАДЕНИИ:</Text>
             </Animated.View>
-            <Animated.View style={{ transform: [{ scale: animEmployeesList }] }}>
-                <Image resizeMode='contain' style={ styles.image }  source={ employeesListPictures[currentEmployeesListIndex.current] } />
-                <Text style={ styles.header }>{ employeesList[currentEmployeesListIndex.current] }</Text>
+            <Animated.View style={{ transform: [{ scale: animEstateList }] }}>
+                <Image resizeMode='contain' style={ styles.image }  source={ EstateListPictures[currentEstateListIndex.current] } />
+                <Text style={ styles.header }>{ EstateList[currentEstateListIndex.current] }</Text>
             </Animated.View>
             <Animated.View style={{ opacity: animNextButton }}>
                 <Button buttonStyle={ styles.nextButton } titleStyle={ styles.nextButtonTitle } type="outline" title="Дальше ➞" />
             </Animated.View>
             <View>
-                <Image resizeMode='center' style={ styles.dots }  source={ require('../../assets/images/dotspage3.png') } />
+                <Image resizeMode='center' style={ styles.dots }  source={ require('../../assets/images/dotspage4.png') } />
             </View>
             <Button buttonStyle={ styles.missButton } titleStyle={ styles.missButtonTitle } type="outline" title="Пропустить заставку" />
         </View>
