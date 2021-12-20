@@ -3,9 +3,8 @@ import { StyleSheet, Text, View, Image, Animated } from 'react-native';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
 
-export const IntroPage1 = ({ navigation }) => {
+export const IntroPage1 = () => {
     const animHeaderSpring = useRef(new Animated.Value(5)).current;
-    const animNextButtonOpacity = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         Animated.sequence([
@@ -16,23 +15,11 @@ export const IntroPage1 = ({ navigation }) => {
                     tension: 2,
                     useNativeDriver: true
                 }
-            ),
-            Animated.timing(
-                animNextButtonOpacity,
-                {
-                    toValue: 1,
-                    delay: 500,
-                    useNativeDriver: true
-                }
             )]).start();
-    }, [animHeaderSpring, animNextButtonOpacity]);
-
-    const moveToNextIntroPage = () => {
-        navigation.navigate('IntroPage2');
-    }
+    }, [animHeaderSpring]);
 
     return (
-        <View style={ styles.container } >
+        <View style={ styles.container } key="1">
             <View>
                 <Image resizeMode='center' style={ styles.image } source={ require('../../assets/images/jentleman.png') } />
             </View>
@@ -45,20 +32,16 @@ export const IntroPage1 = ({ navigation }) => {
                     <Text style={ styles.text }>в нашу страну, где каждый может стать президентом!!!</Text>
                 </Animated.View>
             </View>
-            <Animated.View style={{ opacity: animNextButtonOpacity }}>
-                <Button buttonStyle={ styles.nextButton } titleStyle={ styles.nextButtonTitle } type="outline" title="Дальше ➞" onPress={ moveToNextIntroPage } />
-            </Animated.View>
             <View>
                 <Image resizeMode='center' style={ styles.dots }  source={ require('../../assets/images/dotspage1.png') } />
             </View>
-            <Button buttonStyle={ styles.missButton } titleStyle={ styles.missButtonTitle } type="outline" title="Пропустить заставку" />
+            <Button buttonStyle={ styles.missButton } titleStyle={ styles.missButtonTitle } type="outline" title="К игре" />
         </View>
     )
 }
   
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center',
         backgroundColor: THEME.MAIN_BACKGROUND_COLOR
@@ -77,13 +60,12 @@ const styles = StyleSheet.create({
         fontSize: THEME.FONT_MEDIUM,
         textAlign: 'center',
         marginTop: THEME.V_MARGIN10,
-        marginBottom: 3 * THEME.V_MARGIN10,
         marginRight: THEME.H_MARGIN10,
         marginLeft: THEME.H_MARGIN10,
     },
     image: {
-        width: THEME.SCREEN_WIDTH / 4,
-        height: THEME.SCREEN_HEIGHT / 4,
+        width: THEME.SCREEN_WIDTH / 3,
+        height: THEME.SCREEN_HEIGHT / 3,
         marginTop: 2 * THEME.V_MARGIN10
     },
     dots: {
@@ -119,4 +101,3 @@ const styles = StyleSheet.create({
         color: "#fff",
     }
 });
-  

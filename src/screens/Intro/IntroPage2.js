@@ -3,15 +3,13 @@ import { StyleSheet, Text, View, Image, Animated } from 'react-native';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
 
-export const IntroPage2 = ({ navigation }) => {
+export const IntroPage2 = () => {
     const currentPosessionListIndex = useRef(0);                           
     const [, updateState] = useState();                                 //Just for rerendering
     const forceUpdate = useCallback(() => updateState({}), []);
     const animHeader = useRef(new Animated.Value(0)).current;
     const animPosessionList = useRef(new Animated.Value(0)).current;
-    const animNextButton = useRef(new Animated.Value(0)).current;
 
-    
     const posessionList = ['КВАРТИРУ', 'МАШИНУ', 'ВИЛЛУ', 'ЯХТУ', 'САМОЛЕТ'];
     const posessionListPictures = [
         require('../../assets/images/PosessionList/flat.png'), 
@@ -20,16 +18,6 @@ export const IntroPage2 = ({ navigation }) => {
         require('../../assets/images/PosessionList/yacht.png'),
         require('../../assets/images/PosessionList/plane.png'),
     ];
-
-    const animateNextButton = () => {
-        Animated.timing(
-            animNextButton,
-            {
-                toValue: 1,
-                useNativeDriver: true
-            }
-        ).start();
-    }
 
     const hidePosessionListItem = () => {
         Animated.spring(
@@ -55,7 +43,7 @@ export const IntroPage2 = ({ navigation }) => {
                 tension: 2,
                 useNativeDriver: true
             }).start(() => {
-                (currentPosessionListIndex.current < posessionList.length - 1) ? hidePosessionListItem() : animateNextButton();
+                if(currentPosessionListIndex.current < posessionList.length - 1) hidePosessionListItem();
             }
         )
     }
@@ -73,12 +61,8 @@ export const IntroPage2 = ({ navigation }) => {
         });
     }, [animHeader]);
 
-    const moveToNextIntroPage = () => {
-        navigation.navigate('IntroPage3');
-    }
-
     return (
-        <View style={ styles.container } >
+        <View style={ styles.container } key="2">
             <Animated.View style={{ transform: [{ scale: animHeader }] }}>
                 <Text style={ styles.header }>ПРЕДСТАВЬТЕ, ЧТО ВЫ ИМЕЕТЕ:</Text>
             </Animated.View>
@@ -86,20 +70,16 @@ export const IntroPage2 = ({ navigation }) => {
                 <Image resizeMode='contain' style={ styles.image }  source={ posessionListPictures[currentPosessionListIndex.current] } />
                 <Text style={ styles.header }>{ posessionList[currentPosessionListIndex.current] }</Text>
             </Animated.View>
-            <Animated.View style={{ opacity: animNextButton }}>
-                <Button buttonStyle={ styles.nextButton } titleStyle={ styles.nextButtonTitle } type="outline" title="Дальше ➞" onPress={ moveToNextIntroPage } />
-            </Animated.View>
             <View>
                 <Image resizeMode='center' style={ styles.dots }  source={ require('../../assets/images/dotspage2.png') } />
             </View>
-            <Button buttonStyle={ styles.missButton } titleStyle={ styles.missButtonTitle } type="outline" title="Пропустить заставку" />
+            <Button buttonStyle={ styles.missButton } titleStyle={ styles.missButtonTitle } type="outline" title="К игре" />
         </View>
     )
 }
   
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center',
         backgroundColor: THEME.MAIN_BACKGROUND_COLOR
@@ -153,4 +133,3 @@ const styles = StyleSheet.create({
         color: "#fff",
     }
 });
-  

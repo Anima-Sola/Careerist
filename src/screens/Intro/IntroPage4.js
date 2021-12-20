@@ -73,7 +73,7 @@ export const IntroPage4 = ({ navigate }) => {
     }, [animHeader]);
 
     return (
-        <View style={ styles.container } >
+        <View style={ styles.container } key="4">
             <Animated.View style={{ transform: [{ scale: animHeader }] }}>
                 <Text style={ styles.header }>В ВАШЕМ ВЛАДЕНИИ:</Text>
             </Animated.View>
@@ -87,14 +87,13 @@ export const IntroPage4 = ({ navigate }) => {
             <View>
                 <Image resizeMode='center' style={ styles.dots }  source={ require('../../assets/images/dotspage4.png') } />
             </View>
-            <Button buttonStyle={ styles.missButton } titleStyle={ styles.missButtonTitle } type="outline" title="Пропустить заставку" />
+            <Button buttonStyle={ styles.missButton } titleStyle={ styles.missButtonTitle } type="outline" title="К игре" />
         </View>
     )
 }
   
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center',
         backgroundColor: THEME.MAIN_BACKGROUND_COLOR
