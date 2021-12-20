@@ -21,7 +21,7 @@ export const IntroPage1 = ({ navigation }) => {
                 animNextButtonOpacity,
                 {
                     toValue: 1,
-                    delay: 1200,
+                    delay: 500,
                     useNativeDriver: true
                 }
             )]).start();

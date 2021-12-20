@@ -36,7 +36,7 @@ export const IntroPage2 = ({ navigation }) => {
             animPosessionList,
             {
                 toValue: 0,
-                delay: 1200,
+                delay: 500,
                 tension: 2,
                 useNativeDriver: true
             }

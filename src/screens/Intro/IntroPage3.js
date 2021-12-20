@@ -35,7 +35,7 @@ export const IntroPage3 = ({ navigation }) => {
             animEmployeesList,
             {
                 toValue: 0,
-                delay: 1200,
+                delay: 500,
                 tension: 2,
                 useNativeDriver: true
             }

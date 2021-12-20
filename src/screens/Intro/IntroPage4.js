@@ -35,7 +35,7 @@ export const IntroPage4 = ({ navigate }) => {
             animEstateList,
             {
                 toValue: 0,
-                delay: 1200,
+                delay: 500,
                 tension: 2,
                 useNativeDriver: true
             }
