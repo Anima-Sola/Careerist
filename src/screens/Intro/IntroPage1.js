@@ -19,7 +19,7 @@ export const IntroPage1 = () => {
     }, [animHeaderSpring]);
 
     return (
-        <View style={ styles.container } key="1">
+        <View style={ styles.container }>
             <View>
                 <Image resizeMode='center' style={ styles.image } source={ require('../../assets/images/jentleman.png') } />
             </View>
@@ -42,9 +42,9 @@ export const IntroPage1 = () => {
   
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
     },
     header: {
         color: THEME.TEXT_COLOR,
@@ -60,32 +60,14 @@ const styles = StyleSheet.create({
         fontSize: THEME.FONT_MEDIUM,
         textAlign: 'center',
         marginTop: THEME.V_MARGIN10,
-        marginRight: THEME.H_MARGIN10,
-        marginLeft: THEME.H_MARGIN10,
     },
     image: {
         width: THEME.SCREEN_WIDTH / 3,
         height: THEME.SCREEN_HEIGHT / 3,
-        marginTop: 2 * THEME.V_MARGIN10
+        marginTop: 2 * THEME.V_MARGIN10,
     },
     dots: {
         width: THEME.SCREEN_WIDTH / 5,
-    },
-    nextButton: {
-        borderRadius: 40,
-        backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
-        borderColor: THEME.TEXT_COLOR,
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 40,
-        paddingRight: 40,
-        fontFamily: 'nunito-extralight',
-        color: "#fff"
-    },
-    nextButtonTitle: {
-        fontFamily: 'nunito-extralight',
-        color: "#fff",
-        fontSize: THEME.FONT_SMALL
     },
     missButton: {
         borderRadius: 40,

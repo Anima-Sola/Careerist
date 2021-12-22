@@ -62,7 +62,7 @@ export const IntroPage2 = () => {
     }, [animHeader]);
 
     return (
-        <View style={ styles.container } key="2">
+        <View style={ styles.container }>
             <Animated.View style={{ transform: [{ scale: animHeader }] }}>
                 <Text style={ styles.header }>ПРЕДСТАВЬТЕ, ЧТО ВЫ ИМЕЕТЕ:</Text>
             </Animated.View>
@@ -80,9 +80,9 @@ export const IntroPage2 = () => {
   
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
     },
     header: {
         color: THEME.TEXT_COLOR,
@@ -97,27 +97,10 @@ const styles = StyleSheet.create({
         width: THEME.SCREEN_WIDTH / 1.4,
         height: THEME.SCREEN_HEIGHT / 1.4,
         marginTop: - 17 * THEME.V_MARGIN10,
-        marginBottom: - 14 * THEME.V_MARGIN10
+        marginBottom: - 14 * THEME.V_MARGIN10,
     },
     dots: {
         width: THEME.SCREEN_WIDTH / 5,
-    },
-    nextButton: {
-        borderRadius: 40,
-        backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
-        borderColor: THEME.TEXT_COLOR,
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 40,
-        paddingRight: 40,
-        fontFamily: 'nunito-extralight',
-        color: "#fff",
-        marginTop: 2 * THEME.V_MARGIN10
-    },
-    nextButtonTitle: {
-        fontFamily: 'nunito-extralight',
-        color: "#fff",
-        fontSize: THEME.FONT_SMALL
     },
     missButton: {
         borderRadius: 40,

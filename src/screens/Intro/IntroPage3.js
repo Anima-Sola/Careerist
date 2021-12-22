@@ -9,7 +9,6 @@ export const IntroPage3 = ({ navigation }) => {
     const forceUpdate = useCallback(() => updateState({}), []);
     const animHeader = useRef(new Animated.Value(0)).current;
     const animEmployeesList = useRef(new Animated.Value(0)).current;
-    const animNextButton = useRef(new Animated.Value(0)).current;
 
     const employeesList = ['МАКЛЕР', 'ВРАЧ', 'АДВОКАТ', 'ДЕТЕКТИВ', 'ЛИЧНАЯ ОХРАНА'];
     const employeesListPictures = [
@@ -19,16 +18,6 @@ export const IntroPage3 = ({ navigation }) => {
         require('../../assets/images/EmployeesList/detective.png'),
         require('../../assets/images/EmployeesList/security.png'),
     ];
-
-    const animateNextButton = () => {
-        Animated.timing(
-            animNextButton,
-            {
-                toValue: 1,
-                useNativeDriver: true
-            }
-        ).start();
-    }
 
     const hideEmployeesListItem = () => {
         Animated.spring(
@@ -54,7 +43,7 @@ export const IntroPage3 = ({ navigation }) => {
                 tension: 2,
                 useNativeDriver: true
             }).start(() => {
-                (currentEmployeesListIndex.current < employeesList.length - 1) ? hideEmployeesListItem() : animateNextButton();
+                if(currentEmployeesListIndex.current < employeesList.length - 1) hideEmployeesListItem();
             }
         )
     }
@@ -77,16 +66,13 @@ export const IntroPage3 = ({ navigation }) => {
     }
 
     return (
-        <View style={ styles.container } key="3">
+        <View style={ styles.container }>
             <Animated.View style={{ transform: [{ scale: animHeader }] }}>
                 <Text style={ styles.header }>У ВАС В ПОДЧИНЕНИИ:</Text>
             </Animated.View>
             <Animated.View style={{ transform: [{ scale: animEmployeesList }] }}>
                 <Image resizeMode='contain' style={ styles.image }  source={ employeesListPictures[currentEmployeesListIndex.current] } />
                 <Text style={ styles.header }>{ employeesList[currentEmployeesListIndex.current] }</Text>
-            </Animated.View>
-            <Animated.View style={{ opacity: animNextButton }}>
-                <Button buttonStyle={ styles.nextButton } titleStyle={ styles.nextButtonTitle } type="outline" title="Дальше ➞"  onPress={ moveToNextIntroPage } />
             </Animated.View>
             <View>
                 <Image resizeMode='center' style={ styles.dots }  source={ require('../../assets/images/dotspage3.png') } />
@@ -98,9 +84,9 @@ export const IntroPage3 = ({ navigation }) => {
   
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
     },
     header: {
         color: THEME.TEXT_COLOR,
@@ -119,23 +105,6 @@ const styles = StyleSheet.create({
     },
     dots: {
         width: THEME.SCREEN_WIDTH / 5,
-    },
-    nextButton: {
-        borderRadius: 40,
-        backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
-        borderColor: THEME.TEXT_COLOR,
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 40,
-        paddingRight: 40,
-        fontFamily: 'nunito-extralight',
-        color: "#fff",
-        marginTop: 2 * THEME.V_MARGIN10
-    },
-    nextButtonTitle: {
-        fontFamily: 'nunito-extralight',
-        color: "#fff",
-        fontSize: THEME.FONT_SMALL
     },
     missButton: {
         borderRadius: 40,

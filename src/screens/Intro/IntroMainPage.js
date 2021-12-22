@@ -9,17 +9,26 @@ import { THEME } from '../../styles/theme';
 
 export const IntroMainPage = () => {
     return (
-        <PagerView style={styles.container} initialPage={0}>
-            <IntroPage1 />
-            <IntroPage2 />
-            <IntroPage3 />
-            <IntroPage4 />
+        <PagerView style={styles.wrapper} initialPage={0}>
+            <View key="1">
+                <IntroPage1 />
+            </View>
+            <View key="2">
+                <IntroPage2 />
+            </View>
+            <View key="3">
+                <IntroPage3 />
+            </View>
+            <View key="4">
+                <IntroPage4 />
+            </View>
         </PagerView>
-      );
-    };
+    );
+};
 
 const styles = StyleSheet.create({
-    container: {
-       
-    },
+    wrapper: {
+        flex: 1,
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
+    }
 });

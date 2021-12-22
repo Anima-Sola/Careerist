@@ -9,7 +9,6 @@ export const IntroPage4 = ({ navigate }) => {
     const forceUpdate = useCallback(() => updateState({}), []);
     const animHeader = useRef(new Animated.Value(0)).current;
     const animEstateList = useRef(new Animated.Value(0)).current;
-    const animNextButton = useRef(new Animated.Value(0)).current;
 
     const EstateList = ['БАР', 'РЕСТОРАН', 'МАГАЗИН', 'ОТЕЛЬ', 'ЗАВОД'];
     const EstateListPictures = [
@@ -19,16 +18,6 @@ export const IntroPage4 = ({ navigate }) => {
         require('../../assets/images/EstateList/hotel.png'),
         require('../../assets/images/EstateList/plant.png'),
     ];
-
-    const animateNextButton = () => {
-        Animated.timing(
-            animNextButton,
-            {
-                toValue: 1,
-                useNativeDriver: true
-            }
-        ).start();
-    }
 
     const hideEstateListItem = () => {
         Animated.spring(
@@ -54,7 +43,7 @@ export const IntroPage4 = ({ navigate }) => {
                 tension: 2,
                 useNativeDriver: true
             }).start(() => {
-                (currentEstateListIndex.current < EstateList.length - 1) ? hideEstateListItem() : animateNextButton();
+                if(currentEstateListIndex.current < EstateList.length - 1) hideEstateListItem();
             }
         )
     }
@@ -73,16 +62,13 @@ export const IntroPage4 = ({ navigate }) => {
     }, [animHeader]);
 
     return (
-        <View style={ styles.container } key="4">
+        <View style={ styles.container }>
             <Animated.View style={{ transform: [{ scale: animHeader }] }}>
                 <Text style={ styles.header }>В ВАШЕМ ВЛАДЕНИИ:</Text>
             </Animated.View>
             <Animated.View style={{ transform: [{ scale: animEstateList }] }}>
                 <Image resizeMode='contain' style={ styles.image }  source={ EstateListPictures[currentEstateListIndex.current] } />
                 <Text style={ styles.header }>{ EstateList[currentEstateListIndex.current] }</Text>
-            </Animated.View>
-            <Animated.View style={{ opacity: animNextButton }}>
-                <Button buttonStyle={ styles.nextButton } titleStyle={ styles.nextButtonTitle } type="outline" title="Дальше ➞" />
             </Animated.View>
             <View>
                 <Image resizeMode='center' style={ styles.dots }  source={ require('../../assets/images/dotspage4.png') } />
@@ -94,9 +80,9 @@ export const IntroPage4 = ({ navigate }) => {
   
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
     },
     header: {
         color: THEME.TEXT_COLOR,
@@ -117,23 +103,6 @@ const styles = StyleSheet.create({
     },
     dots: {
         width: THEME.SCREEN_WIDTH / 5,
-    },
-    nextButton: {
-        borderRadius: 40,
-        backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
-        borderColor: THEME.TEXT_COLOR,
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 40,
-        paddingRight: 40,
-        fontFamily: 'nunito-extralight',
-        color: "#fff",
-        marginTop: 2 * THEME.V_MARGIN10
-    },
-    nextButtonTitle: {
-        fontFamily: 'nunito-extralight',
-        color: "#fff",
-        fontSize: THEME.FONT_SMALL
     },
     missButton: {
         borderRadius: 40,
