@@ -11,6 +11,7 @@ export default function App() {
 
   useEffect(() => {
       StatusBar.setBackgroundColor(THEME.MAIN_BACKGROUND_COLOR);
+      //StatusBar.setHidden(true);
   })
 
   if (!isLoaded) {

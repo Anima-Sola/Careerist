@@ -1,4 +1,4 @@
-import { Dimensions, Platform, PixelRatio } from 'react-native';
+import { StatusBar, Dimensions, Platform, PixelRatio } from 'react-native';
 
 const {
     width: SCREEN_WIDTH,
@@ -21,6 +21,8 @@ export const THEME = {
     TEXT_COLOR: '#fff',
     SCREEN_WIDTH,
     SCREEN_HEIGHT,
+    ASPECT_RATIO: SCREEN_HEIGHT/SCREEN_WIDTH,
+    STATUSBAR_HEIGHT: StatusBar.currentHeight,
     FONT_MINI: normalize(12),
     FONT_SMALL: normalize(17),
     FONT_MEDIUM: normalize(20),
