@@ -59,48 +59,40 @@ const styles = StyleSheet.create({
     },
     image: {
         width: 0.5 * THEME.SCREEN_WIDTH,
-        height: 0.5 * THEME.SCREEN_WIDTH * THEME.ASPECT_RATIO,
+        height: 0.5 * THEME.SCREEN_WIDTH * THEME.SCREEN_ASPECT_RATIO,
     },
     headerContainer: {
         flex: 0.22,
         justifyContent: 'flex-start',
-        /*borderColor: "#fff",
-        borderStyle: "solid",
-        borderWidth: 1*/
     },
     header: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-light',
         fontStyle: 'normal',
         fontWeight: "100",
-        fontSize: THEME.FONT_LARGE,
+        fontSize: THEME.FONT30,
         textAlign: 'center',
     },
     text: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-extralight',
-        fontSize: THEME.FONT_MEDIUM,
+        fontSize: THEME.FONT20,
         textAlign: 'center',
         marginTop: THEME.V_MARGIN10,
     },
     swipeContainer: {
-        flex: 0.13,
+        flex: 0.10,
         justifyContent: "center",
-        /*borderColor: "#fff",
-        borderStyle: "solid",
-        borderWidth: 1*/
     },
     dotsContainer: {
-        flex: 0.05,
-        justifyContent: "center",
-        /*borderColor: "#fff",
-        borderStyle: "solid",
-        borderWidth: 1*/
+        flex: 0.08,
+        justifyContent: "flex-end",
     },
     missButtonContainer: {
         flex: 0.10,
         justifyContent: "center",
-        width: '70%'
+        width: '70%',
+        margin: 1
     },
     missButton: {
         borderRadius: 40,
