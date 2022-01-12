@@ -33,10 +33,10 @@ export const IntroPage1 = () => {
                 </Animated.View>
             </View>
             <View style={ styles.swipeContainer }>
-                <Image resizeMode='center' source={ require('../../assets/images/swipe.gif') } />
+                <Image style={ styles.image } resizeMode='center' source={ require('../../assets/images/swipe.gif') } />
             </View>
             <View style={ styles.dotsContainer }>
-                <Image resizeMode='center' source={ require('../../assets/images/dotspage1.png') } />
+                <Image style={ styles.image } resizeMode='center' source={ require('../../assets/images/dotspage1.png') } />
             </View>
             <View style={ styles.missButtonContainer }>
                 <Button buttonStyle={ styles.missButton } titleStyle={ styles.missButtonTitle } type="outline" title="К игре" />
@@ -52,18 +52,19 @@ const styles = StyleSheet.create({
         paddingTop: THEME.STATUSBAR_HEIGHT,
     },
     imageContainer: {
-        flex: 0.50,
+        flex: 0.45,
+        justifyContent: 'center',
         /*borderColor: "#fff",
         borderStyle: "solid",
         borderWidth: 1*/
     },
     image: {
-        width: 0.5 * THEME.SCREEN_WIDTH,
-        height: 0.5 * THEME.SCREEN_WIDTH * THEME.SCREEN_ASPECT_RATIO,
+        width: 0.40 * THEME.SCREEN_WIDTH,
+        height: 0.40 * THEME.SCREEN_WIDTH * THEME.SCREEN_ASPECT_RATIO,
     },
     headerContainer: {
-        flex: 0.22,
-        justifyContent: 'flex-start',
+        flex: 0.27,
+        justifyContent: 'center',
     },
     header: {
         color: THEME.TEXT_COLOR,
@@ -81,12 +82,12 @@ const styles = StyleSheet.create({
         marginTop: THEME.V_MARGIN10,
     },
     swipeContainer: {
-        flex: 0.10,
+        flex: 0.12,
         justifyContent: "center",
     },
     dotsContainer: {
-        flex: 0.08,
-        justifyContent: "flex-end",
+        flex: 0.06,
+        justifyContent: "center",
     },
     missButtonContainer: {
         flex: 0.10,
@@ -98,6 +99,7 @@ const styles = StyleSheet.create({
         borderRadius: 40,
         backgroundColor: "#940068",
         borderColor: "#fff",
+        borderWidth: 1,
         paddingTop: THEME.V_MARGIN10,
         paddingBottom: THEME.V_MARGIN10,
         width: '100%'

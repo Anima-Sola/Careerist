@@ -8,8 +8,13 @@ import { IntroPage4 } from './IntroPage4';
 import { THEME } from '../../styles/theme';
 
 export const IntroMainPage = () => {
+
+    const startCarousel = (page) => {
+        console.log('1')
+    }
+
     return (
-        <PagerView style={styles.wrapper} initialPage={0}>
+        <PagerView style={styles.wrapper} initialPage={0} onPageScroll={startCarousel}>
             <View key="1">
                 <IntroPage1 />
             </View>
