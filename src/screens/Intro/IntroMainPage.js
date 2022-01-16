@@ -25,14 +25,28 @@ const slides = [
         title: 'Вы оплачиваете \n услуги:',
         text: 'Маклера, врача, адвоката, \n детектива, личной охраны',
         image: require('../../assets/images/jentleman.png'),
-        backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
+        backgroundColor: '#e83c3d',
     },
     {
         key: 'four',
         title: 'В вашем владении \n находятся:',
         text: 'Бар, ресторан, магазин, \n отель, завод',
         image: require('../../assets/images/jentleman.png'),
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
+    },
+    {
+        key: 'five',
+        title: 'И cчет в банке',
+        text: '$1.000.000.000',
+        image: require('../../assets/images/jentleman.png'),
         backgroundColor: '#febe29',
+    },
+    {
+        key: 'six',
+        title: '...но пока это мечты.',
+        text: 'Реализуйте их!!!',
+        image: require('../../assets/images/jentleman.png'),
+        backgroundColor: '#e83c3d',
     }
 ];
 
@@ -85,14 +99,17 @@ export class IntroMainPage extends Component {
 
     render() {
         return (
-            <AppIntroSlider
-                data={slides}
-                renderItem={this._renderItem}
-                showSkipButton={true}
-                renderDoneButton={this._renderDoneButton}
-                renderNextButton={this._renderNextButton}
-                renderSkipButton={this._renderSkipButton}
-            />
+            <View style={{ flex: 1 }}>
+                <StatusBar translucent backgroundColor="transparent" />
+                <AppIntroSlider
+                    data={slides}
+                    renderItem={this._renderItem}
+                    showSkipButton={true}
+                    renderDoneButton={this._renderDoneButton}
+                    renderNextButton={this._renderNextButton}
+                    renderSkipButton={this._renderSkipButton}
+                />
+            </View>
         );
     }
 }
@@ -101,7 +118,6 @@ const styles = StyleSheet.create({
     slide: {
         flex: 1,
         alignItems: 'center',
-        paddingTop: THEME.STATUSBAR_HEIGHT,
     },
     titleContainer: {
         flex: 0.15,
@@ -151,7 +167,7 @@ const styles = StyleSheet.create({
         fontFamily: 'nunito-semibold',
         fontSize: THEME.FONT17,
         textAlign: 'center',
-        paddingBottom: 2
+        paddingBottom: 4
     },
 });
 
