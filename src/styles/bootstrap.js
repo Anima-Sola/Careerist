@@ -7,6 +7,7 @@ export async function bootstrap() {
             'nunito-light': require('../assets/fonts/Nunito-Light.ttf'),
             'nunito-bold': require('../assets/fonts/Nunito-Bold.ttf'),
             'nunito-semibold': require('../assets/fonts/Nunito-SemiBold.ttf'),
+            'nunito-lightitalic': require('../assets/fonts/Nunito-LightItalic.ttf'),
         }) 
     } catch (e) {
         console.log('Error: ', e);

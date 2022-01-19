@@ -1,7 +1,8 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { IntroMainPage } from "../screens/Intro/IntroMainPage";
+import { IntroScreen } from "../screens/Intro/IntroScreen";
+import { inputInitialDataScreen } from "../screens/InitialData/InputInitialDataScreen";
 
 const AppRootNavigator = createNativeStackNavigator();
 
@@ -13,8 +14,12 @@ export function AppRootNavigation () {
                     headerShown: false,
                 }} >
                 <AppRootNavigator.Screen 
-                    name = "IntroMainPage"
-                    component = { IntroMainPage }
+                    name = "IntroScreen"
+                    component = { IntroScreen }
+                />
+                <AppRootNavigator.Screen
+                    name = "InputInitialDataScreen"
+                    component = { inputInitialDataScreen }
                 />
             </AppRootNavigator.Navigator>
         </NavigationContainer>

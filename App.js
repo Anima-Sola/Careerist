@@ -1,31 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { StatusBar, Platform, NativeModules } from 'react-native';
+import React, { useState } from 'react';
 import AppLoading from 'expo-app-loading';
 import { NativeBaseProvider } from 'native-base';
 import { AppRootNavigation } from './src/navigation/AppRootNavigator';
 import { bootstrap } from './src/styles/bootstrap';
-import { THEME } from './src/styles/theme';
 
 export default function App() {
-  const [ isLoaded, setIsLoaded ] = useState(false);
+    const [ isLoaded, setIsLoaded ] = useState(false);
 
-  useEffect(() => {
-      StatusBar.setBackgroundColor(THEME.MAIN_BACKGROUND_COLOR);
-  })
+    if (!isLoaded) {
+        return (
+            <AppLoading
+                startAsync = { bootstrap }
+                onFinish = { () => setIsLoaded(true) }
+                onError = { err => console.log(err) }
+            />
+        )
+    }
 
-  if (!isLoaded) {
     return (
-      <AppLoading
-        startAsync = { bootstrap }
-        onFinish = { () => setIsLoaded(true) }
-        onError = { err => console.log(err) }
-      />
+        <NativeBaseProvider>
+            <AppRootNavigation />
+        </NativeBaseProvider>
     )
-  }
-
-  return (
-    <NativeBaseProvider>
-        <AppRootNavigation />
-    </NativeBaseProvider>
-  )
 }

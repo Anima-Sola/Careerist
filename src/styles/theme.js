@@ -18,6 +18,8 @@ function normalize(size) {
 
 export const THEME = {
     MAIN_BACKGROUND_COLOR: '#385C74',
+    SECOND_BACKGROUND_COLOR: '#B59B52',
+    THIRD_BACKGROUND_COLOR: '#B56B52',
     TEXT_COLOR: '#fff',
     SCREEN_WIDTH,
     SCREEN_HEIGHT,

@@ -18,14 +18,14 @@ const slides = [
         title: 'Представьте, \n что вы имеете:',
         text: 'Квартиру, машину, виллу, яхту, самолет',
         image: require('../../assets/images/jentleman.png'),
-        backgroundColor: '#febe29',
+        backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
     },
     {
         key: 'three',
         title: 'Вы оплачиваете \n услуги:',
         text: 'Маклера, врача, адвоката, \n детектива, личной охраны',
         image: require('../../assets/images/jentleman.png'),
-        backgroundColor: '#e83c3d',
+        backgroundColor: THEME.THIRD_BACKGROUND_COLOR,
     },
     {
         key: 'four',
@@ -39,27 +39,27 @@ const slides = [
         title: 'И cчет в банке',
         text: '$1.000.000.000',
         image: require('../../assets/images/jentleman.png'),
-        backgroundColor: '#febe29',
+        backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
     },
     {
         key: 'six',
         title: '...но пока это мечты.',
         text: 'Реализуйте их!!!',
         image: require('../../assets/images/jentleman.png'),
-        backgroundColor: '#e83c3d',
+        backgroundColor: THEME.THIRD_BACKGROUND_COLOR,
     }
 ];
 
-export class IntroMainPage extends Component {
+export class IntroScreen extends Component {
     _renderItem = ({ item }) => {
         return (
             <View style={{ ...styles.slide, backgroundColor: item.backgroundColor }}>
                 <Image style={ styles.image } resizeMode='center' source={ item.image } />
                 <View style={ styles.titleContainer }>
-                    <Text style={ styles.title }>{item.title}</Text>
+                    <Text style={ styles.title }>{ item.title }</Text>
                 </View>
                 <View style={ styles.textContainer }>
-                    <Text style={styles.text}>{item.text}</Text>
+                    <Text style={ styles.text }>{ item.text }</Text>
                 </View>
             </View>
         );
@@ -67,7 +67,7 @@ export class IntroMainPage extends Component {
 
     _renderNextButton = () => {
         return (
-            <View style={styles.buttonCircle}>
+            <View style={ styles.buttonCircle }>
                 <Icon
                     name="arrow-forward-outline"
                     color="rgba(255, 255, 255, .9)"
@@ -79,7 +79,7 @@ export class IntroMainPage extends Component {
 
     _renderDoneButton = () => {
         return (
-            <View style={styles.buttonCircle}>
+            <View style={ styles.buttonCircle }>
                 <Icon
                     name="md-checkmark"
                     color="rgba(255, 255, 255, .9)"
@@ -91,10 +91,14 @@ export class IntroMainPage extends Component {
 
     _renderSkipButton = () => {
         return (
-            <View style={styles.skipButton}>
-                <Text style={styles.skipButtonText}>К игре</Text>
+            <View style={ styles.skipButton }>
+                <Text style={ styles.skipButtonText }>К игре</Text>
             </View>
         );
+    }
+
+    _navToInputInitialDataScreen = () => {
+        this.props.navigation.navigate('InputInitialDataScreen');
     }
 
     render() {
@@ -108,6 +112,8 @@ export class IntroMainPage extends Component {
                     renderDoneButton={this._renderDoneButton}
                     renderNextButton={this._renderNextButton}
                     renderSkipButton={this._renderSkipButton}
+                    onDone={this._navToInputInitialDataScreen}
+                    onSkip={this._navToInputInitialDataScreen}
                 />
             </View>
         );
@@ -118,6 +124,9 @@ const styles = StyleSheet.create({
     slide: {
         flex: 1,
         alignItems: 'center',
+        paddingTop: THEME.STATUSBAR_HEIGHT,
+        paddingLeft: 20,
+        paddingRight: 20
     },
     titleContainer: {
         flex: 0.15,
