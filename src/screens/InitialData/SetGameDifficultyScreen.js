@@ -1,30 +1,44 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
 
-export const inputInitialDataScreen = () => {
+export const SetGameDifficultyScreen = ({ navigation }) => {
+    const [ gameDifficultyLevel, setGameDifficultyLevel ] = useState(2);
+    const [ difficultyItems, setActiveDifficultyItem ] = useState([ 'rgba(0, 0, 0, .2)', 'rgba(0, 0, 0, .2)', THEME.THIRD_BACKGROUND_COLOR ]);
+
+    const setDifficultyLevel = (level) => {
+        const newDifficultyItems = [ 'rgba(0, 0, 0, .2)', 'rgba(0, 0, 0, .2)', 'rgba(0, 0, 0, .2)' ];
+        newDifficultyItems[level] = THEME.THIRD_BACKGROUND_COLOR;
+        setGameDifficultyLevel(level);
+        setActiveDifficultyItem(newDifficultyItems);
+    }
+
+    const navToInputAgeScreen = () => {
+        navigation.navigate('InputAgeScreen');
+    }
+
     return (
         <View style={ styles.container }>
             <View style={ styles.headerContainer }>
                 <Text style={ styles.header }>Ваш класс?</Text>
             </View>
             <View style={ styles.difficultyLevelsContainer }>
-                <View style={ styles.selectedDifficultyLevelItem }>
-                    <Text style={ styles.difficultyLevelItemDigit }>3</Text>
+                <TouchableOpacity style={{ ...styles.difficultyLevelItem, backgroundColor: difficultyItems[2] }} onPress={ () => setDifficultyLevel(2) } >
+                    <Text style={ styles.difficultyLevelItemDigit }>3 {}</Text>
                     <Text style={ styles.difficultyLevelItemText }>Легко</Text>
-                </View>
-                <View style={ styles.difficultyLevelItem }>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ ...styles.difficultyLevelItem, backgroundColor: difficultyItems[1] }} onPress={ () => setDifficultyLevel(1)} >
                     <Text style={ styles.difficultyLevelItemDigit }>2</Text>
                     <Text style={ styles.difficultyLevelItemText }>Средне</Text>
-                </View>
-                <View style={ styles.difficultyLevelItem }>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ ...styles.difficultyLevelItem, backgroundColor: difficultyItems[0] }} onPress={ () => setDifficultyLevel(0) } >
                     <Text style={ styles.difficultyLevelItemDigit }>1</Text>
                     <Text style={ styles.difficultyLevelItemText }>Хардкор</Text>
-                </View>
+                </TouchableOpacity>
             </View>
             <View style={ styles.nextButtonContainer }>
-                <Button buttonStyle={ styles.nextButton } titleStyle={ styles.nextButtonTitle } type="outline" title="Продолжить" />
+                <Button buttonStyle={ styles.nextButton } titleStyle={ styles.nextButtonTitle } type="outline" title="Продолжить" onPress={ navToInputAgeScreen }/>
             </View>
         </View>
     )
@@ -59,13 +73,6 @@ const styles = StyleSheet.create({
     },
     difficultyLevelItem: {
         backgroundColor: 'rgba(0, 0, 0, .2)',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 25,
-        height: THEME.SCREEN_HEIGHT / 7,
-    },
-    selectedDifficultyLevelItem: {
-        backgroundColor: THEME.THIRD_BACKGROUND_COLOR,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 25,

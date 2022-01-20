@@ -2,7 +2,8 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { IntroScreen } from "../screens/Intro/IntroScreen";
-import { inputInitialDataScreen } from "../screens/InitialData/InputInitialDataScreen";
+import { SetGameDifficultyScreen } from "../screens/InitialData/SetGameDifficultyScreen";
+import { InputAgeScreen } from '../screens/InitialData/InputAgeScreen';
 
 const AppRootNavigator = createNativeStackNavigator();
 
@@ -18,8 +19,12 @@ export function AppRootNavigation () {
                     component = { IntroScreen }
                 />
                 <AppRootNavigator.Screen
-                    name = "InputInitialDataScreen"
-                    component = { inputInitialDataScreen }
+                    name = "SetGameDifficultyScreen"
+                    component = { SetGameDifficultyScreen }
+                />
+                <AppRootNavigator.Screen
+                    name = "InputAgeScreen"
+                    component = { InputAgeScreen }
                 />
             </AppRootNavigator.Navigator>
         </NavigationContainer>

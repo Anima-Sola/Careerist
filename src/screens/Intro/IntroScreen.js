@@ -97,8 +97,8 @@ export class IntroScreen extends Component {
         );
     }
 
-    _navToInputInitialDataScreen = () => {
-        this.props.navigation.navigate('InputInitialDataScreen');
+    _navToSetGameDifficultyScreen = () => {
+        this.props.navigation.navigate('SetGameDifficultyScreen');
     }
 
     render() {
@@ -112,8 +112,8 @@ export class IntroScreen extends Component {
                     renderDoneButton={this._renderDoneButton}
                     renderNextButton={this._renderNextButton}
                     renderSkipButton={this._renderSkipButton}
-                    onDone={this._navToInputInitialDataScreen}
-                    onSkip={this._navToInputInitialDataScreen}
+                    onDone={this._navToSetGameDifficultyScreen}
+                    onSkip={this._navToSetGameDifficultyScreen}
                 />
             </View>
         );

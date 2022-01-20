@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import AppLoading from 'expo-app-loading';
-import { NativeBaseProvider } from 'native-base';
+//import Provider from 'react-redux';
 import { AppRootNavigation } from './src/navigation/AppRootNavigator';
 import { bootstrap } from './src/styles/bootstrap';
 
@@ -18,8 +18,6 @@ export default function App() {
     }
 
     return (
-        <NativeBaseProvider>
-            <AppRootNavigation />
-        </NativeBaseProvider>
+        <AppRootNavigation />
     )
 }
