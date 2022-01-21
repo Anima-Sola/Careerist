@@ -53,7 +53,7 @@ const slides = [
 export class IntroScreen extends Component {
     _renderItem = ({ item }) => {
         return (
-            <View style={{ ...styles.slide, backgroundColor: item.backgroundColor }}>
+            <View style={{ ...styles.container, backgroundColor: item.backgroundColor }}>
                 <Image style={ styles.image } resizeMode='center' source={ item.image } />
                 <View style={ styles.titleContainer }>
                     <Text style={ styles.title }>{ item.title }</Text>
@@ -121,7 +121,7 @@ export class IntroScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-    slide: {
+    container: {
         flex: 1,
         alignItems: 'center',
         paddingTop: THEME.STATUSBAR_HEIGHT,
