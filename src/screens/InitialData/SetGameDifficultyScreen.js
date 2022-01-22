@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
@@ -25,7 +25,7 @@ export const SetGameDifficultyScreen = ({ navigation }) => {
             </View>
             <View style={ styles.difficultyLevelsContainer }>
                 <TouchableOpacity style={{ ...styles.difficultyLevelItem, backgroundColor: difficultyItems[2] }} onPress={ () => setDifficultyLevel(2) } >
-                    <Text style={ styles.difficultyLevelItemDigit }>3 {}</Text>
+                    <Text style={ styles.difficultyLevelItemDigit }>3</Text>
                     <Text style={ styles.difficultyLevelItemText }>Легко</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{ ...styles.difficultyLevelItem, backgroundColor: difficultyItems[1] }} onPress={ () => setDifficultyLevel(1)} >

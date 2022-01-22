@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, TextInput, Alert } from 'react-native';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
 
-export const InputAgeScreen = ({ navigation }) => {
+export const InputСashAmountScreen = ({ navigation }) => {
     const [ isButtonDisabled, setIsButtonDisabled ] = useState(true);
-    const [ age, setAge ] = useState('');
+    const [ cashAmount, setCashAmount ] = useState('');
     const textInput = useRef(null);
 
     useEffect(() => {
@@ -15,15 +15,15 @@ export const InputAgeScreen = ({ navigation }) => {
     const filterData = ( text ) => {
         const result = text.replace( /\D/g, '' );
         (result !== '') ? setIsButtonDisabled(false) : setIsButtonDisabled(true);
-        setAge(result);
+        setCashAmount(result);
     }
 
-    const checkAgeAndNavToInputCashAmountScreen = () => {
-        if( ( age < 18 ) || ( age > 60 ) ) {
-            let msg = ( age < 18 ) ? 'Младенцам у нас делать нечего!!!' : 'В мумиях не нуждаемся!!!';
+    const checkCashAmount = () => {
+        const maxCash = Math.round( 1500 * 1 * ( 1 + Math.random() ) );
+        if(cashAmount > maxCash) {
             Alert.alert(
-                "О, нет...",
-                msg,
+                "Откуда?!",
+                "По нашим данным у вас " + maxCash.toString(),
                 [
                     {
                         text: 'Понятно',
@@ -32,24 +32,22 @@ export const InputAgeScreen = ({ navigation }) => {
                     }
                 ]
             );
-            return;
         }
-        navigation.navigate('InputСashAmountScreen');
     }
 
     return (
         <View style={ styles.container }>
             <View style={ styles.headerContainer }>
-                <Text style={ styles.header }>Ваш возраст?</Text>
+                <Text style={ styles.header }>Сколько имеете наличными?</Text>
             </View>
             <View style={ styles.inputContainer }>
                 <TextInput
                     ref={textInput}
                     style={ styles.input } 
                     keyboardType='numeric'
-                    maxLength={2}
+                    maxLength={12}
                     onChangeText={( text ) => filterData(text)}
-                    value={ age }
+                    value={ cashAmount }
                 />
             </View>
             <View style={ styles.nextButtonContainer }>
@@ -60,7 +58,7 @@ export const InputAgeScreen = ({ navigation }) => {
                     type="outline" 
                     title="Продолжить" 
                     disabled={ isButtonDisabled }
-                    onPress={ checkAgeAndNavToInputCashAmountScreen } 
+                    onPress={ checkCashAmount } 
                 />
             </View>
         </View>
@@ -88,11 +86,12 @@ const styles = StyleSheet.create({
         fontSize: THEME.FONT30,
         textAlign: 'center',
         paddingTop: 20,
+        lineHeight: 35
     },
     inputContainer: {
         flex: 0.5,
         justifyContent: 'center',
-        width: '40%'
+        width: '100%'
     },
     input: {
         color: '#fff',
