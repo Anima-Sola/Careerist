@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import AppLoading from 'expo-app-loading';
-//import Provider from 'react-redux';
+import { Provider } from 'react-redux';
 import { AppRootNavigation } from './src/navigation/AppRootNavigator';
 import { bootstrap } from './src/styles/bootstrap';
+import store from './src/store';
 
 export default function App() {
     const [ isLoaded, setIsLoaded ] = useState(false);
@@ -18,6 +19,8 @@ export default function App() {
     }
 
     return (
-        <AppRootNavigation />
+        <Provider store={store}>
+            <AppRootNavigation />
+        </Provider>
     )
 }

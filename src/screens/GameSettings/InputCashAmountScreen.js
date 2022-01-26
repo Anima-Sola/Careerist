@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, Alert } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
+import { setCashAmountAction } from   '../../store/actions/actions';
+import { getGameDifficultyLevel } from '../../store/selectors';
 
 export const InputСashAmountScreen = ({ navigation }) => {
+    const dispatch = useDispatch();
+    const gameDifficultyLevel = useSelector( getGameDifficultyLevel );
     const [ isButtonDisabled, setIsButtonDisabled ] = useState(true);
-    const [ cashAmount, setCashAmount ] = useState('');
+    const [ cashAmount, setCashAmount ] = useState(null);
     const textInput = useRef(null);
 
     useEffect(() => {
@@ -15,15 +20,15 @@ export const InputСashAmountScreen = ({ navigation }) => {
     const filterData = ( text ) => {
         const result = text.replace( /\D/g, '' );
         (result !== '') ? setIsButtonDisabled(false) : setIsButtonDisabled(true);
-        setCashAmount(result);
+        setCashAmount( +result );
     }
 
     const checkCashAmount = () => {
-        const maxCash = Math.round( 1500 * 1 * ( 1 + Math.random() ) );
-        if(cashAmount > maxCash) {
+        const maxCash = Math.round( 1500 * gameDifficultyLevel * ( 1 + Math.random() ) );
+        if( cashAmount > maxCash ) {
             Alert.alert(
                 "Откуда?!",
-                "По нашим данным у вас " + maxCash.toString(),
+                "По нашим данным у вас " + maxCash.toString() + '.',
                 [
                     {
                         text: 'Понятно',
@@ -32,7 +37,10 @@ export const InputСashAmountScreen = ({ navigation }) => {
                     }
                 ]
             );
+            dispatch(setCashAmountAction( maxCash ));
+            return;
         }
+        dispatch(setCashAmountAction( cashAmount ));
     }
 
     return (

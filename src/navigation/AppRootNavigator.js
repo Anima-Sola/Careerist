@@ -2,9 +2,9 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { IntroScreen } from "../screens/Intro/IntroScreen";
-import { SetGameDifficultyScreen } from "../screens/InitialData/SetGameDifficultyScreen";
-import { InputAgeScreen } from '../screens/InitialData/InputAgeScreen';
-import { InputСashAmountScreen } from "../screens/InitialData/InputCashAmountScreen";
+import { SetGameDifficultyScreen } from "../screens/GameSettings/SetGameDifficultyScreen";
+import { InputAgeScreen } from '../screens/GameSettings/InputAgeScreen';
+import { InputСashAmountScreen } from "../screens/GameSettings/InputCashAmountScreen";
 
 const AppRootNavigator = createNativeStackNavigator();
 

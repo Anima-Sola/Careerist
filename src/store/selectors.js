@@ -1,0 +1,1 @@
+export const getGameDifficultyLevel = state => state.gameSettingsReducer.gameSettings.gameDifficultyLevel;

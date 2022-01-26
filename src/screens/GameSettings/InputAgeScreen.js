@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, Alert } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
+import { setPlayerAgeAction } from   '../../store/actions/actions';
 
 export const InputAgeScreen = ({ navigation }) => {
+    const dispatch = useDispatch();
     const [ isButtonDisabled, setIsButtonDisabled ] = useState(true);
     const [ age, setAge ] = useState('');
     const textInput = useRef(null);
@@ -34,6 +37,7 @@ export const InputAgeScreen = ({ navigation }) => {
             );
             return;
         }
+        dispatch(setPlayerAgeAction( age ));
         navigation.navigate('InputСashAmountScreen');
     }
 
