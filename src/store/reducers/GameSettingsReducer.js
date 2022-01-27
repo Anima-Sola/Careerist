@@ -6,12 +6,20 @@ const initialState = {
 }
 
 export const gameSettingsReducer = ( state = initialState, action ) => {
-    console.log(action);
+    let upgradedSettings = state.gameSettings;
     switch( action.type ) {
         case 'SET_GAME_DIFFICULTY_LEVEL':
-            return state;
+            upgradedSettings.gameDifficultyLevel = action.payload
+            return {
+                ...state,
+                upgradedSettings
+            }
         case 'SET_PLAYER_AGE':
-            return state;
+            upgradedSettings.playerAge = action.payload;
+            return {
+                ...state,
+                upgradedSettings
+            }
         default:
             return state;
     }

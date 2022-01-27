@@ -9,9 +9,9 @@ import { getGameDifficultyLevel } from '../../store/selectors';
 export const InputСashAmountScreen = ({ navigation }) => {
     const dispatch = useDispatch();
     const gameDifficultyLevel = useSelector( getGameDifficultyLevel );
-    const [ isButtonDisabled, setIsButtonDisabled ] = useState(true);
-    const [ cashAmount, setCashAmount ] = useState(null);
-    const textInput = useRef(null);
+    const [ isButtonDisabled, setIsButtonDisabled ] = useState( true );
+    const [ cashAmount, setCashAmount ] = useState( null );
+    const textInput = useRef( null );
 
     useEffect(() => {
         textInput.current.focus();
@@ -19,28 +19,30 @@ export const InputСashAmountScreen = ({ navigation }) => {
 
     const filterData = ( text ) => {
         const result = text.replace( /\D/g, '' );
-        (result !== '') ? setIsButtonDisabled(false) : setIsButtonDisabled(true);
-        setCashAmount( +result );
+        (result !== '') ? setIsButtonDisabled( false ) : setIsButtonDisabled( true );
+        setCashAmount( result );
     }
 
     const checkCashAmount = () => {
-        const maxCash = Math.round( 1500 * gameDifficultyLevel * ( 1 + Math.random() ) );
-        if( cashAmount > maxCash ) {
+        const maxCash = Math.round( 1500 * gameDifficultyLevel * ( 1 + Math.random() ));
+        if( +cashAmount > maxCash ) {
             Alert.alert(
                 "Откуда?!",
                 "По нашим данным у вас " + maxCash.toString() + '.',
                 [
                     {
-                        text: 'Понятно',
+                        text: 'ОК',
                         onPress: () => {},
                         style: "cancel"
                     }
                 ]
             );
             dispatch(setCashAmountAction( maxCash ));
+            navigation.navigate( 'MainScreenNavigation' );
             return;
         }
         dispatch(setCashAmountAction( cashAmount ));
+        navigation.navigate( 'MainScreenNavigation' );
     }
 
     return (
@@ -50,11 +52,11 @@ export const InputСashAmountScreen = ({ navigation }) => {
             </View>
             <View style={ styles.inputContainer }>
                 <TextInput
-                    ref={textInput}
+                    ref={ textInput }
                     style={ styles.input } 
                     keyboardType='numeric'
-                    maxLength={12}
-                    onChangeText={( text ) => filterData(text)}
+                    maxLength={ 12 }
+                    onChangeText={( text ) => filterData( text )}
                     value={ cashAmount }
                 />
             </View>

@@ -7,14 +7,14 @@ import { setGameDifficultyLevelAction } from   '../../store/actions/actions';
 
 export const SetGameDifficultyScreen = ({ navigation }) => {
     const dispatch = useDispatch();
-    const [ gameDifficultyLevel, setGameDifficultyLevel ] = useState(3);
+    const [ gameDifficultyLevel, setGameDifficultyLevel ] = useState( 3 );
     const [ difficultyItems, setActiveDifficultyItem ] = useState([ null, 'rgba(0, 0, 0, .2)', 'rgba(0, 0, 0, .2)', THEME.THIRD_BACKGROUND_COLOR ]);
 
-    const setDifficultyLevel = (level) => {
+    const setDifficultyLevel = ( level ) => {
         const newDifficultyItems = [ null, 'rgba(0, 0, 0, .2)', 'rgba(0, 0, 0, .2)', 'rgba(0, 0, 0, .2)' ];
-        newDifficultyItems[level] = THEME.THIRD_BACKGROUND_COLOR;
-        setGameDifficultyLevel(level);
-        setActiveDifficultyItem(newDifficultyItems);
+        newDifficultyItems[ level ] = THEME.THIRD_BACKGROUND_COLOR;
+        setGameDifficultyLevel( level );
+        setActiveDifficultyItem( newDifficultyItems );
     }
 
     const navToInputAgeScreen = () => {

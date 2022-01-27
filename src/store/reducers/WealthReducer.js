@@ -5,10 +5,14 @@ const initialState = {
 }
 
 export const wealthReducer = ( state = initialState, action ) => {
-    console.log(action);
+    let upgradedWealth = state.wealth;
     switch( action.type ) {
         case 'SET_CASH_AMOUNT':
-            return state;
+            upgradedWealth.cash = action.payload;
+            return {
+                ...state,
+                upgradedWealth
+            }
         default:
             return state;
     }

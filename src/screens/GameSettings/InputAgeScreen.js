@@ -7,9 +7,9 @@ import { setPlayerAgeAction } from   '../../store/actions/actions';
 
 export const InputAgeScreen = ({ navigation }) => {
     const dispatch = useDispatch();
-    const [ isButtonDisabled, setIsButtonDisabled ] = useState(true);
-    const [ age, setAge ] = useState('');
-    const textInput = useRef(null);
+    const [ isButtonDisabled, setIsButtonDisabled ] = useState( true );
+    const [ age, setAge ] = useState( '' );
+    const textInput = useRef( null );
 
     useEffect(() => {
         textInput.current.focus();
@@ -17,8 +17,8 @@ export const InputAgeScreen = ({ navigation }) => {
 
     const filterData = ( text ) => {
         const result = text.replace( /\D/g, '' );
-        (result !== '') ? setIsButtonDisabled(false) : setIsButtonDisabled(true);
-        setAge(result);
+        ( result !== '' ) ? setIsButtonDisabled( false ) : setIsButtonDisabled( true );
+        setAge( result );
     }
 
     const checkAgeAndNavToInputCashAmountScreen = () => {
@@ -29,7 +29,7 @@ export const InputAgeScreen = ({ navigation }) => {
                 msg,
                 [
                     {
-                        text: 'Понятно',
+                        text: 'ОК',
                         onPress: () => {},
                         style: "cancel"
                     }
@@ -48,11 +48,11 @@ export const InputAgeScreen = ({ navigation }) => {
             </View>
             <View style={ styles.inputContainer }>
                 <TextInput
-                    ref={textInput}
+                    ref={ textInput }
                     style={ styles.input } 
                     keyboardType='numeric'
-                    maxLength={2}
-                    onChangeText={( text ) => filterData(text)}
+                    maxLength={ 2 }
+                    onChangeText={( text ) => filterData( text )}
                     value={ age }
                 />
             </View>
