@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     },
     difficultyLevelItemText: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-lightitalic',
+        fontFamily: 'nunito-extralight',
         fontSize: THEME.FONT12,
     },
     nextButtonContainer: {

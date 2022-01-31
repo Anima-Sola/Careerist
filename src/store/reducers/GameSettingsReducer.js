@@ -1,25 +1,28 @@
-const initialState = {
-    gameSettings: {
-        gameDifficultyLevel: 3,
-        playerAge: 18,
-    }
-}
+import { saveDataToStore } from '../../components/FileSystem';
+import { gameSettingsInitialState } from './loadInitialState';
 
-export const gameSettingsReducer = ( state = initialState, action ) => {
-    let upgradedSettings = state.gameSettings;
+/*const initialState = {
+    gameDifficultyLevel: 3,
+    playerAge: 18,
+    
+    cash: 1500
+}*/
+
+export const gameSettingsReducer = ( state = gameSettingsInitialState, action ) => {
+    let newState = {};
     switch( action.type ) {
         case 'SET_GAME_DIFFICULTY_LEVEL':
-            upgradedSettings.gameDifficultyLevel = action.payload
-            return {
-                ...state,
-                upgradedSettings
-            }
+            newState = { ...state, gameDifficultyLevel: action.payload }
+            saveDataToStore( 'GAME_SETTINGS', newState );
+            return newState;
         case 'SET_PLAYER_AGE':
-            upgradedSettings.playerAge = action.payload;
-            return {
-                ...state,
-                upgradedSettings
-            }
+            newState = { ...state, playerAge: action.payload }
+            saveDataToStore( 'GAME_SETTINGS', newState );
+            return newState;
+        case 'SET_CASH_AMOUNT':
+            newState = { ...state, cash: action.payload }
+            saveDataToStore( 'GAME_SETTINGS', newState );
+            return newState;
         default:
             return state;
     }

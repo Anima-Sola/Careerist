@@ -1,6 +1,6 @@
 import * as Font from 'expo-font';
 
-export async function bootstrap() {
+export async function loadFonts() {
     try {
         await Font.loadAsync({
             'nunito-extralight': require('../assets/fonts/Nunito-ExtraLight.ttf'),

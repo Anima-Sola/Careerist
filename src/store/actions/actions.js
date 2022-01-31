@@ -1,3 +1,4 @@
+//Game settings actions
 export const setGameDifficultyLevelAction = ( item ) => {
     return {
         type: 'SET_GAME_DIFFICULTY_LEVEL',
@@ -28,3 +29,19 @@ export const setCashAmountAction = ( item ) => {
         });
     };
 };
+
+
+//App settings actions
+export const isIntroShownToggle = ( item ) => {
+    return {
+        type: 'SET_IS_INTRO_SHOWN',
+        payload: item
+    }
+}
+
+export const isGameStartedToggle = ( item ) => {
+    return {
+        type: 'SET_IS_GAME_STARTED',
+        payload: item
+    }
+}
