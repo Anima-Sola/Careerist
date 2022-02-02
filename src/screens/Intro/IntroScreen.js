@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, StatusBar } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { THEME } from '../../styles/theme';
-import { getIsGameStarted, getIsIntroShown } from '../../store/selectors';
+import { setIsIntroShown } from '../../store/actions/actions';
 
 const slides = [
     {
@@ -53,11 +53,6 @@ const slides = [
 ];
 
 export class IntroScreen extends Component {
-
-    componentDidMount() {
-
-    }
-
     _renderItem = ({ item }) => {
         return (
             <View style={{ ...styles.container, backgroundColor: item.backgroundColor }}>
@@ -105,6 +100,7 @@ export class IntroScreen extends Component {
     }
 
     _navToSetGameDifficultyScreen = () => {
+        const dispatch = useDispatch(setIsIntroShown( true ));
         this.props.navigation.navigate('SetGameDifficultyScreen');
     }
 

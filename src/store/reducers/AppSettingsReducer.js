@@ -1,12 +1,11 @@
 import { saveDataToStore } from '../../components/FileSystem';
-import { appSettingsInitialState } from './loadInitialState';
 
-/*export const initialState = {
+export const initialState = {
     isIntroShown: false,
     isGameStarted: false
-}*/
+}
 
-export const appSettingsReducer = ( state = appSettingsInitialState, action ) => {
+export const appSettingsReducer = ( state = initialState, action ) => {
     let newState = {};
     switch( action.type ) {
         case 'SET_IS_INTRO_SHOWN':
@@ -17,6 +16,9 @@ export const appSettingsReducer = ( state = appSettingsInitialState, action ) =>
             newState = { ...state, isGameStarted: action.payload }
             saveDataToStore( 'APP_SETTINGS', newState );
             return newState;
+        case 'LOAD_APP_SETTINGS':
+            if ( action.payload ) return action.payload;
+            return state;
         default:
             return state;
     }

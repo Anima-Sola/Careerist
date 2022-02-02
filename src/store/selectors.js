@@ -3,5 +3,5 @@ export const getGameDifficultyLevel = state => state.gameSettingsReducer.gameDif
 export const getCash = state => state.gameSettingsReducer.cash;
 
 //App settings selectors
-export const getIsIntroShown = state => state.AppSettingsReducer.isIntroShown;
-export const getIsGameStarted = state => state.AppSettingsReducer.isGameStarted;
+export const getIsIntroShown = state => state.appSettingsReducer.isIntroShown;
+export const getIsGameStarted = state => state.appSettingsReducer.isGameStarted;

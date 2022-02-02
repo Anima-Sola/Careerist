@@ -7,6 +7,7 @@ import { SetGameDifficultyScreen } from "../screens/GameSettings/SetGameDifficul
 import { InputAgeScreen } from '../screens/GameSettings/InputAgeScreen';
 import { InputСashAmountScreen } from "../screens/GameSettings/InputCashAmountScreen";
 import { MainScreen } from "../screens/MainScreen/MainScreen";
+import { LoadingScreen } from "../screens/LoadingScreen";
 
 const DrawerNavigator = createDrawerNavigator();
 
@@ -33,6 +34,10 @@ export function AppRootNavigation () {
                 screenOptions = {{
                     headerShown: false,
                 }} >
+                <AppRootNavigator.Screen 
+                    name = "LoadingScreen"
+                    component = { LoadingScreen }
+                />
                 <AppRootNavigator.Screen 
                     name = "IntroScreen"
                     component = { IntroScreen }
