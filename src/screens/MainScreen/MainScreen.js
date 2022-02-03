@@ -22,7 +22,9 @@ export const MainScreen = ({ navigation }) => {
         navigation.setOptions({
             title: 'Что интересует?',
             headerShown: true,
-            backgroundColor: THEME.THIRD_BACKGROUND_COLOR,
+            headerStyle: {
+                backgroundColor: THEME.THIRD_BACKGROUND_COLOR,
+            },
             headerRight: () => (
                 <Text>{cash + '$'}</Text>
             ),

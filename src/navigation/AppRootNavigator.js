@@ -18,8 +18,12 @@ const MainScreenNavigation = () => {
                 headerShown: false,
             }} >
             <DrawerNavigator.Screen>
-                name="MainScreen"
-                component={ MainScreen }
+                name="New game"
+                component={ SetGameDifficultyScreen }
+            </DrawerNavigator.Screen>
+            <DrawerNavigator.Screen>
+                name="Settings"
+                component={ IntroScreen }
             </DrawerNavigator.Screen>
         </DrawerNavigator.Navigator>
     )

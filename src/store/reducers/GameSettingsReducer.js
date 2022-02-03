@@ -19,6 +19,7 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
             saveDataToStore( 'GAME_SETTINGS', newState );
             return newState;
         case 'SET_CASH_AMOUNT':
+            console.log(action.payload);
             newState = { ...state, cash: action.payload }
             saveDataToStore( 'GAME_SETTINGS', newState );
             return newState;

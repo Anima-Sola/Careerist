@@ -42,3 +42,10 @@ export const loadAppSettings = () => {
         });
     };
 }
+
+export const setIsGameStarted = ( item ) => {
+    return {
+        type: 'SET_IS_GAME_STARTED',
+        payload: item
+    }
+};

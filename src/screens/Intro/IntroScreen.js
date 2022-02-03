@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, StatusBar } from 'react-native';
-import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { THEME } from '../../styles/theme';
-import { setIsIntroShown } from '../../store/actions/actions';
 
 const slides = [
     {
@@ -100,7 +98,6 @@ export class IntroScreen extends Component {
     }
 
     _navToSetGameDifficultyScreen = () => {
-        const dispatch = useDispatch(setIsIntroShown( true ));
         this.props.navigation.navigate('SetGameDifficultyScreen');
     }
 

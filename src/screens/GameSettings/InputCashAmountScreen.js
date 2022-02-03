@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
 import { setCashAmountAction } from   '../../store/actions/actions';
+import { setIsGameStarted } from '../../store/actions/actions';
 import { getGameDifficultyLevel } from '../../store/selectors';
 
 export const InputСashAmountScreen = ({ navigation }) => {
@@ -19,13 +20,19 @@ export const InputСashAmountScreen = ({ navigation }) => {
 
     const filterData = ( text ) => {
         const result = text.replace( /\D/g, '' );
-        (result !== '') ? setIsButtonDisabled( false ) : setIsButtonDisabled( true );
+        ( result !== '' ) ? setIsButtonDisabled( false ) : setIsButtonDisabled( true );
         setCashAmount( result );
+    }
+
+    const navToGame = ( cash ) => {
+        dispatch(setCashAmountAction( cash ));
+        dispatch(setIsGameStarted( true ));
+        navigation.navigate( 'MainScreenNavigation' );
     }
 
     const checkCashAmount = () => {
         const maxCash = Math.round( 1500 * gameDifficultyLevel * ( 1 + Math.random() ));
-        if( +cashAmount > maxCash ) {
+        if( cashAmount > maxCash ) {
             Alert.alert(
                 "Откуда?!",
                 "По нашим данным у вас " + maxCash.toString() + '.',
@@ -37,12 +44,10 @@ export const InputСashAmountScreen = ({ navigation }) => {
                     }
                 ]
             );
-            dispatch(setCashAmountAction( maxCash ));
-            navigation.navigate( 'MainScreenNavigation' );
+            navToGame( maxCash );
             return;
         }
-        dispatch(setCashAmountAction( cashAmount ));
-        navigation.navigate( 'MainScreenNavigation' );
+        navToGame( cashAmount );
     }
 
     return (
