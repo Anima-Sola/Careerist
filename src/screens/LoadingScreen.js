@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AppLoading from 'expo-app-loading';
 import { Text, View, StyleSheet, Alert } from 'react-native';
+import { MaterialIndicator } from 'react-native-indicators';
 import { THEME } from '../styles/theme';
 import { loadFonts } from '../styles/bootstrap';
 import { loadAppSettings } from "../store/actions/actions";
@@ -30,11 +31,11 @@ export const LoadingScreen = ({ navigation }) => {
             [
                 {
                     text: "Продолжить",
-                    onPress: () => navigation.navigate('MainScreenNavigation')
+                    onPress: () => navigation.navigate('MainScreenNavigation', { screen: "MainScreen" })
                 },
                 { 
                     text: "Начать заново", 
-                    onPress: () => navigation.navigate('IntroScreen') 
+                    onPress: () => navigation.navigate( 'IntroScreen' ) 
                 }
             ]
         );
@@ -58,8 +59,10 @@ export const LoadingScreen = ({ navigation }) => {
 
     return (
         <View style={ styles.container }>
-            <Text style={ styles.header }>Digital sweets</Text>
-            <Text style={ styles.header }>software</Text>
+            <View style={ styles.indicator }>
+                <MaterialIndicator color="white" size={ 40 }/>
+                <Text style={ styles.header }>Loading...</Text>
+            </View>
         </View>
     )
 }
@@ -70,6 +73,9 @@ const styles = StyleSheet.create({
         backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    indicator: {
+        flex: 0.3
     },
     header: {
         color: '#fff',

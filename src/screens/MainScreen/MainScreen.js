@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
+import { Ionicons } from '@expo/vector-icons';
 import { HeaderButtons, HeaderButton, Item } from "react-navigation-header-buttons";
-import { menu } from 'react-native-vector-icons';
 import { THEME } from "../../styles/theme";
 import { getCash } from "../../store/selectors";
 
@@ -10,8 +10,8 @@ const AppHeaderIcon = props => (
     <HeaderButton
         {...props}
         iconSize={24} 
-        IconComponent={menu}
-        color={Platform.OS === 'android' ? '#fff' : THEME.THIRD_BACKGROUND_COLOR} 
+        IconComponent={ Ionicons }
+        color={ Platform.OS === 'android' ? '#fff' : THEME.THIRD_BACKGROUND_COLOR } 
     />
 )
 
@@ -30,11 +30,11 @@ export const MainScreen = ({ navigation }) => {
             ),
             headerLeft: () => (
                 <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-                  <Item
-                    title='Toggle Drawer'
-                    iconName='menu'
-                    onPress={() => navigation.toggleDrawer()}
-                  />
+                    <Item 
+                        title='Toggle Drawer'
+                        iconName='ios-menu'
+                        onPress={() => navigation.toggleDrawer()}
+                    />
                 </HeaderButtons>
             )
         });

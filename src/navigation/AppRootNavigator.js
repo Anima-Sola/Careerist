@@ -15,16 +15,12 @@ const MainScreenNavigation = () => {
     return (
         <DrawerNavigator.Navigator
             screenOptions = {{
-                headerShown: false,
+                 headerShown: false,
             }} >
-            <DrawerNavigator.Screen>
-                name="New game"
-                component={ SetGameDifficultyScreen }
-            </DrawerNavigator.Screen>
-            <DrawerNavigator.Screen>
-                name="Settings"
-                component={ IntroScreen }
-            </DrawerNavigator.Screen>
+            <DrawerNavigator.Screen
+                name="MainScreen"
+                component={ MainScreen }
+            />
         </DrawerNavigator.Navigator>
     )
 }
@@ -60,7 +56,7 @@ export function AppRootNavigation () {
                 />
                 <AppRootNavigator.Screen
                     name = "MainScreenNavigation"
-                    component = { MainScreen }
+                    component = { MainScreenNavigation }
                 />
             </AppRootNavigator.Navigator>
         </NavigationContainer>
