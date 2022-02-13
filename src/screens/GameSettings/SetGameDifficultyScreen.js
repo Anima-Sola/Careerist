@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, .2)',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 25,
+        borderRadius: 10,
         height: THEME.SCREEN_HEIGHT / 7,
     },
     difficultyLevelItemDigit: {

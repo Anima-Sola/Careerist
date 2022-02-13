@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image, StatusBar } from 'react-native';
+import { StyleSheet, View, Text, Image, StatusBar, BackHandler } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { THEME } from '../../styles/theme';
@@ -51,6 +51,10 @@ const slides = [
 ];
 
 export class IntroScreen extends Component {
+    componentDidMount() {
+        this.props.navigation.addListener('beforeRemove', (e) => { e.preventDefault() })
+    }
+
     _renderItem = ({ item }) => {
         return (
             <View style={{ ...styles.container, backgroundColor: item.backgroundColor }}>

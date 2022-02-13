@@ -15,27 +15,31 @@ export const LoadingScreen = ({ navigation }) => {
 
     useEffect(() => {
         dispatch(loadAppSettings());
-        dispatch(loadGameSettings()) ;
+        dispatch(loadGameSettings());
     })
 
     const isGameStarted = useSelector( getIsGameStarted );
 
     const navToIntro = () => {
-        navigation.navigate('IntroScreen');
+       navigation.navigate('IntroScreen');
+    }
+
+    const navToMainScreen = () => {
+        navigation.navigate('MainScreen');
     }
 
     const navToGame = () => {
         Alert.alert(
-            "Обнаружена не законченная игра!!!",
+            "Обнаружена незаконченная игра!!!",
             "Желаете продолжить?",
             [
                 {
                     text: "Продолжить",
-                    onPress: () => navigation.navigate('MainScreenNavigation', { screen: "MainScreen" })
+                    onPress: navToMainScreen
                 },
                 { 
                     text: "Начать заново", 
-                    onPress: () => navigation.navigate( 'IntroScreen' ) 
+                    onPress: navToIntro 
                 }
             ]
         );
@@ -61,7 +65,7 @@ export const LoadingScreen = ({ navigation }) => {
         <View style={ styles.container }>
             <View style={ styles.indicator }>
                 <MaterialIndicator color="white" size={ 40 }/>
-                <Text style={ styles.header }>Loading...</Text>
+                <Text style={ styles.header }>Загрузка...</Text>
             </View>
         </View>
     )
@@ -79,7 +83,7 @@ const styles = StyleSheet.create({
     },
     header: {
         color: '#fff',
-        fontFamily: 'nunito-extralightitalic',
+        fontFamily: 'nunito-light',
         fontSize: THEME.FONT30,
         textAlign: 'center',
     }
