@@ -1,57 +1,24 @@
 import React, { useEffect, useRef } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Animated, Easing } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import { THEME } from "../../styles/theme";
 import { getCash } from "../../store/selectors";
+import SideMenu from "../../components/SideMenu";
 
 export const MainScreen = ({ navigation }) => {
     const cash = useSelector( getCash );
-    const animSideMenu = useRef(new Animated.Value(0)).current;
-    const animOverlayOpacity = useRef(new Animated.Value(1)).current;
+    const childRef = useRef();
 
     useEffect(() => {
         navigation.addListener('beforeRemove', (e) => { e.preventDefault() })
     })
-    
-    const showSideMenu = () => {
-        Animated.parallel([
-            Animated.timing(
-                animSideMenu,
-                {
-                    toValue: THEME.SCREEN_WIDTH,
-                    duration: 200,
-                    useNativeDriver: true
-                }
-            ),
-            Animated.timing(
-                animOverlayOpacity,
-                {
-                    toValue: 0.6,
-                    duration: 200,
-                    useNativeDriver: true
-                }
-            ),
-        ]).start();
-    }
-
-    const hideSideMenu = () => {
-        Animated.timing(
-            animSideMenu,
-            {
-                toValue: 0,
-                duration: 200,
-           
-                useNativeDriver: true
-            }
-        ).start();
-    }
 
     return (
         <View style={ styles.container }>
             <View style={ styles.menuContainer } >
                 <View style={ styles.header }>
-                    <TouchableOpacity onPress={ showSideMenu }>  
+                    <TouchableOpacity onPress={() => { childRef.current.showSideMenu() }}>  
                         <Ionicons name="ios-menu" size={32} color="white"/>
                     </TouchableOpacity> 
                     <View style={ styles.walletContainer }>
@@ -98,39 +65,12 @@ export const MainScreen = ({ navigation }) => {
                     </View>
                 </View>
             </View>
-            <Animated.View style={{ ...styles.sideMenuContainer, transform: [{ translateX: animSideMenu }] }}>
-                <View style={ styles.sideMenu }>
-
-                </View>
-                <TouchableOpacity style={{ ...styles.sideMenuOverlay, opacity: animOverlayOpacity }} onPress={ hideSideMenu }>
-
-                </TouchableOpacity>
-            </Animated.View>
+            <SideMenu ref={ childRef }/>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    sideMenuContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        position: "absolute",
-        top: 0,
-        left: - THEME.SCREEN_WIDTH,
-        width: THEME.SCREEN_WIDTH,
-        height: THEME.SCREEN_HEIGHT * 2,
-    },
-    sideMenu: {
-        height: THEME.SCREEN_HEIGHT * 2,
-        width: THEME.SCREEN_WIDTH * 0.7,
-        backgroundColor: '#fff',
-    },
-    sideMenuOverlay: {
-        height: THEME.SCREEN_HEIGHT * 2,
-        width: THEME.SCREEN_WIDTH * 0.3,
-        backgroundColor: '#000',
-        opacity: 0
-    },  
     container: {
         width: '100%',
         flex: 1,
@@ -193,8 +133,7 @@ const styles = StyleSheet.create({
         fontFamily: 'nunito-semibold',
         fontSize: THEME.FONT17,
         textAlign: 'center',
-    },
-
+    }
 })
 
 
