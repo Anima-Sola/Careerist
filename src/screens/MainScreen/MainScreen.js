@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Directions, GestureDetector, Gesture } from "react-native-gesture-handler";
 import { useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import { THEME } from "../../styles/theme";
@@ -14,59 +15,67 @@ export const MainScreen = ({ navigation }) => {
         navigation.addListener('beforeRemove', (e) => { e.preventDefault() })
     })
 
+    const flingRightGesture = Gesture.Fling()
+        .direction(Directions.RIGHT)
+        .onStart(() => {
+            childRef.current.showSideMenu();
+        });
+
     return (
-        <View style={ styles.container }>
-            <View style={ styles.menuContainer } >
-                <View style={ styles.header }>
-                    <TouchableOpacity onPress={() => { childRef.current.showSideMenu() }}>  
-                        <Ionicons name="ios-menu" size={32} color="white"/>
-                    </TouchableOpacity> 
-                    <View style={ styles.walletContainer }>
-                        <Ionicons name="wallet-outline" size={32} color="white" />
-                        <Text style={ styles.wallet }>{ cash + '$' }</Text>
+        <GestureDetector gesture={ flingRightGesture }>
+            <View style={ styles.container }>
+                <View style={ styles.menuContainer } >
+                    <View style={ styles.header }>
+                        <TouchableOpacity onPress={() => { childRef.current.showSideMenu() }}>  
+                            <Ionicons name="ios-menu" size={32} color="white"/>
+                        </TouchableOpacity> 
+                        <View style={ styles.walletContainer }>
+                            <Ionicons name="wallet-outline" size={32} color="white" />
+                            <Text style={ styles.wallet }>{ cash + '$' }</Text>
+                        </View>
+                    </View>
+                    <Text style={ styles.title }>Что вас интересует?</Text>
+                    <View style={ styles.menu }>
+                        <View style={ styles.menuRow }>
+                            <TouchableOpacity style={ styles.menuItem } >
+                                <Text style={ styles.menuItemText }>Финансовое</Text>
+                                <Text style={ styles.menuItemText }>положение</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={ styles.menuItem } >
+                                <Text style={ styles.menuItemText }>Общественное</Text>
+                                <Text style={ styles.menuItemText }>положение</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={ styles.menuRow }>
+                            <TouchableOpacity style={ styles.menuItem } >
+                                <Text style={ styles.menuItemText }>Личное</Text>
+                                <Text style={ styles.menuItemText }>имущество</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={ styles.menuItem } >
+                                <Text style={ styles.menuItemText }>Подчиненные</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={ styles.menuRow }>
+                            <TouchableOpacity style={ styles.menuItem } >
+                                <Text style={ styles.menuItemText }>Биржа</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={ styles.menuItem } >
+                                <Text style={ styles.menuItemText }>Бизнес</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={ styles.menuRow }>
+                            <TouchableOpacity style={ styles.menuItem } >
+                                <Text style={ styles.menuItemText }>Банк</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={ styles.menuItem } >
+                                <Text style={ styles.menuItemText }>Развлечения</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
-                <Text style={ styles.title }>Что вас интересует?</Text>
-                <View style={ styles.menu }>
-                    <View style={ styles.menuRow }>
-                        <TouchableOpacity style={ styles.menuItem } >
-                            <Text style={ styles.menuItemText }>Финансовое</Text>
-                            <Text style={ styles.menuItemText }>положение</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={ styles.menuItem } >
-                            <Text style={ styles.menuItemText }>Общественное</Text>
-                            <Text style={ styles.menuItemText }>положение</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={ styles.menuRow }>
-                        <TouchableOpacity style={ styles.menuItem } >
-                            <Text style={ styles.menuItemText }>Личное</Text>
-                            <Text style={ styles.menuItemText }>имущество</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={ styles.menuItem } >
-                            <Text style={ styles.menuItemText }>Подчиненные</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={ styles.menuRow }>
-                        <TouchableOpacity style={ styles.menuItem } >
-                            <Text style={ styles.menuItemText }>Биржа</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={ styles.menuItem } >
-                            <Text style={ styles.menuItemText }>Бизнес</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={ styles.menuRow }>
-                        <TouchableOpacity style={ styles.menuItem } >
-                            <Text style={ styles.menuItemText }>Банк</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={ styles.menuItem } >
-                            <Text style={ styles.menuItemText }>Развлечения</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                <SideMenu ref={ childRef }/>
             </View>
-            <SideMenu ref={ childRef }/>
-        </View>
+        </GestureDetector>
     )
 }
 
