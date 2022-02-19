@@ -1,5 +1,5 @@
 import React, { useRef, useImperativeHandle, forwardRef } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import { Text, View, StyleSheet, Animated, Pressable } from 'react-native';
 import { Directions, GestureDetector, Gesture } from "react-native-gesture-handler";
 import { Ionicons } from '@expo/vector-icons';
 import { THEME } from '../styles/theme';
@@ -60,54 +60,61 @@ const SideMenu = ( props, ref ) => {
             hideSideMenu();
         });
 
+    const pressableStyles = () => {
+        return (({ pressed }) => 
+            [
+                { 
+                    backgroundColor: pressed ? 'rgb(210, 230, 255)': THEME.SIDE_MENU_BACKGROUND_COLOR 
+                },
+                styles.sideMenuItem
+            ]
+        )
+    }
+
     return (
         <GestureDetector gesture={ flingLeftGesture }>
             <Animated.View style={{ ...styles.sideMenuContainer, transform: [{ translateX: animSideMenu }] }}>
                 <View style={ styles.sideMenu }>
-                    <TouchableOpacity onPress={ hideSideMenu } style={ styles.closeMenuCross }>
+                    <Pressable onPress={ hideSideMenu } style={ styles.closeMenuCross }>
                         <Ionicons name="close-outline" size={ 40 } color= { "black" } />
-                    </TouchableOpacity>
+                    </Pressable>
                     <View style={ styles.sideMenuItems }>
-                        <TouchableOpacity style={ styles.sideMenuItem }>
+                        <Pressable style={ pressableStyles() } >
                             <Ionicons name="home-outline" size={ 28 } color= { "black" } />
                             <Text style={ styles.sideMenuItemText }>
                                 Начать новую игру
                             </Text>
-                        </TouchableOpacity>
-                        <View style={ styles.separator }></View>
-                        <TouchableOpacity style={ styles.sideMenuItem }>
+                        </Pressable>
+                        <Pressable style={ pressableStyles() } >
                             <Ionicons name="settings-outline" size={ 28 } color= { "black" } />
                             <Text style={ styles.sideMenuItemText }>
                                 Настройки
                             </Text>
-                        </TouchableOpacity>
-                        <View style={ styles.separator }></View>
-                        <TouchableOpacity style={ styles.sideMenuItem }>
+                        </Pressable>
+                        <Pressable style={ pressableStyles() } >
                             <Ionicons name="help-circle-outline" size={ 28 } color= { "black" } />
                             <Text style={ styles.sideMenuItemText }>
                                 Об игре
                             </Text>
-                        </TouchableOpacity>
-                        <View style={ styles.separator }></View>
-                        <TouchableOpacity style={ styles.sideMenuItem }>
+                        </Pressable>
+                        <Pressable style={ pressableStyles() } >
                             <Ionicons name="logo-github" size={ 28 } color= { "black" } />
                             <Text style={ styles.sideMenuItemText }>
                                 GitHub
                             </Text>
-                        </TouchableOpacity>
-                        <View style={ styles.separator }></View>
-                        <TouchableOpacity style={ styles.sideMenuItem }>
+                        </Pressable>
+                        <Pressable style={ pressableStyles() } >
                             <Ionicons name="exit-outline" size={ 28 } color= { "black" } />
                             <Text style={ styles.sideMenuItemText }>
                                 Выход
                             </Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 </View>
-                <TouchableOpacity  onPress={ hideSideMenu }>
+                <Pressable  onPress={ hideSideMenu }>
                     <Animated.View style={{ ...styles.sideMenuOverlay, opacity: animOverlayOpacity }}>
                     </Animated.View>
-                </TouchableOpacity>
+                </Pressable>
             </Animated.View>
         </GestureDetector>
     )
@@ -138,8 +145,9 @@ const styles = StyleSheet.create({
         marginTop: 15,
     },
     sideMenuItem: {
-        paddingTop: 8,
-        paddingLeft: 15, 
+        paddingTop: 15,
+        paddingLeft: 15,
+        paddingBottom: 15,
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -148,11 +156,6 @@ const styles = StyleSheet.create({
         fontFamily: 'nunito-semibold',
         fontSize: THEME.FONT17,
         marginLeft: 10
-    },
-    separator: {
-        borderBottomColor: '#000',
-        borderBottomWidth: 1,
-        padding: 5
     },
     sideMenuOverlay: {
         height: THEME.SCREEN_HEIGHT * 2,

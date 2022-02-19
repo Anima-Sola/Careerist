@@ -3,8 +3,11 @@ import { saveDataToStore } from '../../components/FileSystem';
 const initialState = {
     gameDifficultyLevel: 3,
     playerAge: 18,
+    year: new Date().getFullYear(),
     
-    cash: 1500
+    cash: 1500,
+
+    
 }
 
 export const gameSettingsReducer = ( state = initialState, action ) => {

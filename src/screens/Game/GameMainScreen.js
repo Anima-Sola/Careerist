@@ -1,13 +1,115 @@
 import React, { useEffect, useRef } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Directions, GestureDetector, Gesture } from "react-native-gesture-handler";
-import { useSelector } from 'react-redux';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { THEME } from "../../styles/theme";
-import { getCash } from "../../store/selectors";
-import SideMenu from "../../components/SideMenu";
+import GameWrapper from "../../components/GameWrapper";
 
-export const MainScreen = ({ navigation }) => {
+export const GameMainScreen = ({ navigation }) => {
+    const wrappedComponent = <MainMenu navigation={ navigation } />
+
+    return(
+        <GameWrapper wrappedComponent={ wrappedComponent } />
+    )
+};
+
+const MainMenu = ({ navigation }) => {
+    useEffect(() => {
+        navigation.addListener('beforeRemove', (e) => { e.preventDefault() })
+    })
+
+    const pressableStyles = () => {
+        return (({ pressed }) => 
+            [
+                { 
+                    backgroundColor: pressed ? THEME.THIRD_BACKGROUND_COLOR : THEME.SECOND_BACKGROUND_COLOR
+                },
+                styles.menuItem
+            ]
+        )
+    }
+
+    const navToGameScreens = ( screen ) => {
+        navigation.navigate( screen ); 
+    }
+
+    return (
+        <View>
+            <Text style={ styles.title }>Что вас интересует?</Text>
+            <View style={ styles.menu }>
+                <View style={ styles.menuRow }>
+                    <Pressable style={ pressableStyles() } onPress={ () => navToGameScreens('FinancialSituationScreen') }>
+                        <Text style={ styles.menuItemText }>Финансовое</Text>
+                        <Text style={ styles.menuItemText }>положение</Text>
+                    </Pressable>
+                    <Pressable style={ pressableStyles() } >
+                        <Text style={ styles.menuItemText }>Общественное</Text>
+                        <Text style={ styles.menuItemText }>положение</Text>
+                    </Pressable>
+                </View>
+                <View style={ styles.menuRow }>
+                    <Pressable style={ pressableStyles() } >
+                        <Text style={ styles.menuItemText }>Личное</Text>
+                        <Text style={ styles.menuItemText }>имущество</Text>
+                    </Pressable>
+                    <Pressable style={ pressableStyles() } >
+                        <Text style={ styles.menuItemText }>Подчиненные</Text>
+                    </Pressable>
+                </View>
+                <View style={ styles.menuRow }>
+                    <Pressable style={ pressableStyles() } >
+                        <Text style={ styles.menuItemText }>Биржа</Text>
+                    </Pressable>
+                    <Pressable style={ pressableStyles() } >
+                        <Text style={ styles.menuItemText }>Бизнес</Text>
+                    </Pressable>
+                </View>
+                <View style={ styles.menuRow }>
+                    <Pressable style={ pressableStyles() } >
+                        <Text style={ styles.menuItemText }>Банк</Text>
+                    </Pressable>
+                    <Pressable style={ pressableStyles() } >
+                        <Text style={ styles.menuItemText }>Развлечения</Text>
+                    </Pressable>
+                </View>
+            </View>
+        </View>
+    )
+}
+
+const styles = StyleSheet.create({
+    title: {
+        color: THEME.TEXT_COLOR,
+        fontFamily: 'nunito-semibold',
+        fontSize: THEME.FONT20,
+        textAlign: 'center',
+        marginTop: 10,
+        marginBottom: 15
+    },
+    menu: {
+        flex: 1,
+        alignItems: 'center',
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingBottom: 10,
+    },
+    menuRow: {
+        flexDirection: 'row',
+        flex: 0.25
+    },  
+    menuItem: {
+        margin: 5,
+        width: '50%',
+        borderRadius: 10,
+        justifyContent: 'center'
+    },
+    menuItemText: {
+        color: THEME.TEXT_COLOR,
+        fontFamily: 'nunito-semibold',
+        fontSize: THEME.FONT17,
+        textAlign: 'center',
+    }
+})
+
+/*export const GameMainScreen = ({ navigation }) => {
     const cash = useSelector( getCash );
     const childRef = useRef();
 
@@ -21,14 +123,29 @@ export const MainScreen = ({ navigation }) => {
             childRef.current.showSideMenu();
         });
 
+    const pressableStyles = () => {
+        return (({ pressed }) => 
+            [
+                { 
+                    backgroundColor: pressed ? THEME.THIRD_BACKGROUND_COLOR : THEME.SECOND_BACKGROUND_COLOR
+                },
+                styles.menuItem
+            ]
+        )
+    }
+
+    const navToGameScreens = ( screen ) => {
+        navigation.navigate( screen ); 
+    }
+
     return (
         <GestureDetector gesture={ flingRightGesture }>
             <View style={ styles.container }>
                 <View style={ styles.menuContainer } >
                     <View style={ styles.header }>
-                        <TouchableOpacity onPress={() => { childRef.current.showSideMenu() }}>  
+                        <Pressable onPress={() => { childRef.current.showSideMenu() }}>  
                             <Ionicons name="ios-menu" size={32} color="white"/>
-                        </TouchableOpacity> 
+                        </Pressable> 
                         <View style={ styles.walletContainer }>
                             <Ionicons name="wallet-outline" size={32} color="white" />
                             <Text style={ styles.wallet }>{ cash + '$' }</Text>
@@ -37,39 +154,39 @@ export const MainScreen = ({ navigation }) => {
                     <Text style={ styles.title }>Что вас интересует?</Text>
                     <View style={ styles.menu }>
                         <View style={ styles.menuRow }>
-                            <TouchableOpacity style={ styles.menuItem } >
+                            <Pressable style={ pressableStyles() } onPress={ () => navToGameScreens('FinancialSituationScreen') }>
                                 <Text style={ styles.menuItemText }>Финансовое</Text>
                                 <Text style={ styles.menuItemText }>положение</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={ styles.menuItem } >
+                            </Pressable>
+                            <Pressable style={ pressableStyles() } >
                                 <Text style={ styles.menuItemText }>Общественное</Text>
                                 <Text style={ styles.menuItemText }>положение</Text>
-                            </TouchableOpacity>
+                            </Pressable>
                         </View>
                         <View style={ styles.menuRow }>
-                            <TouchableOpacity style={ styles.menuItem } >
+                            <Pressable style={ pressableStyles() } >
                                 <Text style={ styles.menuItemText }>Личное</Text>
                                 <Text style={ styles.menuItemText }>имущество</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={ styles.menuItem } >
+                            </Pressable>
+                            <Pressable style={ pressableStyles() } >
                                 <Text style={ styles.menuItemText }>Подчиненные</Text>
-                            </TouchableOpacity>
+                            </Pressable>
                         </View>
                         <View style={ styles.menuRow }>
-                            <TouchableOpacity style={ styles.menuItem } >
+                            <Pressable style={ pressableStyles() } >
                                 <Text style={ styles.menuItemText }>Биржа</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={ styles.menuItem } >
+                            </Pressable>
+                            <Pressable style={ pressableStyles() } >
                                 <Text style={ styles.menuItemText }>Бизнес</Text>
-                            </TouchableOpacity>
+                            </Pressable>
                         </View>
                         <View style={ styles.menuRow }>
-                            <TouchableOpacity style={ styles.menuItem } >
+                            <Pressable style={ pressableStyles() } >
                                 <Text style={ styles.menuItemText }>Банк</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={ styles.menuItem } >
+                            </Pressable>
+                            <Pressable style={ pressableStyles() } >
                                 <Text style={ styles.menuItemText }>Развлечения</Text>
-                            </TouchableOpacity>
+                            </Pressable>
                         </View>
                     </View>
                 </View>
@@ -131,7 +248,6 @@ const styles = StyleSheet.create({
         flex: 0.25
     },  
     menuItem: {
-        backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
         margin: 5,
         width: '50%',
         borderRadius: 10,
@@ -143,7 +259,7 @@ const styles = StyleSheet.create({
         fontSize: THEME.FONT17,
         textAlign: 'center',
     }
-})
+})*/
 
 
 /*const AppHeaderIcon = props => (

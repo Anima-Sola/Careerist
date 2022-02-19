@@ -25,7 +25,7 @@ export const LoadingScreen = ({ navigation }) => {
     }
 
     const navToMainScreen = () => {
-        navigation.navigate('MainScreen');
+        navigation.navigate('GameMainScreen');
     }
 
     const navToGame = () => {
