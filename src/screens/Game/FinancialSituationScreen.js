@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet } from 'react-native'
 import { useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
@@ -18,53 +18,132 @@ const FinancialSituation = ({ navigation }) => {
     const year = useSelector( getYear );
     const cash = useSelector( getCash );
 
+    useEffect(() => {
+        navigation.addListener('beforeRemove', (e) => { generateGameEvent() })
+    })
+
+    const generateGameEvent = () => {
+        //console.log('Something Happened');
+    }
+
     return (
-        <View style={ styles.main }>
+        <View style={ styles.container }>
             <Text style={ styles.title }>Финансовое положение</Text>
-            <View style={ styles.container }>
-                <View style={ styles.dataContainer }>
-                    <Text>Год { year }</Text>
-                    <Text>Наличные { cash }</Text>
+            <View style={ styles.dataContainer }>
+                <Text style={ styles.text }>Год { year }</Text>
+                <Text></Text>
+                <Text style={ styles.text }>Наличные средства { cash }$</Text>
+                <Text></Text>
+                <Text></Text>
+                <View style={ styles.table }>
+                    <View style={ styles.row }>
+                        <View style={ styles.column }>
+                            <Text style={ styles.cellText }>В акциях</Text>
+                        </View>
+                        <View style={{ ...styles.column, paddingLeft: 50 }}>
+                            <Text style={ styles.cellText }>0</Text>
+                        </View>
+                    </View>
+                    <View style={ styles.row }>
+                        <View style={ styles.column }>
+                            <Text style={ styles.cellText }>Счет в банке</Text>
+                        </View>
+                        <View style={{ ...styles.column, paddingLeft: 50 }}>
+                            <Text style={ styles.cellText }>0</Text>
+                        </View>
+                    </View>
+                    <View style={ styles.row }>
+                        <View style={ styles.column }>
+                            <Text style={ styles.cellText }>Недвижимость</Text>
+                        </View>
+                        <View style={{ ...styles.column, paddingLeft: 50 }}>
+                            <Text style={ styles.cellText }>0</Text>
+                        </View>
+                    </View>
+                    <View style={ styles.row }>
+                        <View style={ styles.column }>
+                            <Text style={ styles.cellText }>Доходы</Text>
+                        </View>
+                        <View style={{ ...styles.column, paddingLeft: 50 }}>
+                            <Text style={ styles.cellText }>0</Text>
+                        </View>
+                    </View>
+                    <View style={ styles.row }>
+                        <View style={ styles.column }>
+                            <Text style={ styles.cellText }>Расходы</Text>
+                        </View>
+                        <View style={{ ...styles.column, paddingLeft: 50 }}>
+                            <Text style={ styles.cellText }>0</Text>
+                        </View>
+                    </View>
+                </View>
+                <View style={{ ...styles.table, borderTopWidth: 0 }}>
+                    <View style={ styles.row }>
+                        <View style={ styles.column }>
+                            <Text style={ styles.cellText }>Весь капитал</Text>
+                        </View>
+                        <View style={{ ...styles.column, paddingLeft: 50 }}>
+                            <Text style={ styles.cellText }>{ cash }$</Text>
+                        </View>
+                    </View>
                 </View>
             </View>
             <View style={ styles.nextButtonContainer }>
-                    <Button
-                        buttonStyle={ styles.nextButton } 
-                        titleStyle={ styles.nextButtonTitle }
-                        disabledStyle={ styles.nextButtonDisabledStyle }
-                        type="outline" 
-                        title="Продолжить"
-                        onPress={ () => navigation.navigate('GameMainScreen') }  
-                    />
-                </View>
+                <Button
+                    buttonStyle={ styles.nextButton } 
+                    titleStyle={ styles.nextButtonTitle }
+                    type="outline" 
+                    title="Продолжить"
+                    onPress={ () => navigation.navigate('GameMainScreen') }  
+                />
+            </View>
         </View>
     )
 }
     
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        width: '100%',
+    },
     title: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
+        fontFamily: 'nunito-lightitalic',
         fontSize: THEME.FONT20,
         textAlign: 'center',
         marginTop: 10,
-        marginBottom: 15
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        width: '100%',
-        borderColor: "#fff",
-        borderStyle: "solid",
-        borderWidth: 1
+        marginBottom: 50
     },
     dataContainer: {
-        flex: 0.75
+        flex: 0.9,
+        alignItems: 'center',
     },
+    text: {
+        color: THEME.TEXT_COLOR,
+        fontFamily: 'nunito-light',
+        fontSize: THEME.FONT17,
+        textAlign: 'center',
+    },
+    table: {
+        borderWidth: 1, 
+        borderColor: '#fff',
+        width: '100%'
+    },
+    row: {
+        flexDirection: 'row'
+    },
+    column: {
+        padding: 10,
+        width: '50%'
+    },
+    cellText: {
+        color: THEME.TEXT_COLOR,
+        fontFamily: 'nunito-light',
+        fontSize: THEME.FONT17,
+    },  
     nextButtonContainer: {
-        flex: 0.25,
+        flex: 0.1,
         justifyContent: 'flex-end',
-        paddingBottom: 20,
         width:'100%',
     },
     nextButton: {
@@ -77,8 +156,5 @@ const styles = StyleSheet.create({
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-semibold',
         fontSize: THEME.FONT17,
-    },
-    nextButtonDisabledStyle: {
-        backgroundColor: THEME.DISABLED_BUTTON_COLOR,
-    },
+    }
 });

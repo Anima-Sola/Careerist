@@ -32,6 +32,13 @@ export const setCashAmountAction = ( item ) => {
     }
 };
 
+export const setYear = ( item ) => {
+    return {
+        type: 'SET_YEAR',
+        payload: item
+    }
+}
+
 //App settings actions
 export const loadAppSettings = () => {
     return async dispatch => {

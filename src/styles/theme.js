@@ -36,5 +36,15 @@ export const THEME = {
     FONT30: normalize(30),
     FONT40: normalize(40),
     V_MARGIN10: SCREEN_HEIGHT / 74,
-    H_MARGIN10: SCREEN_WIDTH / 39
+    H_MARGIN10: SCREEN_WIDTH / 39,
+    PRESSABLE_STYLES: (itemStyles) => {
+        return (({ pressed }) => 
+            [
+                { 
+                    backgroundColor: pressed ? THEME.THIRD_BACKGROUND_COLOR : THEME.SECOND_BACKGROUND_COLOR
+                },
+                itemStyles
+            ]
+        )
+    }
 }

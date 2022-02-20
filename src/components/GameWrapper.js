@@ -46,10 +46,6 @@ const styles = StyleSheet.create({
         paddingRight: 20,
         paddingBottom: 20,
         paddingTop: THEME.STATUSBAR_HEIGHT + 10,
-        width: '100%',
-        borderColor: "#fff",
-        borderStyle: "solid",
-        borderWidth: 1
     },
     header: {
         flexDirection: 'row',

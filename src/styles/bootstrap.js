@@ -9,6 +9,7 @@ export async function loadFonts() {
             'nunito-semibold': require('../assets/fonts/Nunito-SemiBold.ttf'),
             'nunito-lightitalic': require('../assets/fonts/Nunito-LightItalic.ttf'),
             'nunito-extralightitalic': require('../assets/fonts/Nunito-ExtraLightItalic.ttf'),
+            'nunito-semibolditalic': require('../assets/fonts/Nunito-SemiBoldItalic.ttf'),
         }) 
     } catch (e) {
         console.log('Error: ', e);
