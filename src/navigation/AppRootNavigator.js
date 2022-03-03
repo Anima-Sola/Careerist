@@ -1,13 +1,14 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator, createSwitchNavigator, createAppContainer } from '@react-navigation/native-stack';
-import { IntroScreen } from "../screens/Intro/IntroScreen";
+import IntroScreen from "../screens/Intro/IntroScreen";
 import { SetGameDifficultyScreen } from "../screens/GameSettings/SetGameDifficultyScreen";
 import { InputAgeScreen } from '../screens/GameSettings/InputAgeScreen';
 import { InputСashAmountScreen } from "../screens/GameSettings/InputCashAmountScreen";
 import { GameMainScreen } from "../screens/Game/GameMainScreen";
 import { LoadingScreen } from "../screens/LoadingScreen";
 import { FinancialSituationScreen } from "../screens/Game/FinancialSituationScreen";
+import { ElectionScreen } from "../screens/Game/ElectionScreen";
 
 
 
@@ -47,6 +48,10 @@ export function AppRootNavigation () {
                 <AppRootNavigator.Screen
                     name = "FinancialSituationScreen"
                     component = { FinancialSituationScreen }
+                />
+                 <AppRootNavigator.Screen
+                    name = "ElectionScreen"
+                    component = { ElectionScreen }
                 />
             </AppRootNavigator.Navigator>
         </NavigationContainer>

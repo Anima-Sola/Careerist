@@ -14,8 +14,8 @@ export const LoadingScreen = ({ navigation }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(loadAppSettings());
-        dispatch(loadGameSettings());
+        dispatch( loadAppSettings() );
+        dispatch( loadGameSettings() );
     })
 
     const isGameStarted = useSelector( getIsGameStarted );

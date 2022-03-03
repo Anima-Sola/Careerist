@@ -31,8 +31,9 @@ export const InputСashAmountScreen = ({ navigation }) => {
     }
 
     const checkCashAmount = () => {
-        const maxCash = Math.round( 1500 * gameDifficultyLevel * ( 1 + Math.random() ));
+        let maxCash = Math.round( 1500 * gameDifficultyLevel * ( 1 + Math.random() ));
         if( cashAmount > maxCash ) {
+            maxCash = Math.round( maxCash * 2 / 3 );
             Alert.alert(
                 "Откуда?!",
                 "По нашим данным у вас " + maxCash.toString() + '.',

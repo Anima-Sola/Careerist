@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { Button } from 'react-native-elements';
+import { useDispatch } from 'react-redux';
 import { THEME } from '../../styles/theme';
 import { setGameDifficultyLevelAction, setYear } from   '../../store/actions/actions';
 

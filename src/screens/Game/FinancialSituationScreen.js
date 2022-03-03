@@ -30,11 +30,8 @@ const FinancialSituation = ({ navigation }) => {
         <View style={ styles.container }>
             <Text style={ styles.title }>Финансовое положение</Text>
             <View style={ styles.dataContainer }>
-                <Text style={ styles.text }>Год { year }</Text>
-                <Text></Text>
-                <Text style={ styles.text }>Наличные средства { cash }$</Text>
-                <Text></Text>
-                <Text></Text>
+                <Text style={{ ...styles.text, marginBottom: 10 }}>Год { year }</Text>
+                <Text style={{ ...styles.text, marginBottom: 20 }}>Наличные средства { cash }$</Text>
                 <View style={ styles.table }>
                     <View style={ styles.row }>
                         <View style={ styles.column }>
@@ -112,11 +109,12 @@ const styles = StyleSheet.create({
         fontSize: THEME.FONT20,
         textAlign: 'center',
         marginTop: 10,
-        marginBottom: 50
+        marginBottom: 30
     },
     dataContainer: {
         flex: 0.9,
         alignItems: 'center',
+        //justifyContent: 'center'
     },
     text: {
         color: THEME.TEXT_COLOR,

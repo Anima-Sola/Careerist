@@ -3,6 +3,9 @@ import { StyleSheet, View, Text, Image, StatusBar, BackHandler } from 'react-nat
 import Icon from 'react-native-vector-icons/Ionicons';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { THEME } from '../../styles/theme';
+import { connect } from 'react-redux';
+import { saveGameSettingsInitialState } from '../../store/actions/actions';
+import { saveAppSettingsInitialState } from "../../store/actions/actions";
 
 const slides = [
     {
@@ -50,8 +53,10 @@ const slides = [
     }
 ];
 
-export class IntroScreen extends Component {
+class IntroScreen extends Component {
     componentDidMount() {
+        this.props.saveAppSettingsInitialState();
+        this.props.saveGameSettingsInitialState();
         this.props.navigation.addListener('beforeRemove', (e) => { e.preventDefault() })
     }
 
@@ -123,6 +128,15 @@ export class IntroScreen extends Component {
         );
     }
 }
+
+const mapDispatchToProps = ( dispatch ) => {
+    return {
+        saveAppSettingsInitialState: () => dispatch( saveGameSettingsInitialState() ),
+        saveGameSettingsInitialState: () => dispatch( saveAppSettingsInitialState () )
+    }
+};
+
+export default connect(null, mapDispatchToProps)(IntroScreen)
 
 const styles = StyleSheet.create({
     container: {

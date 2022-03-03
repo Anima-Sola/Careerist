@@ -39,6 +39,19 @@ export const setYear = ( item ) => {
     }
 }
 
+export const setSocialStatus = ( item ) => {
+    return {
+        type: 'SET_SOCIAL_STATUS',
+        payload: item
+    }
+}
+
+export const saveGameSettingsInitialState = () => {
+    return {
+        type: 'SAVE_GAME_SETTINGS_INITIAL_STATE'
+    }
+}
+
 //App settings actions
 export const loadAppSettings = () => {
     return async dispatch => {
@@ -56,3 +69,9 @@ export const setIsGameStarted = ( item ) => {
         payload: item
     }
 };
+
+export const saveAppSettingsInitialState = () => {
+    return {
+        type: 'SAVE_APP_SETTINGS_INITIAL_STATE'
+    }
+}

@@ -29,7 +29,7 @@ const MainMenu = ({ navigation }) => {
                         <Text style={ styles.menuItemText }>Финансовое</Text>
                         <Text style={ styles.menuItemText }>положение</Text>
                     </Pressable>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } >
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens('ElectionScreen') }>
                         <Text style={ styles.menuItemText }>Общественное</Text>
                         <Text style={ styles.menuItemText }>положение</Text>
                     </Pressable>
