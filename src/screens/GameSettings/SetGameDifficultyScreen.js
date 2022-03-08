@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Button } from 'react-native-elements';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { THEME } from '../../styles/theme';
-import { setGameDifficultyLevelAction, setYear } from   '../../store/actions/actions';
+import { setGameDifficultyLevelAction } from   '../../store/actions/actions';
 
 export const SetGameDifficultyScreen = ({ navigation }) => {
     const dispatch = useDispatch();
     const [ gameDifficultyLevel, setGameDifficultyLevel ] = useState( 3 );
     const [ difficultyItems, setActiveDifficultyItem ] = useState([ null, 'rgba(0, 0, 0, .2)', 'rgba(0, 0, 0, .2)', THEME.THIRD_BACKGROUND_COLOR ]);
-
-    useEffect(() => {
-        dispatch(setYear( new Date().getFullYear() ));
-    })
 
     const setDifficultyLevel = ( level ) => {
         const newDifficultyItems = [ null, 'rgba(0, 0, 0, .2)', 'rgba(0, 0, 0, .2)', 'rgba(0, 0, 0, .2)' ];

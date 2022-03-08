@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Alert } from 'react-native';
+import { useSelector } from "react-redux";
 import { THEME } from "../../styles/theme";
 import GameWrapper from "../../components/GameWrapper";
+import { getIsElectionOverOrNotHeld } from "../../store/selectors";
 
 export const GameMainScreen = ({ navigation }) => {
     const wrappedComponent = <MainMenu navigation={ navigation } />
@@ -12,12 +14,32 @@ export const GameMainScreen = ({ navigation }) => {
 };
 
 const MainMenu = ({ navigation }) => {
+    const isElectionOverOrNotHeld = useSelector( getIsElectionOverOrNotHeld );
+
     useEffect(() => {
         navigation.addListener('beforeRemove', (e) => { e.preventDefault() })
     })
 
     const navToGameScreens = ( screen ) => {
         navigation.navigate( screen ); 
+    }
+
+    const navToElectionScreen = () => {
+        if( isElectionOverOrNotHeld ) {
+            Alert.alert(
+                "Выборов нет!!!",
+                "У вас склероз?!",
+                [
+                    {
+                        text: 'ОК',
+                        onPress: () => {},
+                        style: "cancel"
+                    }
+                ]
+            );
+            return;
+        }
+        navToGameScreens('ElectionScreen')
     }
 
     return (
@@ -29,7 +51,7 @@ const MainMenu = ({ navigation }) => {
                         <Text style={ styles.menuItemText }>Финансовое</Text>
                         <Text style={ styles.menuItemText }>положение</Text>
                     </Pressable>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens('ElectionScreen') }>
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ navToElectionScreen }>
                         <Text style={ styles.menuItemText }>Общественное</Text>
                         <Text style={ styles.menuItemText }>положение</Text>
                     </Pressable>

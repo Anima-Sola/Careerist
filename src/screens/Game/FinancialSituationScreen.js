@@ -28,7 +28,6 @@ const FinancialSituation = ({ navigation }) => {
 
     return (
         <View style={ styles.container }>
-            <Text style={ styles.title }>Финансовое положение</Text>
             <View style={ styles.dataContainer }>
                 <Text style={{ ...styles.text, marginBottom: 10 }}>Год { year }</Text>
                 <Text style={{ ...styles.text, marginBottom: 20 }}>Наличные средства { cash }$</Text>
@@ -103,23 +102,15 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
     },
-    title: {
-        color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-lightitalic',
-        fontSize: THEME.FONT20,
-        textAlign: 'center',
-        marginTop: 10,
-        marginBottom: 30
-    },
     dataContainer: {
-        flex: 0.9,
+        flex: 1,
         alignItems: 'center',
-        //justifyContent: 'center'
+        marginTop: 30,
     },
     text: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-light',
-        fontSize: THEME.FONT17,
+        fontSize: THEME.FONT20,
         textAlign: 'center',
     },
     table: {

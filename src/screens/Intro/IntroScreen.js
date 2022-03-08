@@ -6,6 +6,8 @@ import { THEME } from '../../styles/theme';
 import { connect } from 'react-redux';
 import { saveGameSettingsInitialState } from '../../store/actions/actions';
 import { saveAppSettingsInitialState } from "../../store/actions/actions";
+import { loadAppSettings } from '../../store/actions/actions';
+import { loadGameSettings } from "../../store/actions/actions";
 
 const slides = [
     {
@@ -57,6 +59,8 @@ class IntroScreen extends Component {
     componentDidMount() {
         this.props.saveAppSettingsInitialState();
         this.props.saveGameSettingsInitialState();
+        this.props.loadAppSettings();
+        this.props.loadGameSettings();
         this.props.navigation.addListener('beforeRemove', (e) => { e.preventDefault() })
     }
 
@@ -132,7 +136,9 @@ class IntroScreen extends Component {
 const mapDispatchToProps = ( dispatch ) => {
     return {
         saveAppSettingsInitialState: () => dispatch( saveGameSettingsInitialState() ),
-        saveGameSettingsInitialState: () => dispatch( saveAppSettingsInitialState () )
+        saveGameSettingsInitialState: () => dispatch( saveAppSettingsInitialState() ),
+        loadAppSettings: () => dispatch( loadAppSettings() ),
+        loadGameSettings: () => dispatch( loadGameSettings() )
     }
 };
 

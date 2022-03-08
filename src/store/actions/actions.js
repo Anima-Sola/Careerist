@@ -46,11 +46,21 @@ export const setSocialStatus = ( item ) => {
     }
 }
 
+export const setIsElectionOverOrNotHeld = ( item ) => {
+    return {
+        type: 'SET_IS_ELECTION_OVER_OR_NOT_HELD',
+        payload: item
+    }
+}
+
+
 export const saveGameSettingsInitialState = () => {
     return {
         type: 'SAVE_GAME_SETTINGS_INITIAL_STATE'
     }
 }
+
+
 
 //App settings actions
 export const loadAppSettings = () => {
