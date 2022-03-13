@@ -6,12 +6,14 @@ import { THEME } from '../../styles/theme';
 import { setCashAmountAction } from   '../../store/actions/actions';
 import { setIsGameStarted } from '../../store/actions/actions';
 import { getGameDifficultyLevel } from '../../store/selectors';
+import CustomAlert from '../../components/CustomAlert';
 
 export const InputСashAmountScreen = ({ navigation }) => {
     const dispatch = useDispatch();
     const gameDifficultyLevel = useSelector( getGameDifficultyLevel );
     const [ isButtonDisabled, setIsButtonDisabled ] = useState( true );
-    const [ cashAmount, setCashAmount ] = useState( null );
+    const [ alertVisible, setAlertVisible ] = useState( false );
+    const [ cashAmount, setCashAmount ] = useState( '' );
     const textInput = useRef( null );
 
     useEffect(() => {
@@ -21,7 +23,7 @@ export const InputСashAmountScreen = ({ navigation }) => {
     const filterData = ( text ) => {
         const result = text.replace( /\D/g, '' );
         ( result !== '' ) ? setIsButtonDisabled( false ) : setIsButtonDisabled( true );
-        setCashAmount( result );
+        setCashAmount( +result );
     }
 
     const navToGame = ( cash ) => {
@@ -34,18 +36,8 @@ export const InputСashAmountScreen = ({ navigation }) => {
         let maxCash = Math.round( 1500 * gameDifficultyLevel * ( 1 + Math.random() ));
         if( cashAmount > maxCash ) {
             maxCash = Math.round( maxCash * 2 / 3 );
-            Alert.alert(
-                "Откуда?!",
-                "По нашим данным у вас " + maxCash.toString() + '.',
-                [
-                    {
-                        text: 'ОК',
-                        onPress: () => {},
-                        style: "cancel"
-                    }
-                ]
-            );
-            navToGame( maxCash );
+            setAlertVisible( true );
+            setCashAmount( maxCash );
             return;
         }
         navToGame( cashAmount );
@@ -53,6 +45,25 @@ export const InputСashAmountScreen = ({ navigation }) => {
 
     return (
         <View style={ styles.container }>
+            <CustomAlert 
+                alertVisible={ alertVisible } 
+                setAlertVisible={ setAlertVisible } 
+                message={ 'По нашим данным у вас ' + cashAmount + '$'} 
+                header={ 'Откуда?!' }
+                iconName='cash-outline'
+                iconBackgroundColor='red'
+                iconColor='white'
+                isOverlayPressable={ false }
+                buttons = {[
+                    {   
+                        key: 0,
+                        hint: 'Продолжить',
+                        backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+                        textColor: THEME.TEXT_COLOR,
+                        onPressCallback: () => navToGame( cashAmount )
+                    }
+                ]}
+            />
             <View style={ styles.headerContainer }>
                 <Text style={ styles.header }>Сколько имеете наличными?</Text>
             </View>
@@ -63,7 +74,7 @@ export const InputСashAmountScreen = ({ navigation }) => {
                     keyboardType='numeric'
                     maxLength={ 12 }
                     onChangeText={( text ) => filterData( text )}
-                    value={ cashAmount }
+                    value={ cashAmount.toString() }
                 />
             </View>
             <View style={ styles.nextButtonContainer }>
@@ -107,7 +118,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         flex: 0.5,
         justifyContent: 'center',
-        width: '100%'
+        width: '80%'
     },
     input: {
         color: '#fff',

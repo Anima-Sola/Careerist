@@ -8,9 +8,11 @@ import { loadFonts } from '../styles/bootstrap';
 import { loadAppSettings } from "../store/actions/actions";
 import { loadGameSettings } from "../store/actions/actions";
 import { getIsGameStarted } from "../store/selectors";
+import CustomAlert from '../components/CustomAlert';
 
 export const LoadingScreen = ({ navigation }) => {
     const [ isLoaded, setIsLoaded ] = useState(false);
+    const [ alertVisible, setAlertVisible ] = useState( false );
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -28,34 +30,20 @@ export const LoadingScreen = ({ navigation }) => {
         navigation.navigate('GameMainScreen');
     }
 
-    const navToGame = () => {
-        Alert.alert(
-            "Обнаружена незаконченная игра!!!",
-            "Желаете продолжить?",
-            [
-                {
-                    text: "Продолжить",
-                    onPress: navToMainScreen
-                },
-                { 
-                    text: "Начать заново", 
-                    onPress: navToIntro 
-                }
-            ]
-        );
-        
+    const showAlert = () => {
+        setAlertVisible( true )
     }
 
-    const navToApp = () => {
+    const startGame = () => {
         setIsLoaded( true );
-        ( isGameStarted ) ? setTimeout( navToGame, 2000 ) : setTimeout( navToIntro, 2000 );
+        ( isGameStarted ) ? setTimeout( showAlert, 2000 ) : setTimeout( navToIntro, 2000 );
     }
 
     if (!isLoaded) {
         return (
             <AppLoading
                 startAsync = { loadFonts }
-                onFinish = { navToApp }
+                onFinish = { startGame }
                 onError = { err => console.log(err) }
             />
         )
@@ -63,6 +51,32 @@ export const LoadingScreen = ({ navigation }) => {
 
     return (
         <View style={ styles.container }>
+            <CustomAlert 
+                alertVisible={ alertVisible } 
+                setAlertVisible={ setAlertVisible } 
+                message={ 'Желаете продолжить?' } 
+                header={ 'Обнаружена незаконченная игра' }
+                iconName='help'
+                iconBackgroundColor='green'
+                iconColor='white'
+                isOverlayPressable={ false }
+                buttons = {[
+                    {   
+                        key: 0,
+                        hint: 'Продолжить',
+                        backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+                        textColor: THEME.TEXT_COLOR,
+                        onPressCallback: navToMainScreen
+                    },
+                    {   
+                        key: 1,
+                        hint: 'Начать заново',
+                        backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+                        textColor: THEME.TEXT_COLOR,
+                        onPressCallback: navToIntro
+                    }
+                ]}
+            />
             <View style={ styles.indicator }>
                 <MaterialIndicator color="white" size={ 40 }/>
                 <Text style={ styles.header }>Загрузка...</Text>

@@ -4,9 +4,12 @@ import { useDispatch } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
 import { setPlayerAgeAction } from   '../../store/actions/actions';
+import CustomAlert from '../../components/CustomAlert';
 
 export const InputAgeScreen = ({ navigation }) => {
     const dispatch = useDispatch();
+    const [ alertVisible, setAlertVisible ] = useState( false );
+    const [ alertMessage, setAlertMessage ] = useState( '' );
     const [ isButtonDisabled, setIsButtonDisabled ] = useState( true );
     const [ age, setAge ] = useState( '' );
     const textInput = useRef( null );
@@ -23,18 +26,9 @@ export const InputAgeScreen = ({ navigation }) => {
 
     const checkAgeAndNavToInputCashAmountScreen = () => {
         if( ( age < 18 ) || ( age > 60 ) ) {
-            let msg = ( age < 18 ) ? 'Младенцам у нас делать нечего!!!' : 'В мумиях не нуждаемся!!!';
-            Alert.alert(
-                "О, нет...",
-                msg,
-                [
-                    {
-                        text: 'ОК',
-                        onPress: () => {},
-                        style: "cancel"
-                    }
-                ]
-            );
+            let msg = ( age < 18 ) ? 'Младенцам у нас делать нечего!' : 'В мумиях не нуждаемся!';
+            setAlertMessage(msg);
+            setAlertVisible(true);
             return;
         }
         dispatch(setPlayerAgeAction( age ));
@@ -43,6 +37,25 @@ export const InputAgeScreen = ({ navigation }) => {
 
     return (
         <View style={ styles.container }>
+            <CustomAlert 
+                alertVisible={ alertVisible } 
+                setAlertVisible={ setAlertVisible } 
+                message={ alertMessage } 
+                header={ 'Ой!' }
+                iconName='person-outline'
+                iconBackgroundColor='red'
+                iconColor='white'
+                isOverlayPressable={ true }
+                buttons = {[
+                    {   
+                        key: 0,
+                        hint: 'Продолжить',
+                        backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+                        textColor: THEME.TEXT_COLOR,
+                        onPressCallback: () => setAlertVisible(false)
+                    }
+                ]}
+            />
             <View style={ styles.headerContainer }>
                 <Text style={ styles.header }>Ваш возраст?</Text>
             </View>
@@ -55,6 +68,7 @@ export const InputAgeScreen = ({ navigation }) => {
                     onChangeText={( text ) => filterData( text )}
                     value={ age }
                 />
+                <Text style={ styles.hint }>18 - 60</Text>
             </View>
             <View style={ styles.nextButtonContainer }>
                 <Button
@@ -107,6 +121,12 @@ const styles = StyleSheet.create({
         borderColor: "#fff",
         borderStyle: "solid",
         borderBottomWidth: 3
+    },
+    hint: {
+        textAlign: 'center',
+        marginTop: 7,
+        fontSize: THEME.FONT12,
+        color: THEME.TEXT_COLOR
     },
     nextButtonContainer: {
         flex: 0.25,
