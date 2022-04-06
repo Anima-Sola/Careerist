@@ -1,54 +1,53 @@
 import React from "react";
 import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
 import { THEME } from "../styles/theme";
-import { Ionicons } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const CustomAlert = ( props ) => {
-    const { 
-        alertVisible, 
-        setAlertVisible, 
+const CustomAlert = ({ alert, setAlert }) => {
+    const {
         message, 
         header, 
         iconName, 
         iconBackgroundColor, 
         iconColor,
         isOverlayPressable,
-        buttons 
-    } = props;
+        buttons,
+    } = alert.data;
+ 
+    const buttonsList = () => {
+        let i = 0;
+        const list = buttons.map(({ key, hint, backgroundColor, textColor }) => {
+            return (
+                <Pressable key={ key } style={{ ...styles.button, backgroundColor }} onPress={ alert.buttonsCallbacks[ i++ ] }>
+                    <Text style={{ ...styles.buttonTitle, color: textColor }}>{ hint }</Text>
+                </Pressable>
+            )
+        })
+        return list;
+    }
 
     return (
         <Modal
-            animationType="slide"
+            animationType="fade"
             transparent={ true }
             statusBarTranslucent={ true }
-            visible={ alertVisible }
-            onRequestClose={() => {
-                setAlertVisible( false );
-            }}
+            visible={ alert.isVisible }
+            onRequestClose={ () => { if( isOverlayPressable ) setAlert({ isVisible: false, data: alert.data, buttonsCallbacks: alert.buttonsCallbacks }) }} 
         >   
             <Pressable 
                 style={[Platform.OS === "ios" ? styles.iOSBackdrop : styles.androidBackdrop, styles.backdrop]} 
-                onPress={ () => { if( isOverlayPressable ) setAlertVisible(false) }} 
+                onPress={ () => { if( isOverlayPressable ) setAlert({ isVisible: false, data: alert.data,  buttonsCallbacks: alert.buttonsCallbacks }) }} 
             />
             <View style={ styles.container }>
                 <View style={{ ...styles.iconContainer, backgroundColor: iconBackgroundColor }}>
-                    <Ionicons name={ iconName } size={50} color={ iconColor  }/>
+                    <Icon style={ styles.icon } name={ iconName } color={ iconColor } size={ 50 }/>
                 </View>
                 <View style={ styles.window }>
                     <Text style={ styles.header }>{ header }</Text>
                     <Text style={ styles.text }>{ message }</Text>
-                    { 
-                        buttons.map(({ key, hint, backgroundColor, textColor, onPressCallback }) => {
-                            return (
-                                <Pressable key={ key } style={{ ...styles.button, backgroundColor }} onPress={ onPressCallback }>
-                                    <Text style={{ ...styles.buttonTitle, color: textColor }}>{ hint }</Text>
-                                </Pressable>
-                            )
-                        })
-                    }
+                    { buttonsList() }
                 </View>
             </View>
-
         </Modal>
     )
 }
@@ -83,8 +82,6 @@ const styles = StyleSheet.create({
         width: '80%'
     },
     iconContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
         width: 80,
         height: 80,
         borderRadius: 40,
@@ -95,6 +92,10 @@ const styles = StyleSheet.create({
         marginBottom: -40,
         zIndex: 1, // works on ios
         elevation: 0, // works on android
+    },
+    icon: {
+        paddingTop: 2,
+        alignSelf: 'center'
     },
     header: {
         color: THEME.SIDE_MENU_ITEMS_TEXT_COLOR,

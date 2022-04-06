@@ -61,7 +61,7 @@ class IntroScreen extends Component {
         this.props.saveGameSettingsInitialState();
         this.props.loadAppSettings();
         this.props.loadGameSettings();
-        this.props.navigation.addListener('beforeRemove', (e) => { e.preventDefault() })
+        this.props.navigation.addListener('beforeRemove', (e) => e.preventDefault() )
     }
 
     _renderItem = ({ item }) => {

@@ -79,7 +79,7 @@ const SideMenu = ( props, ref ) => {
                         <Ionicons name="close-outline" size={ 40 } color= { "black" } />
                     </Pressable>
                     <View style={ styles.sideMenuItems }>
-                        <Pressable style={ pressableStyles() } >
+                        <Pressable style={ pressableStyles() } onPress={ () => props.navigation.navigate('IntroScreen') } >
                             <Ionicons name="home-outline" size={ 28 } color= { "black" } />
                             <Text style={ styles.sideMenuItemText }>
                                 Начать новую игру

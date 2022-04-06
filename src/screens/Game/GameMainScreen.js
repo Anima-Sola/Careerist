@@ -1,9 +1,11 @@
-import React, { useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Pressable, Alert } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Pressable, BackHandler } from 'react-native';
 import { useSelector } from "react-redux";
 import { THEME } from "../../styles/theme";
 import GameWrapper from "../../components/GameWrapper";
 import { getIsElectionOverOrNotHeld } from "../../store/selectors";
+import CustomAlert from '../../components/CustomAlert';
+import { GAME_MAIN_SCREEN_QUIT_GAME_ALERT, GAME_MAIN_SCREEN_SCLEROSIS_WARNING } from "../../store/constants";
 
 export const GameMainScreen = ({ navigation }) => {
     const wrappedComponent = <MainMenu navigation={ navigation } />
@@ -15,9 +17,35 @@ export const GameMainScreen = ({ navigation }) => {
 
 const MainMenu = ({ navigation }) => {
     const isElectionOverOrNotHeld = useSelector( getIsElectionOverOrNotHeld );
+    const [ alert, setAlert ] = useState({ 
+        isVisible: false, 
+        data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT,
+        buttonsCallbacks: [
+            () => setAlert({ ...alert, isVisible: false }),
+            () => { 
+                setAlert({ ...alert, isVisible: false }); 
+                BackHandler.exitApp(); 
+            }
+        ]
+    });
 
     useEffect(() => {
-        navigation.addListener('beforeRemove', (e) => { e.preventDefault() })
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            const navState = navigation.getState();
+            const currentScreenName = navState.routes[ navState.index ].name;
+            switch( currentScreenName ) {
+                case 'GameMainScreen':
+                    setAlert({ ...alert, isVisible: true });
+                    return true;
+                case 'ElectionScreen':
+                    return true;
+                default:
+                    return false;
+            }
+
+        })
+        return () => backHandler.remove();
+        //navigation.addListener('beforeRemove', (e) => { e.preventDefault() })
     })
 
     const navToGameScreens = ( screen ) => {
@@ -26,24 +54,15 @@ const MainMenu = ({ navigation }) => {
 
     const navToElectionScreen = () => {
         if( isElectionOverOrNotHeld ) {
-            Alert.alert(
-                "Выборов нет!!!",
-                "У вас склероз?!",
-                [
-                    {
-                        text: 'ОК',
-                        onPress: () => {},
-                        style: "cancel"
-                    }
-                ]
-            );
+            setAlert({ ...alert, isVisible: true, data: GAME_MAIN_SCREEN_SCLEROSIS_WARNING })
             return;
         }
-        navToGameScreens('ElectionScreen')
+        navToGameScreens('ElectionScreen');
     }
 
     return (
         <View style={ styles.container }>
+            <CustomAlert alert={ alert } setAlert={ setAlert } />
             <Text style={ styles.title }>Что вас интересует?</Text>
             <View style={ styles.menu }>
                 <View style={ styles.menuRow }>

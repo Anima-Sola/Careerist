@@ -5,14 +5,20 @@ import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
 import { setPlayerAgeAction } from   '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
+import { INPUT_AGE_SCREEN_BABY_ALERT, INPUT_AGE_SCREEN_OLD_ALERT } from '../../store/constants';
 
 export const InputAgeScreen = ({ navigation }) => {
     const dispatch = useDispatch();
-    const [ alertVisible, setAlertVisible ] = useState( false );
-    const [ alertMessage, setAlertMessage ] = useState( '' );
     const [ isButtonDisabled, setIsButtonDisabled ] = useState( true );
     const [ age, setAge ] = useState( '' );
     const textInput = useRef( null );
+    const [ alert, setAlert ] = useState({ 
+        isVisible: false, 
+        data: INPUT_AGE_SCREEN_BABY_ALERT, 
+        buttonsCallbacks: [ 
+            () => setAlert({ ...alert, isVisible: false })
+        ] 
+    });
 
     useEffect(() => {
         textInput.current.focus();
@@ -26,9 +32,8 @@ export const InputAgeScreen = ({ navigation }) => {
 
     const checkAgeAndNavToInputCashAmountScreen = () => {
         if( ( age < 18 ) || ( age > 60 ) ) {
-            let msg = ( age < 18 ) ? 'Младенцам у нас делать нечего!' : 'В мумиях не нуждаемся!';
-            setAlertMessage(msg);
-            setAlertVisible(true);
+            ( age < 18 ) ? setAlert({ ...alert, isVisible: true }) 
+                         : setAlert({ ...alert, isVisible: true, data: INPUT_AGE_SCREEN_OLD_ALERT });
             return;
         }
         dispatch(setPlayerAgeAction( age ));
@@ -37,25 +42,7 @@ export const InputAgeScreen = ({ navigation }) => {
 
     return (
         <View style={ styles.container }>
-            <CustomAlert 
-                alertVisible={ alertVisible } 
-                setAlertVisible={ setAlertVisible } 
-                message={ alertMessage } 
-                header={ 'Ой!' }
-                iconName='person-outline'
-                iconBackgroundColor='red'
-                iconColor='white'
-                isOverlayPressable={ true }
-                buttons = {[
-                    {   
-                        key: 0,
-                        hint: 'Продолжить',
-                        backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-                        textColor: THEME.TEXT_COLOR,
-                        onPressCallback: () => setAlertVisible(false)
-                    }
-                ]}
-            />
+            <CustomAlert alert={ alert } setAlert={ setAlert } />
             <View style={ styles.headerContainer }>
                 <Text style={ styles.header }>Ваш возраст?</Text>
             </View>

@@ -7,14 +7,25 @@ import { setCashAmountAction } from   '../../store/actions/actions';
 import { setIsGameStarted } from '../../store/actions/actions';
 import { getGameDifficultyLevel } from '../../store/selectors';
 import CustomAlert from '../../components/CustomAlert';
+import { INPUT_CASH_AMOUNT_SCREEN_ALERT } from '../../store/constants';
 
 export const InputСashAmountScreen = ({ navigation }) => {
     const dispatch = useDispatch();
     const gameDifficultyLevel = useSelector( getGameDifficultyLevel );
     const [ isButtonDisabled, setIsButtonDisabled ] = useState( true );
-    const [ alertVisible, setAlertVisible ] = useState( false );
     const [ cashAmount, setCashAmount ] = useState( '' );
     const textInput = useRef( null );
+    const maxCashAmount = useRef( '' );
+    const [ alert, setAlert ] = useState({ 
+        isVisible: false, 
+        data: INPUT_CASH_AMOUNT_SCREEN_ALERT,
+        buttonsCallbacks: [
+            () => {
+                setAlert({ ...alert, isVisible: false });
+                navToGame( maxCashAmount.current );
+            }
+        ]
+    })
 
     useEffect(() => {
         textInput.current.focus();
@@ -36,8 +47,8 @@ export const InputСashAmountScreen = ({ navigation }) => {
         let maxCash = Math.round( 1500 * gameDifficultyLevel * ( 1 + Math.random() ));
         if( cashAmount > maxCash ) {
             maxCash = Math.round( maxCash * 2 / 3 );
-            setAlertVisible( true );
-            setCashAmount( maxCash );
+            setAlert({ ...alert, isVisible: true, data: { ...INPUT_CASH_AMOUNT_SCREEN_ALERT, message: 'По нашим данным у вас ' + maxCash + '$' }});
+            maxCashAmount.current = maxCash;
             return;
         }
         navToGame( cashAmount );
@@ -45,25 +56,7 @@ export const InputСashAmountScreen = ({ navigation }) => {
 
     return (
         <View style={ styles.container }>
-            <CustomAlert 
-                alertVisible={ alertVisible } 
-                setAlertVisible={ setAlertVisible } 
-                message={ 'По нашим данным у вас ' + cashAmount + '$'} 
-                header={ 'Откуда?!' }
-                iconName='cash-outline'
-                iconBackgroundColor='red'
-                iconColor='white'
-                isOverlayPressable={ false }
-                buttons = {[
-                    {   
-                        key: 0,
-                        hint: 'Продолжить',
-                        backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-                        textColor: THEME.TEXT_COLOR,
-                        onPressCallback: () => navToGame( cashAmount )
-                    }
-                ]}
-            />
+            <CustomAlert alert={ alert } setAlert={ setAlert } />
             <View style={ styles.headerContainer }>
                 <Text style={ styles.header }>Сколько имеете наличными?</Text>
             </View>

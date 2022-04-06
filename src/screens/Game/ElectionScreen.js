@@ -1,12 +1,14 @@
-import React, { useRef, useEffect } from "react";
-import { Text, View, StyleSheet, Alert } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { Text, View, StyleSheet, BackHandler } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
 import { Button } from 'react-native-elements';
 import GameWrapper from "../../components/GameWrapper";
 import { THEME } from "../../styles/theme";
 import { getCurrentSocialStatus, getYear } from "../../store/selectors";
 import { SOCIAL_STATUSES } from "../../store/constants";
-import { setIsElectionOverOrNotHeld } from "../../store/actions/actions";
+import { setIsElectionOverOrNotHeld, setSocialStatus } from "../../store/actions/actions";
+import CustomAlert from '../../components/CustomAlert';
+import { ELECTION_SCREEN_SKIP_ELECTION, ELECTION_SCREEN_LOSE_ELECTION, ELECTION_SCREEN_WIN_ELECTION } from '../../store/constants';
 
 export const ElectionScreen = ({ navigation }) => {
     const wrappedComponent = <Election navigation={ navigation } />
@@ -18,38 +20,49 @@ export const ElectionScreen = ({ navigation }) => {
 
 const Election = ({ navigation }) => {
     const dispatch = useDispatch();
-    const electionResult = useRef( 'Следующие выборы через 2 года...' );
     const year = useSelector( getYear );
     const currentSocialStatus = useSelector( getCurrentSocialStatus );
-    
-    useEffect(() => {
-        navigation.addListener('beforeRemove', (e) => { generateGameEvent() })
+    const [ alert, setAlert ] = useState({
+        isVisible: false,
+        data:  ELECTION_SCREEN_SKIP_ELECTION,
+        buttonsCallbacks: [
+            () => {
+                dispatch(setIsElectionOverOrNotHeld( true ));
+                setAlert({ ...alert, isVisible: false });
+                navigation.navigate('GameMainScreen');
+            }
+        ]
     })
-
-    const generateGameEvent = () => {
-        //dispatch(setIsElectionOverOrNotHeld( true ));
-        if(Number.isInteger( year / 2 )) {
-            Alert.alert(
-                "Выборы завершены!!!",
-                electionResult.current,
-                [
-                    {
-                        text: 'ОК',
-                        onPress: () => {},
-                        style: "cancel"
-                    }
-                ]
-            );
-        }
+    
+    const skipElection = () => {
+        dispatch(setIsElectionOverOrNotHeld( true ));
+        setAlert({ ...alert, isVisible: true  });
     }
 
-    const participationInElection = () => {
-        electionResult.current = 'Вы набрали только 40% голосов. Следующие выборы через 2 года...';
-        navigation.navigate('GameMainScreen');
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener( 'hardwareBackPress', skipElection );
+        return () => backHandler.remove();
+    })
+
+    const participateElection = () => {
+        const result = Math.random();
+        if( result < 0.5 ) {
+            dispatch(setSocialStatus( currentSocialStatus + 1 ));
+            setAlert({ ...alert, 
+                       isVisible: true, 
+                       data: { ...ELECTION_SCREEN_WIN_ELECTION, message: 'Теперь вы ' + SOCIAL_STATUSES[ currentSocialStatus + 1 ] + '. Следующие выборы через 2 года.' }
+                    });
+        } else {
+            setAlert({ ...alert, 
+                        isVisible: true, 
+                        data: { ...ELECTION_SCREEN_LOSE_ELECTION, message: 'Вы набрали только 40% голосов. Следующие выборы через 2 года.' }
+                    });
+        }
     }
 
     const isElectionHeld = (
         <View style={ styles.container }>
+            <CustomAlert alert={ alert } setAlert={ setAlert } />
             <View style={ styles.dataContainer }>              
                 <View style= {styles.upTextContainer }>
                     <Text style={ styles.text }>В настоящее время вы</Text>
@@ -79,14 +92,14 @@ const Election = ({ navigation }) => {
                     titleStyle={ styles.nextButtonTitle }
                     type="outline" 
                     title="Да"
-                    onPress={ participationInElection }  
+                    onPress={ participateElection }  
                 />
                 <Button
                     buttonStyle={ styles.nextButton } 
                     titleStyle={ styles.nextButtonTitle }
                     type="outline" 
                     title="Нет"
-                    onPress={ () => navigation.navigate('GameMainScreen') }  
+                    onPress={ skipElection }  
                 />
             </View>
         </View>
@@ -104,7 +117,7 @@ const Election = ({ navigation }) => {
                     titleStyle={ styles.nextButtonTitle }
                     type="outline" 
                     title="Продолжить"
-                    onPress={ participationInElection }  
+                    onPress={ () => navigation.navigate('GameMainScreen') }  
                 />
             </View>
         </View>
@@ -150,7 +163,7 @@ const styles = StyleSheet.create({
         fontFamily: 'nunito-semibolditalic',
         fontSize: THEME.FONT25,
         textAlign: 'center',
-        lineHeight: 30
+        lineHeight: 33
     },
     electionNotHeldText: {
         color: THEME.TEXT_COLOR,

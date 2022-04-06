@@ -10,8 +10,6 @@ import { LoadingScreen } from "../screens/LoadingScreen";
 import { FinancialSituationScreen } from "../screens/Game/FinancialSituationScreen";
 import { ElectionScreen } from "../screens/Game/ElectionScreen";
 
-
-
 const AppRootNavigator = createNativeStackNavigator();
 
 export function AppRootNavigation () {

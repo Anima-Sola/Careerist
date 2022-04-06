@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native'
+import React from 'react';
+import { Text, View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { getYear, getCash } from '../../store/selectors';
@@ -17,14 +17,6 @@ export const FinancialSituationScreen = ({ navigation }) => {
 const FinancialSituation = ({ navigation }) => {
     const year = useSelector( getYear );
     const cash = useSelector( getCash );
-
-    useEffect(() => {
-        navigation.addListener('beforeRemove', (e) => { generateGameEvent() })
-    })
-
-    const generateGameEvent = () => {
-        //console.log('Something Happened');
-    }
 
     return (
         <View style={ styles.container }>

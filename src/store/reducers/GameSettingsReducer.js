@@ -31,9 +31,7 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
         case 'SET_CASH_AMOUNT':
             return saveState( state, 'cash', action.payload );
         case 'SET_SOCIAL_STATUS':
-            return saveState( state, 'socialStatus', action.payload );
-        case 'SET_SOCIAL_STATUS':
-            return saveState( state, 'socialStatus', action.payload );
+            return saveState( state, 'currentSocialStatus', action.payload );
         case 'SET_IS_ELECTION_OVER_OR_NOT_HELD':
             return saveState( state, 'isElectionOverOrNotHeld', action.payload );
         case 'LOAD_GAME_SETTINGS':

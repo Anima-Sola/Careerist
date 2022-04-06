@@ -30,7 +30,7 @@ const GameWrapper = ({ wrappedComponent }) => {
                     </View>
                 </View>
                 { wrappedComponent }
-            <SideMenu ref={ childRef }/>
+            <SideMenu ref={ childRef } navigation={ wrappedComponent.props.navigation }/>
             </View>
         </GestureDetector>
     )
