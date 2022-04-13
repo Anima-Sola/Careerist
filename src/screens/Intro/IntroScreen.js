@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image, StatusBar, BackHandler } from 'react-native';
+import { StyleSheet, View, Text, Image, StatusBar } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import { useDispatch } from "react-redux";
 import Icon from 'react-native-vector-icons/Ionicons';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { THEME } from '../../styles/theme';
-import { connect } from 'react-redux';
-import { saveGameSettingsInitialState } from '../../store/actions/actions';
-import { saveAppSettingsInitialState } from "../../store/actions/actions";
-import { loadAppSettings } from '../../store/actions/actions';
-import { loadGameSettings } from "../../store/actions/actions";
+//import { connect } from 'react-redux';
+import { saveGameSettingsInitialState, saveAppSettingsInitialState, loadAppSettings, loadGameSettings } from '../../store/actions/actions';
 
 const slides = [
     {
@@ -55,14 +54,14 @@ const slides = [
     }
 ];
 
-class IntroScreen extends Component {
-    componentDidMount() {
+class Intro extends Component {
+    /*componentDidMount() {
         this.props.saveAppSettingsInitialState();
         this.props.saveGameSettingsInitialState();
         this.props.loadAppSettings();
         this.props.loadGameSettings();
         this.props.navigation.addListener('beforeRemove', (e) => e.preventDefault() )
-    }
+    }*/
 
     _renderItem = ({ item }) => {
         return (
@@ -133,7 +132,7 @@ class IntroScreen extends Component {
     }
 }
 
-const mapDispatchToProps = ( dispatch ) => {
+/*const mapDispatchToProps = ( dispatch ) => {
     return {
         saveAppSettingsInitialState: () => dispatch( saveGameSettingsInitialState() ),
         saveGameSettingsInitialState: () => dispatch( saveAppSettingsInitialState() ),
@@ -142,7 +141,23 @@ const mapDispatchToProps = ( dispatch ) => {
     }
 };
 
-export default connect(null, mapDispatchToProps)(IntroScreen)
+export default connect(null, mapDispatchToProps)(IntroScreen)*/
+
+const IntroScreen = ({ navigation }) => {
+    const dispatch = useDispatch();
+
+    useFocusEffect(() => {
+        dispatch( saveAppSettingsInitialState() );
+        dispatch( saveGameSettingsInitialState() );
+        dispatch( loadAppSettings() );
+        dispatch( loadGameSettings() );
+        navigation.addListener('beforeRemove', (e) => e.preventDefault() )
+    })
+
+    return <Intro navigation={ navigation } />;
+}
+
+export default IntroScreen;
 
 const styles = StyleSheet.create({
     container: {

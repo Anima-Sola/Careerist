@@ -29,13 +29,12 @@ const Election = ({ navigation }) => {
             () => {
                 dispatch(setIsElectionOverOrNotHeld( true ));
                 setAlert({ ...alert, isVisible: false });
-                navigation.navigate('GameMainScreen');
+                navigation.navigate('GameMainScreen', { electionFinished: true });
             }
         ]
     })
     
     const skipElection = () => {
-        dispatch(setIsElectionOverOrNotHeld( true ));
         setAlert({ ...alert, isVisible: true  });
     }
 

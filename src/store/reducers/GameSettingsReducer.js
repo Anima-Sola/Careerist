@@ -20,8 +20,8 @@ const saveState = ( state, param, payload ) => {
 export const gameSettingsReducer = ( state = initialState, action ) => {
     switch( action.type ) {
         case 'SAVE_GAME_SETTINGS_INITIAL_STATE':
-            saveDataToStore( 'GAME_SETTINGS', initialState );   
-            return state;
+            saveDataToStore( 'GAME_SETTINGS', initialState );
+            return initialState;
         case 'SET_YEAR':
             return saveState( state, 'year', action.payload );
         case 'SET_GAME_DIFFICULTY_LEVEL':

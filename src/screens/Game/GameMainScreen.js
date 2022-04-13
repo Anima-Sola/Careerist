@@ -1,22 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { View, Text, StyleSheet, Pressable, BackHandler } from 'react-native';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { THEME } from "../../styles/theme";
 import GameWrapper from "../../components/GameWrapper";
 import { getIsElectionOverOrNotHeld } from "../../store/selectors";
 import CustomAlert from '../../components/CustomAlert';
 import { GAME_MAIN_SCREEN_QUIT_GAME_ALERT, GAME_MAIN_SCREEN_SCLEROSIS_WARNING } from "../../store/constants";
 
-export const GameMainScreen = ({ navigation }) => {
-    const wrappedComponent = <MainMenu navigation={ navigation } />
+export const GameMainScreen = ({ navigation, route }) => {
+    const wrappedComponent = <MainMenu navigation={ navigation } route={ route } />
 
     return(
         <GameWrapper wrappedComponent={ wrappedComponent } />
     )
-};
+}
 
 const MainMenu = ({ navigation }) => {
-    const isElectionOverOrNotHeld = useSelector( getIsElectionOverOrNotHeld );
+    const dispatch = useDispatch();
+    //const isElectionOverOrNotHeld  = useSelector( getIsElectionOverOrNotHeld );
+    //const canNavToElectionScreen = route.params ? true : isElectionOverOrNotHeld;
+    const canNavToElectionScreen = useSelector( getIsElectionOverOrNotHeld );
+    //console.log( canNavToElectionScreen );
     const [ alert, setAlert ] = useState({ 
         isVisible: false, 
         data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT,
@@ -35,7 +39,7 @@ const MainMenu = ({ navigation }) => {
             const currentScreenName = navState.routes[ navState.index ].name;
             switch( currentScreenName ) {
                 case 'GameMainScreen':
-                    setAlert({ ...alert, isVisible: true });
+                    setAlert({ ...alert, isVisible: true, data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT });
                     return true;
                 case 'ElectionScreen':
                     return true;
@@ -45,19 +49,18 @@ const MainMenu = ({ navigation }) => {
 
         })
         return () => backHandler.remove();
-        //navigation.addListener('beforeRemove', (e) => { e.preventDefault() })
     })
 
-    const navToGameScreens = ( screen ) => {
-        navigation.navigate( screen ); 
+    const navToGameScreens = ( screen, params = {} ) => {
+        navigation.navigate( screen, params ); 
     }
 
     const navToElectionScreen = () => {
-        if( isElectionOverOrNotHeld ) {
+        if( canNavToElectionScreen ) {
             setAlert({ ...alert, isVisible: true, data: GAME_MAIN_SCREEN_SCLEROSIS_WARNING })
             return;
         }
-        navToGameScreens('ElectionScreen');
+        navToGameScreens( 'ElectionScreen' );
     }
 
     return (
@@ -66,7 +69,7 @@ const MainMenu = ({ navigation }) => {
             <Text style={ styles.title }>Что вас интересует?</Text>
             <View style={ styles.menu }>
                 <View style={ styles.menuRow }>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens('FinancialSituationScreen') }>
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'FinancialSituationScreen' ) }>
                         <Text style={ styles.menuItemText }>Финансовое</Text>
                         <Text style={ styles.menuItemText }>положение</Text>
                     </Pressable>
