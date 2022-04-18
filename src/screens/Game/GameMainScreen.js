@@ -7,8 +7,8 @@ import { getIsElectionOverOrNotHeld } from "../../store/selectors";
 import CustomAlert from '../../components/CustomAlert';
 import { GAME_MAIN_SCREEN_QUIT_GAME_ALERT, GAME_MAIN_SCREEN_SCLEROSIS_WARNING } from "../../store/constants";
 
-export const GameMainScreen = ({ navigation, route }) => {
-    const wrappedComponent = <MainMenu navigation={ navigation } route={ route } />
+export const GameMainScreen = ({ navigation }) => {
+    const wrappedComponent = <MainMenu navigation={ navigation }/>
 
     return(
         <GameWrapper wrappedComponent={ wrappedComponent } />
@@ -17,10 +17,7 @@ export const GameMainScreen = ({ navigation, route }) => {
 
 const MainMenu = ({ navigation }) => {
     const dispatch = useDispatch();
-    //const isElectionOverOrNotHeld  = useSelector( getIsElectionOverOrNotHeld );
-    //const canNavToElectionScreen = route.params ? true : isElectionOverOrNotHeld;
     const canNavToElectionScreen = useSelector( getIsElectionOverOrNotHeld );
-    //console.log( canNavToElectionScreen );
     const [ alert, setAlert ] = useState({ 
         isVisible: false, 
         data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT,
@@ -79,7 +76,7 @@ const MainMenu = ({ navigation }) => {
                     </Pressable>
                 </View>
                 <View style={ styles.menuRow }>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } >
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'PossessionScreen' ) } >
                         <Text style={ styles.menuItemText }>Личное</Text>
                         <Text style={ styles.menuItemText }>имущество</Text>
                     </Pressable>

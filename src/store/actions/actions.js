@@ -60,7 +60,19 @@ export const saveGameSettingsInitialState = () => {
     }
 }
 
+export const setPossessionList = ( list ) => {
+    return {
+        type: 'SET_POSSESSION_LIST',
+        payload: list
+    }
+}
 
+export const setPossessionPriceList = ( list ) => {
+    return {
+        type: 'SET_POSSESSION_PRICE_LIST',
+        payload: list
+    }
+}
 
 //App settings actions
 export const loadAppSettings = () => {

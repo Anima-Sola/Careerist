@@ -1,36 +1,9 @@
 import { THEME } from "../styles/theme";
 
 export const SOCIAL_STATUSES = [ 'Бизнесмен', 'Лидер профсоюза мусорщиков', 'Шериф', 'Сенатор', 'Президент' ];
-
+export const POSSESSION_LIST = [ 'Квартиру', 'Машину', 'Виллу', 'Яхту', 'Самолет'];
 
 //AlertWindows constants
-/*export const LOADING_SCREEN_ALERT = {
-    alertVisible: false,
-    setAlertVisible: () => setAlertVisible(),
-    message: 'Желаете продолжить?',
-    header: 'Обнаружена незаконченная игра',
-    iconName: 'question',
-    iconBackgroundColor: 'green',
-    iconColor: 'white',
-    isOverlayPressable: false,
-    button: [
-        {   
-            key: 0,
-            hint: 'Продолжить',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-            onPressCallback: () => navToMainScreen()
-        },
-        {   
-            key: 1,
-            hint: 'Начать заново',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-            onPressCallback: () => navToIntro()
-        }
-    ]
-}*/
-
 export const INPUT_AGE_SCREEN_BABY_ALERT = {
     message: 'Младенцам у нас делать нечего!', 
     header: 'Ой!',
@@ -68,7 +41,7 @@ export const INPUT_AGE_SCREEN_OLD_ALERT = {
 export const INPUT_CASH_AMOUNT_SCREEN_ALERT = {
     message: '', 
     header: 'Откуда?!',
-    iconName: 'ban',
+    iconName: 'question',
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,

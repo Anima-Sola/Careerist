@@ -9,6 +9,7 @@ import { GameMainScreen } from "../screens/Game/GameMainScreen";
 import { LoadingScreen } from "../screens/LoadingScreen";
 import { FinancialSituationScreen } from "../screens/Game/FinancialSituationScreen";
 import { ElectionScreen } from "../screens/Game/ElectionScreen";
+import { PossessionScreen } from '../screens/Game/PossessionScreen';
 
 const AppRootNavigator = createNativeStackNavigator();
 
@@ -47,9 +48,13 @@ export function AppRootNavigation () {
                     name = "FinancialSituationScreen"
                     component = { FinancialSituationScreen }
                 />
-                 <AppRootNavigator.Screen
+                <AppRootNavigator.Screen
                     name = "ElectionScreen"
                     component = { ElectionScreen }
+                />
+                <AppRootNavigator.Screen
+                    name = "PossessionScreen"
+                    component = { PossessionScreen }
                 />
             </AppRootNavigator.Navigator>
         </NavigationContainer>

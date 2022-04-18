@@ -1,18 +1,20 @@
 import { saveDataToStore } from '../../components/FileSystem';
 
 const initialState = {
-    gameDifficultyLevel: 3,          // Уровень сложности
-    playerAge: 18,                   // Возраст игрока
-    year: new Date().getFullYear(),  // Стартовый год
+    gameDifficultyLevel: 3,                             // Уровень сложности
+    playerAge: 18,                                      // Возраст игрока
+    year: new Date().getFullYear(),                     // Стартовый год
     
-    cash: 1500,                      // Сумма налички
+    cash: 1500,                                         // Сумма налички
 
-    currentSocialStatus: 0,          // 0 - Бизнесмен, 1 - лидер профсоюза мусорщиков, 2 - шериф, 3 - сенатор, 4 - президент
-    isElectionOverOrNotHeld: false   // Флаг, прошли ли выборы или они не проводятся
+    currentSocialStatus: 0,                             // 0 - Бизнесмен, 1 - лидер профсоюза мусорщиков, 2 - шериф, 3 - сенатор, 4 - президент
+    isElectionOverOrNotHeld: false,                     // Флаг, прошли ли выборы или они не проводятся
+    possession: [ false, false, false, false, false ],  // Наличие - true / Отсутствие - false квартиры, машины, виллы, яхты, самолета
+    possessionPrice: [ 0, 0, 0, 0, 0],                  // Цена недвижимость
 }
 
 const saveState = ( state, param, payload ) => {
-    state[param] = payload;
+    state[ param ] = payload;
     saveDataToStore( 'GAME_SETTINGS', state );
     return state;
 }
@@ -34,6 +36,10 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
             return saveState( state, 'currentSocialStatus', action.payload );
         case 'SET_IS_ELECTION_OVER_OR_NOT_HELD':
             return saveState( state, 'isElectionOverOrNotHeld', action.payload );
+        case 'SET_POSSESSION_LIST':
+            return saveState( state, 'possession', action.payload );
+        case 'SET_POSSESSION_PRICE_LIST':
+            return saveState( state, 'possessionPrice', action.payload );
         case 'LOAD_GAME_SETTINGS':
             if ( action.payload ) return action.payload;
             return state;
