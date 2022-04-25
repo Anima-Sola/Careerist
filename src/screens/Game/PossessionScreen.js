@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
-import { getPossessionList, getPossessionPriceList } from '../../store/selectors';
+import { getPossessionList, getPossessionCostList } from '../../store/selectors';
 import { POSSESSION_LIST } from '../../store/constants';
-import { setPossessionList, setPossessionPriceList } from '../../store/actions/actions';
+import { setPossessionList, setPossessionCostList } from '../../store/actions/actions';
 
 export const PossessionScreen = ({ navigation }) => {
     const wrappedComponent = <Possession navigation={ navigation } />
@@ -19,7 +19,7 @@ export const PossessionScreen = ({ navigation }) => {
 const Possession = ({ navigation }) => {
     const dispatch = useDispatch();
     const possessionList = useSelector( getPossessionList );
-    const possessionPriceList = useSelector( getPossessionPriceList );
+    const possessionCostList = useSelector( getPossessionCostList );
     const [ activeItem, setActiveItem ] = useState( 0 );
 
     const getListBuyOrSale = ( typeOfDeal = false ) => {
@@ -29,15 +29,16 @@ const Possession = ({ navigation }) => {
         const items = possessionList.map( element => {
             i++;
             if( element === typeOfDeal ) {
+                const activeItemBackgroudColor = ( i === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
                 return (
-                    <View style={ styles.itemContainer } key={ i } >
-                        <View style={ styles.itemTitle }>
+                    <Pressable style={ styles.itemContainer } key={ i } onPress={eval( '() => setActiveItem(' + i + ')' )}>
+                        <View style={{ ...styles.itemTitle, backgroundColor: activeItemBackgroudColor }}>
                             <Text style={ styles.itemText }>{ POSSESSION_LIST[ i ] }</Text>
                         </View>
-                        <View style={ styles.itemCost }>
-                            <Text style={ styles.itemText }>{ possessionPriceList[ i ] }$</Text>
+                        <View style={{ ...styles.itemCost, backgroundColor: activeItemBackgroudColor }}>
+                            <Text style={ styles.itemText }>{ possessionCostList[ i ] }$</Text>
                         </View>
-                    </View>
+                    </Pressable>
                 )
             }
         });
@@ -75,7 +76,7 @@ const Possession = ({ navigation }) => {
                     title="Купить"
                     onPress={ () => { 
                         dispatch( setPossessionList([true, true, false, true, false]) );
-                        dispatch( setPossessionPriceList([ 0, 2000, 10000, 100000, 0 ]) );
+                        dispatch( setPossessionCostList([ 0, 2000, 10000, 100000, 0 ]) );
                         navigation.navigate('GameMainScreen');
                     }}    
                 />
@@ -86,7 +87,7 @@ const Possession = ({ navigation }) => {
                     title="Продать"
                     onPress={ () => { 
                         dispatch( setPossessionList([false, false, false, false, false]) );
-                        dispatch( setPossessionPriceList([ 0, 2000, 0, 100000, 0 ]) );
+                        dispatch( setPossessionCostList([ 0, 2000, 0, 100000, 0 ]) );
                         navigation.navigate('GameMainScreen');
                     }}   
                 />

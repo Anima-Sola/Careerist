@@ -10,7 +10,7 @@ const initialState = {
     currentSocialStatus: 0,                             // 0 - Бизнесмен, 1 - лидер профсоюза мусорщиков, 2 - шериф, 3 - сенатор, 4 - президент
     isElectionOverOrNotHeld: false,                     // Флаг, прошли ли выборы или они не проводятся
     possession: [ false, false, false, false, false ],  // Наличие - true / Отсутствие - false квартиры, машины, виллы, яхты, самолета
-    possessionPrice: [ 0, 0, 0, 0, 0],                  // Цена недвижимость
+    possessionCost: [ 0, 0, 0, 0, 0],                   // Цена недвижимость
 }
 
 const saveState = ( state, param, payload ) => {
@@ -38,8 +38,8 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
             return saveState( state, 'isElectionOverOrNotHeld', action.payload );
         case 'SET_POSSESSION_LIST':
             return saveState( state, 'possession', action.payload );
-        case 'SET_POSSESSION_PRICE_LIST':
-            return saveState( state, 'possessionPrice', action.payload );
+        case 'SET_POSSESSION_COST_LIST':
+            return saveState( state, 'possessionCost', action.payload );
         case 'LOAD_GAME_SETTINGS':
             if ( action.payload ) return action.payload;
             return state;

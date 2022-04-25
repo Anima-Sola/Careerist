@@ -67,9 +67,9 @@ export const setPossessionList = ( list ) => {
     }
 }
 
-export const setPossessionPriceList = ( list ) => {
+export const setPossessionCostList = ( list ) => {
     return {
-        type: 'SET_POSSESSION_PRICE_LIST',
+        type: 'SET_POSSESSION_COST_LIST',
         payload: list
     }
 }

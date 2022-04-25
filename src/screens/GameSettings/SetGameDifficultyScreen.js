@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Button } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
@@ -7,19 +7,28 @@ import { setGameDifficultyLevelAction } from   '../../store/actions/actions';
 
 export const SetGameDifficultyScreen = ({ navigation }) => {
     const dispatch = useDispatch();
-    const [ gameDifficultyLevel, setGameDifficultyLevel ] = useState( 3 );
-    const [ difficultyItems, setActiveDifficultyItem ] = useState([ null, 'rgba(0, 0, 0, .2)', 'rgba(0, 0, 0, .2)', THEME.THIRD_BACKGROUND_COLOR ]);
-
-    const setDifficultyLevel = ( level ) => {
-        const newDifficultyItems = [ null, 'rgba(0, 0, 0, .2)', 'rgba(0, 0, 0, .2)', 'rgba(0, 0, 0, .2)' ];
-        newDifficultyItems[ level ] = THEME.THIRD_BACKGROUND_COLOR;
-        setGameDifficultyLevel( level );
-        setActiveDifficultyItem( newDifficultyItems );
-    }
+    const [ diffLevel, setDiffLevel ] = useState( 3 );
 
     const navToInputAgeScreen = () => {
-        dispatch(setGameDifficultyLevelAction( gameDifficultyLevel ));
+        dispatch(setGameDifficultyLevelAction( diffLevel ));
         navigation.navigate('InputAgeScreen');
+    }
+
+    const items = () => {
+        let i = 4;
+        const diffTitles = [ 'Хардкор', 'Средне', 'Легко' ];
+
+        const items = diffTitles.map( element => {
+            i--;
+            const activeItemBackgroudColor = (i === diffLevel ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
+            return ( 
+                <Pressable style={{ ...styles.difficultyLevelItem, backgroundColor: activeItemBackgroudColor }} key={ i } onPress={ eval( '() => setDiffLevel(' + i + ')' )}>
+                    <Text style={ styles.difficultyLevelItemDigit }>{ i }</Text>
+                    <Text style={ styles.difficultyLevelItemText }>{ element }</Text>
+                </Pressable>
+            )
+        })
+        return ( <>{ items }</> )
     }
 
     return (
@@ -28,18 +37,7 @@ export const SetGameDifficultyScreen = ({ navigation }) => {
                 <Text style={ styles.header }>Ваш класс?</Text>
             </View>
             <View style={ styles.difficultyLevelsContainer }>
-                <Pressable style={{ ...styles.difficultyLevelItem, backgroundColor: difficultyItems[3] }} onPress={ () => setDifficultyLevel(3) } >
-                    <Text style={ styles.difficultyLevelItemDigit }>3</Text>
-                    <Text style={ styles.difficultyLevelItemText }>Легко</Text>
-                </Pressable>
-                <Pressable style={{ ...styles.difficultyLevelItem, backgroundColor: difficultyItems[2] }} onPress={ () => setDifficultyLevel(2)} >
-                    <Text style={ styles.difficultyLevelItemDigit }>2</Text>
-                    <Text style={ styles.difficultyLevelItemText }>Средне</Text>
-                </Pressable>
-                <Pressable style={{ ...styles.difficultyLevelItem, backgroundColor: difficultyItems[1] }} onPress={ () => setDifficultyLevel(1) } >
-                    <Text style={ styles.difficultyLevelItemDigit }>1</Text>
-                    <Text style={ styles.difficultyLevelItemText }>Хардкор</Text>
-                </Pressable>
+                { items() }
             </View>
             <View style={ styles.nextButtonContainer }>
                 <Button buttonStyle={ styles.nextButton } titleStyle={ styles.nextButtonTitle } type="outline" title="Продолжить" onPress={ navToInputAgeScreen }/>
