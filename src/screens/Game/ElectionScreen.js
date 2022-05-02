@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, BackHandler } from 'react-native';
+import { Text, View, StyleSheet, BackHandler, Image, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { Button } from 'react-native-elements';
 import GameWrapper from "../../components/GameWrapper";
 import { THEME } from "../../styles/theme";
@@ -29,7 +30,185 @@ const Election = ({ navigation }) => {
             () => {
                 dispatch(setIsElectionOverOrNotHeld( true ));
                 setAlert({ ...alert, isVisible: false });
-                navigation.navigate('GameMainScreen', { electionFinished: true });
+                navigation.navigate('GameMainScreen');
+            }
+        ]
+    })
+    
+    const skipElection = () => {
+        setAlert({ ...alert, isVisible: true  });
+    }
+
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener( 'hardwareBackPress', skipElection );
+        return () => backHandler.remove();
+    })
+
+    const participateElection = () => {
+        const result = Math.random();
+        if( result < 0.5 ) {
+            dispatch(setSocialStatus( currentSocialStatus + 1 ));
+            setAlert({ ...alert, 
+                       isVisible: true, 
+                       data: { ...ELECTION_SCREEN_WIN_ELECTION, message: 'Теперь вы ' + SOCIAL_STATUSES[ currentSocialStatus + 1 ] + '. Следующие выборы через 2 года.' }
+                    });
+        } else {
+            setAlert({ ...alert, 
+                        isVisible: true, 
+                        data: { ...ELECTION_SCREEN_LOSE_ELECTION, message: 'Вы набрали только 40% голосов. Следующие выборы через 2 года.' }
+                    });
+        }
+    }
+
+    const isElectionHeld = (
+        <ScrollView style={ styles.container }>
+            <CustomAlert alert={ alert } setAlert={ setAlert } />          
+            <View>
+                <Text style={ styles.text }>В настоящее время вы</Text>
+            </View> 
+            <View style={ styles.socialStatusContainer }>
+                <Image style={ styles.image } resizeMode='center' source={ require('../../assets/images/jentleman.png') } />
+                <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus ] }</Text>
+            </View>
+            <View>
+                <Text style={ styles.text }>Примите участие в выборах.</Text>
+            </View>
+            <View style={ styles.socialStatusContainer }>
+                <Text style={{ ...styles.socialStatusText, marginBottom: 0, marginTop: hp('1%') }}>Избирается:</Text>
+                <Image style={ styles.image } resizeMode='center' source={ require('../../assets/images/jentleman.png') } />
+                <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus + 1 ] }</Text>
+            </View>
+            <View>
+                <Text style={ styles.text }>Кампания обойдется в 1500$, вероятность успеха 0%.</Text>
+            </View>
+            <View style={ styles.downTextContainer }>
+                <Text style={{ ...styles.text, fontSize: THEME.FONT45 }}>Участвуете?</Text>
+            </View>
+            <View style={ styles.buttonsContainer }>
+                <Button
+                    buttonStyle={ styles.takePartButton } 
+                    titleStyle={ styles.nextButtonTitle }
+                    type="outline" 
+                    title="Да"
+                    onPress={ participateElection }  
+                />
+                <Button
+                    buttonStyle={ styles.nextButton } 
+                    titleStyle={ styles.nextButtonTitle }
+                    type="outline" 
+                    title="Нет"
+                    onPress={ skipElection }  
+                />
+            </View>
+        </ScrollView>
+    )
+
+    const isElectionNotHeld = (
+        <View style={ styles.container }>
+            <View style={{ ...styles.dataContainer, justifyContent: 'center' }}>
+                <Text style={ styles.electionNotHeldText }>Год { year }.</Text>
+                <Text style={ styles.electionNotHeldText }>В этом году выборы не проводятся!!!</Text>   
+            </View>
+            <View style={ styles.buttonsContainer }>
+                <Button
+                    buttonStyle={{ ...styles.takePartButton, width: wp('96%'), marginLeft: wp('2%') }} 
+                    titleStyle={ styles.nextButtonTitle }
+                    type="outline" 
+                    title="Продолжить"
+                    onPress={ () => navigation.navigate('GameMainScreen') }  
+                />
+            </View>
+        </View>
+    )
+
+    return (Number.isInteger( year / 2 )) ? isElectionHeld : isElectionNotHeld;
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        width: '96%',
+        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
+        marginLeft: '2%',
+        marginRight: '2%',
+    },
+    dataContainer: {
+       flex: 1,
+    },
+    socialStatusContainer: {
+        backgroundColor: 'rgba(0, 0, 0, .2)',
+        marginBottom: hp('1%')
+    },
+    image: {
+        marginTop: hp('2%'),
+        alignSelf: 'center',
+        height: hp('40%')
+    },
+    text: {
+        color: THEME.TEXT_COLOR,
+        fontFamily: 'nunito-extralight',
+        fontSize: THEME.FONT35,
+        textAlign: 'center',
+        marginBottom: hp('1.5%'),
+    },
+    socialStatusText: {
+        color: THEME.TEXT_COLOR,
+        fontFamily: 'nunito-semibolditalic',
+        fontSize: THEME.FONT40,
+        textAlign: 'center',
+        marginBottom: hp('2%')
+    },
+    electionNotHeldText: {
+        color: THEME.TEXT_COLOR,
+        fontFamily: 'nunito-semibolditalic',
+        fontSize: THEME.FONT40,
+        textAlign: 'center',
+    },
+    downTextContainer: {
+        marginTop: hp('1%'),
+        marginBottom: hp('3%'),
+        justifyContent: 'center',
+    },
+    buttonsContainer: {
+        justifyContent: 'center',
+        width:'100%',
+        flexDirection: 'row',
+    },
+    takePartButton: {
+        backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+        height: hp('7%'),
+        borderRadius: wp('10%'),
+        width: wp('46%'),
+        marginRight: 5
+    },  
+    nextButton: {
+        backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+        width: wp('46%'),
+        height: hp('7%'),
+        borderRadius: wp('10%'),
+        marginLeft: 5,
+    },
+    nextButtonTitle: {
+        color: THEME.TEXT_COLOR,
+        fontFamily: 'nunito-semibold',
+        fontSize: THEME.FONT28
+    }
+});
+
+
+/*const Election = ({ navigation }) => {
+    const dispatch = useDispatch();
+    const year = useSelector( getYear );
+    const currentSocialStatus = useSelector( getCurrentSocialStatus );
+    const [ alert, setAlert ] = useState({
+        isVisible: false,
+        data:  ELECTION_SCREEN_SKIP_ELECTION,
+        buttonsCallbacks: [
+            () => {
+                dispatch(setIsElectionOverOrNotHeld( true ));
+                setAlert({ ...alert, isVisible: false });
+                navigation.navigate('GameMainScreen');
             }
         ]
     })
@@ -85,7 +264,7 @@ const Election = ({ navigation }) => {
                     <Text style={{ ...styles.text, fontSize: THEME.FONT25 }}>Участвуете?</Text>
                 </View>
             </View>
-            <View style={ styles.nextButtonContainer }>
+            <View style={ styles.buttonsContainer }>
                 <Button
                     buttonStyle={ styles.takePartButton } 
                     titleStyle={ styles.nextButtonTitle }
@@ -110,7 +289,7 @@ const Election = ({ navigation }) => {
                 <Text style={ styles.electionNotHeldText }>Год { year }.</Text>
                 <Text style={ styles.electionNotHeldText }>В этом году выборы не проводятся!!!</Text>   
             </View>
-            <View style={ styles.nextButtonContainer }>
+            <View style={ styles.buttonsContainer }>
                 <Button
                     buttonStyle={{ ...styles.takePartButton, width: THEME.SCREEN_WIDTH - 40 }} 
                     titleStyle={ styles.nextButtonTitle }
@@ -170,7 +349,7 @@ const styles = StyleSheet.create({
         fontSize: THEME.FONT30,
         textAlign: 'center',
     },
-    nextButtonContainer: {
+    buttonsContainer: {
         flex: 0.1,
         alignItems: 'center',
         width:'100%',
@@ -195,4 +374,4 @@ const styles = StyleSheet.create({
         fontFamily: 'nunito-semibold',
         fontSize: THEME.FONT17,
     }
-});
+});*/

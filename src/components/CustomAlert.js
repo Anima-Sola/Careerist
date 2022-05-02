@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { THEME } from "../styles/theme";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
@@ -100,14 +101,14 @@ const styles = StyleSheet.create({
     header: {
         color: THEME.SIDE_MENU_ITEMS_TEXT_COLOR,
         fontFamily: 'nunito-semibold',
-        fontSize: THEME.FONT25,
+        fontSize: THEME.FONT40,
         textAlign: 'center',
         paddingTop: 35
     },
     text: {
         color: THEME.SIDE_MENU_ITEMS_TEXT_COLOR,
         fontFamily: 'nunito-light',
-        fontSize: THEME.FONT20,
+        fontSize: THEME.FONT30,
         textAlign: 'center',
         paddingTop: 10,
         paddingBottom: 20
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
     buttonTitle: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-semibold',
-        fontSize: THEME.FONT17,        
+        fontSize: THEME.FONT28,        
     },
 })
 

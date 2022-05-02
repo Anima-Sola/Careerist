@@ -1,14 +1,17 @@
 import React, { useRef } from "react";
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ImageBackground } from 'react-native';
 import { Directions, GestureDetector, Gesture } from "react-native-gesture-handler";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import { THEME } from "../styles/theme";
-import { getCash } from "../store/selectors";
+import { getCash, getYear, getPlayerAge } from "../store/selectors";
 import SideMenu from "./SideMenu";
 
 const GameWrapper = ({ wrappedComponent }) => {
     const cash = useSelector( getCash );
+    const year = useSelector( getYear );
+    const playerAge = useSelector( getPlayerAge ); 
     const childRef = useRef();
 
     const flingRightGesture = Gesture.Fling()
@@ -20,6 +23,7 @@ const GameWrapper = ({ wrappedComponent }) => {
     return (
         <GestureDetector gesture={ flingRightGesture }>
             <View style={ styles.container }>
+                <View style={ styles.paddingStatusBar }></View>
                 <View style={ styles.header }>
                     <Pressable onPress={() => { childRef.current.showSideMenu() }}>  
                         <Ionicons name="ios-menu" size={32} color="white"/>
@@ -30,6 +34,10 @@ const GameWrapper = ({ wrappedComponent }) => {
                     </View>
                 </View>
                 { wrappedComponent }
+                <View style={ styles.footer }>
+                    <Text style={ styles.footerText }>Год: { year }</Text>
+                    <Text style={ styles.footerText }>Возраст: { playerAge }</Text>
+                </View>
             <SideMenu ref={ childRef } navigation={ wrappedComponent.props.navigation }/>
             </View>
         </GestureDetector>
@@ -39,30 +47,46 @@ const GameWrapper = ({ wrappedComponent }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
-        paddingLeft: 20,
-        paddingRight: 20,
-        paddingBottom: 20,
-        paddingTop: THEME.STATUSBAR_HEIGHT + THEME.H_MARGIN10,
+    },
+    paddingStatusBar: {
+        paddingTop: THEME.STATUSBAR_HEIGHT,
+        backgroundColor: THEME.FORTH_BACKGROUND_COLOR, 
     },
     header: {
         flexDirection: 'row',
         width: '100%',
         alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingLeft: wp('5%'),
+        paddingRight: wp('5%'),
+        height: hp('8%'),
+        backgroundColor: THEME.FORTH_BACKGROUND_COLOR,
     },
     walletContainer: {
-        position: 'absolute',
-        right: 0,
         flexDirection: 'row',
         alignItems: 'center'
     },
     wallet: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-semibold',
-        fontSize: THEME.FONT25,
+        fontSize: THEME.FONT35,
         paddingLeft: 10  
+    },
+    footer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        height: hp('8%'),
+        paddingLeft: wp('5%'),
+        paddingRight: wp('5%'),
+        backgroundColor: THEME.FORTH_BACKGROUND_COLOR,
+    }, 
+    footerText: {
+        color: THEME.TEXT_COLOR,
+        fontFamily: 'nunito-semibold',
+        fontSize: THEME.FONT30,
+        
     }
 })
 

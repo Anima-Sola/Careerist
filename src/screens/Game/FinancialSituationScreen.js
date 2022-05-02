@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { getYear, getCash } from '../../store/selectors';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
@@ -21,8 +22,8 @@ const FinancialSituation = ({ navigation }) => {
     return (
         <View style={ styles.container }>
             <View style={ styles.dataContainer }>
-                <Text style={{ ...styles.text, marginBottom: 10 }}>Год { year }</Text>
-                <Text style={{ ...styles.text, marginBottom: 20 }}>Наличные средства { cash }$</Text>
+                <Text style={{ ...styles.text, marginBottom: hp('1%') }}>Год { year }</Text>
+                <Text style={{ ...styles.text, marginBottom: hp('3%') }}>Наличные средства { cash }$</Text>
                 <View style={ styles.table }>
                     <View style={ styles.row }>
                         <View style={ styles.column }>
@@ -76,10 +77,10 @@ const FinancialSituation = ({ navigation }) => {
                     </View>
                 </View>
             </View>
-            <View style={ styles.nextButtonContainer }>
+            <View style={ styles.buttonContainer }>
                 <Button
-                    buttonStyle={ styles.nextButton } 
-                    titleStyle={ styles.nextButtonTitle }
+                    buttonStyle={ styles.button } 
+                    titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Продолжить"
                     onPress={ () => navigation.navigate('GameMainScreen') }  
@@ -92,23 +93,25 @@ const FinancialSituation = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: '100%',
+        width: '96%',
+        marginLeft: '2%',
+        marginRight: '2%'
     },
     dataContainer: {
         flex: 1,
         alignItems: 'center',
-        marginTop: 30,
+        marginTop: hp('2%'),
     },
     text: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-light',
-        fontSize: THEME.FONT20,
+        fontSize: THEME.FONT35,
         textAlign: 'center',
     },
     table: {
         borderWidth: 1, 
         borderColor: '#fff',
-        width: '100%'
+        width: '100%',
     },
     row: {
         flexDirection: 'row'
@@ -120,22 +123,23 @@ const styles = StyleSheet.create({
     cellText: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-light',
-        fontSize: THEME.FONT17,
+        fontSize: THEME.FONT28,
     },  
-    nextButtonContainer: {
+    buttonContainer: {
         flex: 0.1,
-        justifyContent: 'flex-end',
-        width:'100%',
+        justifyContent: 'center',
+        width: '100%',
+        marginBottom: hp('1%'),
     },
-    nextButton: {
+    button: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
         width: '100%',
-        height: 50,
-        borderRadius: 25,
+        height: hp('7%'),
+        borderRadius: wp('10%'),
     },
-    nextButtonTitle: {
+    buttonTitle: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-semibold',
-        fontSize: THEME.FONT17,
+        fontSize: THEME.FONT28,
     }
 });

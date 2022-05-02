@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useReducer } from "react";
-import { View, Text, StyleSheet, Pressable, BackHandler } from 'react-native';
+import { View, Text, StyleSheet, Pressable, BackHandler, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { THEME } from "../../styles/theme";
 import GameWrapper from "../../components/GameWrapper";
-import { getIsElectionOverOrNotHeld } from "../../store/selectors";
+import { getYear, getIsElectionOverOrNotHeld } from "../../store/selectors";
 import CustomAlert from '../../components/CustomAlert';
 import { GAME_MAIN_SCREEN_QUIT_GAME_ALERT, GAME_MAIN_SCREEN_SCLEROSIS_WARNING } from "../../store/constants";
 
@@ -18,6 +19,7 @@ export const GameMainScreen = ({ navigation }) => {
 const MainMenu = ({ navigation }) => {
     const dispatch = useDispatch();
     const canNavToElectionScreen = useSelector( getIsElectionOverOrNotHeld );
+    const year = useSelector( getYear );
     const [ alert, setAlert ] = useState({ 
         isVisible: false, 
         data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT,
@@ -39,7 +41,8 @@ const MainMenu = ({ navigation }) => {
                     setAlert({ ...alert, isVisible: true, data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT });
                     return true;
                 case 'ElectionScreen':
-                    return true;
+                    return (Number.isInteger( year / 2 )) ? true : false;
+                    //return true;
                 default:
                     return false;
             }
@@ -61,7 +64,7 @@ const MainMenu = ({ navigation }) => {
     }
 
     return (
-        <View style={ styles.container }>
+        <ScrollView style={ styles.container }>
             <CustomAlert alert={ alert } setAlert={ setAlert } />
             <Text style={ styles.title }>Что вас интересует?</Text>
             <View style={ styles.menu }>
@@ -101,7 +104,7 @@ const MainMenu = ({ navigation }) => {
                     </Pressable>
                 </View>
             </View>
-        </View>
+        </ScrollView >
     )
 }
 
@@ -109,14 +112,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: '100%',
+        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
     },
     title: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-lightitalic',
-        fontSize: THEME.FONT20,
+        fontFamily: 'nunito-extralight',
+        fontSize: THEME.FONT35,
         textAlign: 'center',
-        marginTop: 10,
-        marginBottom: 15
+        marginBottom: hp('1%')
     },
     menu: {
         flex: 1,
@@ -124,18 +128,18 @@ const styles = StyleSheet.create({
     },
     menuRow: {
         flexDirection: 'row',
-        flex: 0.25,
+        height: THEME.SCREEN_WIDTH * 0.5 - wp('4%')
     },  
     menuItem: {
         margin: 5,
-        width: '50%',
-        borderRadius: 10,
+        width: THEME.SCREEN_WIDTH * 0.5 - wp('4%'),
+        borderRadius: wp('3%'),
         justifyContent: 'center'
     },
     menuItemText: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-light',
-        fontSize: THEME.FONT17,
+        fontSize: THEME.FONT30,
         textAlign: 'center',
     }
 })

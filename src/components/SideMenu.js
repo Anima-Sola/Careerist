@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     sideMenuItemText: {
         color: THEME.SIDE_MENU_ITEMS_TEXT_COLOR,
         fontFamily: 'nunito-semibold',
-        fontSize: THEME.FONT17,
+        fontSize: THEME.FONT28,
         marginLeft: 10
     },
     sideMenuOverlay: {

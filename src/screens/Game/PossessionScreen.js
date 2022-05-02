@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
 import { getPossessionList, getPossessionCostList } from '../../store/selectors';
@@ -44,10 +45,12 @@ const Possession = ({ navigation }) => {
         });
 
         return (
-            <View style={ styles.itemsListContainer }>
-                <Text style={ styles.text }>Вы можете { typeOfDealName }:</Text>
+            <>
+                <View style={{ height: hp('7%'), justifyContent: 'center' }}>
+                    <Text style={ styles.text }>Вы можете { typeOfDealName }:</Text>
+                </View>
                 { items }
-            </View>
+            </>
         )
     }
 
@@ -66,9 +69,11 @@ const Possession = ({ navigation }) => {
             <View style={ styles.dataContainer }>
                { listForSale() }
                { listToBuy() }
-               <Text style={ styles.text }>Расходы на содержание 45% стоимости в год</Text>
+               <View style={{ height: hp('10%'), justifyContent: 'center' }}>
+                    <Text style={ styles.text }>Расходы на содержание 45% стоимости в год</Text>
+               </View>
             </View>
-            <View style={ styles.buttonContainer }>
+            <View style={ styles.buttonsContainer }>
                 <Button
                     buttonStyle={ styles.buyButton } 
                     titleStyle={ styles.buttonTitle }
@@ -104,60 +109,55 @@ const styles = StyleSheet.create({
     dataContainer: {
         flex: 0.9,
         alignItems: 'center',
-        marginTop: 10,
-    },
-    itemsListContainer: {
-        width:'100%'
     },
     itemContainer: {
-        width:'100%',
         flexDirection: 'row',
-        height: THEME.SCREEN_HEIGHT / 10,
-        marginBottom: 15
+        height: hp('10%'),
     },
     itemTitle: {
         backgroundColor: 'rgba(0, 0, 0, .2)',
         justifyContent: 'center',
         borderBottomLeftRadius: 10,
         borderTopLeftRadius: 10,
-        width: '60%'
+        width: '60%',
+        marginBottom: hp('1.5%')
     },  
     itemCost: {
         backgroundColor: 'rgba(0, 0, 0, .2)',
         justifyContent: 'center',
         borderBottomRightRadius: 10,
         borderTopRightRadius: 10,
-        width: '40%'
+        width: '40%',
+        marginBottom: hp('1.5%')
     },  
     itemText: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-extralight',
-        fontSize: THEME.FONT20,
+        fontSize: hp('3%'),
         paddingLeft: 15
     },
     text: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-light',
-        fontSize: THEME.FONT20,
+        fontSize: hp('3.5%'),
         textAlign: 'center',
-        marginBottom: 20
     },
-    buttonContainer: {
+    buttonsContainer: {
         flex: 0.1,
         alignItems: 'center',
-        width:'100%',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'center'
     },
     buyButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
         height: 50,
         borderRadius: 25,
-        width: THEME.SCREEN_WIDTH / 2 - 25,
+        width: wp('43%'),
         marginRight: 5
     },  
     sellButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-        width: THEME.SCREEN_WIDTH / 2 - 25,
+        width: wp('43%'),
         height: 50,
         borderRadius: 25,
         marginLeft: 5
@@ -165,6 +165,6 @@ const styles = StyleSheet.create({
     buttonTitle: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-semibold',
-        fontSize: THEME.FONT17,
+        fontSize: hp('2.5%'),
     }
 })

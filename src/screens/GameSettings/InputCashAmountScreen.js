@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
         fontSize: THEME.FONT30,
         textAlign: 'center',
         paddingTop: 20,
-        lineHeight: 35
+        lineHeight: 30
     },
     inputContainer: {
         flex: 0.5,
