@@ -2,6 +2,7 @@ import { THEME } from "../styles/theme";
 
 export const SOCIAL_STATUSES = [ 'Бизнесмен', 'Лидер профсоюза мусорщиков', 'Шериф', 'Сенатор', 'Президент' ];
 export const POSSESSION_LIST = [ 'Квартиру', 'Машину', 'Виллу', 'Яхту', 'Самолет'];
+export const EMPLOYEES_LIST = [ 'Маклера', 'Врача', 'Адвоката', 'Детектива', 'Личную охрану' ];
 
 //AlertWindows constants
 export const INPUT_AGE_SCREEN_BABY_ALERT = {

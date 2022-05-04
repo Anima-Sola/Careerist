@@ -7,6 +7,8 @@ export const getCurrentSocialStatus = state => state.gameSettingsReducer.current
 export const getIsElectionOverOrNotHeld = state => state.gameSettingsReducer.isElectionOverOrNotHeld;
 export const getPossessionList = state => state.gameSettingsReducer.possession;
 export const getPossessionCostList = state => state.gameSettingsReducer.possessionCost;
+export const getEmployeesList = state => state.gameSettingsReducer.employees;
+export const getEmployeesSalaryList = state => state.gameSettingsReducer.employeesSalary;
 
 //App settings selectors
 export const getIsGameStarted = state => state.appSettingsReducer.isGameStarted;

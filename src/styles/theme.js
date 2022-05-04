@@ -37,6 +37,8 @@ export const THEME = {
     FONT25: normalize(25),
     FONT30: normalize(30),
     FONT40: normalize(40),
+    FONT22: hp('2.2%'),
+    FONT25: hp('2.5%'),
     FONT28: hp('2.8%'),
     FONT30: hp('3%'),
     FONT35: hp('3.5%'),

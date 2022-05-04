@@ -74,6 +74,20 @@ export const setPossessionCostList = ( list ) => {
     }
 }
 
+export const setEmployeesList = ( list ) => {
+    return {
+        type: 'SET_EMPLOYEES_LIST',
+        payload: list
+    }
+}
+
+export const setEmployeesSalaryList = ( list ) => {
+    return {
+        type: 'SET_EMPLOYEES_SALARY_LIST',
+        payload: list
+    }
+}
+
 //App settings actions
 export const loadAppSettings = () => {
     return async dispatch => {

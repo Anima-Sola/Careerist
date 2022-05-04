@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-light',
+        fontFamily: 'nunito-extralight',
         fontSize: THEME.FONT35,
         textAlign: 'center',
     },
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     },
     cellText: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-light',
+        fontFamily: 'nunito-extralight',
         fontSize: THEME.FONT28,
     },  
     buttonContainer: {

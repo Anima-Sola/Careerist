@@ -5,48 +5,48 @@ import { Button } from 'react-native-elements';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
-import { getPossessionList, getPossessionCostList } from '../../store/selectors';
-import { POSSESSION_LIST } from '../../store/constants';
-import { setPossessionList, setPossessionCostList } from '../../store/actions/actions';
+import { getEmployeesList, getEmployeesSalaryList } from '../../store/selectors';
+import { EMPLOYEES_LIST } from '../../store/constants';
+import { setEmployeesList, setEmployeesSalaryList } from '../../store/actions/actions';
 
-import Flat from "../../assets/images/possession/flat.png";
-import Car from "../../assets/images/possession/car.png";
-import Villa from "../../assets/images/possession/villa.png";
-import Yacht from "../../assets/images/possession/yacht.png";
-import Plane from "../../assets/images/possession/plane.png";
+import Makler from "../../assets/images/employees/makler.png";
+import Doctor from "../../assets/images/employees/doctor.png";
+import Lawyer from "../../assets/images/employees/lawyer.png";
+import Detective from "../../assets/images/employees/detective.png";
+import Security from "../../assets/images/employees/security.png";
 
-export const PossessionScreen = ({ navigation }) => {
-    const wrappedComponent = <Possession navigation={ navigation } />
+export const EmployeesScreen = ({ navigation }) => {
+    const wrappedComponent = <Employees navigation={ navigation } />
 
     return (
         <GameWrapper wrappedComponent={ wrappedComponent } />
     )
 };
 
-const Possession = ({ navigation }) => {
+const Employees = ({ navigation }) => {
     const dispatch = useDispatch();
-    const possessionList = useSelector( getPossessionList );
-    const possessionCostList = useSelector( getPossessionCostList );
+    const employeesList = useSelector( getEmployeesList );
+    const employeesSalaryList = useSelector( getEmployeesSalaryList );
     const [ activeItem, setActiveItem ] = useState( 0 );
 
-    const getListBuyOrSale = ( typeOfDeal = false ) => {
+    const getListHireOrFire = ( typeOfDeal = false ) => {
         let i = -1;
-        const typeOfDealName = ( typeOfDeal ) ? 'продать' : 'купить';
-        const possessionImageFiles = [ Flat, Car, Villa, Yacht, Plane ];
+        const typeOfDealName = ( typeOfDeal ) ? 'уволить' : 'нанять';
+        const employeesImageFiles = [ Makler, Doctor, Lawyer, Detective, Security ];
 
-        const items = possessionList.map( element => {
+        const items = employeesList.map( element => {
             i++;
             if( element === typeOfDeal ) {
                 const activeItemBackgroudColor = ( i === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
                 return (
                     <Pressable style={ styles.itemContainer } key={ i } onPress={eval( '() => setActiveItem(' + i + ')' )}>
                         <View style={{ ...styles.itemImage, backgroundColor: activeItemBackgroudColor }}>
-                            <Image style={ styles.image } resizeMode='center' source={ possessionImageFiles[ i ] } />
+                            <Image style={ styles.image } resizeMode='center' source={ employeesImageFiles[ i ] } />
                         </View>
                         <View style={{ ...styles.itemName, backgroundColor: activeItemBackgroudColor }}>
-                            <Text style={ styles.itemText }>{ POSSESSION_LIST[ i ] }</Text>
+                            <Text style={ styles.itemText }>{ EMPLOYEES_LIST[ i ] }</Text>
                             <View style={{ height: hp('1%') }}></View>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Цена { possessionCostList[ i ] }$</Text>
+                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Зарплата { employeesSalaryList[ i ] }$ в год</Text>
                         </View>
                     </Pressable>
                 )
@@ -61,41 +61,40 @@ const Possession = ({ navigation }) => {
         )
     }
 
-    const listForSale = () => {
-        const isSomethingToSale = possessionList.indexOf( true );
-        if( isSomethingToSale !== -1 ) return getListBuyOrSale( true );
+    const listToFire = () => {
+        const isSomethingToFire = employeesList.indexOf( true );
+        if( isSomethingToFire !== -1 ) return getListHireOrFire( true );
     }
 
-    const listToBuy = () => {
-        const isSomethingToBuy = possessionList.indexOf( false );
-        if( isSomethingToBuy !== -1 ) return getListBuyOrSale();
+    const listToHire = () => {
+        const isSomethingToHire = employeesList.indexOf( false );
+        if( isSomethingToHire !== -1 ) return getListHireOrFire();
     }
 
     return (
         <ScrollView style={ styles.container }>
-            { listForSale() }
-            { listToBuy() }
-            <Text style={ styles.expensesText }>Расходы на содержание 45% стоимости в год</Text>
+            { listToFire() }
+            { listToHire() }
             <View style={ styles.buttonsContainer }>
                 <Button
-                    buttonStyle={ styles.buyButton } 
+                    buttonStyle={ styles.hireButton } 
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
-                    title="Купить"
+                    title="Нанять"
                     onPress={ () => { 
-                        dispatch( setPossessionList([true, true, false, true, false]) );
-                        dispatch( setPossessionCostList([ 0, 2000, 10000, 100000, 0 ]) );
+                        dispatch( setEmployeesList([true, true, false, true, false]) );
+                        dispatch( setEmployeesSalaryList([ 0, 2000, 10000, 100000, 0 ]) );
                         navigation.navigate('GameMainScreen');
                     }}    
                 />
                 <Button
-                    buttonStyle={ styles.sellButton } 
+                    buttonStyle={ styles.fireButton } 
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
-                    title="Продать"
+                    title="Уволить"
                     onPress={ () => { 
-                        dispatch( setPossessionList([false, false, false, false, false]) );
-                        dispatch( setPossessionCostList([ 0, 2000, 0, 100000, 0 ]) );
+                        dispatch( setEmployeesList([false, false, false, false, false]) );
+                        dispatch( setEmployeesSalaryList([ 0, 2000, 0, 100000, 0 ]) );
                         navigation.navigate('GameMainScreen');
                     }}   
                 />
@@ -150,26 +149,19 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: hp('1.5%')
     },
-    expensesText: {
-        color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-light',
-        fontSize: THEME.FONT35,
-        textAlign: 'center',
-        marginBottom: hp('1.7%')
-    },
     buttonsContainer: {
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'center',
     },
-    buyButton: {
+    hireButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
         height: hp('7%'),
         borderRadius: wp('10%'),
         width: wp('46%'),
         marginRight: 5
     },  
-    sellButton: {
+    fireButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
         width: wp('46%'),
         height: hp('7%'),

@@ -79,11 +79,11 @@ const MainMenu = ({ navigation }) => {
                     </Pressable>
                 </View>
                 <View style={ styles.menuRow }>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'PossessionScreen' ) } >
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'PossessionScreen' ) }>
                         <Text style={ styles.menuItemText }>Личное</Text>
                         <Text style={ styles.menuItemText }>имущество</Text>
                     </Pressable>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } >
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'EmployeesScreen' ) }>
                         <Text style={ styles.menuItemText }>Подчиненные</Text>
                     </Pressable>
                 </View>

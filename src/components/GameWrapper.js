@@ -36,7 +36,7 @@ const GameWrapper = ({ wrappedComponent }) => {
                 { wrappedComponent }
                 <View style={ styles.footer }>
                     <Text style={ styles.footerText }>Год: { year }</Text>
-                    <Text style={ styles.footerText }>Возраст: { playerAge }</Text>
+                    <Text style={ styles.footerText }>Ваш возраст: { playerAge }</Text>
                 </View>
             <SideMenu ref={ childRef } navigation={ wrappedComponent.props.navigation }/>
             </View>
