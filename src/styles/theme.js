@@ -6,7 +6,7 @@ const {
     height: SCREEN_HEIGHT,
 } = Dimensions.get('window');
 
-const scale = SCREEN_WIDTH / 320;
+/*const scale = SCREEN_WIDTH / 320;
 
 function normalize(size) {
     const newSize = size * scale;
@@ -15,7 +15,7 @@ function normalize(size) {
     } else {
         return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
     }
-}
+}*/
 
 export const THEME = {
     MAIN_BACKGROUND_COLOR: '#385C74',
@@ -30,13 +30,6 @@ export const THEME = {
     SCREEN_HEIGHT,
     SCREEN_ASPECT_RATIO: SCREEN_HEIGHT/SCREEN_WIDTH,
     STATUSBAR_HEIGHT: StatusBar.currentHeight,
-    FONT12: normalize(12),
-    FONT15: normalize(15),
-    FONT17: normalize(17),
-    FONT20: normalize(20),
-    FONT25: normalize(25),
-    FONT30: normalize(30),
-    FONT40: normalize(40),
     FONT22: hp('2.2%'),
     FONT25: hp('2.5%'),
     FONT28: hp('2.8%'),

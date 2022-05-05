@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     header: {
         color: '#fff',
         fontFamily: 'nunito-light',
-        fontSize: THEME.FONT30,
+        fontSize: THEME.FONT40,
         textAlign: 'center',
     }
 });

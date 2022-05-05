@@ -88,6 +88,20 @@ export const setEmployeesSalaryList = ( list ) => {
     }
 }
 
+export const setBusinessList = ( list ) => {
+    return {
+        type: 'SET_BUSINESS_LIST',
+        payload: list
+    }
+}
+
+export const setBusinessCostList = ( list ) => {
+    return {
+        type: 'SET_BUSINESS_COST_LIST',
+        payload: list
+    }
+}
+
 //App settings actions
 export const loadAppSettings = () => {
     return async dispatch => {

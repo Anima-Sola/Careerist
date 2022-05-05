@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, StatusBar } from 'react-native';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch } from "react-redux";
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -174,7 +175,7 @@ const styles = StyleSheet.create({
     title: {
         color: '#fff',
         fontFamily: 'nunito-light',
-        fontSize: THEME.FONT30,
+        fontSize: THEME.FONT40,
         textAlign: 'center',
         lineHeight: 40,
         paddingTop: 10
@@ -186,14 +187,14 @@ const styles = StyleSheet.create({
     text: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-extralight',
-        fontSize: THEME.FONT20,
+        fontSize: THEME.FONT30,
         textAlign: 'center',
         lineHeight: 40
     },  
     image: {
         flex: 0.55,
-        width: 0.40 * THEME.SCREEN_WIDTH,
-        height: 0.40 * THEME.SCREEN_WIDTH * THEME.SCREEN_ASPECT_RATIO,
+        width: wp('40%'),
+        height: wp('40%')
     },
     buttonCircle: {
         width: 80,
@@ -213,7 +214,7 @@ const styles = StyleSheet.create({
     skipButtonText: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-semibold',
-        fontSize: THEME.FONT17,
+        fontSize: THEME.FONT25,
         textAlign: 'center',
         paddingBottom: 4
     },

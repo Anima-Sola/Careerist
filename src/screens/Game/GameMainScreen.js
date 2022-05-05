@@ -91,7 +91,7 @@ const MainMenu = ({ navigation }) => {
                     <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } >
                         <Text style={ styles.menuItemText }>Биржа</Text>
                     </Pressable>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } >
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'BusinessScreen' ) }>
                         <Text style={ styles.menuItemText }>Бизнес</Text>
                     </Pressable>
                 </View>

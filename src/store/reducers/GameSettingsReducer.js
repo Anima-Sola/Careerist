@@ -12,7 +12,9 @@ const initialState = {
     possession: [ false, false, false, false, false ],  // Наличие - true / Отсутствие - false квартиры, машины, виллы, яхты, самолета
     possessionCost: [ 0, 0, 0, 0, 0],                   // Цена недвижимости
     employees: [ false, false, false, false, false ],   // Наличие - true / Отсутствие - false маклера, врача, адвоката, детектива, личной охраны
-    employeesSalary: [ 0, 0, 0, 0, 0]                   // Зарплата подчиненных
+    employeesSalary: [ 0, 0, 0, 0, 0],                  // Зарплата подчиненных
+    business: [ false, false, false, false, false ],    // Наличие - true / Отсутствие - false бара, ресторана, магазина, отеля, завода
+    businessCost: [ 0, 0, 0, 0, 0 ]                     // Цена бизнеса
 }
 
 const saveState = ( state, param, payload ) => {
@@ -46,6 +48,10 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
             return saveState( state, 'employees', action.payload );
         case 'SET_EMPLOYEES_SALARY_LIST':
             return saveState( state, 'employeesSalary', action.payload );
+        case 'SET_BUSINESS_LIST':
+            return saveState( state, 'business', action.payload );
+        case 'SET_BUSINESS_COST_LIST':
+            return saveState( state, 'businessCost', action.payload );
         case 'LOAD_GAME_SETTINGS':
             if ( action.payload ) return action.payload;
             return state;

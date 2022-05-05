@@ -11,6 +11,7 @@ import { FinancialSituationScreen } from "../screens/Game/FinancialSituationScre
 import { ElectionScreen } from "../screens/Game/ElectionScreen";
 import { PossessionScreen } from '../screens/Game/PossessionScreen';
 import { EmployeesScreen } from '../screens/Game/EmployeesScreen';
+import { BusinessScreen } from '../screens/Game/BusinessScreen';
 
 const AppRootNavigator = createNativeStackNavigator();
 
@@ -60,6 +61,10 @@ export function AppRootNavigation () {
                 <AppRootNavigator.Screen
                     name = "EmployeesScreen"
                     component = { EmployeesScreen }
+                />
+                <AppRootNavigator.Screen
+                    name = "BusinessScreen"
+                    component = { BusinessScreen }
                 />
             </AppRootNavigator.Navigator>
         </NavigationContainer>

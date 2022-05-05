@@ -9,6 +9,8 @@ export const getPossessionList = state => state.gameSettingsReducer.possession;
 export const getPossessionCostList = state => state.gameSettingsReducer.possessionCost;
 export const getEmployeesList = state => state.gameSettingsReducer.employees;
 export const getEmployeesSalaryList = state => state.gameSettingsReducer.employeesSalary;
+export const getBusinessList = state => state.gameSettingsReducer.business;
+export const getBusinessCostList = state => state.gameSettingsReducer.businessCost;
 
 //App settings selectors
 export const getIsGameStarted = state => state.appSettingsReducer.isGameStarted;

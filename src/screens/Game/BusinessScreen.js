@@ -5,48 +5,48 @@ import { Button } from 'react-native-elements';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
-import { getPossessionList, getPossessionCostList } from '../../store/selectors';
-import { POSSESSION_LIST } from '../../store/constants';
-import { setPossessionList, setPossessionCostList } from '../../store/actions/actions';
+import { getBusinessList, getBusinessCostList } from '../../store/selectors';
+import { BUSINESS_LIST } from '../../store/constants';
+import { setBusinessList, setBusinessCostList } from '../../store/actions/actions';
 
-import Flat from "../../assets/images/possession/flat.png";
-import Car from "../../assets/images/possession/car.png";
-import Villa from "../../assets/images/possession/villa.png";
-import Yacht from "../../assets/images/possession/yacht.png";
-import Plane from "../../assets/images/possession/plane.png";
+import Bar from "../../assets/images/business/bar.png";
+import Restraunt from "../../assets/images/business/restraunt.png";
+import Shop from "../../assets/images/business/shop.png";
+import Hotel from "../../assets/images/business/hotel.png";
+import Plant from "../../assets/images/business/plant.png";
 
-export const PossessionScreen = ({ navigation }) => {
-    const wrappedComponent = <Possession navigation={ navigation } />
+export const BusinessScreen = ({ navigation }) => {
+    const wrappedComponent = <Business navigation={ navigation } />
 
     return (
         <GameWrapper wrappedComponent={ wrappedComponent } />
     )
 };
 
-const Possession = ({ navigation }) => {
+const Business = ({ navigation }) => {
     const dispatch = useDispatch();
-    const possessionList = useSelector( getPossessionList );
-    const possessionCostList = useSelector( getPossessionCostList );
+    const businessList = useSelector( getBusinessList );
+    const businessCostList = useSelector( getBusinessCostList );
     const [ activeItem, setActiveItem ] = useState( 0 );
 
     const getListBuyOrSale = ( typeOfDeal = false ) => {
         let i = -1;
         const typeOfDealName = ( typeOfDeal ) ? 'продать' : 'купить';
-        const possessionImageFiles = [ Flat, Car, Villa, Yacht, Plane ];
+        const businessImageFiles = [ Bar, Restraunt, Shop, Hotel, Plant ];
 
-        const items = possessionList.map( element => {
+        const items = businessList.map( element => {
             i++;
             if( element === typeOfDeal ) {
                 const activeItemBackgroudColor = ( i === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
                 return (
                     <Pressable style={ styles.itemContainer } key={ i } onPress={eval( '() => setActiveItem(' + i + ')' )}>
                         <View style={{ ...styles.itemImage, backgroundColor: activeItemBackgroudColor }}>
-                            <Image style={ styles.image } resizeMode='center' source={ possessionImageFiles[ i ] } />
+                            <Image style={ styles.image } resizeMode='center' source={ businessImageFiles[ i ] } />
                         </View>
                         <View style={{ ...styles.itemName, backgroundColor: activeItemBackgroudColor }}>
-                            <Text style={ styles.itemText }>{ POSSESSION_LIST[ i ] }</Text>
+                            <Text style={ styles.itemText }>{ BUSINESS_LIST[ i ] }</Text>
                             <View style={{ height: hp('1%') }}></View>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Цена -{ possessionCostList[ i ] }$</Text>
+                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Годовой доход - { businessCostList[ i ] }$</Text>
                         </View>
                     </Pressable>
                 )
@@ -62,12 +62,12 @@ const Possession = ({ navigation }) => {
     }
 
     const listForSale = () => {
-        const isSomethingToSale = possessionList.indexOf( true );
+        const isSomethingToSale = businessList.indexOf( true );
         if( isSomethingToSale !== -1 ) return getListBuyOrSale( true );
     }
 
     const listToBuy = () => {
-        const isSomethingToBuy = possessionList.indexOf( false );
+        const isSomethingToBuy = businessList.indexOf( false );
         if( isSomethingToBuy !== -1 ) return getListBuyOrSale();
     }
 
@@ -75,7 +75,6 @@ const Possession = ({ navigation }) => {
         <ScrollView style={ styles.container }>
             { listForSale() }
             { listToBuy() }
-            <Text style={ styles.expensesText }>Расходы на содержание 45% стоимости в год</Text>
             <View style={ styles.buttonsContainer }>
                 <Button
                     buttonStyle={ styles.buyButton } 
@@ -83,8 +82,8 @@ const Possession = ({ navigation }) => {
                     type="outline" 
                     title="Купить"
                     onPress={ () => { 
-                        dispatch( setPossessionList([true, true, false, true, false]) );
-                        dispatch( setPossessionCostList([ 0, 2000, 10000, 100000, 0 ]) );
+                        dispatch( setBusinessList([true, true, false, true, false]) );
+                        dispatch( setBusinessCostList([ 0, 2000, 10000, 100000, 0 ]) );
                         navigation.navigate('GameMainScreen');
                     }}    
                 />
@@ -94,8 +93,8 @@ const Possession = ({ navigation }) => {
                     type="outline" 
                     title="Продать"
                     onPress={ () => { 
-                        dispatch( setPossessionList([false, false, false, false, false]) );
-                        dispatch( setPossessionCostList([ 0, 2000, 0, 100000, 0 ]) );
+                        dispatch( setBusinessList([false, false, false, false, false]) );
+                        dispatch( setBusinessCostList([ 0, 2000, 0, 100000, 0 ]) );
                         navigation.navigate('GameMainScreen');
                     }}   
                 />
@@ -149,13 +148,6 @@ const styles = StyleSheet.create({
         fontSize: THEME.FONT35,
         textAlign: 'center',
         marginBottom: hp('1.5%')
-    },
-    expensesText: {
-        color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-light',
-        fontSize: THEME.FONT35,
-        textAlign: 'center',
-        marginBottom: hp('1.7%')
     },
     buttonsContainer: {
         alignItems: 'center',

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
@@ -59,7 +60,7 @@ export const InputСashAmountScreen = ({ navigation }) => {
         <View style={ styles.container }>
             <CustomAlert alert={ alert } setAlert={ setAlert } />
             <View style={ styles.headerContainer }>
-                <Text style={ styles.header }>Сколько имеете наличными?</Text>
+                <Text style={ styles.header }>Стартовый капитал?</Text>
             </View>
             <View style={ styles.inputContainer }>
                 <TextInput
@@ -90,34 +91,32 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
-        paddingTop: THEME.STATUSBAR_HEIGHT,
-        paddingLeft: 20,
-        paddingRight: 20
+        paddingLeft: '2%',
+        paddingRight: '2%'
     },
     headerContainer: {
-        flex: 0.25,
-        justifyContent: 'flex-start',
+        flex: 0.1,
+        justifyContent: 'center',
         width:'100%',
+        marginTop: THEME.STATUSBAR_HEIGHT
     },
     header: {
         color: '#fff',
         fontFamily: 'nunito-light',
-        fontSize: THEME.FONT30,
+        fontSize: THEME.FONT40,
         textAlign: 'center',
-        paddingTop: 20,
-        lineHeight: 30
+        paddingTop: hp('1%')
     },
     inputContainer: {
-        flex: 0.5,
+        flex: 0.8,
         justifyContent: 'center',
         width: '80%'
     },
     input: {
         color: '#fff',
         fontFamily: 'nunito-light',
-        fontSize: THEME.FONT25,
+        fontSize: THEME.FONT35,
         textAlign: 'center',
         paddingBottom: 5,
         borderColor: "#fff",
@@ -125,21 +124,20 @@ const styles = StyleSheet.create({
         borderBottomWidth: 3
     },
     nextButtonContainer: {
-        flex: 0.25,
-        justifyContent: 'flex-end',
-        paddingBottom: 20,
-        width:'100%',
+        flex: 0.1,
+        justifyContent: 'center',
+        width: '100%',
     },
     nextButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
         width: '100%',
-        height: 50,
-        borderRadius: 25,
+        height: hp('7%'),
+        borderRadius: wp('10%'),
     },
     nextButtonTitle: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-semibold',
-        fontSize: THEME.FONT17,
+        fontSize: THEME.FONT28,
     },
     nextButtonDisabledStyle: {
         backgroundColor: THEME.DISABLED_BUTTON_COLOR,

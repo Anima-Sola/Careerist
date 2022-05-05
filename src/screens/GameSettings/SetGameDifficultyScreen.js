@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { Button } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
 import { THEME } from '../../styles/theme';
@@ -49,28 +50,27 @@ export const SetGameDifficultyScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
-        paddingTop: THEME.STATUSBAR_HEIGHT,
-        paddingLeft: 20,
-        paddingRight: 20
+        width: '100%',
+        paddingLeft: '2%',
+        paddingRight: '2%'
     },
     headerContainer: {
-        flex: 0.25,
-        justifyContent: 'flex-start',
+        flex: 0.1,
+        justifyContent: 'center',
         width:'100%',
+        marginTop: THEME.STATUSBAR_HEIGHT
     },
     header: {
         color: '#fff',
         fontFamily: 'nunito-light',
-        fontSize: THEME.FONT30,
+        fontSize: THEME.FONT40,
         textAlign: 'center',
-        paddingTop: 20
+        paddingTop: hp('1%')
     },
     difficultyLevelsContainer: {
-        flex: 0.50,
-        justifyContent: 'space-around',
+        flex: 0.80,
+        justifyContent: 'center',
         width:'100%',
     },
     difficultyLevelItem: {
@@ -78,33 +78,34 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 10,
-        height: THEME.SCREEN_HEIGHT / 7,
+        height: hp('15%'),
+        marginTop: '1%',
+        marginBottom: '1%',
     },
     difficultyLevelItemDigit: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-extralight',
-        fontSize: THEME.FONT30,
+        fontFamily: 'nunito-light',
+        fontSize: THEME.FONT40,
     },
     difficultyLevelItemText: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-extralight',
-        fontSize: THEME.FONT12,
+        fontSize: THEME.FONT25,
     },
     nextButtonContainer: {
-        flex: 0.25,
-        justifyContent: 'flex-end',
-        paddingBottom: 20,
-        width:'100%',
+        flex: 0.1,
+        justifyContent: 'center',
+        width: '100%',
     },
     nextButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
         width: '100%',
-        height: 50,
-        borderRadius: 25,
+        height: hp('7%'),
+        borderRadius: wp('10%'),
     },
     nextButtonTitle: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-semibold',
-        fontSize: THEME.FONT17,
+        fontSize: THEME.FONT28,
     } 
 })
