@@ -46,7 +46,7 @@ const Business = ({ navigation }) => {
                         <View style={{ ...styles.itemName, backgroundColor: activeItemBackgroudColor }}>
                             <Text style={ styles.itemText }>{ BUSINESS_LIST[ i ] }</Text>
                             <View style={{ height: hp('1%') }}></View>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Годовой доход - { businessCostList[ i ] }$</Text>
+                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Годовой доход { businessCostList[ i ] }$</Text>
                         </View>
                     </Pressable>
                 )

@@ -11,6 +11,8 @@ export const getEmployeesList = state => state.gameSettingsReducer.employees;
 export const getEmployeesSalaryList = state => state.gameSettingsReducer.employeesSalary;
 export const getBusinessList = state => state.gameSettingsReducer.business;
 export const getBusinessCostList = state => state.gameSettingsReducer.businessCost;
+export const getStocksQuantityList = state => state.gameSettingsReducer.stocksQuantity;
+export const getStocksCostList = state => state.gameSettingsReducer.stocksCost;
 
 //App settings selectors
 export const getIsGameStarted = state => state.appSettingsReducer.isGameStarted;

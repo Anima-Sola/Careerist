@@ -88,11 +88,12 @@ const MainMenu = ({ navigation }) => {
                     </Pressable>
                 </View>
                 <View style={ styles.menuRow }>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } >
-                        <Text style={ styles.menuItemText }>Биржа</Text>
-                    </Pressable>
                     <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'BusinessScreen' ) }>
+
                         <Text style={ styles.menuItemText }>Бизнес</Text>
+                    </Pressable>
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'StockmarketScreen' ) }>
+                        <Text style={ styles.menuItemText }>Биржа</Text>
                     </Pressable>
                 </View>
                 <View style={ styles.menuRow }>

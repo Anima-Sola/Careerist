@@ -102,6 +102,20 @@ export const setBusinessCostList = ( list ) => {
     }
 }
 
+export const setStocksQuantityList = ( list ) => {
+    return {
+        type: 'SET_STOCKS_QUANTITY_LIST',
+        payload: list
+    }
+}
+
+export const setStocksCostList = ( list ) => {
+    return {
+        type: 'SET_STOCKS_COST_LIST',
+        payload: list
+    }
+}
+
 //App settings actions
 export const loadAppSettings = () => {
     return async dispatch => {
