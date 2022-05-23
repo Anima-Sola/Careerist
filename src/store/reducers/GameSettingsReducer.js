@@ -16,7 +16,7 @@ const initialState = {
     business: [ false, false, false, false, false ],    // Наличие - true / Отсутствие - false бара, ресторана, магазина, отеля, завода
     businessCost: [ 0, 0, 0, 0, 0 ],                    // Цена бизнеса
     stocksQuantity: [ 0, 0, 0, 0, 0 ],                  // Количество акций каждой компании в собственности
-    stocksCost: [ 0, 0, 0, 0, 0 ],                      // Средние цены купленных акций
+    avgStocksCost: [ 0, 0, 0, 0, 0 ],               // Средние цены купленных акций
 }
 
 const saveState = ( state, param, payload ) => {
@@ -56,8 +56,8 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
             return saveState( state, 'businessCost', action.payload );
         case 'SET_STOCKS_QUANTITY_LIST':
             return saveState( state, 'stocksQuantity', action.payload );
-        case 'SET_STOCKS_COST_LIST':
-            return saveState( state, 'stocksCost', action.payload );
+        case 'SET_AVG_STOCKS_COST_LIST':
+            return saveState( state, 'avgStocksCost', action.payload );
         case 'LOAD_GAME_SETTINGS':
             if ( action.payload ) return action.payload;
             return state;

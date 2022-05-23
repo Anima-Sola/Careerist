@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
@@ -6,8 +6,8 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
 import { STOCKS_LIST } from '../../store/constants';
-import { setStocksQuantityList, setStocksCostList } from '../../store/actions/actions';
-import { getStocksQuantityList, getStocksCostList } from '../../store/selectors';
+import { setStocksQuantityList, setAvgStocksCostList } from '../../store/actions/actions';
+import { getStocksQuantityList, getAvgStocksCostList } from '../../store/selectors';
 
 import Gazprom from "../../assets/images/logos/gazprom.png";
 import Rosneft from "../../assets/images/logos/rosneft.png";
@@ -23,24 +23,59 @@ export const StockmarketScreen = ({ navigation }) => {
     )
 };
 
-const Stockmarket = ({ navigation }) => {
-    const stocksQuantityList = useSelector( getStocksQuantityList );
-    const stocksCostList = useSelector( getStocksCostList );
-    const [ stocksBuySellQuantity, setStocksBuySellQuantity ] = useState([ 0, 0, 0, 0, 0 ]);
+const setStockPriceList = () => {
+    const priceList = [];
+    for( let i = 0; i < 5; i++ ) priceList.push( Math.round( 100 * Math.random() ));
+    return priceList;
+}
 
-    const updateStocksBuySellQuantity = ( companyId, value ) => {
+const Stockmarket = ({ navigation }) => {
+    const dispatch = useDispatch();
+    const stocksQuantityList = useSelector( getStocksQuantityList );
+    const stocksAvgCostList = useSelector( getAvgStocksCostList );
+    const [ currentStocksCostList, ] = useState( setStockPriceList() );
+    const [ , forceUpdate ] = useReducer(x => x + 1, 0);
+    const [ stocksBuySellQuantity, setStocksBuySellQuantity ] = useState([ 0, 0, 0, 0, 0 ]);
+    const [ isButtonsDisabled, setIsButtonsDisabled ] = useState([ true, true, true, true, true ]);
+
+    const updateStocksBuySellQuantity = ( id, value ) => {        
+        const buttonsDisabled = isButtonsDisabled;
         let newQty = stocksBuySellQuantity;
         const minQty = 0;
         const maxQty = 100;
-        
-        if(( newQty[ companyId ] + value ) <= minQty ) { 
-            newQty[ companyId ] = minQty;
-        } else if(( newQty[ companyId ] + value ) >= maxQty) {
-            newQty[ companyId ] = maxQty;
+
+        if(( newQty[ id ] + value ) <= minQty ) { 
+            newQty[ id ] = minQty;
+        } else if(( newQty[ id ] + value ) >= maxQty) {
+            newQty[ id ] = maxQty;
         } else {
-            newQty[ companyId ] += value;
+            newQty[ id ] += value;
         }
+
+        buttonDisabled[ id ] = ( newQty[ id ] > 0 ) ? false : true;
+
         setStocksBuySellQuantity( newQty );
+        setIsButtonsDisabled( buttonsDisabled );
+        forceUpdate();
+    }
+
+    const buyStocks = ( id ) => {
+        const qty = stocksQuantityList[ id ] + stocksBuySellQuantity[ id ];
+        const price = Math.round(( stocksQuantityList[ id ] * stocksAvgCostList[ id ] + stocksBuySellQuantity[ id ] * currentStocksCostList[ id ] ) / qty );
+        stocksQuantityList[ id ] = qty;
+        stocksAvgCostList[ id ] = price;
+        dispatch(setStocksQuantityList( stocksQuantityList ));
+        dispatch(setAvgStocksCostList( stocksAvgCostList ));
+        navigation.navigate('GameMainScreen');
+    }
+
+    const sellStocks = ( id ) => {
+        const qty = stocksQuantityList[ id ] - stocksBuySellQuantity[ id ];
+        stocksQuantityList[ id ] = qty;
+        if( qty === 0 ) stocksAvgCostList[ id ] = 0;
+        dispatch(setStocksQuantityList( stocksQuantityList ));
+        dispatch(setAvgStocksCostList( stocksAvgCostList ));
+        navigation.navigate('GameMainScreen');
     }
 
     const stocksList = () => {
@@ -59,7 +94,7 @@ const Stockmarket = ({ navigation }) => {
                             <Text style={ styles.text }>{ element }</Text>
                         </View>
                         <View style={ styles.stockPrice }>
-                            <Text style={{ ...styles.text, fontFamily: 'nunito-semibold' }}>{ stocksCostList[ i ] }$</Text>
+                            <Text style={{ ...styles.text, fontFamily: 'nunito-semibold' }}>{ currentStocksCostList[ i ] }$</Text>
                         </View>
                     </View>
                     <View style={ styles.stockData }>
@@ -108,14 +143,20 @@ const Stockmarket = ({ navigation }) => {
                             <Button
                                 buttonStyle={ styles.buySellButton } 
                                 titleStyle={ styles.buySellButtonTitle }
+                                disabledStyle={ styles.buySellButtonDisabledStyle }
+                                disabled={ isButtonsDisabled[ i ] }
                                 type="outline" 
-                                title="Купить"
+                                title="Продать"
+                                onPress={ eval('() => sellStocks(' + i + ')') }
                             />
                             <Button
                                 buttonStyle={ styles.buySellButton } 
                                 titleStyle={ styles.buySellButtonTitle }
+                                disabledStyle={ styles.buySellButtonDisabledStyle }
+                                disabled={ isButtonsDisabled[ i ] }
                                 type="outline" 
-                                title="Продать"
+                                title="Купить"
+                                onPress={ eval('() => buyStocks(' + i + ')') }
                             />
                         </View>
                     </View>
@@ -166,9 +207,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: hp('1%'),
         marginBottom: hp('1%'),     
-        /*borderColor: "#fff",
-        borderStyle: "solid",
-        borderWidth: 1*/
     },
     stockLogo: {
         paddingLeft: 10,
@@ -246,6 +284,9 @@ const styles = StyleSheet.create({
         fontFamily: 'nunito-semibold',
         fontSize: THEME.FONT28,
     },
+    buySellButtonDisabledStyle: {
+        backgroundColor: THEME.DISABLED_BUTTON_COLOR,
+    },
     buttonContainer: {
         flex: 0.1,
         justifyContent: 'center',
@@ -263,47 +304,3 @@ const styles = StyleSheet.create({
         fontSize: THEME.FONT28,
     }
 })
-
-
-/*<View style={{ ...styles.itemImage, backgroundColor: activeItemBackgroudColor }}>
-                        <Image style={ styles.image } resizeMode='center' source={ logosImageFiles[ i ] } />
-                    </View>
-                    <View style={{ ...styles.itemData, backgroundColor: activeItemBackgroudColor }}>
-                        <View style={ styles.headers }>
-                            <Text style={{ ...styles.itemText, fontFamily: 'nunito-light' }}>{ STOCKS_LIST[ i ] }</Text>
-                            <View style={{ height: hp('1%') }}></View>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Имеете:</Text>
-                            <View style={{ height: hp('1%') }}></View>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Дивиденды:</Text>
-                        </View>
-                        <View style={ styles.data }>
-                            <Text style={ styles.itemPrice }>6$</Text>
-                            <View style={{ height: hp('1%') }}></View>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>{ stocksQuantity[ i ] }</Text>
-                            <View style={{ height: hp('1%') }}></View>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>10%</Text>
-                        </View>
-                    </View>
-                    <View style={ styles.sellBuy }>
-                        <Pressable style={{ ...styles.plusMinus, backgroundColor: activeItemBackgroudColor }}>
-                            <Text style={ styles.itemText }>+</Text>
-                        </Pressable>
-                        <Pressable style={ styles.input }>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT35 }}>1000</Text>
-                        </Pressable>
-                        <Pressable style={{ ...styles.plusMinus, backgroundColor: activeItemBackgroudColor }}>
-                            <Text style={ styles.itemText }>-</Text>
-                        </Pressable>
-                    </View>*/
-
-
-
-/*
-
-            const activeItemBackgroudColor = ( i === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
-            return (
-                <Pressable style={ styles.itemContainer } key={ i } onPress={eval( '() => setActiveItem(' + i + ')' )} >
-                
-                </Pressable>
-            )
-*/            

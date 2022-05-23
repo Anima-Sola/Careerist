@@ -109,9 +109,9 @@ export const setStocksQuantityList = ( list ) => {
     }
 }
 
-export const setStocksCostList = ( list ) => {
+export const setAvgStocksCostList = ( list ) => {
     return {
-        type: 'SET_STOCKS_COST_LIST',
+        type: 'SET_AVG_STOCKS_COST_LIST',
         payload: list
     }
 }
