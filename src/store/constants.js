@@ -5,6 +5,7 @@ export const POSSESSION_LIST = [ 'Квартиру', 'Машину', 'Виллу
 export const EMPLOYEES_LIST = [ 'Маклера', 'Врача', 'Адвоката', 'Детектива', 'Личную охрану' ];
 export const BUSINESS_LIST = [ 'Бар', 'Ресторан', 'Магазин', 'Отель', 'Завод' ];
 export const STOCKS_LIST = [ 'Газпром', 'Роснефть', 'Лукойл', 'Магнит', 'Сбер' ];
+export const BANKING_SERVICES = [ 'Застраховать имущество', 'Сделать вклад', 'Снять со счета', 'Дать ссуду', 'Получить кредит' ];
 
 //AlertWindows constants
 export const INPUT_AGE_SCREEN_BABY_ALERT = {

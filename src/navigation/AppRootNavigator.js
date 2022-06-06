@@ -13,6 +13,12 @@ import { PossessionScreen } from '../screens/Game/PossessionScreen';
 import { EmployeesScreen } from '../screens/Game/EmployeesScreen';
 import { BusinessScreen } from '../screens/Game/BusinessScreen';
 import { StockmarketScreen } from '../screens/Game/StockmarketScreen';
+import { BankScreen } from '../screens/Game/BankScreen';
+import { EnsuranceScreen } from "../screens/Game/BankServices/EnsuranceScreen";
+import { DepositScreen } from "../screens/Game/BankServices/DepositScreen";
+import { WithdrawScreen } from "../screens/Game/BankServices/WithdrawScreen";
+import { LendScreen } from "../screens/Game/BankServices/LendScreen";
+import { BorrowScreen } from "../screens/Game/BankServices/BorrowScreen"; 
 
 const AppRootNavigator = createNativeStackNavigator();
 
@@ -70,6 +76,30 @@ export function AppRootNavigation () {
                 <AppRootNavigator.Screen
                     name = "StockmarketScreen"
                     component = { StockmarketScreen }
+                />
+                <AppRootNavigator.Screen
+                    name = "BankScreen"
+                    component = { BankScreen }
+                />
+                <AppRootNavigator.Screen
+                    name = "EnsuranceScreen"
+                    component = { EnsuranceScreen }
+                />
+                <AppRootNavigator.Screen
+                    name = "DepositScreen"
+                    component = { DepositScreen }
+                />
+                <AppRootNavigator.Screen
+                    name = "WithdrawScreen"
+                    component = { WithdrawScreen }
+                />
+                <AppRootNavigator.Screen
+                    name = "LendScreen"
+                    component = { LendScreen }
+                />
+                <AppRootNavigator.Screen
+                    name = "BorrowScreen"
+                    component = { BorrowScreen }
                 />
             </AppRootNavigator.Navigator>
         </NavigationContainer>

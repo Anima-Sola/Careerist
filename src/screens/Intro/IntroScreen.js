@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image, StatusBar } from 'react-native';
+import React, { Component, useEffect } from 'react';
+import { StyleSheet, View, Text, Image, StatusBar, BackHandler } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch } from "react-redux";
@@ -147,11 +147,22 @@ export default connect(null, mapDispatchToProps)(IntroScreen)*/
 const IntroScreen = ({ navigation }) => {
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        /*const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            const navState = navigation.getState();
+            const currentScreenName = navState.routes[ navState.index ].name;
+            if( currentScreenName === 'IntroScreen' ) return true;
+            return false;
+        })
+        return () => backHandler.remove();*/
+    })
+
     useFocusEffect(() => {
         dispatch( saveAppSettingsInitialState() );
         dispatch( saveGameSettingsInitialState() );
         dispatch( loadAppSettings() );
         dispatch( loadGameSettings() );
+        
         navigation.addListener('beforeRemove', (e) => e.preventDefault() )
     })
 

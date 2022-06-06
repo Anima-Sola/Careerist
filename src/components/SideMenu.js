@@ -111,7 +111,7 @@ const SideMenu = ( props, ref ) => {
                         </Pressable>
                     </View>
                 </View>
-                <Pressable  onPress={ hideSideMenu }>
+                <Pressable onPress={ hideSideMenu }>
                     <Animated.View style={{ ...styles.sideMenuOverlay, opacity: animOverlayOpacity }}>
                     </Animated.View>
                 </Pressable>

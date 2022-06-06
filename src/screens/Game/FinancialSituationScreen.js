@@ -82,7 +82,7 @@ const FinancialSituation = ({ navigation }) => {
                     buttonStyle={ styles.button } 
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
-                    title="Продолжить"
+                    title="Уйти"
                     onPress={ () => navigation.navigate('GameMainScreen') }  
                 />
             </View>

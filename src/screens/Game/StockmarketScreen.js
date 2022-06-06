@@ -52,7 +52,7 @@ const Stockmarket = ({ navigation }) => {
             newQty[ id ] += value;
         }
 
-        buttonDisabled[ id ] = ( newQty[ id ] > 0 ) ? false : true;
+        buttonsDisabled[ id ] = ( newQty[ id ] > 0 ) ? false : true;
 
         setStocksBuySellQuantity( newQty );
         setIsButtonsDisabled( buttonsDisabled );
@@ -180,7 +180,7 @@ const Stockmarket = ({ navigation }) => {
                     buttonStyle={ styles.button } 
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
-                    title="Продолжить"
+                    title="Уйти"
                     onPress={ () => navigation.navigate('GameMainScreen') }  
                 />
             </View>
