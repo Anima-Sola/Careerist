@@ -166,15 +166,17 @@ const Stockmarket = ({ navigation }) => {
 
         return (
             <>
-                <Text style={{ ...styles.text, marginBottom: hp('1.5%') }}>Купить/продать акции:</Text>
+                <Text style={{ ...styles.text, marginBottom: hp('0.5%') }}>Купить/продать акции:</Text>
                 { items }
             </>
         )
     }
 
     return (
-        <ScrollView style={ styles.container }>
-            { stocksList() }
+        <>
+            <ScrollView style={ styles.container }>
+                { stocksList() }
+            </ScrollView>
             <View style={ styles.buttonContainer }>
                 <Button
                     buttonStyle={ styles.button } 
@@ -184,7 +186,7 @@ const Stockmarket = ({ navigation }) => {
                     onPress={ () => navigation.navigate('GameMainScreen') }  
                 />
             </View>
-        </ScrollView>
+        </>
     )
 }
 
@@ -198,7 +200,7 @@ const styles = StyleSheet.create({
         marginBottom: hp('1%')
     },
     stockItem: {
-        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
         backgroundColor: 'rgba(0, 0, 0, .2)',
         borderRadius: 10,
     },
@@ -288,9 +290,11 @@ const styles = StyleSheet.create({
         backgroundColor: THEME.DISABLED_BUTTON_COLOR,
     },
     buttonContainer: {
-        flex: 0.1,
+        width: '96%',
+        marginLeft: '2%',
+        marginRight: '2%',
         justifyContent: 'center',
-        width: '100%',
+        marginBottom: hp('1%')
     },
     button: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,

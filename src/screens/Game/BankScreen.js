@@ -55,8 +55,10 @@ const Bank = ({ navigation }) => {
     }
 
     return (
-        <ScrollView style={ styles.container }>
-            { showBankingServices() }
+        <>
+            <ScrollView style={ styles.container }>
+                { showBankingServices() }
+            </ScrollView>
             <View style={ styles.buttonContainer }>
                 <Button
                     buttonStyle={ styles.button } 
@@ -66,7 +68,7 @@ const Bank = ({ navigation }) => {
                     onPress={ () => navigation.navigate('GameMainScreen') }  
                 />
             </View>
-        </ScrollView>
+        </>
     )
 }
 
@@ -92,7 +94,6 @@ const styles = StyleSheet.create({
     },  
     itemName: {
         justifyContent: 'center',
-        //alignItems: 'center',
         width: '64%',
         paddingLeft: 10
     },  
@@ -126,7 +127,10 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-        width: '100%',
+        width: '96%',
+        marginLeft: '2%',
+        marginRight: '2%',
+        marginBottom: hp('1%'),
         height: hp('7%'),
         borderRadius: wp('10%'),
     },

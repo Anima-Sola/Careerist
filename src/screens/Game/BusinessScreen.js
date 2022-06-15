@@ -72,9 +72,11 @@ const Business = ({ navigation }) => {
     }
 
     return (
-        <ScrollView style={ styles.container }>
-            { listForSale() }
-            { listToBuy() }
+        <>
+            <ScrollView style={ styles.container }>
+                { listForSale() }
+                { listToBuy() }
+            </ScrollView>
             <View style={ styles.buttonsContainer }>
                 <Button
                     buttonStyle={ styles.buyButton } 
@@ -99,7 +101,7 @@ const Business = ({ navigation }) => {
                     }}   
                 />
             </View>
-        </ScrollView>
+        </>
     )
 }
 
@@ -153,6 +155,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'center',
+        marginBottom: hp('1%')
     },
     buyButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,

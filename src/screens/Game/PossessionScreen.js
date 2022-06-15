@@ -72,10 +72,12 @@ const Possession = ({ navigation }) => {
     }
 
     return (
-        <ScrollView style={ styles.container }>
-            { listForSale() }
-            { listToBuy() }
-            <Text style={ styles.expensesText }>Расходы на содержание 45% стоимости в год</Text>
+        <>
+            <ScrollView style={ styles.container }>
+                { listForSale() }
+                { listToBuy() }
+                <Text style={ styles.expensesText }>Расходы на содержание 45% стоимости в год</Text>
+            </ScrollView>
             <View style={ styles.buttonsContainer }>
                 <Button
                     buttonStyle={ styles.buyButton } 
@@ -100,7 +102,9 @@ const Possession = ({ navigation }) => {
                     }}   
                 />
             </View>
-        </ScrollView>
+        </>
+        
+
     )
 }
 
@@ -155,12 +159,13 @@ const styles = StyleSheet.create({
         fontFamily: 'nunito-light',
         fontSize: THEME.FONT35,
         textAlign: 'center',
-        marginBottom: hp('1.7%')
+        marginBottom: hp('0.5%')
     },
     buttonsContainer: {
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'center',
+        marginBottom: hp('1%')
     },
     buyButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,

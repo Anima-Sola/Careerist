@@ -7,6 +7,8 @@ import { THEME } from '../../../styles/theme';
 import GameWrapper from '../../../components/GameWrapper';
 import { getPossessionList, getPossessionCostList } from '../../../store/selectors';
 import { POSSESSION_LIST } from '../../../store/constants';
+import CustomPrompt from '../../../components/CustomPrompt';
+import { ENSURANCE_SCREEN_INPUT_AMOUNT } from '../../../store/constants';
 import { setPossessionList, setPossessionCostList } from '../../../store/actions/actions';
 
 import Flat from "../../../assets/images/possession/flat.png";
@@ -28,6 +30,19 @@ const Ensurance = ({ navigation }) => {
     const possessionList = useSelector( getPossessionList );
     const possessionCostList = useSelector( getPossessionCostList );
     const [ activeItem, setActiveItem ] = useState( 0 );
+    const [ prompt, setPrompt ] = useState({ 
+        isVisible: false, 
+        data: ENSURANCE_SCREEN_INPUT_AMOUNT,
+        buttonsCallbacks: [
+            () => {
+                console.log('1');
+                //setPrompt({ ...prompt, isVisible: false }),
+            },
+            () => { 
+                setPrompt({ ...prompt, isVisible: false }); 
+            }
+        ]
+    });
 
     const getListForEnsurance = () => {
         let i = -1;
@@ -45,7 +60,9 @@ const Ensurance = ({ navigation }) => {
                         <View style={{ ...styles.itemName, backgroundColor: activeItemBackgroudColor }}>
                             <Text style={ styles.itemText }>{ POSSESSION_LIST[ i ] }</Text>
                             <View style={{ height: hp('1%') }}></View>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Цена { possessionCostList[ i ] }$</Text>
+                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Максимальная сумма</Text>
+                            <View style={{ height: hp('1%') }}></View>
+                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>{ possessionCostList[ i ] }$</Text>
                         </View>
                     </Pressable>
                 )
@@ -53,18 +70,21 @@ const Ensurance = ({ navigation }) => {
         });
 
         return (
-            <>
+            <View style={ styles.dataContainer }>
                 <Text style={ styles.text }>Вы можете застраховать:</Text>
                 { items }
                 <Text style={ styles.expensesText }>При годовых взносах 5%</Text>
-            </>
+            </View>
         )
     }
 
     const somethingToEnsure = () => {
         return (
-                <ScrollView style={ styles.container }>
-                    { listForEnsurance() }
+                <>
+                    <CustomPrompt prompt={ prompt } setPrompt={ setPrompt } />
+                    <ScrollView style={ styles.container }>
+                        { getListForEnsurance() }
+                    </ScrollView>
                     <View style={ styles.buttonsContainer }>
                         <Button
                             buttonStyle={ styles.ensureButton } 
@@ -72,9 +92,15 @@ const Ensurance = ({ navigation }) => {
                             type="outline" 
                             title="Страховать"
                             onPress={ () => { 
-                                /*dispatch( setPossessionList([true, true, false, true, false]) );
-                                dispatch( setPossessionCostList([ 0, 2000, 10000, 100000, 0 ]) );*/
-                                navigation.navigate('BankScreen');
+                                setPrompt({
+                                    ...prompt, 
+                                    isVisible: true,
+                                    data: { 
+                                        ...ENSURANCE_SCREEN_INPUT_AMOUNT,
+                                        header: `Страхуем ${ POSSESSION_LIST[ activeItem ].toLowerCase() }?`,
+                                        message: `Максимальная страховая сумма ${ possessionCostList[ activeItem ]}$`
+                                    }
+                                });
                             }}    
                         />
                         <Button
@@ -87,7 +113,7 @@ const Ensurance = ({ navigation }) => {
                             }}   
                         />
                     </View>
-                </ScrollView>
+                </>
             )
     }
 
@@ -101,9 +127,9 @@ const Ensurance = ({ navigation }) => {
                     <View style={{ height: hp('1%') }}></View>
                     <Text style={ styles.text }>Усвоили?</Text>
                 </View>
-                <View style={ styles.nothingEnsureContainer }>
+                <View style={ styles.nothingToEnsureContainer }>
                     <Button
-                        buttonStyle={ styles.nothingEnsureButton } 
+                        buttonStyle={ styles.nothingToEnsureButton } 
                         titleStyle={ styles.buttonTitle }
                         type="outline" 
                         title="Ой, уже ухожу"
@@ -114,7 +140,7 @@ const Ensurance = ({ navigation }) => {
         )
     }
 
-    if( possessionList.indexOf(true) !== -1 ) return getListForEnsurance();
+    if( possessionList.indexOf(true) !== -1 ) return somethingToEnsure();
     else return nothingToEnsure();
 
 }
@@ -132,7 +158,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: hp('2%'),
     },
     itemContainer: {
         flexDirection: 'row',
@@ -179,9 +204,11 @@ const styles = StyleSheet.create({
         marginBottom: hp('1.7%')
     },
     buttonsContainer: {
+        flex: 0.1,
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'center',
+        marginBottom: hp('1%')
     },
     ensureButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
@@ -197,12 +224,12 @@ const styles = StyleSheet.create({
         borderRadius: wp('10%'),
         marginLeft: 5,
     },
-    nothingEnsureButtonContainer: {
+    nothingToEnsureButtonContainer: {
         justifyContent: 'center',
         width: '100%',
         marginBottom: hp('1%'),
     },
-    nothingEnsureButton: {
+    nothingToEnsureButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
         width: '100%',
         height: hp('7%'),

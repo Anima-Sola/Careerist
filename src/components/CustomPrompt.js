@@ -1,10 +1,12 @@
-import React from "react";
-import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
+import React, { useState, useEffect, useRef } from "react";
+import { View, Text, StyleSheet, Modal, Pressable, TextInput  } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { THEME } from "../styles/theme";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const CustomAlert = ({ alert, setAlert }) => {
+const CustomPrompt = ({ prompt, setPrompt }) => {
+    const textInput = useRef( null );
+    const [ data, setData ] = useState( 0 );
     const {
         message, 
         header, 
@@ -12,14 +14,26 @@ const CustomAlert = ({ alert, setAlert }) => {
         iconBackgroundColor, 
         iconColor,
         isOverlayPressable,
+        onlyDigits,
         buttons,
-    } = alert.data;
+    } = prompt.data;
+
+    useEffect(() => {
+        //textInput.current.focus();
+    });
+
+    const filterDigits = ( text ) => {
+        if( onlyDigits === true ) {
+            const result = text.replace( /\D/g, '' );
+            ( result !== '' ) ? setData( +result ) : setData( 0 );
+        }
+    }
  
     const buttonsList = () => {
         let i = 0;
         const list = buttons.map(({ key, hint, textColor }) => {
             return (
-                <Pressable key={ key } style={ THEME.PRESSABLE_STYLES(styles.button) } onPress={ alert.buttonsCallbacks[ i++ ] }>
+                <Pressable key={ key } style={ THEME.PRESSABLE_STYLES(styles.button) } onPress={ prompt.buttonsCallbacks[ i++ ] }>
                     <Text style={{ ...styles.buttonTitle, color: textColor }}>{ hint }</Text>
                 </Pressable>
             )
@@ -32,12 +46,12 @@ const CustomAlert = ({ alert, setAlert }) => {
             animationType="fade"
             transparent={ true }
             statusBarTranslucent={ true }
-            visible={ alert.isVisible }
-            onRequestClose={ () => { if( isOverlayPressable ) setAlert({ isVisible: false, data: alert.data, buttonsCallbacks: alert.buttonsCallbacks }) }} 
+            visible={ prompt.isVisible }
+            onRequestClose={ () => { if( isOverlayPressable ) setPrompt({ isVisible: false, data: prompt.data, buttonsCallbacks: prompt.buttonsCallbacks }) }} 
         >   
             <Pressable 
                 style={[Platform.OS === "ios" ? styles.iOSBackdrop : styles.androidBackdrop, styles.backdrop]} 
-                onPress={ () => { if( isOverlayPressable ) setAlert({ isVisible: false, data: alert.data,  buttonsCallbacks: alert.buttonsCallbacks }) }} 
+                onPress={ () => { if( isOverlayPressable ) setPrompt({ isVisible: false, data: prompt.data,  buttonsCallbacks: prompt.buttonsCallbacks }) }} 
             />
             <View style={ styles.container }>
                 <View style={{ ...styles.iconContainer, backgroundColor: iconBackgroundColor }}>
@@ -46,6 +60,15 @@ const CustomAlert = ({ alert, setAlert }) => {
                 <View style={ styles.window }>
                     <Text style={ styles.header }>{ header }</Text>
                     <Text style={ styles.text }>{ message }</Text>
+                    <TextInput
+                        ref={ textInput }
+                        style={ styles.input }
+                        selectionColor={ 'black' }
+                        keyboardType='numeric'
+                        maxLength={ 12 }
+                        onChangeText={( data ) => filterDigits( data )}
+                        value={ data.toString() }
+                    />
                     { buttonsList() }
                 </View>
             </View>
@@ -101,7 +124,7 @@ const styles = StyleSheet.create({
     header: {
         color: THEME.SIDE_MENU_ITEMS_TEXT_COLOR,
         fontFamily: 'nunito-semibold',
-        fontSize: THEME.FONT40,
+        fontSize: THEME.FONT35,
         textAlign: 'center',
         paddingTop: 35
     },
@@ -110,8 +133,18 @@ const styles = StyleSheet.create({
         fontFamily: 'nunito-light',
         fontSize: THEME.FONT30,
         textAlign: 'center',
-        paddingTop: 10,
-        paddingBottom: 20
+        marginBottom: 10
+    },
+    input: {
+        width: '100%',
+        height: hp('5%'),
+        fontSize: THEME.FONT30,
+        color: '#000',
+        marginBottom: 30,
+        textAlign: 'center',
+        borderColor: "#000",
+        borderStyle: "solid",
+        borderBottomWidth: 3
     },
     button: {
         width: '100%',
@@ -129,4 +162,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default CustomAlert;
+export default CustomPrompt;

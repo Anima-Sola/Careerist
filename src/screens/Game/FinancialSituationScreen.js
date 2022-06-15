@@ -126,7 +126,6 @@ const styles = StyleSheet.create({
         fontSize: THEME.FONT28,
     },  
     buttonContainer: {
-        flex: 0.1,
         justifyContent: 'center',
         width: '100%',
         marginBottom: hp('1%'),

@@ -30,7 +30,6 @@ export const InputСashAmountScreen = ({ navigation }) => {
 
     useEffect(() => {
         textInput.current.focus();
-        navigation.addListener('beforeRemove', () => true )
     });
 
     const filterData = ( text ) => {

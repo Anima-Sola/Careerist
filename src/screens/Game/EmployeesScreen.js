@@ -72,9 +72,11 @@ const Employees = ({ navigation }) => {
     }
 
     return (
-        <ScrollView style={ styles.container }>
-            { listToFire() }
-            { listToHire() }
+        <>
+            <ScrollView style={ styles.container }>
+                { listToFire() }
+                { listToHire() }
+            </ScrollView>
             <View style={ styles.buttonsContainer }>
                 <Button
                     buttonStyle={ styles.hireButton } 
@@ -99,7 +101,7 @@ const Employees = ({ navigation }) => {
                     }}   
                 />
             </View>
-        </ScrollView>
+        </>
     )
 }
 
@@ -153,6 +155,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'center',
+        marginBottom: hp('1%')
     },
     hireButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,

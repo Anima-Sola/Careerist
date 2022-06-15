@@ -19,7 +19,7 @@ export const INPUT_AGE_SCREEN_BABY_ALERT = {
         {   
             key: 0,
             hint: 'Продолжить',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
             textColor: THEME.TEXT_COLOR,
         }
     ]
@@ -36,7 +36,7 @@ export const INPUT_AGE_SCREEN_OLD_ALERT = {
         {   
             key: 0,
             hint: 'Продолжить',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
             textColor: THEME.TEXT_COLOR,
         }
     ]
@@ -53,7 +53,7 @@ export const INPUT_CASH_AMOUNT_SCREEN_ALERT = {
         {   
             key: 0,
             hint: 'Продолжить',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
             textColor: THEME.TEXT_COLOR,
         }
     ]
@@ -70,13 +70,13 @@ export const GAME_MAIN_SCREEN_QUIT_GAME_ALERT = {
         {   
             key: 0,
             hint: 'Остаться',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
             textColor: THEME.TEXT_COLOR,
         },
         {   
             key: 1,
             hint: 'Выйти',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
             textColor: THEME.TEXT_COLOR,
         }
     ]
@@ -93,7 +93,7 @@ export const GAME_MAIN_SCREEN_SCLEROSIS_WARNING = {
         {   
             key: 0,
             hint: 'Продолжить',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
             textColor: THEME.TEXT_COLOR,
         } 
     ]
@@ -110,7 +110,7 @@ export const ELECTION_SCREEN_SKIP_ELECTION = {
         {   
             key: 0,
             hint: 'Продолжить',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
             textColor: THEME.TEXT_COLOR,
         }
     ]
@@ -127,7 +127,7 @@ export const ELECTION_SCREEN_LOSE_ELECTION = {
         {   
             key: 0,
             hint: 'Продолжить',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
             textColor: THEME.TEXT_COLOR,
         }
     ]
@@ -144,6 +144,30 @@ export const ELECTION_SCREEN_WIN_ELECTION = {
         {   
             key: 0,
             hint: 'Продолжить',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
+export const ENSURANCE_SCREEN_INPUT_AMOUNT = {
+    message: '',
+    header: '',
+    iconName: 'keyboard', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: true,
+    onlyDigits: true,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Страховать',
+            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            hint: 'Отмена',
             backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
             textColor: THEME.TEXT_COLOR,
         }
