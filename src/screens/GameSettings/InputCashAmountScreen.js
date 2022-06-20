@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +15,6 @@ export const InputСashAmountScreen = ({ navigation }) => {
     const gameDifficultyLevel = useSelector( getGameDifficultyLevel );
     const [ isButtonDisabled, setIsButtonDisabled ] = useState( true );
     const [ cashAmount, setCashAmount ] = useState( '' );
-    const textInput = useRef( null );
     const maxCashAmount = useRef( '' );
     const [ alert, setAlert ] = useState({ 
         isVisible: false, 
@@ -28,9 +27,6 @@ export const InputСashAmountScreen = ({ navigation }) => {
         ]
     })
 
-    useEffect(() => {
-        textInput.current.focus();
-    });
 
     const filterData = ( text ) => {
         const result = text.replace( /\D/g, '' );
@@ -63,10 +59,10 @@ export const InputСashAmountScreen = ({ navigation }) => {
             </View>
             <View style={ styles.inputContainer }>
                 <TextInput
-                    ref={ textInput }
                     style={ styles.input } 
                     keyboardType='numeric'
                     maxLength={ 12 }
+                    autoFocus={ true }
                     onChangeText={( text ) => filterData( text )}
                     value={ cashAmount.toString() }
                 />

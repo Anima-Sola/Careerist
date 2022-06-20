@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { useDispatch } from 'react-redux';
@@ -12,17 +12,12 @@ export const InputAgeScreen = ({ navigation }) => {
     const dispatch = useDispatch();
     const [ isButtonDisabled, setIsButtonDisabled ] = useState( true );
     const [ age, setAge ] = useState( '' );
-    const textInput = useRef( null );
     const [ alert, setAlert ] = useState({ 
         isVisible: false, 
         data: INPUT_AGE_SCREEN_BABY_ALERT, 
         buttonsCallbacks: [ 
             () => setAlert({ ...alert, isVisible: false })
         ] 
-    });
-
-    useEffect(() => {
-        textInput.current.focus();
     });
 
     const filterData = ( text ) => {
@@ -49,9 +44,9 @@ export const InputAgeScreen = ({ navigation }) => {
             </View>
             <View style={ styles.inputContainer }>
                 <TextInput
-                    ref={ textInput }
                     style={ styles.input } 
                     keyboardType='numeric'
+                    autoFocus={ true }
                     maxLength={ 2 }
                     onChangeText={( text ) => filterData( text )}
                     value={ age }

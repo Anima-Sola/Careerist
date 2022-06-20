@@ -161,12 +161,14 @@ export const ENSURANCE_SCREEN_INPUT_AMOUNT = {
     buttons: [
         {   
             key: 0,
+            disabledIfEmpty: true,
             hint: 'Страховать',
             backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
             textColor: THEME.TEXT_COLOR,
         },
         {   
             key: 1,
+            disabledIfEmpty: false,
             hint: 'Отмена',
             backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
             textColor: THEME.TEXT_COLOR,

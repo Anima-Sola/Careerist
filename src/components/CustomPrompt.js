@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Modal, Pressable, TextInput  } from 'react-native';
+import { View, Text, StyleSheet, Modal, Pressable, TextInput } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { THEME } from "../styles/theme";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const CustomPrompt = ({ prompt, setPrompt }) => {
     const textInput = useRef( null );
-    const [ data, setData ] = useState( 0 );
+    const [ inputData, setInputData ] = useState('');
     const {
         message, 
         header, 
@@ -19,19 +19,19 @@ const CustomPrompt = ({ prompt, setPrompt }) => {
     } = prompt.data;
 
     useEffect(() => {
-        //textInput.current.focus();
+        if( prompt.isVisible ) setTimeout( () => textInput.current.focus(), 100 );
     });
 
     const filterDigits = ( text ) => {
         if( onlyDigits === true ) {
             const result = text.replace( /\D/g, '' );
-            ( result !== '' ) ? setData( +result ) : setData( 0 );
+            ( result !== '' ) ? setInputData( +result ) : setInputData('');
         }
     }
  
     const buttonsList = () => {
         let i = 0;
-        const list = buttons.map(({ key, hint, textColor }) => {
+        const list = buttons.map(({ key, disabledIfEmpty, hint, textColor }) => {
             return (
                 <Pressable key={ key } style={ THEME.PRESSABLE_STYLES(styles.button) } onPress={ prompt.buttonsCallbacks[ i++ ] }>
                     <Text style={{ ...styles.buttonTitle, color: textColor }}>{ hint }</Text>
@@ -47,11 +47,15 @@ const CustomPrompt = ({ prompt, setPrompt }) => {
             transparent={ true }
             statusBarTranslucent={ true }
             visible={ prompt.isVisible }
-            onRequestClose={ () => { if( isOverlayPressable ) setPrompt({ isVisible: false, data: prompt.data, buttonsCallbacks: prompt.buttonsCallbacks }) }} 
+            onRequestClose={ () => { 
+                if( isOverlayPressable ) setPrompt({ isVisible: false, data: prompt.data, buttonsCallbacks: prompt.buttonsCallbacks }) 
+            }} 
         >   
             <Pressable 
                 style={[Platform.OS === "ios" ? styles.iOSBackdrop : styles.androidBackdrop, styles.backdrop]} 
-                onPress={ () => { if( isOverlayPressable ) setPrompt({ isVisible: false, data: prompt.data,  buttonsCallbacks: prompt.buttonsCallbacks }) }} 
+                onPress={ () => { 
+                    if( isOverlayPressable ) setPrompt({ isVisible: false, data: prompt.data,  buttonsCallbacks: prompt.buttonsCallbacks }) 
+                }} 
             />
             <View style={ styles.container }>
                 <View style={{ ...styles.iconContainer, backgroundColor: iconBackgroundColor }}>
@@ -66,8 +70,8 @@ const CustomPrompt = ({ prompt, setPrompt }) => {
                         selectionColor={ 'black' }
                         keyboardType='numeric'
                         maxLength={ 12 }
-                        onChangeText={( data ) => filterDigits( data )}
-                        value={ data.toString() }
+                        onChangeText={( inputData ) => filterDigits( inputData )}
+                        value={ inputData.toString() }
                     />
                     { buttonsList() }
                 </View>
