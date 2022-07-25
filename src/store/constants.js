@@ -150,7 +150,7 @@ export const ELECTION_SCREEN_WIN_ELECTION = {
     ]
 }
 
-export const ENSURANCE_SCREEN_INPUT_AMOUNT = {
+export const INSURANCE_SCREEN_INPUT_AMOUNT = {
     message: '',
     header: '',
     iconName: 'keyboard', 
@@ -164,6 +164,7 @@ export const ENSURANCE_SCREEN_INPUT_AMOUNT = {
             disabledIfEmpty: true,
             hint: 'Страховать',
             backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
             textColor: THEME.TEXT_COLOR,
         },
         {   
@@ -171,6 +172,7 @@ export const ENSURANCE_SCREEN_INPUT_AMOUNT = {
             disabledIfEmpty: false,
             hint: 'Отмена',
             backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
             textColor: THEME.TEXT_COLOR,
         }
     ]

@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { THEME } from '../../../styles/theme';
 import GameWrapper from '../../../components/GameWrapper';
-import { getPossessionList, getPossessionCostList } from '../../../store/selectors';
+import { getPossessionList, getPossessionCostList, getInsuredPossessionList, getInsuranceCostList } from '../../../store/selectors';
 import { POSSESSION_LIST } from '../../../store/constants';
 import CustomPrompt from '../../../components/CustomPrompt';
-import { ENSURANCE_SCREEN_INPUT_AMOUNT } from '../../../store/constants';
-import { setPossessionList, setPossessionCostList } from '../../../store/actions/actions';
+import { INSURANCE_SCREEN_INPUT_AMOUNT } from '../../../store/constants';
+import { setInsuredPossessionList, setInsuranceCostList } from '../../../store/actions/actions';
 
 import Flat from "../../../assets/images/possession/flat.png";
 import Car from "../../../assets/images/possession/car.png";
@@ -17,43 +17,61 @@ import Villa from "../../../assets/images/possession/villa.png";
 import Yacht from "../../../assets/images/possession/yacht.png";
 import Plane from "../../../assets/images/possession/plane.png";
 
-export const EnsuranceScreen = ({ navigation }) => {
-    const wrappedComponent = <Ensurance navigation={ navigation } />
+export const InsuranceScreen = ({ navigation }) => {
+    const wrappedComponent = <Insurance navigation={ navigation } />
 
     return (
         <GameWrapper wrappedComponent={ wrappedComponent } />
     )
 };
 
-const Ensurance = ({ navigation }) => {
+const Insurance = ({ navigation }) => {
     const dispatch = useDispatch();
     const possessionList = useSelector( getPossessionList );
     const possessionCostList = useSelector( getPossessionCostList );
+    const insuredPossessionList = useSelector( getInsuredPossessionList );
+    const insuranceCostList = useSelector( getInsuranceCostList );
     const [ activeItem, setActiveItem ] = useState( 0 );
     const [ prompt, setPrompt ] = useState({ 
         isVisible: false, 
-        data: ENSURANCE_SCREEN_INPUT_AMOUNT,
+        data: INSURANCE_SCREEN_INPUT_AMOUNT,
+        value: '',
         buttonsCallbacks: [
-            () => {
-                console.log('1');
-                //setPrompt({ ...prompt, isVisible: false }),
+            ( value, args ) => {
+                insuredPossessionList[ args.activeItem ] = true;
+                dispatch(setInsuredPossessionList( insuredPossessionList ));
+                insuranceCostList[ args.activeItem ] = value;
+                dispatch(setInsuranceCostList( insuranceCostList ));
+                setPrompt({ ...prompt, isVisible: false, value: '' });
+                setTopActiveItem();
             },
-            () => { 
-                setPrompt({ ...prompt, isVisible: false }); 
-            }
+            () => setPrompt({ ...prompt, isVisible: false, value: '' })
         ]
     });
 
-    const getListForEnsurance = () => {
+    const setTopActiveItem = () => {
+        for( let i = 0; i < 5; i++ ) {
+            if( possessionList[ i ] && !insuredPossessionList[ i ]) {
+                setActiveItem( i );
+                break;
+            }
+        }
+    }
+
+    useEffect(() => {
+        setTopActiveItem();
+    }, [])
+
+    const getListForInsurance = () => {
         let i = -1;
         const possessionImageFiles = [ Flat, Car, Villa, Yacht, Plane ];
 
-        const items = possessionList.map( element => {
-            if( element === true ) {
-                i++;
+        const items = possessionList.map( () => {
+            i++;
+            if( possessionList[ i ] && !insuredPossessionList[ i ]) {
                 const activeItemBackgroudColor = ( i === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
                 return (
-                    <Pressable style={ styles.itemContainer } key={ i } onPress={eval( '() => setActiveItem(' + i + ')' )}>
+                    <Pressable style={ styles.itemContainer } key={ i } onPress={eval( `() => setActiveItem(${ i })` )}>
                         <View style={{ ...styles.itemImage, backgroundColor: activeItemBackgroudColor }}>
                             <Image style={ styles.image } resizeMode='center' source={ possessionImageFiles[ i ] } />
                         </View>
@@ -81,9 +99,9 @@ const Ensurance = ({ navigation }) => {
     const somethingToEnsure = () => {
         return (
                 <>
-                    <CustomPrompt prompt={ prompt } setPrompt={ setPrompt } />
+                    <CustomPrompt prompt={ prompt } setPrompt={ setPrompt } argsForButtonCallbacks={{ activeItem }} />
                     <ScrollView style={ styles.container }>
-                        { getListForEnsurance() }
+                        { getListForInsurance() }
                     </ScrollView>
                     <View style={ styles.buttonsContainer }>
                         <Button
@@ -96,7 +114,7 @@ const Ensurance = ({ navigation }) => {
                                     ...prompt, 
                                     isVisible: true,
                                     data: { 
-                                        ...ENSURANCE_SCREEN_INPUT_AMOUNT,
+                                        ...INSURANCE_SCREEN_INPUT_AMOUNT,
                                         header: `Страхуем ${ POSSESSION_LIST[ activeItem ].toLowerCase() }?`,
                                         message: `Максимальная страховая сумма ${ possessionCostList[ activeItem ]}$`
                                     }
@@ -108,9 +126,7 @@ const Ensurance = ({ navigation }) => {
                             titleStyle={ styles.buttonTitle }
                             type="outline" 
                             title="Уйти"
-                            onPress={ () => { 
-                                navigation.navigate('BankScreen');
-                            }}   
+                            onPress={ () => navigation.navigate('BankScreen') }   
                         />
                     </View>
                 </>

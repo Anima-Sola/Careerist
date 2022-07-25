@@ -85,7 +85,7 @@ const Possession = ({ navigation }) => {
                     type="outline" 
                     title="Купить"
                     onPress={ () => { 
-                        dispatch( setPossessionList([true, true, false, true, false]) );
+                        dispatch( setPossessionList([true, false, false, true, true]) );
                         dispatch( setPossessionCostList([ 0, 2000, 10000, 100000, 0 ]) );
                         navigation.navigate('GameMainScreen');
                     }}    

@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Modal, Pressable, TextInput } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { Button } from 'react-native-elements';
 import { THEME } from "../styles/theme";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const CustomPrompt = ({ prompt, setPrompt }) => {
+const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
     const textInput = useRef( null );
-    const [ inputData, setInputData ] = useState('');
     const {
         message, 
-        header, 
+        header,
         iconName, 
         iconBackgroundColor, 
         iconColor,
@@ -17,25 +17,36 @@ const CustomPrompt = ({ prompt, setPrompt }) => {
         onlyDigits,
         buttons,
     } = prompt.data;
-
+    
     useEffect(() => {
-        if( prompt.isVisible ) setTimeout( () => textInput.current.focus(), 100 );
+        if( prompt.isVisible ) setTimeout( () => textInput.current.focus(), 100 )
     });
 
     const filterDigits = ( text ) => {
         if( onlyDigits === true ) {
             const result = text.replace( /\D/g, '' );
-            ( result !== '' ) ? setInputData( +result ) : setInputData('');
+            ( result !== '' ) ? setPrompt({ ...prompt, value: +result }) : setPrompt({ ...prompt, value: '' });
+            return false;
         }
+        setPrompt({ ...prompt, value: +text })
     }
- 
+
     const buttonsList = () => {
-        let i = 0;
-        const list = buttons.map(({ key, disabledIfEmpty, hint, textColor }) => {
+        let i = -1;
+        const list = buttons.map(({ key, hint, disabledIfEmpty, disabledBackgroundColor, textColor }) => {
+            i++;
+            const isButtonDisabled = ( prompt.value === ''  ) ? disabledIfEmpty : false ;
             return (
-                <Pressable key={ key } style={ THEME.PRESSABLE_STYLES(styles.button) } onPress={ prompt.buttonsCallbacks[ i++ ] }>
-                    <Text style={{ ...styles.buttonTitle, color: textColor }}>{ hint }</Text>
-                </Pressable>
+                <Button
+                    key={ key } 
+                    buttonStyle={ styles.button } 
+                    titleStyle={{ ...styles.buttonTitle, color: textColor }}
+                    disabledStyle={{ backgroundColor: disabledBackgroundColor }}
+                    type="outline" 
+                    title={ hint } 
+                    disabled={ isButtonDisabled }
+                    onPress={ eval(`() => prompt.buttonsCallbacks[ ${ i } ]( prompt.value, { ...argsForButtonCallbacks })`) }    
+                />
             )
         })
         return list;
@@ -47,14 +58,14 @@ const CustomPrompt = ({ prompt, setPrompt }) => {
             transparent={ true }
             statusBarTranslucent={ true }
             visible={ prompt.isVisible }
-            onRequestClose={ () => { 
-                if( isOverlayPressable ) setPrompt({ isVisible: false, data: prompt.data, buttonsCallbacks: prompt.buttonsCallbacks }) 
+            onRequestClose={ () => {
+                if( isOverlayPressable ) setPrompt({ ...prompt, isVisible: false, value: '' });
             }} 
         >   
             <Pressable 
                 style={[Platform.OS === "ios" ? styles.iOSBackdrop : styles.androidBackdrop, styles.backdrop]} 
-                onPress={ () => { 
-                    if( isOverlayPressable ) setPrompt({ isVisible: false, data: prompt.data,  buttonsCallbacks: prompt.buttonsCallbacks }) 
+                onPress={ () => {
+                    if( isOverlayPressable ) setPrompt({ ...prompt, isVisible: false, value: '' });
                 }} 
             />
             <View style={ styles.container }>
@@ -70,8 +81,8 @@ const CustomPrompt = ({ prompt, setPrompt }) => {
                         selectionColor={ 'black' }
                         keyboardType='numeric'
                         maxLength={ 12 }
-                        onChangeText={( inputData ) => filterDigits( inputData )}
-                        value={ inputData.toString() }
+                        onChangeText={ ( prompt ) =>  filterDigits( prompt ) }
+                        value={ prompt.value.toString() }
                     />
                     { buttonsList() }
                 </View>
@@ -152,17 +163,15 @@ const styles = StyleSheet.create({
     },
     button: {
         width: '100%',
-        height: hp('5%'),
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 10
+        marginBottom: 10,
+        backgroundColor: THEME.SECOND_BACKGROUND_COLOR
     },
     buttonTitle: {
-        paddingBottom: 3,
-        color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-semibold',
-        fontSize: THEME.FONT28,        
+        fontSize: THEME.FONT25,
     },
 })
 

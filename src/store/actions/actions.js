@@ -116,6 +116,20 @@ export const setAvgStocksCostList = ( list ) => {
     }
 }
 
+export const setInsuredPossessionList = ( list ) => {
+    return {
+        type: 'SET_INSURED_POSSESSION_LIST',
+        payload: list
+    }
+}
+
+export const setInsuranceCostList = ( list ) => {
+    return {
+        type: 'SET_INSURANCE_COST_LIST',
+        payload: list
+    }
+}
+
 //App settings actions
 export const loadAppSettings = () => {
     return async dispatch => {

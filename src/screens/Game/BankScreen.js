@@ -24,7 +24,7 @@ export const BankScreen = ({ navigation }) => {
 const Bank = ({ navigation }) => {
     const dispatch = useDispatch();
     const services = [ Ensurance, Deposit, Withdraw, Lend, Borrow ];
-    const servicesScreens = [ 'EnsuranceScreen', 'DepositScreen', 'WithdrawScreen', 'LendScreen', 'BorrowScreen' ]; 
+    const servicesScreens = [ 'InsuranceScreen', 'DepositScreen', 'WithdrawScreen', 'LendScreen', 'BorrowScreen' ]; 
 
     const showBankingServices = () => {
         let i = -1;

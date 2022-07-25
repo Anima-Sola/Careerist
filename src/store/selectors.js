@@ -13,6 +13,8 @@ export const getBusinessList = state => state.gameSettingsReducer.business;
 export const getBusinessCostList = state => state.gameSettingsReducer.businessCost;
 export const getStocksQuantityList = state => state.gameSettingsReducer.stocksQuantity;
 export const getAvgStocksCostList = state => state.gameSettingsReducer.avgStocksCost;
+export const getInsuredPossessionList = state => state.gameSettingsReducer.insuredPossession;
+export const getInsuranceCostList = state => state.gameSettingsReducer.insuranceCost;
 
 //App settings selectors
 export const getIsGameStarted = state => state.appSettingsReducer.isGameStarted;

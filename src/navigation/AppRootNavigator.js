@@ -14,7 +14,7 @@ import { EmployeesScreen } from '../screens/Game/EmployeesScreen';
 import { BusinessScreen } from '../screens/Game/BusinessScreen';
 import { StockmarketScreen } from '../screens/Game/StockmarketScreen';
 import { BankScreen } from '../screens/Game/BankScreen';
-import { EnsuranceScreen } from "../screens/Game/BankServices/EnsuranceScreen";
+import { InsuranceScreen } from "../screens/Game/BankServices/InsuranceScreen";
 import { DepositScreen } from "../screens/Game/BankServices/DepositScreen";
 import { WithdrawScreen } from "../screens/Game/BankServices/WithdrawScreen";
 import { LendScreen } from "../screens/Game/BankServices/LendScreen";
@@ -82,8 +82,8 @@ export function AppRootNavigation () {
                     component = { BankScreen }
                 />
                 <AppRootNavigator.Screen
-                    name = "EnsuranceScreen"
-                    component = { EnsuranceScreen }
+                    name = "InsuranceScreen"
+                    component = { InsuranceScreen }
                 />
                 <AppRootNavigator.Screen
                     name = "DepositScreen"
