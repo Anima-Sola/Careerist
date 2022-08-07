@@ -84,8 +84,8 @@ const Employees = ({ navigation }) => {
                     type="outline" 
                     title="Нанять"
                     onPress={ () => { 
-                        dispatch( setEmployeesList([true, true, false, true, false]) );
-                        dispatch( setEmployeesSalaryList([ 0, 2000, 10000, 100000, 0 ]) );
+                        dispatch(setEmployeesList( [true, true, false, true, false] ));
+                        dispatch(setEmployeesSalaryList( [ 0, 2000, 10000, 100000, 0 ], true ));
                         navigation.navigate('GameMainScreen');
                     }}    
                 />
@@ -95,8 +95,8 @@ const Employees = ({ navigation }) => {
                     type="outline" 
                     title="Уволить"
                     onPress={ () => { 
-                        dispatch( setEmployeesList([false, false, false, false, false]) );
-                        dispatch( setEmployeesSalaryList([ 0, 2000, 0, 100000, 0 ]) );
+                        dispatch(setEmployeesList( [false, false, false, false, false] ));
+                        dispatch(setEmployeesSalaryList( [ 0, 2000, 0, 100000, 0 ], true ));
                         navigation.navigate('GameMainScreen');
                     }}   
                 />

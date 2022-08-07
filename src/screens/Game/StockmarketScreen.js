@@ -65,7 +65,7 @@ const Stockmarket = ({ navigation }) => {
         stocksQuantityList[ id ] = qty;
         stocksAvgCostList[ id ] = price;
         dispatch(setStocksQuantityList( stocksQuantityList ));
-        dispatch(setAvgStocksCostList( stocksAvgCostList ));
+        dispatch(setAvgStocksCostList( stocksAvgCostList, true ));
         navigation.navigate('GameMainScreen');
     }
 
@@ -74,7 +74,7 @@ const Stockmarket = ({ navigation }) => {
         stocksQuantityList[ id ] = qty;
         if( qty === 0 ) stocksAvgCostList[ id ] = 0;
         dispatch(setStocksQuantityList( stocksQuantityList ));
-        dispatch(setAvgStocksCostList( stocksAvgCostList ));
+        dispatch(setAvgStocksCostList( stocksAvgCostList, true ));
         navigation.navigate('GameMainScreen');
     }
 

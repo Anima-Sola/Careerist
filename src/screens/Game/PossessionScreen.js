@@ -5,9 +5,9 @@ import { Button } from 'react-native-elements';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
-import { getPossessionList, getPossessionCostList } from '../../store/selectors';
+import { getPossessionList, getPossessionBuyCostList, getPossessionSellCostList } from '../../store/selectors';
 import { POSSESSION_LIST } from '../../store/constants';
-import { setPossessionList, setPossessionCostList } from '../../store/actions/actions';
+import { setPossessionList } from '../../store/actions/actions';
 
 import Flat from "../../assets/images/possession/flat.png";
 import Car from "../../assets/images/possession/car.png";
@@ -26,12 +26,14 @@ export const PossessionScreen = ({ navigation }) => {
 const Possession = ({ navigation }) => {
     const dispatch = useDispatch();
     const possessionList = useSelector( getPossessionList );
-    const possessionCostList = useSelector( getPossessionCostList );
+    const possessionBuyCostList = useSelector( getPossessionBuyCostList );
+    const possessionSellCostList = useSelector( getPossessionSellCostList );
     const [ activeItem, setActiveItem ] = useState( 0 );
 
     const getListBuyOrSale = ( typeOfDeal = false ) => {
         let i = -1;
         const typeOfDealName = ( typeOfDeal ) ? 'продать' : 'купить';
+        const possessionCostList = ( typeOfDeal ) ? possessionSellCostList : possessionBuyCostList;
         const possessionImageFiles = [ Flat, Car, Villa, Yacht, Plane ];
 
         const items = possessionList.map( element => {
@@ -85,8 +87,7 @@ const Possession = ({ navigation }) => {
                     type="outline" 
                     title="Купить"
                     onPress={ () => { 
-                        dispatch( setPossessionList([true, false, false, true, true]) );
-                        dispatch( setPossessionCostList([ 0, 2000, 10000, 100000, 0 ]) );
+                        dispatch(setPossessionList( [true, false, false, true, true], true ));
                         navigation.navigate('GameMainScreen');
                     }}    
                 />
@@ -96,8 +97,7 @@ const Possession = ({ navigation }) => {
                     type="outline" 
                     title="Продать"
                     onPress={ () => { 
-                        dispatch( setPossessionList([false, false, false, false, false]) );
-                        dispatch( setPossessionCostList([ 0, 2000, 0, 100000, 0 ]) );
+                        dispatch(setPossessionList( [false, false, false, false, false], true ));
                         navigation.navigate('GameMainScreen');
                     }}   
                 />

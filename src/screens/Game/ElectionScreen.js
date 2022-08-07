@@ -28,7 +28,7 @@ const Election = ({ navigation }) => {
         data:  ELECTION_SCREEN_SKIP_ELECTION,
         buttonsCallbacks: [
             () => {
-                dispatch(setIsElectionOverOrNotHeld( true ));
+                dispatch(setIsElectionOverOrNotHeld( true, true ));
                 setAlert({ ...alert, isVisible: false });
                 navigation.navigate('GameMainScreen');
             }
@@ -47,7 +47,7 @@ const Election = ({ navigation }) => {
     const participateElection = () => {
         const result = Math.random();
         if( result < 0.5 ) {
-            dispatch(setSocialStatus( currentSocialStatus + 1 ));
+            dispatch(setSocialStatus( currentSocialStatus + 1, true ));
             setAlert({ ...alert, 
                        isVisible: true, 
                        data: { ...ELECTION_SCREEN_WIN_ELECTION, message: 'Теперь вы ' + SOCIAL_STATUSES[ currentSocialStatus + 1 ] + '. Следующие выборы через 2 года.' }

@@ -32,7 +32,7 @@ export const InputAgeScreen = ({ navigation }) => {
                          : setAlert({ ...alert, isVisible: true, data: INPUT_AGE_SCREEN_OLD_ALERT });
             return;
         }
-        dispatch(setPlayerAgeAction( age ));
+        dispatch(setPlayerAgeAction( age, true ));
         navigation.navigate('InputСashAmountScreen');
     }
 

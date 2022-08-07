@@ -11,7 +11,7 @@ export const SetGameDifficultyScreen = ({ navigation }) => {
     const [ diffLevel, setDiffLevel ] = useState( 3 );
 
     const navToInputAgeScreen = () => {
-        dispatch(setGameDifficultyLevelAction( diffLevel ));
+        dispatch(setGameDifficultyLevelAction( diffLevel, true ));
         navigation.navigate('InputAgeScreen');
     }
 

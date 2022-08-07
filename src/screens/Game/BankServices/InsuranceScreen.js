@@ -41,26 +41,12 @@ const Insurance = ({ navigation }) => {
                 insuredPossessionList[ args.activeItem ] = true;
                 dispatch(setInsuredPossessionList( insuredPossessionList ));
                 insuranceCostList[ args.activeItem ] = value;
-                dispatch(setInsuranceCostList( insuranceCostList ));
+                dispatch(setInsuranceCostList( insuranceCostList, true ));
                 setPrompt({ ...prompt, isVisible: false, value: '' });
-                setTopActiveItem();
             },
             () => setPrompt({ ...prompt, isVisible: false, value: '' })
         ]
     });
-
-    const setTopActiveItem = () => {
-        for( let i = 0; i < 5; i++ ) {
-            if( possessionList[ i ] && !insuredPossessionList[ i ]) {
-                setActiveItem( i );
-                break;
-            }
-        }
-    }
-
-    useEffect(() => {
-        setTopActiveItem();
-    }, [])
 
     const getListForInsurance = () => {
         let i = -1;
@@ -68,7 +54,7 @@ const Insurance = ({ navigation }) => {
 
         const items = possessionList.map( () => {
             i++;
-            if( possessionList[ i ] && !insuredPossessionList[ i ]) {
+            if( possessionList[ i ] ) {
                 const activeItemBackgroudColor = ( i === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
                 return (
                     <Pressable style={ styles.itemContainer } key={ i } onPress={eval( `() => setActiveItem(${ i })` )}>
@@ -156,7 +142,7 @@ const Insurance = ({ navigation }) => {
         )
     }
 
-    if( possessionList.indexOf(true) !== -1 ) return somethingToEnsure();
+    if( possessionList.indexOf( true ) !== -1 ) return somethingToEnsure();
     else return nothingToEnsure();
 
 }

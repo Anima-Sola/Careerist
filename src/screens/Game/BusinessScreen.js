@@ -85,7 +85,7 @@ const Business = ({ navigation }) => {
                     title="Купить"
                     onPress={ () => { 
                         dispatch( setBusinessList([true, true, false, true, false]) );
-                        dispatch( setBusinessCostList([ 0, 2000, 10000, 100000, 0 ]) );
+                        dispatch( setBusinessCostList([ 0, 2000, 10000, 100000, 0 ], true) );
                         navigation.navigate('GameMainScreen');
                     }}    
                 />
@@ -96,7 +96,7 @@ const Business = ({ navigation }) => {
                     title="Продать"
                     onPress={ () => { 
                         dispatch( setBusinessList([false, false, false, false, false]) );
-                        dispatch( setBusinessCostList([ 0, 2000, 0, 100000, 0 ]) );
+                        dispatch( setBusinessCostList([ 0, 2000, 0, 100000, 0 ], true) );
                         navigation.navigate('GameMainScreen');
                     }}   
                 />

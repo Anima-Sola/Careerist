@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
 import { setCashAmountAction } from   '../../store/actions/actions';
-import { setIsGameStarted } from '../../store/actions/actions';
 import { getGameDifficultyLevel } from '../../store/selectors';
 import CustomAlert from '../../components/CustomAlert';
 import { INPUT_CASH_AMOUNT_SCREEN_ALERT } from '../../store/constants';
+import { setInitialGameData } from '../../components/SetInitialGameData';
 
 export const InputСashAmountScreen = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -26,8 +26,7 @@ export const InputСashAmountScreen = ({ navigation }) => {
             }
         ]
     })
-
-
+    
     const filterData = ( text ) => {
         const result = text.replace( /\D/g, '' );
         ( result !== '' ) ? setIsButtonDisabled( false ) : setIsButtonDisabled( true );
@@ -35,8 +34,8 @@ export const InputСashAmountScreen = ({ navigation }) => {
     }
 
     const navToGame = ( cash ) => {
-        dispatch(setCashAmountAction( cash ));
-        dispatch(setIsGameStarted( true ));
+        dispatch(setCashAmountAction( cash, true ));
+        setInitialGameData();
         navigation.navigate('GameMainScreen');
     }
 
