@@ -32,6 +32,7 @@ const Employees = ({ navigation }) => {
     const getListHireOrFire = ( typeOfDeal = false ) => {
         let i = -1;
         const typeOfDealName = ( typeOfDeal ) ? 'уволить' : 'нанять';
+        const hireOrFire = ( typeOfDeal ) ? 'Сумма неустойки' : 'Зарплата в год';
         const employeesImageFiles = [ Makler, Doctor, Lawyer, Detective, Security ];
 
         const items = employeesList.map( element => {
@@ -46,7 +47,7 @@ const Employees = ({ navigation }) => {
                         <View style={{ ...styles.itemName, backgroundColor: activeItemBackgroudColor }}>
                             <Text style={ styles.itemText }>{ EMPLOYEES_LIST[ i ] }</Text>
                             <View style={{ height: hp('1%') }}></View>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Зарплата { employeesSalaryList[ i ] }$ в год</Text>
+                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>{ hireOrFire } { employeesSalaryList[ i ] }$</Text>
                         </View>
                     </Pressable>
                 )
@@ -84,8 +85,7 @@ const Employees = ({ navigation }) => {
                     type="outline" 
                     title="Нанять"
                     onPress={ () => { 
-                        dispatch(setEmployeesList( [true, true, false, true, false] ));
-                        dispatch(setEmployeesSalaryList( [ 0, 2000, 10000, 100000, 0 ], true ));
+                        dispatch(setEmployeesList( [true, true, false, true, false], true ));
                         navigation.navigate('GameMainScreen');
                     }}    
                 />
@@ -95,8 +95,7 @@ const Employees = ({ navigation }) => {
                     type="outline" 
                     title="Уволить"
                     onPress={ () => { 
-                        dispatch(setEmployeesList( [false, false, false, false, false] ));
-                        dispatch(setEmployeesSalaryList( [ 0, 2000, 0, 100000, 0 ], true ));
+                        dispatch(setEmployeesList( [false, false, false, false, false], true ));
                         navigation.navigate('GameMainScreen');
                     }}   
                 />

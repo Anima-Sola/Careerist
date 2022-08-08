@@ -12,14 +12,19 @@ const initialState = {
 
     currentSocialStatus: 0,                                     // 0 - Бизнесмен, 1 - лидер профсоюза мусорщиков, 2 - шериф, 3 - сенатор, 4 - президент
     isElectionOverOrNotHeld: false,                             // Флаг, прошли ли выборы или они не проводятся
+
     possessionList: [ false, false, false, false, false ],      // Наличие - true / Отсутствие - false квартиры, машины, виллы, яхты, самолета
     possessionBuyCostList: [ 0, 0, 0, 0, 0 ],                   // Цена покупки имущества
     possessionSellCostList: [ 0, 0, 0, 0, 0 ],                  // Цена продажи имущества
-    employees: [ false, false, false, false, false ],           // Наличие - true / Отсутствие - false маклера, врача, адвоката, детектива, личной охраны
-    employeesSalary: [ 0, 0, 0, 0, 0 ],                         // Зарплата подчиненных
-    business: [ false, false, false, false, false ],            // Наличие - true / Отсутствие - false бара, ресторана, магазина, отеля, завода
-    businessCost: [ 0, 0, 0, 0, 0 ],                            // Цена покупки бизнеса
-    businessSellCost: [ 0, 0, 0, 0, 0 ],                        // Цена продажи бизнеса
+
+    businessList: [ false, false, false, false, false ],        // Наличие - true / Отсутствие - false бара, ресторана, магазина, отеля, завода
+    businessBuyCostList: [ 0, 0, 0, 0, 0 ],                     // Цена покупки бизнеса
+    businessSellCostList: [ 0, 0, 0, 0, 0 ],                    // Цена продажи бизнеса
+    businessYearOutcome: [ 0, 0, 0, 0, 0],                      // Годовой доход бизнеса
+
+    employeesList: [ false, false, false, false, false ],       // Наличие - true / Отсутствие - false маклера, врача, адвоката, детектива, личной охраны
+    employeesSalaryList: [ 0, 0, 0, 0, 0 ],                     // Зарплата подчиненных
+
     businessIncome: [ 0, 0, 0, 0, 0 ],                          // Доход от бизнеса
     stocksQuantity: [ 0, 0, 0, 0, 0 ],                          // Количество акций каждой компании в собственности
     avgStocksCost: [ 0, 0, 0, 0, 0 ],                           // Средние цены купленных акций
@@ -64,13 +69,17 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
         case 'SET_POSSESSION_SELL_COST_LIST':
             return saveState( state, 'possessionSellCostList', action.payload, action.saveStateToStore );
         case 'SET_EMPLOYEES_LIST':
-            return saveState( state, 'employees', action.payload, action.saveStateToStore );
+            return saveState( state, 'employeesList', action.payload, action.saveStateToStore );
         case 'SET_EMPLOYEES_SALARY_LIST':
-            return saveState( state, 'employeesSalary', action.payload, action.saveStateToStore );
+            return saveState( state, 'employeesSalaryList', action.payload, action.saveStateToStore );
         case 'SET_BUSINESS_LIST':
-            return saveState( state, 'business', action.payload, action.saveStateToStore );
-        case 'SET_BUSINESS_COST_LIST':
-            return saveState( state, 'businessCost', action.payload, action.saveStateToStore );
+            return saveState( state, 'businessList', action.payload, action.saveStateToStore );
+        case 'SET_BUSINESS_BUY_COST_LIST':
+            return saveState( state, 'businessBuyCostList', action.payload, action.saveStateToStore );
+        case 'SET_BUSINESS_SELL_COST_LIST':
+            return saveState( state, 'businessSellCostList', action.payload, action.saveStateToStore );
+        case 'SET_BUSINESS_YEAR_OUTCOME':
+            return saveState( state, 'businessYearOutcome', action.payload, action.saveStateToStore );
         case 'SET_STOCKS_QUANTITY_LIST':
             return saveState( state, 'stocksQuantity', action.payload, action.saveStateToStore );
         case 'SET_AVG_STOCKS_COST_LIST':

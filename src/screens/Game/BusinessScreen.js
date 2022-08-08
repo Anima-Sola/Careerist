@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
-import { getBusinessList, getBusinessCostList } from '../../store/selectors';
+import { getBusinessList, getBusinessBuyCostList, getBusinessSellCostList, getBusinessYearOutcome } from '../../store/selectors';
 import { BUSINESS_LIST } from '../../store/constants';
-import { setBusinessList, setBusinessCostList } from '../../store/actions/actions';
+import { setBusinessList } from '../../store/actions/actions';
 
 import Bar from "../../assets/images/business/bar.png";
 import Restraunt from "../../assets/images/business/restraunt.png";
@@ -26,12 +26,15 @@ export const BusinessScreen = ({ navigation }) => {
 const Business = ({ navigation }) => {
     const dispatch = useDispatch();
     const businessList = useSelector( getBusinessList );
-    const businessCostList = useSelector( getBusinessCostList );
+    const businessBuyCostList = useSelector( getBusinessBuyCostList );
+    const businessSellCostList = useSelector( getBusinessSellCostList );
+    const businessYearOutcome = useSelector( getBusinessYearOutcome );
     const [ activeItem, setActiveItem ] = useState( 0 );
 
     const getListBuyOrSale = ( typeOfDeal = false ) => {
         let i = -1;
         const typeOfDealName = ( typeOfDeal ) ? 'продать' : 'купить';
+        const businessCostList = ( typeOfDeal ) ? businessSellCostList : businessBuyCostList;
         const businessImageFiles = [ Bar, Restraunt, Shop, Hotel, Plant ];
 
         const items = businessList.map( element => {
@@ -46,7 +49,8 @@ const Business = ({ navigation }) => {
                         <View style={{ ...styles.itemName, backgroundColor: activeItemBackgroudColor }}>
                             <Text style={ styles.itemText }>{ BUSINESS_LIST[ i ] }</Text>
                             <View style={{ height: hp('1%') }}></View>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Годовой доход { businessCostList[ i ] }$</Text>
+                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Цена { businessCostList[ i ] }$</Text>
+                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Годовой доход { businessYearOutcome[ i ] }$</Text>
                         </View>
                     </Pressable>
                 )
@@ -84,8 +88,7 @@ const Business = ({ navigation }) => {
                     type="outline" 
                     title="Купить"
                     onPress={ () => { 
-                        dispatch( setBusinessList([true, true, false, true, false]) );
-                        dispatch( setBusinessCostList([ 0, 2000, 10000, 100000, 0 ], true) );
+                        dispatch( setBusinessList([true, true, false, true, false], true ));
                         navigation.navigate('GameMainScreen');
                     }}    
                 />
@@ -95,8 +98,7 @@ const Business = ({ navigation }) => {
                     type="outline" 
                     title="Продать"
                     onPress={ () => { 
-                        dispatch( setBusinessList([false, false, false, false, false]) );
-                        dispatch( setBusinessCostList([ 0, 2000, 0, 100000, 0 ], true) );
+                        dispatch( setBusinessList([false, false, false, false, false], true ));
                         navigation.navigate('GameMainScreen');
                     }}   
                 />

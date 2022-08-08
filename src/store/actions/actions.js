@@ -114,9 +114,25 @@ export const setBusinessList = ( list, saveStateToStore = false ) => {
     }
 }
 
-export const setBusinessCostList = ( list, saveStateToStore = false ) => {
+export const setBusinessBuyCostList = ( list, saveStateToStore = false ) => {
     return {
-        type: 'SET_BUSINESS_COST_LIST',
+        type: 'SET_BUSINESS_BUY_COST_LIST',
+        payload: list,
+        saveStateToStore
+    }
+}
+
+export const setBusinessSellCostList = ( list, saveStateToStore = false ) => {
+    return {
+        type: 'SET_BUSINESS_SELL_COST_LIST',
+        payload: list,
+        saveStateToStore
+    }
+}
+
+export const setBusinessYearOutcome = ( list, saveStateToStore = false ) => {
+    return {
+        type: 'SET_BUSINESS_YEAR_OUTCOME',
         payload: list,
         saveStateToStore
     }

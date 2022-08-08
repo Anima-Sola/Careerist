@@ -17,7 +17,7 @@ export const SetGameDifficultyScreen = ({ navigation }) => {
 
     const items = () => {
         let i = 4;
-        const diffTitles = [ 'Хардкор', 'Средне', 'Легко' ];
+        const diffTitles = [ 'Легко', 'Средне', 'Хардкор' ];
 
         const items = diffTitles.map( element => {
             i--;
