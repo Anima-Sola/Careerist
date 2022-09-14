@@ -3,7 +3,7 @@ import { Text, View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import { getYear, getCash } from '../../store/selectors';
+import { getCommonSettings } from '../../store/selectors';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
 
@@ -16,8 +16,7 @@ export const FinancialSituationScreen = ({ navigation }) => {
 };
 
 const FinancialSituation = ({ navigation }) => {
-    const year = useSelector( getYear );
-    const cash = useSelector( getCash );
+    const { year, cash } = useSelector( getCommonSettings );
 
     return (
         <View style={ styles.container }>

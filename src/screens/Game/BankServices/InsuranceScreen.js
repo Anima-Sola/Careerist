@@ -37,10 +37,10 @@ const Insurance = ({ navigation }) => {
         data: INSURANCE_SCREEN_INPUT_AMOUNT,
         value: '',
         buttonsCallbacks: [
-            ( value, args ) => {
-                insuredPossessionList[ args.activeItem ] = true;
+            ( value, { activeItem } ) => {
+                insuredPossessionList[ activeItem ] = true;
                 dispatch(setInsuredPossessionList( insuredPossessionList ));
-                insuranceCostList[ args.activeItem ] = value;
+                insuranceCostList[ activeItem ] = value;
                 dispatch(setInsuranceCostList( insuranceCostList, true ));
                 setPrompt({ ...prompt, isVisible: false, value: '' });
             },

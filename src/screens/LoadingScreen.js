@@ -15,8 +15,7 @@ export const LoadingScreen = ({ navigation }) => {
 
     useEffect(() => {
         dispatch( loadAppSettings() );
-        dispatch( loadGameSettings() );
-    })
+    }, [])
 
     const isGameStarted = useSelector( getIsGameStarted );
 
@@ -25,12 +24,13 @@ export const LoadingScreen = ({ navigation }) => {
     }
 
     const navToMainScreen = () => {
-        navigation.navigate('GameMainScreen');
+        dispatch( loadGameSettings() );
+        setTimeout(() => navigation.navigate('GameMainScreen'), 2000); 
     }
 
     const startGame = () => {
         setIsLoaded( true );
-        ( isGameStarted ) ? setTimeout( navToMainScreen, 2000 ) : setTimeout( navToIntro, 2000 );
+        ( isGameStarted ) ? navToMainScreen() : setTimeout( navToIntro, 2000 );
     }
 
     if (!isLoaded) {

@@ -5,14 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
 import { setCashAmountAction } from   '../../store/actions/actions';
-import { getGameDifficultyLevel } from '../../store/selectors';
+import { getCommonSettings } from '../../store/selectors';
 import CustomAlert from '../../components/CustomAlert';
 import { INPUT_CASH_AMOUNT_SCREEN_ALERT } from '../../store/constants';
 import { setInitialGameData } from '../../components/SetInitialGameData';
 
 export const InputСashAmountScreen = ({ navigation }) => {
     const dispatch = useDispatch();
-    const gameDifficultyLevel = useSelector( getGameDifficultyLevel );
+    const { gameDifficultyLevel } = useSelector( getCommonSettings );
     const [ isButtonDisabled, setIsButtonDisabled ] = useState( true );
     const [ cashAmount, setCashAmount ] = useState( '' );
     const maxCashAmount = useRef( '' );

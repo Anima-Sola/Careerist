@@ -1,17 +1,15 @@
-import React, { useRef } from "react";
-import { View, Text, StyleSheet, Pressable, ImageBackground } from 'react-native';
+import React, { useRef, useEffect, useState } from "react";
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Directions, GestureDetector, Gesture } from "react-native-gesture-handler";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import { useSelector } from 'react-redux';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useSelector } from "react-redux";
 import { Ionicons } from '@expo/vector-icons';
 import { THEME } from "../styles/theme";
-import { getCash, getYear, getPlayerAge } from "../store/selectors";
 import SideMenu from "./SideMenu";
+import { getCommonSettings } from "../store/selectors";
 
 const GameWrapper = ({ wrappedComponent }) => {
-    const cash = useSelector( getCash );
-    const year = useSelector( getYear );
-    const playerAge = useSelector( getPlayerAge ); 
+    const { year, cash, playerAge } = useSelector( getCommonSettings );
     const childRef = useRef();
 
     const flingRightGesture = Gesture.Fling()

@@ -1,10 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { THEME } from "../styles/theme";
+import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const CustomAlert = ({ alert, setAlert }) => {
+const CustomAlert = ({ alert, setAlert, argsForButtonCallbacks }) => {
     const {
         message, 
         header, 
@@ -16,12 +17,18 @@ const CustomAlert = ({ alert, setAlert }) => {
     } = alert.data;
  
     const buttonsList = () => {
-        let i = 0;
+        let i = -1;
         const list = buttons.map(({ key, hint, textColor }) => {
+            i++;
             return (
-                <Pressable key={ key } style={ THEME.PRESSABLE_STYLES(styles.button) } onPress={ alert.buttonsCallbacks[ i++ ] }>
-                    <Text style={{ ...styles.buttonTitle, color: textColor }}>{ hint }</Text>
-                </Pressable>
+                <Button
+                    key={ key } 
+                    buttonStyle={ styles.button } 
+                    titleStyle={{ ...styles.buttonTitle, color: textColor }}
+                    type="outline" 
+                    title={ hint } 
+                    onPress={ eval(`() => alert.buttonsCallbacks[ ${ i } ]({ ...argsForButtonCallbacks })`) }    
+                />
             )
         })
         return list;
@@ -115,17 +122,15 @@ const styles = StyleSheet.create({
     },
     button: {
         width: '100%',
-        height: hp('5%'),
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 10
+        marginBottom: 10,
+        backgroundColor: THEME.SECOND_BACKGROUND_COLOR
     },
     buttonTitle: {
-        paddingBottom: 3,
-        color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-semibold',
-        fontSize: THEME.FONT28,        
+        fontSize: THEME.FONT25,
     },
 })
 

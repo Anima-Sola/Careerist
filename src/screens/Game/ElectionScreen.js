@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, BackHandler, Image, ScrollView } from 'react-native';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, useStore } from "react-redux";
+import { useFocusEffect } from "@react-navigation/native";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { Button } from 'react-native-elements';
 import GameWrapper from "../../components/GameWrapper";
 import { THEME } from "../../styles/theme";
-import { getCurrentSocialStatus, getYear } from "../../store/selectors";
+import { getCommonSettings } from "../../store/selectors";
 import { SOCIAL_STATUSES } from "../../store/constants";
-import { setIsElectionOverOrNotHeld, setSocialStatus } from "../../store/actions/actions";
+import { setElectionStatus, setSocialStatus } from "../../store/actions/actions";
 import CustomAlert from '../../components/CustomAlert';
 import { ELECTION_SCREEN_SKIP_ELECTION, ELECTION_SCREEN_LOSE_ELECTION, ELECTION_SCREEN_WIN_ELECTION } from '../../store/constants';
 
@@ -21,14 +22,13 @@ export const ElectionScreen = ({ navigation }) => {
 
 const Election = ({ navigation }) => {
     const dispatch = useDispatch();
-    const year = useSelector( getYear );
-    const currentSocialStatus = useSelector( getCurrentSocialStatus );
+    const { year, currentSocialStatus } = useSelector( getCommonSettings );
     const [ alert, setAlert ] = useState({
         isVisible: false,
         data:  ELECTION_SCREEN_SKIP_ELECTION,
         buttonsCallbacks: [
             () => {
-                dispatch(setIsElectionOverOrNotHeld( true, true ));
+                dispatch(setElectionStatus( false, true ));
                 setAlert({ ...alert, isVisible: false });
                 navigation.navigate('GameMainScreen');
             }
@@ -60,7 +60,7 @@ const Election = ({ navigation }) => {
         }
     }
 
-    const isElectionHeld = (
+    const election = (
         <ScrollView style={ styles.container }>
             <CustomAlert alert={ alert } setAlert={ setAlert } />          
             <View>
@@ -103,7 +103,7 @@ const Election = ({ navigation }) => {
         </ScrollView>
     )
 
-    const isElectionNotHeld = (
+    const noElection = (
         <View style={ styles.container }>
             <View style={{ ...styles.dataContainer, justifyContent: 'center' }}>
                 <Text style={ styles.electionNotHeldText }>Год { year }.</Text>
@@ -121,7 +121,7 @@ const Election = ({ navigation }) => {
         </View>
     )
 
-    return (Number.isInteger( year / 2 )) ? isElectionHeld : isElectionNotHeld;
+    return (Number.isInteger( year / 2 )) ? election : noElection;
 }
 
 const styles = StyleSheet.create({

@@ -14,21 +14,17 @@ import {
 export const setInitialGameData = () => {
     store.dispatch(setIsGameStarted( true, true ));
 
-    const gameSettings = store.getState().gameSettingsReducer;
+    const commonSettings = store.getState().gameSettingsReducer.commonSettings;
 
-    const gameDifficultyLevel = gameSettings.gameDifficultyLevel;
-    const playerAge = gameSettings.playerAge;
-    const cash = gameSettings.cash;
+    const gameDifficultyLevel = commonSettings.gameDifficultyLevel;
+    const playerAge = commonSettings.playerAge;
+    const cash = commonSettings.cash;
 
     const deathAge = Math.round( 60 + 20 * Math.random() );
     store.dispatch(setDeathAge( deathAge ));
 
     const endOfTheYear = Math.round( gameDifficultyLevel + ( 5 - gameDifficultyLevel ) * Math.round() );
     store.dispatch(setEndOfTheYear( endOfTheYear ));
-
-    /*let rndPossession;
-    let rndBusiness;
-    let rndEmployees;*/
 
     const possessionBuyCostList = [];
     const possessionSellCostList = [];

@@ -1,25 +1,26 @@
 import React, { useState, useEffect, useReducer } from "react";
 import { View, Text, StyleSheet, Pressable, BackHandler, ScrollView } from 'react-native';
-import { useSelector, useDispatch } from "react-redux";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { useFocusEffect } from "@react-navigation/native";
+import { useStore, useSelector } from "react-redux";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { THEME } from "../../styles/theme";
 import GameWrapper from "../../components/GameWrapper";
-import { getYear, getIsElectionOverOrNotHeld } from "../../store/selectors";
+import { getCommonSettings } from "../../store/selectors";
 import CustomAlert from '../../components/CustomAlert';
 import { GAME_MAIN_SCREEN_QUIT_GAME_ALERT, GAME_MAIN_SCREEN_SCLEROSIS_WARNING } from "../../store/constants";
 
 export const GameMainScreen = ({ navigation }) => {
-    const wrappedComponent = <MainMenu navigation={ navigation }/>
+    const [, forceUpdate ] = useReducer(x => x + 1, 0);
+    const wrappedComponent = <MainMenu navigation={ navigation } forceUpdate={ forceUpdate } />
 
     return(
         <GameWrapper wrappedComponent={ wrappedComponent } />
     )
 }
 
-const MainMenu = ({ navigation }) => {
-    const dispatch = useDispatch();
-    const canNavToElectionScreen = useSelector( getIsElectionOverOrNotHeld );
-    const year = useSelector( getYear );
+const MainMenu = ({ navigation, forceUpdate }) => {
+    const store = useStore();
+    const { year, cash, electionStatus } = useSelector( getCommonSettings );
     const [ alert, setAlert ] = useState({ 
         isVisible: false, 
         data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT,
@@ -31,6 +32,13 @@ const MainMenu = ({ navigation }) => {
             }
         ]
     });
+
+    useFocusEffect(() => {
+        const commonSettings = store.getState().gameSettingsReducer.commonSettings;
+        const currentElectionStatus = commonSettings.electionStatus;
+        const currentCash = commonSettings.cash;
+        if(( currentElectionStatus !== electionStatus ) || ( currentCash != cash )) forceUpdate(); 
+    })
 
     useEffect(() => {
         const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -56,7 +64,7 @@ const MainMenu = ({ navigation }) => {
     }
 
     const navToElectionScreen = () => {
-        if( canNavToElectionScreen ) {
+        if( !electionStatus ) {
             setAlert({ ...alert, isVisible: true, data: GAME_MAIN_SCREEN_SCLEROSIS_WARNING })
             return;
         }

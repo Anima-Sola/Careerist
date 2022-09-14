@@ -150,6 +150,80 @@ export const ELECTION_SCREEN_WIN_ELECTION = {
     ]
 }
 
+export const POSSESSION_SCREEN_NO_MONEY_CHEATING = {
+    message: 'Вы не имеете требуемой суммы, за мошенничество штраф ',
+    header: 'МОШЕННИЧЕСТВО!!!',
+    iconName: 'angry', 
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Ой, уже ухожу',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
+export const POSSESSION_SCREEN_NOTHING_TO_SALE_CHEATING = {
+    message: 'Вам нечего продавать, за мошенничество штраф ',
+    header: 'МОШЕННИЧЕСТВО!!!',
+    iconName: 'angry', 
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Ой, уже ухожу',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
+export const POSSESSION_SCREEN_DONT_BE_FOOL_CHEATING = {
+    message: 'Усвоили?',
+    header: 'Не глупите!!!',
+    iconName: 'angry', 
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Ой, уже ухожу',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
+export const POSSESSION_SCREEN_ANOTHER_DEAL = {
+    message: 'Еще одна сделка?',
+    header: 'СДЕЛКА СОСТОЯЛАСЬ!!!',
+    iconName: 'handshake', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Да',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            hint: 'Нет',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
 export const INSURANCE_SCREEN_INPUT_AMOUNT = {
     message: '',
     header: '',

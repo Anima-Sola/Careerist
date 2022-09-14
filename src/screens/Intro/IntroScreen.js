@@ -1,6 +1,6 @@
 import React, { Component, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, StatusBar, BackHandler } from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch } from "react-redux";
 import Icon from 'react-native-vector-icons/Ionicons';

@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
-import { getPossessionList, getPossessionBuyCostList, getPossessionSellCostList } from '../../store/selectors';
-import { POSSESSION_LIST } from '../../store/constants';
-import { setPossessionList } from '../../store/actions/actions';
+import { getCommonSettings, getPossessionSettings } from '../../store/selectors';
+import { 
+    POSSESSION_LIST,
+    POSSESSION_SCREEN_NO_MONEY_CHEATING,
+    POSSESSION_SCREEN_NOTHING_TO_SALE_CHEATING,
+    POSSESSION_SCREEN_DONT_BE_FOOL_CHEATING,
+    POSSESSION_SCREEN_ANOTHER_DEAL
+} from '../../store/constants';
+import { setCashAmountAction, setPossessionList } from '../../store/actions/actions';
+import CustomAlert from '../../components/CustomAlert';
 
 import Flat from "../../assets/images/possession/flat.png";
 import Car from "../../assets/images/possession/car.png";
@@ -16,19 +23,43 @@ import Yacht from "../../assets/images/possession/yacht.png";
 import Plane from "../../assets/images/possession/plane.png";
 
 export const PossessionScreen = ({ navigation }) => {
-    const wrappedComponent = <Possession navigation={ navigation } />
+    const [, forceUpdate ] = useReducer(x => x + 1, 0);
+    const wrappedComponent = <Possession navigation={ navigation } forceUpdate={ forceUpdate }/>
 
     return (
         <GameWrapper wrappedComponent={ wrappedComponent } />
     )
 };
 
-const Possession = ({ navigation }) => {
+const Possession = ({ navigation, forceUpdate }) => {
     const dispatch = useDispatch();
-    const possessionList = useSelector( getPossessionList );
-    const possessionBuyCostList = useSelector( getPossessionBuyCostList );
-    const possessionSellCostList = useSelector( getPossessionSellCostList );
+    const { cash } = useSelector( getCommonSettings );
+    const { possessionList, possessionBuyCostList, possessionSellCostList } = useSelector( getPossessionSettings );
+    const [ buySellFlag, setBuyOrSellFlag ] = useState( true );
     const [ activeItem, setActiveItem ] = useState( 0 );
+    const [ alert, setAlert ] = useState({ 
+        isVisible: false, 
+        data: POSSESSION_SCREEN_ANOTHER_DEAL,
+        buttonsCallbacks: [
+            ({ activeItem, buySellFlag, cash }) => {
+                makeDeal( activeItem, buySellFlag, cash );
+                setAlert({ ...alert, isVisible: false });
+            },
+            ({ activeItem, buySellFlag, cash }) => {
+                makeDeal( activeItem, buySellFlag );
+                setAlert({ ...alert, isVisible: false });
+                navigation.navigate('GameMainScreen');
+            }
+        ]
+    })
+
+    const makeDeal = ( activeItem, buySellFlag, cash ) => {
+        possessionList[ activeItem ] = buySellFlag;
+        const updatedCash = ( buySellFlag ) ? cash - possessionBuyCostList[ activeItem ] : cash + possessionSellCostList[ activeItem ];
+        dispatch(setCashAmountAction( updatedCash ));
+        dispatch(setPossessionList( possessionList, true ));
+        forceUpdate();
+    }
 
     const getListBuyOrSale = ( typeOfDeal = false ) => {
         let i = -1;
@@ -74,7 +105,8 @@ const Possession = ({ navigation }) => {
     }
 
     return (
-        <>
+        <>  
+            <CustomAlert alert={ alert } setAlert={ setAlert } argsForButtonCallbacks={{ activeItem, buySellFlag, cash }}/>
             <ScrollView style={ styles.container }>
                 { listForSale() }
                 { listToBuy() }
@@ -86,9 +118,9 @@ const Possession = ({ navigation }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Купить"
-                    onPress={ () => { 
-                        dispatch(setPossessionList( [true, false, false, true, true], true ));
-                        navigation.navigate('GameMainScreen');
+                    onPress={ () => {
+                        setBuyOrSellFlag( true );
+                        setAlert({ ...alert, isVisible: true });
                     }}    
                 />
                 <Button
@@ -96,9 +128,9 @@ const Possession = ({ navigation }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Продать"
-                    onPress={ () => { 
-                        dispatch(setPossessionList( [false, false, false, false, false], true ));
-                        navigation.navigate('GameMainScreen');
+                    onPress={ () => {
+                        setBuyOrSellFlag( false );
+                        setAlert({ ...alert, isVisible: true });
                     }}   
                 />
             </View>

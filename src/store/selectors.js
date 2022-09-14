@@ -1,4 +1,9 @@
 //Game settings selectors
+export const getCommonSettings = state => state.gameSettingsReducer.commonSettings;
+export const getPossessionSettings = state => state.gameSettingsReducer.possessionSettings;
+export const getBusinessSettings = state => state.gameSettingsReducer.businessSettings;
+export const getEmployeesSettings = state => state.gameSettingsReducer.employeesSettings;
+
 export const getGameDifficultyLevel = state => state.gameSettingsReducer.gameDifficultyLevel;
 export const getCash = state => state.gameSettingsReducer.cash;
 export const getPlayerAge = state => state.gameSettingsReducer.playerAge;
