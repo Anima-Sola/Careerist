@@ -199,14 +199,16 @@ export const setInsuredPossessionList = ( list, saveStateToStore = false ) => {
     return {
         type: 'SET_INSURED_POSSESSION_LIST',
         payload: list,
+        settingsSection: 'possessionSettings',
         saveStateToStore
     }
 }
 
-export const setInsuranceCostList = ( list, saveStateToStore = false ) => {
+export const setInsurancePossessionCostList = ( list, saveStateToStore = false ) => {
     return {
-        type: 'SET_INSURANCE_COST_LIST',
+        type: 'SET_INSURANCE_POSSESSION_COST_LIST',
         payload: list,
+        settingsSection: 'possessionSettings',
         saveStateToStore
     }
 }

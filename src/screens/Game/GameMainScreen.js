@@ -11,16 +11,17 @@ import { GAME_MAIN_SCREEN_QUIT_GAME_ALERT, GAME_MAIN_SCREEN_SCLEROSIS_WARNING } 
 
 export const GameMainScreen = ({ navigation }) => {
     const [, forceUpdate ] = useReducer(x => x + 1, 0);
-    const wrappedComponent = <MainMenu navigation={ navigation } forceUpdate={ forceUpdate } />
+    const commonSettings = useSelector( getCommonSettings );
+    const wrappedComponent = <MainMenu navigation={ navigation } forceUpdate={ forceUpdate } commonSettings={ commonSettings }/>
 
     return(
-        <GameWrapper wrappedComponent={ wrappedComponent } />
+        <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
     )
 }
 
-const MainMenu = ({ navigation, forceUpdate }) => {
+const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
     const store = useStore();
-    const { year, cash, electionStatus } = useSelector( getCommonSettings );
+    const { year, cash, electionStatus } = commonSettings;
     const [ alert, setAlert ] = useState({ 
         isVisible: false, 
         data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT,
@@ -50,7 +51,6 @@ const MainMenu = ({ navigation, forceUpdate }) => {
                     return true;
                 case 'ElectionScreen':
                     return (Number.isInteger( year / 2 )) ? true : false;
-                    //return true;
                 default:
                     return false;
             }

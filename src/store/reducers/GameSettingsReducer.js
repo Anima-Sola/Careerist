@@ -17,9 +17,11 @@ const initialState = {
     },
 
     possessionSettings: {
-        possessionList: [ false, false, false, false, false ],  // Наличие - true / Отсутствие - false квартиры, машины, виллы, яхты, самолета
-        possessionBuyCostList: [ 0, 0, 0, 0, 0 ],               // Цена покупки имущества
-        possessionSellCostList: [ 0, 0, 0, 0, 0 ],              // Цена продажи имущества
+        possessionList: [ false, false, false, false, false ],        // Наличие - true / Отсутствие - false квартиры, машины, виллы, яхты, самолета
+        possessionBuyCostList: [ 0, 0, 0, 0, 0 ],                     // Цена покупки имущества
+        possessionSellCostList: [ 0, 0, 0, 0, 0 ],                    // Цена продажи имущества
+        insuredPossessionList: [ false, false, false, false, false ], // Застрахована - true / Не застраховано - false квартира, машина, вилла, яхта, самолет
+        insurancePossessionCostList: [ 0, 0, 0, 0, 0 ],               // Сумма, накоторую застраховано имущество
     },
 
     businessSettings: {
@@ -37,8 +39,6 @@ const initialState = {
     businessIncome: [ 0, 0, 0, 0, 0 ],                          // Доход от бизнеса
     stocksQuantity: [ 0, 0, 0, 0, 0 ],                          // Количество акций каждой компании в собственности
     avgStocksCost: [ 0, 0, 0, 0, 0 ],                           // Средние цены купленных акций
-    insuredPossession: [ false, false, false, false, false ],   // Застрахована - true / Не застраховано - false квартира, машина, вилла, яхта, самолет
-    insuranceCost: [ 0, 0, 0, 0, 0 ],                           // Сумма, накоторую застраховано имущество
     depositAmount: 0,                                           // Сумма вклада
 }
 
@@ -96,9 +96,9 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
         case 'SET_AVG_STOCKS_COST_LIST':
             return saveState( state, 'avgStocksCost', action );
         case 'SET_INSURED_POSSESSION_LIST':
-            return saveState( state, 'insuredPossession', action );
-        case 'SET_INSURANCE_COST_LIST':
-            return saveState( state, 'insuranceCost', action );
+            return saveState( state, 'insuredPossessionList', action );
+        case 'SET_INSURANCE_POSSESSION_COST_LIST':
+            return saveState( state, 'insurancePossessionCostList', action );
         case 'LOAD_GAME_SETTINGS':
             if ( action.payload ) return action.payload;
             return state;

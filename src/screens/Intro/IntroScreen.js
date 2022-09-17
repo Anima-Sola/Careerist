@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component, useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, Image, StatusBar, BackHandler } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useFocusEffect } from '@react-navigation/native';
@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import Icon from 'react-native-vector-icons/Ionicons';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { THEME } from '../../styles/theme';
-//import { connect } from 'react-redux';
 import { saveGameSettingsInitialState, saveAppSettingsInitialState, loadAppSettings, loadGameSettings } from '../../store/actions/actions';
 
 const slides = [
@@ -56,13 +55,6 @@ const slides = [
 ];
 
 class Intro extends Component {
-    /*componentDidMount() {
-        this.props.saveAppSettingsInitialState();
-        this.props.saveGameSettingsInitialState();
-        this.props.loadAppSettings();
-        this.props.loadGameSettings();
-        this.props.navigation.addListener('beforeRemove', (e) => e.preventDefault() )
-    }*/
 
     _renderItem = ({ item }) => {
         return (
@@ -119,42 +111,35 @@ class Intro extends Component {
             <View style={{ flex: 1 }}>
                 <StatusBar translucent backgroundColor="transparent" />
                 <AppIntroSlider
-                    data={slides}
-                    renderItem={this._renderItem}
-                    showSkipButton={true}
-                    renderDoneButton={this._renderDoneButton}
-                    renderNextButton={this._renderNextButton}
-                    renderSkipButton={this._renderSkipButton}
-                    onDone={this._navToSetGameDifficultyScreen}
-                    onSkip={this._navToSetGameDifficultyScreen}
+                    data={ slides }
+                    renderItem={ this._renderItem }
+                    showSkipButton={ true }
+                    renderDoneButton={ this._renderDoneButton }
+                    renderNextButton={ this._renderNextButton }
+                    renderSkipButton={ this._renderSkipButton }
+                    onDone={ this._navToSetGameDifficultyScreen }
+                    onSkip={ this._navToSetGameDifficultyScreen }
+                    ref={( ref ) => ( this.slider = ref )}
                 />
             </View>
         );
     }
 }
 
-/*const mapDispatchToProps = ( dispatch ) => {
-    return {
-        saveAppSettingsInitialState: () => dispatch( saveGameSettingsInitialState() ),
-        saveGameSettingsInitialState: () => dispatch( saveAppSettingsInitialState() ),
-        loadAppSettings: () => dispatch( loadAppSettings() ),
-        loadGameSettings: () => dispatch( loadGameSettings() )
-    }
-};
-
-export default connect(null, mapDispatchToProps)(IntroScreen)*/
-
 const IntroScreen = ({ navigation }) => {
+    const ref = useRef();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        /*const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
             const navState = navigation.getState();
             const currentScreenName = navState.routes[ navState.index ].name;
-            if( currentScreenName === 'IntroScreen' ) return true;
-            return false;
+            if( currentScreenName === 'IntroScreen' ) {
+                BackHandler.exitApp();
+                return true;
+            }
         })
-        return () => backHandler.remove();*/
+        return () => backHandler.remove();
     })
 
     useFocusEffect(() => {
@@ -162,11 +147,10 @@ const IntroScreen = ({ navigation }) => {
         dispatch( saveGameSettingsInitialState() );
         dispatch( loadAppSettings() );
         dispatch( loadGameSettings() );
-        
-        navigation.addListener('beforeRemove', (e) => e.preventDefault() )
+        ref.current.slider.goToSlide( 0 );
     })
 
-    return <Intro navigation={ navigation } />;
+    return <Intro navigation={ navigation } ref={ ref }/>;
 }
 
 export default IntroScreen;
@@ -263,3 +247,121 @@ export const IntroMainPage = () => {
         backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
     }
 });*/
+
+//import { connect } from 'react-redux';
+
+/*class Intro extends Component {
+    componentDidMount() {
+        this.props.saveAppSettingsInitialState();
+        this.props.saveGameSettingsInitialState();
+        this.props.loadAppSettings();
+        this.props.loadGameSettings();
+        this.props.navigation.addListener('beforeRemove', (e) => e.preventDefault() )
+    }
+
+    _renderItem = ({ item }) => {
+        return (
+            <View style={{ ...styles.container, backgroundColor: item.backgroundColor }}>
+                <Image style={ styles.image } resizeMode='center' source={ item.image } />
+                <View style={ styles.titleContainer }>
+                    <Text style={ styles.title }>{ item.title }</Text>
+                </View>
+                <View style={ styles.textContainer }>
+                    <Text style={ styles.text }>{ item.text }</Text>
+                </View>
+            </View>
+        );
+    }
+
+    _renderNextButton = () => {
+        return (
+            <View style={ styles.buttonCircle }>
+                <Icon
+                    name="arrow-forward-outline"
+                    color="rgba(255, 255, 255, .9)"
+                    size={24}
+                />
+            </View>
+        );
+    };
+
+    _renderDoneButton = () => {
+        return (
+            <View style={ styles.buttonCircle }>
+                <Icon
+                    name="md-checkmark"
+                    color="rgba(255, 255, 255, .9)"
+                    size={24}
+                />
+        </View>
+        );
+    };
+
+    _renderSkipButton = () => {
+        return (
+            <View style={ styles.skipButton }>
+                <Text style={ styles.skipButtonText }>К игре</Text>
+            </View>
+        );
+    }
+
+    _navToSetGameDifficultyScreen = () => {
+        this.props.navigation.navigate('SetGameDifficultyScreen');
+    }
+
+    render() {
+        return (
+            <View style={{ flex: 1 }}>
+                <StatusBar translucent backgroundColor="transparent" />
+                <AppIntroSlider
+                    data={slides}
+                    renderItem={this._renderItem}
+                    showSkipButton={true}
+                    renderDoneButton={this._renderDoneButton}
+                    renderNextButton={this._renderNextButton}
+                    renderSkipButton={this._renderSkipButton}
+                    onDone={this._navToSetGameDifficultyScreen}
+                    onSkip={this._navToSetGameDifficultyScreen}
+                />
+            </View>
+        );
+    }
+}
+
+const mapDispatchToProps = ( dispatch ) => {
+    return {
+        saveAppSettingsInitialState: () => dispatch( saveGameSettingsInitialState() ),
+        saveGameSettingsInitialState: () => dispatch( saveAppSettingsInitialState() ),
+        loadAppSettings: () => dispatch( loadAppSettings() ),
+        loadGameSettings: () => dispatch( loadGameSettings() )
+    }
+};
+
+export default connect(null, mapDispatchToProps)(IntroScreen)
+
+const IntroScreen = ({ navigation }) => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            const navState = navigation.getState();
+            const currentScreenName = navState.routes[ navState.index ].name;
+            if( currentScreenName === 'IntroScreen' ) return true;
+            return false;
+        })
+        return () => backHandler.remove();
+    })
+
+    useFocusEffect(() => {
+        dispatch( saveAppSettingsInitialState() );
+        dispatch( saveGameSettingsInitialState() );
+        dispatch( loadAppSettings() );
+        dispatch( loadGameSettings() );
+        
+        navigation.addListener('beforeRemove', (e) => e.preventDefault() )
+    })
+
+    return <Intro navigation={ navigation } />;
+}
+
+export default IntroScreen;*/

@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Text, View, StyleSheet, ScrollView, Pressable, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-native-elements';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { getCommonSettings } from '../../store/selectors'; 
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
 import { BANKING_SERVICES } from '../../store/constants';
@@ -14,10 +15,11 @@ import Lend from "../../assets/images/bankservices/lend.png";
 import Borrow from "../../assets/images/bankservices/borrow.png";
 
 export const BankScreen = ({ navigation }) => {
+    const commonSettings = useSelector( getCommonSettings );
     const wrappedComponent = <Bank navigation={ navigation } />
 
     return(
-        <GameWrapper wrappedComponent={ wrappedComponent } />
+        <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
     )
 };
 

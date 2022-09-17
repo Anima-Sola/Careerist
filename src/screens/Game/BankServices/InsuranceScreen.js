@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { THEME } from '../../../styles/theme';
 import GameWrapper from '../../../components/GameWrapper';
-import { getPossessionList, getPossessionCostList, getInsuredPossessionList, getInsuranceCostList } from '../../../store/selectors';
+import { getCommonSettings, getPossessionSettings } from '../../../store/selectors';
 import { POSSESSION_LIST } from '../../../store/constants';
 import CustomPrompt from '../../../components/CustomPrompt';
 import { INSURANCE_SCREEN_INPUT_AMOUNT } from '../../../store/constants';
-import { setInsuredPossessionList, setInsuranceCostList } from '../../../store/actions/actions';
+import { setInsuredPossessionList, setInsurancePossessionCostList } from '../../../store/actions/actions';
 
 import Flat from "../../../assets/images/possession/flat.png";
 import Car from "../../../assets/images/possession/car.png";
@@ -18,19 +18,17 @@ import Yacht from "../../../assets/images/possession/yacht.png";
 import Plane from "../../../assets/images/possession/plane.png";
 
 export const InsuranceScreen = ({ navigation }) => {
+    const commonSettings = useSelector( getCommonSettings );
     const wrappedComponent = <Insurance navigation={ navigation } />
 
     return (
-        <GameWrapper wrappedComponent={ wrappedComponent } />
+        <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
     )
 };
 
 const Insurance = ({ navigation }) => {
     const dispatch = useDispatch();
-    const possessionList = useSelector( getPossessionList );
-    const possessionCostList = useSelector( getPossessionCostList );
-    const insuredPossessionList = useSelector( getInsuredPossessionList );
-    const insuranceCostList = useSelector( getInsuranceCostList );
+    const { possessionList, possessionSellCostList, insuredPossessionList, insurancePossessionCostList } = useSelector( getPossessionSettings );
     const [ activeItem, setActiveItem ] = useState( 0 );
     const [ prompt, setPrompt ] = useState({ 
         isVisible: false, 
@@ -66,7 +64,7 @@ const Insurance = ({ navigation }) => {
                             <View style={{ height: hp('1%') }}></View>
                             <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Максимальная сумма</Text>
                             <View style={{ height: hp('1%') }}></View>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>{ possessionCostList[ i ] }$</Text>
+                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>{ possessionSellCostList[ i ] }$</Text>
                         </View>
                     </Pressable>
                 )

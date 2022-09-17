@@ -8,8 +8,8 @@ import { THEME } from "../styles/theme";
 import SideMenu from "./SideMenu";
 import { getCommonSettings } from "../store/selectors";
 
-const GameWrapper = ({ wrappedComponent }) => {
-    const { year, cash, playerAge } = useSelector( getCommonSettings );
+const GameWrapper = ({ wrappedComponent, commonSettings }) => {
+    const { year, cash, playerAge } = commonSettings;
     const childRef = useRef();
 
     const flingRightGesture = Gesture.Fling()

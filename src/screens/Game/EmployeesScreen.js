@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
-import { getEmployeesList, getEmployeesSalaryList } from '../../store/selectors';
+import { getCommonSettings, getEmployeesSettings } from '../../store/selectors';
 import { EMPLOYEES_LIST } from '../../store/constants';
-import { setEmployeesList, setEmployeesSalaryList } from '../../store/actions/actions';
+import { setEmployeesList } from '../../store/actions/actions';
 
 import Makler from "../../assets/images/employees/makler.png";
 import Doctor from "../../assets/images/employees/doctor.png";
@@ -16,17 +16,18 @@ import Detective from "../../assets/images/employees/detective.png";
 import Security from "../../assets/images/employees/security.png";
 
 export const EmployeesScreen = ({ navigation }) => {
-    const wrappedComponent = <Employees navigation={ navigation } />
+    const [, forceUpdate ] = useReducer(x => x + 1, 0);
+    const commonSettings = useSelector( getCommonSettings );
+    const wrappedComponent = <Employees navigation={ navigation } forceUpdate={ forceUpdate }/>
 
     return (
-        <GameWrapper wrappedComponent={ wrappedComponent } />
+        <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
     )
 };
 
-const Employees = ({ navigation }) => {
+const Employees = ({ navigation, forceUpdate }) => {
     const dispatch = useDispatch();
-    const employeesList = useSelector( getEmployeesList );
-    const employeesSalaryList = useSelector( getEmployeesSalaryList );
+    const { employeesList, employeesSalaryList } = useSelector( getEmployeesSettings );
     const [ activeItem, setActiveItem ] = useState( 0 );
 
     const getListHireOrFire = ( typeOfDeal = false ) => {

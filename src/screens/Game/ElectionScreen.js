@@ -13,16 +13,17 @@ import CustomAlert from '../../components/CustomAlert';
 import { ELECTION_SCREEN_SKIP_ELECTION, ELECTION_SCREEN_LOSE_ELECTION, ELECTION_SCREEN_WIN_ELECTION } from '../../store/constants';
 
 export const ElectionScreen = ({ navigation }) => {
-    const wrappedComponent = <Election navigation={ navigation } />
+    const commonSettings = useSelector( getCommonSettings );
+    const wrappedComponent = <Election navigation={ navigation } commonSettings={ commonSettings } />
 
     return (
-        <GameWrapper wrappedComponent={ wrappedComponent } />
+        <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings } />
     )
 };
 
-const Election = ({ navigation }) => {
+const Election = ({ navigation, commonSettings }) => {
     const dispatch = useDispatch();
-    const { year, currentSocialStatus } = useSelector( getCommonSettings );
+    const { year, currentSocialStatus } = commonSettings;
     const [ alert, setAlert ] = useState({
         isVisible: false,
         data:  ELECTION_SCREEN_SKIP_ELECTION,

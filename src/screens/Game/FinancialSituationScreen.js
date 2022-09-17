@@ -8,15 +8,16 @@ import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
 
 export const FinancialSituationScreen = ({ navigation }) => {
-    const wrappedComponent = <FinancialSituation navigation={ navigation } />
+    const commonSettings = useSelector( getCommonSettings );
+    const wrappedComponent = <FinancialSituation navigation={ navigation } commonSettings={ commonSettings }/>
 
     return(
-        <GameWrapper wrappedComponent={ wrappedComponent } />
+        <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
     )
 };
 
-const FinancialSituation = ({ navigation }) => {
-    const { year, cash } = useSelector( getCommonSettings );
+const FinancialSituation = ({ navigation, commonSettings }) => {
+    const { year, cash } = commonSettings;
 
     return (
         <View style={ styles.container }>

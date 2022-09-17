@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
-import { getBusinessList, getBusinessBuyCostList, getBusinessSellCostList, getBusinessYearOutcome } from '../../store/selectors';
+import { getCommonSettings, getBusinessSettings } from '../../store/selectors';
 import { BUSINESS_LIST } from '../../store/constants';
 import { setBusinessList } from '../../store/actions/actions';
 
@@ -16,19 +16,18 @@ import Hotel from "../../assets/images/business/hotel.png";
 import Plant from "../../assets/images/business/plant.png";
 
 export const BusinessScreen = ({ navigation }) => {
-    const wrappedComponent = <Business navigation={ navigation } />
+    const [, forceUpdate ] = useReducer(x => x + 1, 0);
+    const commonSettings = useSelector( getCommonSettings );
+    const wrappedComponent = <Business navigation={ navigation } forceUpdate={ forceUpdate }/>
 
     return (
-        <GameWrapper wrappedComponent={ wrappedComponent } />
+        <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
     )
 };
 
-const Business = ({ navigation }) => {
+const Business = ({ navigation, forceUpdate }) => {
     const dispatch = useDispatch();
-    const businessList = useSelector( getBusinessList );
-    const businessBuyCostList = useSelector( getBusinessBuyCostList );
-    const businessSellCostList = useSelector( getBusinessSellCostList );
-    const businessYearOutcome = useSelector( getBusinessYearOutcome );
+    const { businessList, businessBuyCostList, businessSellCostList, businessYearOutcome } = useSelector( getBusinessSettings );
     const [ activeItem, setActiveItem ] = useState( 0 );
 
     const getListBuyOrSale = ( typeOfDeal = false ) => {

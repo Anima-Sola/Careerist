@@ -24,16 +24,17 @@ import Plane from "../../assets/images/possession/plane.png";
 
 export const PossessionScreen = ({ navigation }) => {
     const [, forceUpdate ] = useReducer(x => x + 1, 0);
-    const wrappedComponent = <Possession navigation={ navigation } forceUpdate={ forceUpdate }/>
+    const commonSettings = useSelector( getCommonSettings );
+    const wrappedComponent = <Possession navigation={ navigation } forceUpdate={ forceUpdate } commonSettings={ commonSettings }/>
 
     return (
-        <GameWrapper wrappedComponent={ wrappedComponent } />
+        <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
     )
 };
 
-const Possession = ({ navigation, forceUpdate }) => {
+const Possession = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
-    const { cash } = useSelector( getCommonSettings );
+    const { cash } = commonSettings;
     const { possessionList, possessionBuyCostList, possessionSellCostList } = useSelector( getPossessionSettings );
     const [ buySellFlag, setBuyOrSellFlag ] = useState( true );
     const [ activeItem, setActiveItem ] = useState( 0 );
@@ -46,7 +47,7 @@ const Possession = ({ navigation, forceUpdate }) => {
                 setAlert({ ...alert, isVisible: false });
             },
             ({ activeItem, buySellFlag, cash }) => {
-                makeDeal( activeItem, buySellFlag );
+                makeDeal( activeItem, buySellFlag, cash );
                 setAlert({ ...alert, isVisible: false });
                 navigation.navigate('GameMainScreen');
             }
