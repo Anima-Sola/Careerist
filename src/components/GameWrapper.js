@@ -1,12 +1,10 @@
-import React, { useRef, useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import React, { useRef } from "react";
+import { View, Text, StyleSheet, Pressable, StatusBar } from 'react-native';
 import { Directions, GestureDetector, Gesture } from "react-native-gesture-handler";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { useSelector } from "react-redux";
 import { Ionicons } from '@expo/vector-icons';
 import { THEME } from "../styles/theme";
 import SideMenu from "./SideMenu";
-import { getCommonSettings } from "../store/selectors";
 
 const GameWrapper = ({ wrappedComponent, commonSettings }) => {
     const { year, cash, playerAge } = commonSettings;
@@ -21,6 +19,7 @@ const GameWrapper = ({ wrappedComponent, commonSettings }) => {
     return (
         <GestureDetector gesture={ flingRightGesture }>
             <View style={ styles.container }>
+                <StatusBar translucent backgroundColor="transparent" />
                 <View style={ styles.paddingStatusBar }></View>
                 <View style={ styles.header }>
                     <Pressable onPress={() => { childRef.current.showSideMenu() }}>  
@@ -36,7 +35,7 @@ const GameWrapper = ({ wrappedComponent, commonSettings }) => {
                     <Text style={ styles.footerText }>Год: { year }</Text>
                     <Text style={ styles.footerText }>Ваш возраст: { playerAge }</Text>
                 </View>
-            <SideMenu ref={ childRef } navigation={ wrappedComponent.props.navigation }/>
+                <SideMenu ref={ childRef } navigation={ wrappedComponent.props.navigation }/>
             </View>
         </GestureDetector>
     )
@@ -84,8 +83,7 @@ const styles = StyleSheet.create({
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-semibold',
         fontSize: THEME.FONT30,
-        
-    }
+    },
 })
 
 export default GameWrapper;

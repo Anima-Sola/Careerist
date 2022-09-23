@@ -6,11 +6,12 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
 import { getCommonSettings, getPossessionSettings } from '../../store/selectors';
-import { 
+import {
+    SOCIAL_STATUSES, 
     POSSESSION_LIST,
     POSSESSION_SCREEN_NO_MONEY_CHEATING,
     POSSESSION_SCREEN_NOTHING_TO_SALE_CHEATING,
-    POSSESSION_SCREEN_DONT_BE_FOOL_CHEATING,
+    POSSESSION_SCREEN_DONT_BE_FOOL_WARNING,
     POSSESSION_SCREEN_ANOTHER_DEAL
 } from '../../store/constants';
 import { setCashAmountAction, setPossessionList } from '../../store/actions/actions';
@@ -34,7 +35,7 @@ export const PossessionScreen = ({ navigation }) => {
 
 const Possession = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
-    const { cash } = commonSettings;
+    const { cash, currentSocialStatus } = commonSettings;
     const { possessionList, possessionBuyCostList, possessionSellCostList } = useSelector( getPossessionSettings );
     const [ buySellFlag, setBuyOrSellFlag ] = useState( true );
     const [ activeItem, setActiveItem ] = useState( 0 );
@@ -43,23 +44,80 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
         data: POSSESSION_SCREEN_ANOTHER_DEAL,
         buttonsCallbacks: [
             ({ activeItem, buySellFlag, cash }) => {
-                makeDeal( activeItem, buySellFlag, cash );
+                buyOrSellPossession( activeItem, buySellFlag, cash );
                 setAlert({ ...alert, isVisible: false });
             },
             ({ activeItem, buySellFlag, cash }) => {
-                makeDeal( activeItem, buySellFlag, cash );
+                buyOrSellPossession( activeItem, buySellFlag, cash );
                 setAlert({ ...alert, isVisible: false });
                 navigation.navigate('GameMainScreen');
             }
         ]
     })
 
-    const makeDeal = ( activeItem, buySellFlag, cash ) => {
+    const buyOrSellPossession = ( activeItem, buySellFlag, cash ) => {
         possessionList[ activeItem ] = buySellFlag;
         const updatedCash = ( buySellFlag ) ? cash - possessionBuyCostList[ activeItem ] : cash + possessionSellCostList[ activeItem ];
         dispatch(setCashAmountAction( updatedCash ));
         dispatch(setPossessionList( possessionList, true ));
         forceUpdate();
+    }
+
+    const penalty = ( cash, penaltyAmount ) => {
+        let updatedCash = cash - penaltyAmount;
+        if( updatedCash < 0 ) updatedCash = 0;
+        dispatch(setCashAmountAction( updatedCash, true ));
+        forceUpdate();
+    }
+
+    const cheating = ( alertData ) => {
+        const value = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
+        const penaltyAmount = 1500 + 50 * Math.round( 10 * value );
+
+        setAlert({ 
+            isVisible: true, 
+            data: { ...alertData, message: `За мошенничество штраф ${ penaltyAmount }$` },
+            buttonsCallbacks: [
+                ({ cash }) => {
+                    penalty( cash, penaltyAmount );
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
+    
+    const foolishness = ( alertData ) => {
+        setAlert({ 
+            isVisible: true, 
+            data: { ...alertData, header: `Не глупите ${ SOCIAL_STATUSES[ currentSocialStatus ].toLowerCase() }!` },
+            buttonsCallbacks: [
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
+
+    const makeADeal = ( buySellFlag ) => {
+        
+        if( possessionList[ activeItem ] && buySellFlag ) {
+            foolishness( POSSESSION_SCREEN_DONT_BE_FOOL_WARNING );
+            return;
+        }
+
+        if( !possessionList[ activeItem ] && !buySellFlag ) {
+            cheating( POSSESSION_SCREEN_NOTHING_TO_SALE_CHEATING );
+            return;
+        }
+
+        if(( cash < possessionBuyCostList[ activeItem ] ) && buySellFlag ) {
+            cheating( POSSESSION_SCREEN_NO_MONEY_CHEATING );
+            return;
+        }
+
+        setAlert({ ...alert, isVisible: true });
     }
 
     const getListBuyOrSale = ( typeOfDeal = false ) => {
@@ -121,7 +179,8 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
                     title="Купить"
                     onPress={ () => {
                         setBuyOrSellFlag( true );
-                        setAlert({ ...alert, isVisible: true });
+                        makeADeal( true );
+                        //setAlert({ ...alert, isVisible: true });
                     }}    
                 />
                 <Button
@@ -131,7 +190,8 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
                     title="Продать"
                     onPress={ () => {
                         setBuyOrSellFlag( false );
-                        setAlert({ ...alert, isVisible: true });
+                        makeADeal( false );
+                        //setAlert({ ...alert, isVisible: true });
                     }}   
                 />
             </View>

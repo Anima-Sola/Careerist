@@ -5,9 +5,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { THEME } from '../styles/theme';
 
 const SideMenu = ( props, ref ) => {
-    const animSideMenu = useRef(new Animated.Value(0)).current;
+    const animSideMenu = useRef(new Animated.Value( - THEME.SCREEN_WIDTH )).current;
     const animOverlayOpacity = useRef(new Animated.Value(0)).current;
-
+    
     useImperativeHandle( ref, () => ({
         showSideMenu: () => { showSideMenu() }
     }))
@@ -17,7 +17,7 @@ const SideMenu = ( props, ref ) => {
             Animated.timing(
                 animSideMenu,
                 {
-                    toValue: THEME.SCREEN_WIDTH,
+                    toValue: 0,
                     duration: 200,
                     useNativeDriver: true
                 }
@@ -46,7 +46,7 @@ const SideMenu = ( props, ref ) => {
             Animated.timing(
                 animSideMenu,
                 {
-                    toValue: 0,
+                    toValue: - THEME.SCREEN_WIDTH,
                     duration: 200,
                     useNativeDriver: true
                 }
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         position: "absolute",
         top: 0,
-        left: - THEME.SCREEN_WIDTH,
+        //left: - THEME.SCREEN_WIDTH,
         width: THEME.SCREEN_WIDTH,
         height: THEME.SCREEN_HEIGHT * 2,
     },

@@ -151,8 +151,8 @@ export const ELECTION_SCREEN_WIN_ELECTION = {
 }
 
 export const POSSESSION_SCREEN_NO_MONEY_CHEATING = {
-    message: 'Вы не имеете требуемой суммы, за мошенничество штраф ',
-    header: 'МОШЕННИЧЕСТВО!!!',
+    message: '',
+    header: 'Вы не имеете требуемой суммы!',
     iconName: 'angry', 
     iconBackgroundColor: 'red',
     iconColor: 'white',
@@ -168,8 +168,8 @@ export const POSSESSION_SCREEN_NO_MONEY_CHEATING = {
 }
 
 export const POSSESSION_SCREEN_NOTHING_TO_SALE_CHEATING = {
-    message: 'Вам нечего продавать, за мошенничество штраф ',
-    header: 'МОШЕННИЧЕСТВО!!!',
+    message: '',
+    header: 'Вам нечего продавать!',
     iconName: 'angry', 
     iconBackgroundColor: 'red',
     iconColor: 'white',
@@ -184,9 +184,9 @@ export const POSSESSION_SCREEN_NOTHING_TO_SALE_CHEATING = {
     ]
 }
 
-export const POSSESSION_SCREEN_DONT_BE_FOOL_CHEATING = {
+export const POSSESSION_SCREEN_DONT_BE_FOOL_WARNING = {
     message: 'Усвоили?',
-    header: 'Не глупите!!!',
+    header: '',
     iconName: 'angry', 
     iconBackgroundColor: 'red',
     iconColor: 'white',

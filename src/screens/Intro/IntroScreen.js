@@ -1,10 +1,12 @@
-import React, { Component, useEffect, useRef } from 'react';
+import React, { Component, useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, Image, StatusBar, BackHandler } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch } from "react-redux";
 import Icon from 'react-native-vector-icons/Ionicons';
 import AppIntroSlider from 'react-native-app-intro-slider';
+import CustomAlert from '../../components/CustomAlert';
+import { GAME_MAIN_SCREEN_QUIT_GAME_ALERT } from '../../store/constants';
 import { THEME } from '../../styles/theme';
 import { saveGameSettingsInitialState, saveAppSettingsInitialState, loadAppSettings, loadGameSettings } from '../../store/actions/actions';
 
@@ -129,13 +131,24 @@ class Intro extends Component {
 const IntroScreen = ({ navigation }) => {
     const ref = useRef();
     const dispatch = useDispatch();
+    const [ alert, setAlert ] = useState({ 
+        isVisible: false, 
+        data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT,
+        buttonsCallbacks: [
+            () => setAlert({ ...alert, isVisible: false }),
+            () => { 
+                setAlert({ ...alert, isVisible: false }); 
+                BackHandler.exitApp(); 
+            }
+        ]
+    });
 
     useEffect(() => {
         const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
             const navState = navigation.getState();
             const currentScreenName = navState.routes[ navState.index ].name;
             if( currentScreenName === 'IntroScreen' ) {
-                BackHandler.exitApp();
+                setAlert({ ...alert, isVisible: true });
                 return true;
             }
         })
@@ -150,7 +163,12 @@ const IntroScreen = ({ navigation }) => {
         ref.current.slider.goToSlide( 0 );
     })
 
-    return <Intro navigation={ navigation } ref={ ref }/>;
+    return (
+        <>
+            <CustomAlert alert={ alert } setAlert={ setAlert } />
+            <Intro navigation={ navigation } ref={ ref }/>
+        </>
+    )
 }
 
 export default IntroScreen;

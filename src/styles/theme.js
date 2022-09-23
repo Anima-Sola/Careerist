@@ -1,21 +1,10 @@
-import { StatusBar, Dimensions, Platform, PixelRatio } from 'react-native';
+import { StatusBar, Dimensions } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const {
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT,
 } = Dimensions.get('window');
-
-/*const scale = SCREEN_WIDTH / 320;
-
-function normalize(size) {
-    const newSize = size * scale;
-    if (Platform.OS === 'ios') {
-        return Math.round(PixelRatio.roundToNearestPixel(newSize));
-    } else {
-        return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
-    }
-}*/
 
 export const THEME = {
     MAIN_BACKGROUND_COLOR: '#385C74',

@@ -7,7 +7,7 @@ import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
 import { STOCKS_LIST } from '../../store/constants';
 import { setStocksQuantityList, setAvgStocksCostList } from '../../store/actions/actions';
-import { getStocksQuantityList, getAvgStocksCostList } from '../../store/selectors';
+import { getCommonSettings, getStocksQuantityList, getAvgStocksCostList } from '../../store/selectors';
 
 import Gazprom from "../../assets/images/logos/gazprom.png";
 import Rosneft from "../../assets/images/logos/rosneft.png";
@@ -16,10 +16,11 @@ import Magnit from "../../assets/images/logos/magnit.png";
 import Sber from "../../assets/images/logos/sber.png";
 
 export const StockmarketScreen = ({ navigation }) => {
+    const commonSettings = useSelector( getCommonSettings );
     const wrappedComponent = <Stockmarket navigation={ navigation } />
 
     return (
-        <GameWrapper wrappedComponent={ wrappedComponent } />
+        <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
     )
 };
 

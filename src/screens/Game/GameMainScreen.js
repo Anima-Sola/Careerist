@@ -15,7 +15,7 @@ export const GameMainScreen = ({ navigation }) => {
     const wrappedComponent = <MainMenu navigation={ navigation } forceUpdate={ forceUpdate } commonSettings={ commonSettings }/>
 
     return(
-        <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
+        <GameWrapper navigation={ navigation } wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
     )
 }
 
