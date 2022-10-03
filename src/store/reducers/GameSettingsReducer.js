@@ -34,6 +34,7 @@ const initialState = {
     employeesSettings: {
         employeesList: [ false, false, false, false, false ],   // Наличие - true / Отсутствие - false маклера, врача, адвоката, детектива, личной охраны
         employeesSalaryList: [ 0, 0, 0, 0, 0 ],                 // Зарплата подчиненных
+        //employeesFirePenaltyList: [ 0, 0, 0, 0, 0],             // Неустойка при увольнении
     },
 
     businessIncome: [ 0, 0, 0, 0, 0 ],                          // Доход от бизнеса
@@ -83,6 +84,8 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
             return saveState( state, 'employeesList', action );
         case 'SET_EMPLOYEES_SALARY_LIST':
             return saveState( state, 'employeesSalaryList', action );
+        /*case 'SET_EMPLOYEES_FIRE_PENALTY_LIST':
+            return saveState( state, 'employeesFirePenaltyList', action );*/
         case 'SET_BUSINESS_LIST':
             return saveState( state, 'businessList', action );
         case 'SET_BUSINESS_BUY_COST_LIST':

@@ -2,7 +2,7 @@ import store from "../store";
 import { 
     setIsGameStarted, 
     setDeathAge, 
-    setEndOfTheYear,
+    setEndOfYear,
     setPossessionBuyCostList,
     setPossessionSellCostList,
     setBusinessBuyCostList,
@@ -17,14 +17,12 @@ export const setInitialGameData = () => {
     const commonSettings = store.getState().gameSettingsReducer.commonSettings;
 
     const gameDifficultyLevel = commonSettings.gameDifficultyLevel;
-    const playerAge = commonSettings.playerAge;
-    const cash = commonSettings.cash;
 
     const deathAge = Math.round( 60 + 20 * Math.random() );
     store.dispatch(setDeathAge( deathAge ));
 
-    const endOfTheYear = Math.round( gameDifficultyLevel + ( 5 - gameDifficultyLevel ) * Math.round() );
-    store.dispatch(setEndOfTheYear( endOfTheYear ));
+    const endOfYear = Math.round( gameDifficultyLevel + ( 5 - gameDifficultyLevel ) * Math.random() );
+    store.dispatch(setEndOfYear( endOfYear ));
 
     const possessionBuyCostList = [];
     const possessionSellCostList = [];

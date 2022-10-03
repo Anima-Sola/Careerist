@@ -12,7 +12,7 @@ import {
     POSSESSION_SCREEN_NO_MONEY_CHEATING,
     POSSESSION_SCREEN_NOTHING_TO_SALE_CHEATING,
     POSSESSION_SCREEN_DONT_BE_FOOL_WARNING,
-    POSSESSION_SCREEN_ANOTHER_DEAL
+    POSSESSION_SCREEN_ANOTHER_DEAL,
 } from '../../store/constants';
 import { setCashAmountAction, setPossessionList } from '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
@@ -180,7 +180,6 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
                     onPress={ () => {
                         setBuyOrSellFlag( true );
                         makeADeal( true );
-                        //setAlert({ ...alert, isVisible: true });
                     }}    
                 />
                 <Button
@@ -191,7 +190,6 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
                     onPress={ () => {
                         setBuyOrSellFlag( false );
                         makeADeal( false );
-                        //setAlert({ ...alert, isVisible: true });
                     }}   
                 />
             </View>

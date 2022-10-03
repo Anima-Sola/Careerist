@@ -224,6 +224,96 @@ export const POSSESSION_SCREEN_ANOTHER_DEAL = {
     ]
 }
 
+export const EMPLOYEES_SCREEN_TO_HIRE = {
+    message: 'Выплачивате?',
+    header: '',
+    iconName: 'question', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Да',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            hint: 'Нет',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
+export const EMPLOYEES_SCREEN_CONTRACT_IS_CONCLUDED = {
+    message: 'Еще одна сделка?',
+    header: 'Договор оформлен.',
+    iconName: 'handshake', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Да',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            hint: 'Нет',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
+export const EMPLOYEES_SCREEN_NOT_AGREED = {
+    message: 'Дело ваше.',
+    header: 'Как хотите!',
+    iconName: 'handshake-alt-slash', 
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Уйти',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}
+
+export const EMPLOYEES_SCREEN_TERMINATE_CONTRACT = {
+    message: 'Увольнение',
+    header: 'Заплатить неустойку',
+    iconName: 'question', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Да',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            hint: 'Нет',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
+
+export const EMPLOYEES_SCREEN_NO_MONEY_CHEATING = POSSESSION_SCREEN_NO_MONEY_CHEATING;
+export const EMPLOYEES_SCREEN_DONT_BE_FOOL_WARNING = POSSESSION_SCREEN_DONT_BE_FOOL_WARNING;
+
 export const INSURANCE_SCREEN_INPUT_AMOUNT = {
     message: '',
     header: '',

@@ -74,7 +74,7 @@ export const setDeathAge = ( item, saveStateToStore = false ) => {
     }
 }
 
-export const setEndOfTheYear = ( item, saveStateToStore = false ) => {
+export const setEndOfYear = ( item, saveStateToStore = false ) => {
     return {
         type: 'SET_END_OF_YEAR',
         payload: item,
@@ -142,6 +142,15 @@ export const setEmployeesSalaryList = ( list, saveStateToStore = false ) => {
         saveStateToStore
     }
 }
+
+/*export const setEmployeesFirePenaltyList = ( list, saveStateToStore = false ) => {
+    return {
+        type: 'SET_EMPLOYEES_FIRE_PENALTY_LIST',
+        payload: list,
+        settingsSection: 'employeesSettings',
+        saveStateToStore
+    }
+}*/
 
 export const setBusinessList = ( list, saveStateToStore = false ) => {
     return {

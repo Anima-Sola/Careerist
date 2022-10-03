@@ -6,8 +6,18 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
 import { getCommonSettings, getEmployeesSettings } from '../../store/selectors';
-import { EMPLOYEES_LIST } from '../../store/constants';
-import { setEmployeesList } from '../../store/actions/actions';
+import {
+    SOCIAL_STATUSES,
+    EMPLOYEES_LIST, 
+    EMPLOYEES_SCREEN_TO_HIRE, 
+    EMPLOYEES_SCREEN_CONTRACT_IS_CONCLUDED,
+    EMPLOYEES_SCREEN_NO_MONEY_CHEATING,
+    EMPLOYEES_SCREEN_DONT_BE_FOOL_WARNING,
+    EMPLOYEES_SCREEN_NOT_AGREED,
+    EMPLOYEES_SCREEN_TERMINATE_CONTRACT
+} from '../../store/constants';
+import { setCashAmountAction, setEmployeesList, setEmployeesSalaryList /*, setEmployeesFirePenaltyList*/ } from '../../store/actions/actions';
+import CustomAlert from '../../components/CustomAlert';
 
 import Makler from "../../assets/images/employees/makler.png";
 import Doctor from "../../assets/images/employees/doctor.png";
@@ -18,17 +28,162 @@ import Security from "../../assets/images/employees/security.png";
 export const EmployeesScreen = ({ navigation }) => {
     const [, forceUpdate ] = useReducer(x => x + 1, 0);
     const commonSettings = useSelector( getCommonSettings );
-    const wrappedComponent = <Employees navigation={ navigation } forceUpdate={ forceUpdate }/>
+    const wrappedComponent = <Employees navigation={ navigation } forceUpdate={ forceUpdate } commonSettings={ commonSettings } />
 
     return (
         <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
     )
 };
 
-const Employees = ({ navigation, forceUpdate }) => {
+const Employees = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
-    const { employeesList, employeesSalaryList } = useSelector( getEmployeesSettings );
+    const { cash, posWithinYear, endOfYear, currentSocialStatus } = commonSettings;
+    const { employeesList, employeesSalaryList /*, employeesFirePenaltyList*/ } = useSelector( getEmployeesSettings );
     const [ activeItem, setActiveItem ] = useState( 0 );
+    const [ hireOrFireFlag, setHireOrFireFlag ] = useState( true );
+    const [ alert, setAlert ] = useState({
+        isVisible: false,
+        data: EMPLOYEES_SCREEN_TO_HIRE,
+    })
+
+    const foolishness = () => {
+        setAlert({ 
+            isVisible: true, 
+            data: { ...EMPLOYEES_SCREEN_DONT_BE_FOOL_WARNING, header: `Не глупите ${ SOCIAL_STATUSES[ currentSocialStatus ].toLowerCase() }!` },
+            buttonsCallbacks: [
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
+
+    const notAgreed = () => {
+        setAlert({ 
+            isVisible: true, 
+            data: EMPLOYEES_SCREEN_NOT_AGREED,
+            buttonsCallbacks: [
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
+
+    const penalty = ( penaltyAmount ) => {
+        let updatedCash = cash - penaltyAmount;
+        if( updatedCash < 0 ) updatedCash = 0;
+        dispatch(setCashAmountAction( updatedCash, true ));
+        forceUpdate();
+    }
+
+    const cheating = ( alertData ) => {
+        const value = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
+        const penaltyAmount = 1500 + 50 * Math.round( 10 * value );
+
+        setAlert({ 
+            isVisible: true, 
+            data: { ...alertData, message: `За мошенничество штраф ${ penaltyAmount }$` },
+            buttonsCallbacks: [
+                () => {
+                    penalty( penaltyAmount );
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
+
+    const hireEmployee = ( isPrepayment, prepayment = 0 ) => {
+        employeesList[ activeItem ] = hireOrFireFlag;
+        if( isPrepayment ) {
+            const updatedCash = cash - prepayment;    
+            dispatch(setCashAmountAction( updatedCash ));
+        }
+        employeesSalaryList[ activeItem ] = 2 * ( employeesSalaryList[ activeItem ] - prepayment );
+        dispatch(setEmployeesSalaryList( employeesSalaryList ));
+        dispatch(setEmployeesList( employeesList, true ));
+        forceUpdate();
+    }
+
+    const concludeContractWithoutPrepayment = () => {
+        setAlert({
+            ...alert,
+            isVisible: true,
+            data: EMPLOYEES_SCREEN_CONTRACT_IS_CONCLUDED,
+            buttonsCallbacks: [
+                () => {
+                    hireEmployee( false );
+                    setAlert({ ...alert, isVisible: false });
+                },
+                () => {
+                    hireEmployee( false );
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
+
+    const concludeContractWithPrepayment = ( prepayment ) => {
+        setAlert({
+            ...alert,
+            isVisible: true,
+            data: { 
+                ...EMPLOYEES_SCREEN_TO_HIRE, 
+                header: `Наем ${ EMPLOYEES_LIST[ activeItem ].toLowerCase() }. Аванс ${ prepayment }.` },
+                buttonsCallbacks: [
+                    () => {
+                        setAlert({ ...alert, isVisible: false });
+                        if( cash < prepayment) {
+                            cheating( EMPLOYEES_SCREEN_NO_MONEY_CHEATING );
+                            return;
+                        }
+                        //Еще одна сделка
+                        hireEmployee( true, prepayment );
+                    },
+                    () => {
+                        setAlert({ ...alert, isVisible: false });
+                        notAgreed();
+                    }
+                ]
+        })
+    }
+
+    const terminateContract = () => {
+        console.log('123');
+    }
+
+    const HR = ( hireOrFireFlag ) => {
+
+        if( employeesList[ activeItem ] && hireOrFireFlag ) {
+            foolishness();
+            return;
+        }
+
+        if( !employeesList[ activeItem ] && !hireOrFireFlag ) {
+            foolishness();
+            return;
+        }
+        
+        if( hireOrFireFlag ) {
+            const testPos = 1;
+            const restOfTheYear = Math.round( ( 1 - /*posWithinYear*/testPos / endOfYear ) * employeesSalaryList[ activeItem ] * 0.01 );
+            
+            if( restOfTheYear <= 0 ) {
+                concludeContractWithoutPrepayment();
+            } else {
+                const prepayment = 50 * restOfTheYear;
+                concludeContractWithPrepayment( prepayment );
+            }
+            return;
+        }
+
+        terminateContract();
+
+    }
 
     const getListHireOrFire = ( typeOfDeal = false ) => {
         let i = -1;
@@ -75,6 +230,7 @@ const Employees = ({ navigation, forceUpdate }) => {
 
     return (
         <>
+            <CustomAlert alert={ alert } setAlert={ setAlert } argsForButtonCallbacks={{ activeItem, hireOrFireFlag, cash }}/>
             <ScrollView style={ styles.container }>
                 { listToFire() }
                 { listToHire() }
@@ -86,8 +242,8 @@ const Employees = ({ navigation, forceUpdate }) => {
                     type="outline" 
                     title="Нанять"
                     onPress={ () => { 
-                        dispatch(setEmployeesList( [true, true, false, true, false], true ));
-                        navigation.navigate('GameMainScreen');
+                        setHireOrFireFlag( true );
+                        HR( true );
                     }}    
                 />
                 <Button
@@ -96,8 +252,8 @@ const Employees = ({ navigation, forceUpdate }) => {
                     type="outline" 
                     title="Уволить"
                     onPress={ () => { 
-                        dispatch(setEmployeesList( [false, false, false, false, false], true ));
-                        navigation.navigate('GameMainScreen');
+                        setHireOrFireFlag( false );
+                        HR( false );
                     }}   
                 />
             </View>

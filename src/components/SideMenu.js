@@ -1,4 +1,5 @@
 import React, { useRef, useImperativeHandle, forwardRef } from 'react';
+import { useFocusEffect } from "@react-navigation/native";
 import { Text, View, StyleSheet, Animated, Pressable } from 'react-native';
 import { Directions, GestureDetector, Gesture } from "react-native-gesture-handler";
 import { Ionicons } from '@expo/vector-icons';
@@ -7,6 +8,17 @@ import { THEME } from '../styles/theme';
 const SideMenu = ( props, ref ) => {
     const animSideMenu = useRef(new Animated.Value( - THEME.SCREEN_WIDTH )).current;
     const animOverlayOpacity = useRef(new Animated.Value(0)).current;
+
+    useFocusEffect(() => {
+        Animated.timing(
+            animSideMenu,
+            {
+                toValue: - THEME.SCREEN_WIDTH,
+                duration: 0,
+                useNativeDriver: true
+            }
+        ).start();
+    })
     
     useImperativeHandle( ref, () => ({
         showSideMenu: () => { showSideMenu() }
