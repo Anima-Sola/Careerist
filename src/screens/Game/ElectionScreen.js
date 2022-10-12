@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, BackHandler, Image, ScrollView } from 'react-native';
-import { useSelector, useDispatch, useStore } from "react-redux";
-import { useFocusEffect } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { Button } from 'react-native-elements';
 import GameWrapper from "../../components/GameWrapper";

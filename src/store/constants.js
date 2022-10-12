@@ -270,7 +270,7 @@ export const EMPLOYEES_SCREEN_CONTRACT_IS_CONCLUDED = {
     ]
 }
 
-export const EMPLOYEES_SCREEN_NOT_AGREED = {
+export const EMPLOYEES_SCREEN_NOT_AGREE_TO_PREPAY = {
     message: 'Дело ваше.',
     header: 'Как хотите!',
     iconName: 'handshake-alt-slash', 
@@ -287,10 +287,10 @@ export const EMPLOYEES_SCREEN_NOT_AGREED = {
     ]
 }
 
-export const EMPLOYEES_SCREEN_TERMINATE_CONTRACT = {
-    message: 'Увольнение',
-    header: 'Заплатить неустойку',
-    iconName: 'question', 
+export const EMPLOYEES_SCREEN_CONTRACT_TERMINATED = {
+    message: 'Еще одна сделка?',
+    header: 'Договор расторгнут.',
+    iconName: 'handshake-alt-slash', 
     iconBackgroundColor: 'green',
     iconColor: 'white',
     isOverlayPressable: false,
@@ -310,9 +310,30 @@ export const EMPLOYEES_SCREEN_TERMINATE_CONTRACT = {
     ]
 }
 
+export const EMPLOYEES_SCREEN_CONTRACT_TERMINATED_NO_MONEY = {
+    message: '',
+    header: 'Договор расторгнут.',
+    iconName: 'handshake-alt-slash', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Уйти',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}
 
 export const EMPLOYEES_SCREEN_NO_MONEY_CHEATING = POSSESSION_SCREEN_NO_MONEY_CHEATING;
 export const EMPLOYEES_SCREEN_DONT_BE_FOOL_WARNING = POSSESSION_SCREEN_DONT_BE_FOOL_WARNING;
+
+export const BUSINESS_SCREEN_NO_MONEY_CHEATING = POSSESSION_SCREEN_NO_MONEY_CHEATING;
+export const BUSINESS_SCREEN_NOTHING_TO_SALE_CHEATING = POSSESSION_SCREEN_NOTHING_TO_SALE_CHEATING;
+export const BUSINESS_SCREEN_DONT_BE_FOOL_WARNING = POSSESSION_SCREEN_DONT_BE_FOOL_WARNING;
+export const BUSINESS_SCREEN_ANOTHER_DEAL = POSSESSION_SCREEN_ANOTHER_DEAL;
 
 export const INSURANCE_SCREEN_INPUT_AMOUNT = {
     message: '',

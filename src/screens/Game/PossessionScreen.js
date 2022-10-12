@@ -37,60 +37,36 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
     const { cash, currentSocialStatus } = commonSettings;
     const { possessionList, possessionBuyCostList, possessionSellCostList } = useSelector( getPossessionSettings );
-    const [ buySellFlag, setBuyOrSellFlag ] = useState( true );
     const [ activeItem, setActiveItem ] = useState( 0 );
-    const [ alert, setAlert ] = useState({ 
-        isVisible: false, 
-        data: POSSESSION_SCREEN_ANOTHER_DEAL,
-        buttonsCallbacks: [
-            ({ activeItem, buySellFlag, cash }) => {
-                buyOrSellPossession( activeItem, buySellFlag, cash );
-                setAlert({ ...alert, isVisible: false });
-            },
-            ({ activeItem, buySellFlag, cash }) => {
-                buyOrSellPossession( activeItem, buySellFlag, cash );
-                setAlert({ ...alert, isVisible: false });
-                navigation.navigate('GameMainScreen');
-            }
-        ]
-    })
+    const [ alert, setAlert ] = useState({ isVisible: false, data: POSSESSION_SCREEN_ANOTHER_DEAL });
 
-    const buyOrSellPossession = ( activeItem, buySellFlag, cash ) => {
-        possessionList[ activeItem ] = buySellFlag;
-        const updatedCash = ( buySellFlag ) ? cash - possessionBuyCostList[ activeItem ] : cash + possessionSellCostList[ activeItem ];
+    const buyOrSellPossession = ( buyOrSell ) => {
+        possessionList[ activeItem ] = buyOrSell;
+        const updatedCash = ( buyOrSell ) ? cash - possessionBuyCostList[ activeItem ] : cash + possessionSellCostList[ activeItem ];
         dispatch(setCashAmountAction( updatedCash ));
         dispatch(setPossessionList( possessionList, true ));
         forceUpdate();
     }
 
-    const penalty = ( cash, penaltyAmount ) => {
-        let updatedCash = cash - penaltyAmount;
+    const setCashAmountMinusFine = ( fineAmount ) => {
+        let updatedCash = cash - fineAmount;
         if( updatedCash < 0 ) updatedCash = 0;
         dispatch(setCashAmountAction( updatedCash, true ));
         forceUpdate();
     }
 
-    const cheating = ( alertData ) => {
+    const getFineAmount = () => {
         const value = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
-        const penaltyAmount = 1500 + 50 * Math.round( 10 * value );
-
-        setAlert({ 
-            isVisible: true, 
-            data: { ...alertData, message: `За мошенничество штраф ${ penaltyAmount }$` },
-            buttonsCallbacks: [
-                ({ cash }) => {
-                    penalty( cash, penaltyAmount );
-                    setAlert({ ...alert, isVisible: false });
-                    navigation.navigate('GameMainScreen');
-                }
-            ]
-        })
+        return 1500 + 50 * Math.round( 10 * value );
     }
     
-    const foolishness = ( alertData ) => {
+    const showDontBeFoolAlert = () => {
         setAlert({ 
             isVisible: true, 
-            data: { ...alertData, header: `Не глупите ${ SOCIAL_STATUSES[ currentSocialStatus ].toLowerCase() }!` },
+            data: { 
+                ...POSSESSION_SCREEN_DONT_BE_FOOL_WARNING, 
+                header: `Не глупите ${ SOCIAL_STATUSES[ currentSocialStatus ].toLowerCase() }!` 
+            },
             buttonsCallbacks: [
                 () => {
                     setAlert({ ...alert, isVisible: false });
@@ -100,24 +76,59 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
         })
     }
 
-    const makeADeal = ( buySellFlag ) => {
+    const showCheatingAlert = ( alertData, fineAmount ) => {
+        setAlert({ 
+            isVisible: true, 
+            data: { 
+                ...alertData, 
+                message: `За мошенничество штраф ${ fineAmount }$` 
+            },
+            buttonsCallbacks: [
+                () => {
+                    setCashAmountMinusFine( fineAmount );
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
+
+    const showAnotherDealAlert = ( buyOrSell ) => {
+        setAlert({
+            isVisible: true, 
+            data: POSSESSION_SCREEN_ANOTHER_DEAL,
+            buttonsCallbacks: [
+                () => {
+                    buyOrSellPossession( buyOrSell );
+                    setAlert({ ...alert, isVisible: false });
+                },
+                () => {
+                    buyOrSellPossession( buyOrSell );
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
+
+    const deal = ( buyOrSell ) => {
         
-        if( possessionList[ activeItem ] && buySellFlag ) {
-            foolishness( POSSESSION_SCREEN_DONT_BE_FOOL_WARNING );
+        if( possessionList[ activeItem ] && buyOrSell ) {
+            showDontBeFoolAlert();
             return;
         }
 
-        if( !possessionList[ activeItem ] && !buySellFlag ) {
-            cheating( POSSESSION_SCREEN_NOTHING_TO_SALE_CHEATING );
+        if( !possessionList[ activeItem ] && !buyOrSell ) {
+            const fineAmount = getFineAmount();
+            showCheatingAlert( POSSESSION_SCREEN_NOTHING_TO_SALE_CHEATING, fineAmount );
             return;
         }
 
-        if(( cash < possessionBuyCostList[ activeItem ] ) && buySellFlag ) {
-            cheating( POSSESSION_SCREEN_NO_MONEY_CHEATING );
+        if(( cash < possessionBuyCostList[ activeItem ] ) && buyOrSell ) {
+            const fineAmount = getFineAmount();
+            showCheatingAlert( POSSESSION_SCREEN_NO_MONEY_CHEATING, fineAmount );
             return;
         }
 
-        setAlert({ ...alert, isVisible: true });
+        showAnotherDealAlert( buyOrSell );
     }
 
     const getListBuyOrSale = ( typeOfDeal = false ) => {
@@ -165,7 +176,7 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
 
     return (
         <>  
-            <CustomAlert alert={ alert } setAlert={ setAlert } argsForButtonCallbacks={{ activeItem, buySellFlag, cash }}/>
+            <CustomAlert alert={ alert } setAlert={ setAlert } />
             <ScrollView style={ styles.container }>
                 { listForSale() }
                 { listToBuy() }
@@ -177,20 +188,14 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Купить"
-                    onPress={ () => {
-                        setBuyOrSellFlag( true );
-                        makeADeal( true );
-                    }}    
+                    onPress={ () => deal( true ) }    
                 />
                 <Button
                     buttonStyle={ styles.sellButton } 
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Продать"
-                    onPress={ () => {
-                        setBuyOrSellFlag( false );
-                        makeADeal( false );
-                    }}   
+                    onPress={ () => deal( false ) }   
                 />
             </View>
         </>

@@ -13,8 +13,9 @@ import {
     EMPLOYEES_SCREEN_CONTRACT_IS_CONCLUDED,
     EMPLOYEES_SCREEN_NO_MONEY_CHEATING,
     EMPLOYEES_SCREEN_DONT_BE_FOOL_WARNING,
-    EMPLOYEES_SCREEN_NOT_AGREED,
-    EMPLOYEES_SCREEN_TERMINATE_CONTRACT
+    EMPLOYEES_SCREEN_NOT_AGREE_TO_PREPAY,
+    EMPLOYEES_SCREEN_CONTRACT_TERMINATED,
+    EMPLOYEES_SCREEN_CONTRACT_TERMINATED_NO_MONEY
 } from '../../store/constants';
 import { setCashAmountAction, setEmployeesList, setEmployeesSalaryList /*, setEmployeesFirePenaltyList*/ } from '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
@@ -38,88 +39,97 @@ export const EmployeesScreen = ({ navigation }) => {
 const Employees = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
     const { cash, posWithinYear, endOfYear, currentSocialStatus } = commonSettings;
-    const { employeesList, employeesSalaryList /*, employeesFirePenaltyList*/ } = useSelector( getEmployeesSettings );
+    const { employeesList, employeesSalaryList } = useSelector( getEmployeesSettings );
     const [ activeItem, setActiveItem ] = useState( 0 );
-    const [ hireOrFireFlag, setHireOrFireFlag ] = useState( true );
     const [ alert, setAlert ] = useState({
         isVisible: false,
-        data: EMPLOYEES_SCREEN_TO_HIRE,
+        data: EMPLOYEES_SCREEN_TO_HIRE
     })
 
-    const foolishness = () => {
-        setAlert({ 
-            isVisible: true, 
-            data: { ...EMPLOYEES_SCREEN_DONT_BE_FOOL_WARNING, header: `Не глупите ${ SOCIAL_STATUSES[ currentSocialStatus ].toLowerCase() }!` },
-            buttonsCallbacks: [
-                () => {
-                    setAlert({ ...alert, isVisible: false });
-                    navigation.navigate('GameMainScreen');
-                }
-            ]
-        })
-    }
-
-    const notAgreed = () => {
-        setAlert({ 
-            isVisible: true, 
-            data: EMPLOYEES_SCREEN_NOT_AGREED,
-            buttonsCallbacks: [
-                () => {
-                    setAlert({ ...alert, isVisible: false });
-                    navigation.navigate('GameMainScreen');
-                }
-            ]
-        })
-    }
-
-    const penalty = ( penaltyAmount ) => {
-        let updatedCash = cash - penaltyAmount;
-        if( updatedCash < 0 ) updatedCash = 0;
-        dispatch(setCashAmountAction( updatedCash, true ));
-        forceUpdate();
-    }
-
-    const cheating = ( alertData ) => {
-        const value = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
-        const penaltyAmount = 1500 + 50 * Math.round( 10 * value );
-
-        setAlert({ 
-            isVisible: true, 
-            data: { ...alertData, message: `За мошенничество штраф ${ penaltyAmount }$` },
-            buttonsCallbacks: [
-                () => {
-                    penalty( penaltyAmount );
-                    setAlert({ ...alert, isVisible: false });
-                    navigation.navigate('GameMainScreen');
-                }
-            ]
-        })
-    }
-
     const hireEmployee = ( isPrepayment, prepayment = 0 ) => {
-        employeesList[ activeItem ] = hireOrFireFlag;
+        employeesList[ activeItem ] = true;
         if( isPrepayment ) {
             const updatedCash = cash - prepayment;    
             dispatch(setCashAmountAction( updatedCash ));
         }
-        employeesSalaryList[ activeItem ] = 2 * ( employeesSalaryList[ activeItem ] - prepayment );
+        employeesSalaryList[ activeItem ] = employeesSalaryList[ activeItem ] - prepayment;
         dispatch(setEmployeesSalaryList( employeesSalaryList ));
         dispatch(setEmployeesList( employeesList, true ));
         forceUpdate();
     }
 
-    const concludeContractWithoutPrepayment = () => {
+    const fireEmployee = () => {
+        employeesList[ activeItem ] = false;
+        let updatedCash = cash - 2 * employeesSalaryList[ activeItem ];
+        if( updatedCash < 0 ) updatedCash = 0;
+        dispatch(setCashAmountAction( updatedCash ));
+        dispatch(setEmployeesList( employeesList, true ));
+        forceUpdate();
+    }
+
+    const setCashAmountMinusFine = ( fineAmount ) => {
+        let updatedCash = cash - fineAmount;
+        if( updatedCash < 0 ) updatedCash = 0;
+        dispatch(setCashAmountAction( updatedCash, true ));
+        forceUpdate();
+    }
+
+    const getFineAmount = () => {
+        const value = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
+        return 1500 + 50 * Math.round( 10 * value );
+    }
+
+    const showDontBeFoolAlert = () => {
+        setAlert({ 
+            isVisible: true, 
+            data: { 
+                ...EMPLOYEES_SCREEN_DONT_BE_FOOL_WARNING, 
+                header: `Не глупите ${ SOCIAL_STATUSES[ currentSocialStatus ].toLowerCase() }!` 
+            },
+            buttonsCallbacks: [
+                () => {
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
+
+    const showNotAgreeToPrepayAlert = () => {
+        setAlert({ 
+            isVisible: true, 
+            data: EMPLOYEES_SCREEN_NOT_AGREE_TO_PREPAY,
+            buttonsCallbacks: [
+                () => {
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
+
+    const showCheatingAlert = ( fineAmount ) => {
+        setAlert({ 
+            isVisible: true, 
+            data: { ...EMPLOYEES_SCREEN_NO_MONEY_CHEATING, message: `За мошенничество штраф ${ fineAmount }$` },
+            buttonsCallbacks: [
+                () => {
+                    setCashAmountMinusFine( fineAmount );
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
+
+    const showContractIsConcludedAlert = () => {
         setAlert({
             ...alert,
             isVisible: true,
             data: EMPLOYEES_SCREEN_CONTRACT_IS_CONCLUDED,
             buttonsCallbacks: [
                 () => {
-                    hireEmployee( false );
                     setAlert({ ...alert, isVisible: false });
                 },
                 () => {
-                    hireEmployee( false );
                     setAlert({ ...alert, isVisible: false });
                     navigation.navigate('GameMainScreen');
                 }
@@ -127,7 +137,7 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
         })
     }
 
-    const concludeContractWithPrepayment = ( prepayment ) => {
+    const showHireEmployeeWithPrepaymentAlert = ( prepayment ) => {
         setAlert({
             ...alert,
             isVisible: true,
@@ -138,57 +148,91 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
                     () => {
                         setAlert({ ...alert, isVisible: false });
                         if( cash < prepayment) {
-                            cheating( EMPLOYEES_SCREEN_NO_MONEY_CHEATING );
+                            const fineAmount = getFineAmount();
+                            setTimeout(() => showCheatingAlert( fineAmount ), 300);
                             return;
                         }
-                        //Еще одна сделка
                         hireEmployee( true, prepayment );
+                        setTimeout(() => showContractIsConcludedAlert(), 300);
                     },
                     () => {
                         setAlert({ ...alert, isVisible: false });
-                        notAgreed();
+                        setTimeout(() => showNotAgreeToPrepayAlert(), 300);
                     }
                 ]
         })
     }
 
-    const terminateContract = () => {
-        console.log('123');
+    const showContractTerminatedAlertNoMoney = () => {
+        setAlert({
+            ...alert,
+            isVisible: true,
+            data: EMPLOYEES_SCREEN_CONTRACT_TERMINATED_NO_MONEY,
+            buttonsCallbacks: [
+                () => {
+                    navigation.navigate('GameMainScreen');
+                },
+            ]
+        })
     }
 
-    const HR = ( hireOrFireFlag ) => {
+    const showContractTerminatedAlert = () => {
+        setAlert({
+            ...alert,
+            isVisible: true,
+            data: EMPLOYEES_SCREEN_CONTRACT_TERMINATED,
+            buttonsCallbacks: [
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                },
+                () => {
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
 
-        if( employeesList[ activeItem ] && hireOrFireFlag ) {
-            foolishness();
+    const HR = ( hireOrFire ) => {
+
+        if( employeesList[ activeItem ] && hireOrFire ) {
+            showDontBeFoolAlert();
             return;
         }
 
-        if( !employeesList[ activeItem ] && !hireOrFireFlag ) {
-            foolishness();
+        if( !employeesList[ activeItem ] && !hireOrFire ) {
+            showDontBeFoolAlert();
             return;
         }
         
-        if( hireOrFireFlag ) {
-            const testPos = 1;
-            const restOfTheYear = Math.round( ( 1 - /*posWithinYear*/testPos / endOfYear ) * employeesSalaryList[ activeItem ] * 0.01 );
+        if( hireOrFire ) {
+            const restOfTheYear = Math.round( ( 1 - posWithinYear / endOfYear ) * employeesSalaryList[ activeItem ] * 0.01 );
             
             if( restOfTheYear <= 0 ) {
-                concludeContractWithoutPrepayment();
+                hireEmployee( false );
+                showContractIsConcludedAlert( false );
             } else {
                 const prepayment = 50 * restOfTheYear;
-                concludeContractWithPrepayment( prepayment );
+                showHireEmployeeWithPrepaymentAlert( prepayment );
             }
             return;
         }
 
-        terminateContract();
+        const penaltyAmount = 2 * employeesSalaryList[ activeItem ];
+        if(( cash - penaltyAmount ) <= 0 ) {
+            fireEmployee();
+            showContractTerminatedAlertNoMoney();
+            return;
+        }
 
+        fireEmployee();  
+        showContractTerminatedAlert();
     }
 
     const getListHireOrFire = ( typeOfDeal = false ) => {
         let i = -1;
         const typeOfDealName = ( typeOfDeal ) ? 'уволить' : 'нанять';
-        const hireOrFire = ( typeOfDeal ) ? 'Сумма неустойки' : 'Зарплата в год';
+        const hireOrFire = ( typeOfDeal ) ? 'Неустойка за увольнение' : 'Зарплата в год';
+        const penaltyMultiplier = ( typeOfDeal ) ? 2 : 1;
         const employeesImageFiles = [ Makler, Doctor, Lawyer, Detective, Security ];
 
         const items = employeesList.map( element => {
@@ -203,7 +247,7 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
                         <View style={{ ...styles.itemName, backgroundColor: activeItemBackgroudColor }}>
                             <Text style={ styles.itemText }>{ EMPLOYEES_LIST[ i ] }</Text>
                             <View style={{ height: hp('1%') }}></View>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>{ hireOrFire } { employeesSalaryList[ i ] }$</Text>
+                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>{ hireOrFire } { penaltyMultiplier * employeesSalaryList[ i ] }$</Text>
                         </View>
                     </Pressable>
                 )
@@ -230,7 +274,7 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
 
     return (
         <>
-            <CustomAlert alert={ alert } setAlert={ setAlert } argsForButtonCallbacks={{ activeItem, hireOrFireFlag, cash }}/>
+            <CustomAlert alert={ alert } setAlert={ setAlert } />
             <ScrollView style={ styles.container }>
                 { listToFire() }
                 { listToHire() }
@@ -241,20 +285,14 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Нанять"
-                    onPress={ () => { 
-                        setHireOrFireFlag( true );
-                        HR( true );
-                    }}    
+                    onPress={ () => HR( true ) }
                 />
                 <Button
                     buttonStyle={ styles.fireButton } 
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Уволить"
-                    onPress={ () => { 
-                        setHireOrFireFlag( false );
-                        HR( false );
-                    }}   
+                    onPress={ () => HR( false ) }  
                 />
             </View>
         </>
@@ -295,6 +333,7 @@ const styles = StyleSheet.create({
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-extralight',
         fontSize: THEME.FONT30,
+        textAlign: 'center'
     },
     image: {
         height: hp('14%'),

@@ -6,8 +6,16 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
 import { getCommonSettings, getBusinessSettings } from '../../store/selectors';
-import { BUSINESS_LIST } from '../../store/constants';
-import { setBusinessList } from '../../store/actions/actions';
+import { 
+    SOCIAL_STATUSES,
+    BUSINESS_LIST,
+    BUSINESS_SCREEN_NO_MONEY_CHEATING,
+    BUSINESS_SCREEN_NOTHING_TO_SALE_CHEATING,
+    BUSINESS_SCREEN_DONT_BE_FOOL_WARNING,
+    BUSINESS_SCREEN_ANOTHER_DEAL, 
+} from '../../store/constants';
+import { setCashAmountAction, setBusinessList } from '../../store/actions/actions';
+import CustomAlert from '../../components/CustomAlert';
 
 import Bar from "../../assets/images/business/bar.png";
 import Restraunt from "../../assets/images/business/restraunt.png";
@@ -18,17 +26,110 @@ import Plant from "../../assets/images/business/plant.png";
 export const BusinessScreen = ({ navigation }) => {
     const [, forceUpdate ] = useReducer(x => x + 1, 0);
     const commonSettings = useSelector( getCommonSettings );
-    const wrappedComponent = <Business navigation={ navigation } forceUpdate={ forceUpdate }/>
+    const wrappedComponent = <Business navigation={ navigation } forceUpdate={ forceUpdate } commonSettings={ commonSettings }/>
 
     return (
         <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
     )
 };
 
-const Business = ({ navigation, forceUpdate }) => {
+const Business = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
+    const { cash, currentSocialStatus } = commonSettings;
     const { businessList, businessBuyCostList, businessSellCostList, businessYearOutcome } = useSelector( getBusinessSettings );
     const [ activeItem, setActiveItem ] = useState( 0 );
+    const [ alert, setAlert ] = useState({ isVisible: false, data: BUSINESS_SCREEN_ANOTHER_DEAL });
+
+    const buyOrSellBusiness = ( buyOrSell ) => {
+        businessList[ activeItem ] = buyOrSell;
+        const updatedCash = ( buyOrSell ) ? cash - businessBuyCostList[ activeItem ] : cash + businessSellCostList[ activeItem ];
+        dispatch(setCashAmountAction( updatedCash ));
+        dispatch(setBusinessList( businessList, true ));
+        forceUpdate();
+    }
+
+    const setCashAmountMinusFine = ( fineAmount ) => {
+        let updatedCash = cash - fineAmount;
+        if( updatedCash < 0 ) updatedCash = 0;
+        dispatch(setCashAmountAction( updatedCash, true ));
+        forceUpdate();
+    }
+
+    const getFineAmount = () => {
+        const value = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
+        return 1500 + 50 * Math.round( 10 * value );
+    }
+    
+    const showDontBeFoolAlert = () => {
+        setAlert({ 
+            isVisible: true, 
+            data: { 
+                ...BUSINESS_SCREEN_DONT_BE_FOOL_WARNING, 
+                header: `Не глупите ${ SOCIAL_STATUSES[ currentSocialStatus ].toLowerCase() }!` 
+            },
+            buttonsCallbacks: [
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
+
+    const showCheatingAlert = ( alertData, fineAmount ) => {
+        setAlert({ 
+            isVisible: true, 
+            data: { 
+                ...alertData, 
+                message: `За мошенничество штраф ${ fineAmount }$` 
+            },
+            buttonsCallbacks: [
+                () => {
+                    setCashAmountMinusFine( fineAmount );
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
+
+    const showAnotherDealAlert = ( buyOrSell ) => {
+        setAlert({
+            isVisible: true, 
+            data: BUSINESS_SCREEN_ANOTHER_DEAL,
+            buttonsCallbacks: [
+                () => {
+                    buyOrSellBusiness( buyOrSell );
+                    setAlert({ ...alert, isVisible: false });
+                },
+                () => {
+                    buyOrSellBusiness( buyOrSell );
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
+
+    const deal = ( buyOrSell ) => {
+        
+        if( businessList[ activeItem ] && buyOrSell ) {
+            showDontBeFoolAlert();
+            return;
+        }
+
+        if( !businessList[ activeItem ] && !buyOrSell ) {
+            const fineAmount = getFineAmount();
+            showCheatingAlert( BUSINESS_SCREEN_NOTHING_TO_SALE_CHEATING, fineAmount );
+            return;
+        }
+
+        if(( cash < businessBuyCostList[ activeItem ] ) && buyOrSell ) {
+            const fineAmount = getFineAmount();
+            showCheatingAlert( BUSINESS_SCREEN_NO_MONEY_CHEATING, fineAmount );
+            return;
+        }
+
+        showAnotherDealAlert( buyOrSell );
+    }
 
     const getListBuyOrSale = ( typeOfDeal = false ) => {
         let i = -1;
@@ -75,7 +176,8 @@ const Business = ({ navigation, forceUpdate }) => {
     }
 
     return (
-        <>
+        <>  
+            <CustomAlert alert={ alert } setAlert={ setAlert } />
             <ScrollView style={ styles.container }>
                 { listForSale() }
                 { listToBuy() }
@@ -86,20 +188,14 @@ const Business = ({ navigation, forceUpdate }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Купить"
-                    onPress={ () => { 
-                        dispatch( setBusinessList([true, true, false, true, false], true ));
-                        navigation.navigate('GameMainScreen');
-                    }}    
+                    onPress={ () => deal( true ) }    
                 />
                 <Button
                     buttonStyle={ styles.sellButton } 
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Продать"
-                    onPress={ () => { 
-                        dispatch( setBusinessList([false, false, false, false, false], true ));
-                        navigation.navigate('GameMainScreen');
-                    }}   
+                    onPress={ () => deal( false ) }  
                 />
             </View>
         </>
