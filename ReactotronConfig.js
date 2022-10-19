@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const reactotron = Reactotron
     .setAsyncStorageHandler( AsyncStorage ) 
     .configure({
-        host: '192.168.1.100',
+        host: '192.168.1.137',
     })
     .use( reactotronRedux() )
     .useReactNative()

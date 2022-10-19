@@ -21,7 +21,7 @@ export const GameMainScreen = ({ navigation }) => {
 
 const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
     const store = useStore();
-    const { year, cash, electionStatus } = commonSettings;
+    const { cash, electionStatus, yearsPassed } = commonSettings;
     const [ alert, setAlert ] = useState({ 
         isVisible: false, 
         data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT,
@@ -50,7 +50,7 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
                     setAlert({ ...alert, isVisible: true, data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT });
                     return true;
                 case 'ElectionScreen':
-                    return (Number.isInteger( year / 2 )) ? true : false;
+                    return (( yearsPassed % 2 ) === 0) ? true : false;
                 default:
                     return false;
             }

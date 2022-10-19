@@ -7,7 +7,7 @@ import {
     setPossessionSellCostList,
     setBusinessBuyCostList,
     setBusinessSellCostList,
-    setBusinessYearOutcome,
+    setBusinessYearIncome,
     setEmployeesSalaryList
 } from "../store/actions/actions";
 
@@ -28,7 +28,7 @@ export const setInitialGameData = () => {
     const possessionSellCostList = [];
     const businessBuyCostList = [];
     const businessSellCostList = [];
-    const businessYearOutcome = [];
+    const businessYearIncome = [];
     const employeesSalaryList = [];
 
     for( let i = 1; i <= 5; i++ ) {
@@ -39,7 +39,7 @@ export const setInitialGameData = () => {
         let rndBusiness = Math.random();
         businessBuyCostList[ i - 1 ] = Math.round( 5 ** i * ( 2 + 5 * rndBusiness ) * 20 );
         businessSellCostList[ i - 1 ] = Math.round( 0.7 * businessBuyCostList[ i - 1 ] * ( rndBusiness + 0.3 ) );
-        businessYearOutcome[ i - 1 ] = Math.round( businessSellCostList[ i - 1 ] * ( rndBusiness - 0.3 ) );
+        businessYearIncome[ i - 1 ] = Math.round( businessSellCostList[ i - 1 ] * ( rndBusiness - 0.3 ) );
 
         let rndEmployees = Math.random();
         employeesSalaryList[ i - 1 ] = Math.round( 4500 * rndEmployees + 2000 * i );
@@ -49,6 +49,6 @@ export const setInitialGameData = () => {
     store.dispatch(setPossessionSellCostList( possessionSellCostList ));
     store.dispatch(setBusinessBuyCostList( businessBuyCostList ));
     store.dispatch(setBusinessSellCostList( businessSellCostList ));
-    store.dispatch(setBusinessYearOutcome( businessYearOutcome ));
+    store.dispatch(setBusinessYearIncome( businessYearIncome ));
     store.dispatch(setEmployeesSalaryList( employeesSalaryList, true ));
 }

@@ -14,7 +14,7 @@ import {
     BUSINESS_SCREEN_DONT_BE_FOOL_WARNING,
     BUSINESS_SCREEN_ANOTHER_DEAL, 
 } from '../../store/constants';
-import { setCashAmountAction, setBusinessList } from '../../store/actions/actions';
+import { setCashAmountAction, setBusinessList, setYearExpenseAction } from '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
 
 import Bar from "../../assets/images/business/bar.png";
@@ -35,8 +35,8 @@ export const BusinessScreen = ({ navigation }) => {
 
 const Business = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
-    const { cash, currentSocialStatus } = commonSettings;
-    const { businessList, businessBuyCostList, businessSellCostList, businessYearOutcome } = useSelector( getBusinessSettings );
+    const { cash, currentSocialStatus, yearExpense } = commonSettings;
+    const { businessList, businessBuyCostList, businessSellCostList, businessYearIncome } = useSelector( getBusinessSettings );
     const [ activeItem, setActiveItem ] = useState( 0 );
     const [ alert, setAlert ] = useState({ isVisible: false, data: BUSINESS_SCREEN_ANOTHER_DEAL });
 
@@ -50,7 +50,10 @@ const Business = ({ navigation, forceUpdate, commonSettings }) => {
 
     const setCashAmountMinusFine = ( fineAmount ) => {
         let updatedCash = cash - fineAmount;
-        if( updatedCash < 0 ) updatedCash = 0;
+        if( updatedCash < 0 ) {
+            dispatch(setYearExpenseAction( yearExpense - updatedCash ));
+            updatedCash = 0;
+        }
         dispatch(setCashAmountAction( updatedCash, true ));
         forceUpdate();
     }
@@ -150,7 +153,7 @@ const Business = ({ navigation, forceUpdate, commonSettings }) => {
                             <Text style={ styles.itemText }>{ BUSINESS_LIST[ i ] }</Text>
                             <View style={{ height: hp('1%') }}></View>
                             <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Цена { businessCostList[ i ] }$</Text>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Годовой доход { businessYearOutcome[ i ] }$</Text>
+                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Годовой доход { businessYearIncome[ i ] }$</Text>
                         </View>
                     </Pressable>
                 )

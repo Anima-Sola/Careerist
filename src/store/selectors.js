@@ -3,9 +3,8 @@ export const getCommonSettings = state => state.gameSettingsReducer.commonSettin
 export const getPossessionSettings = state => state.gameSettingsReducer.possessionSettings;
 export const getBusinessSettings = state => state.gameSettingsReducer.businessSettings;
 export const getEmployeesSettings = state => state.gameSettingsReducer.employeesSettings;
-
-export const getStocksQuantityList = state => state.gameSettingsReducer.stocksQuantity;
-export const getAvgStocksCostList = state => state.gameSettingsReducer.avgStocksCost;
+export const getBankSettings = state => state.gameSettingsReducer.bankSettings;
+export const getStockSettings = state => state.gameSettingsReducer.stockSettings;
 
 //App settings selectors
 export const getIsGameStarted = state => state.appSettingsReducer.isGameStarted;

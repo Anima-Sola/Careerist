@@ -1,63 +1,174 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useReducer } from "react";
 import { Text, View, StyleSheet, BackHandler, Image, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Button } from 'react-native-elements';
 import GameWrapper from "../../components/GameWrapper";
 import { THEME } from "../../styles/theme";
-import { getCommonSettings } from "../../store/selectors";
+import { 
+    getCommonSettings, 
+    getPossessionSettings, 
+    getBusinessSettings, 
+    getEmployeesSettings,
+    getBankSettings 
+} from "../../store/selectors";
 import { SOCIAL_STATUSES } from "../../store/constants";
-import { setElectionStatus, setSocialStatus } from "../../store/actions/actions";
+import { setCashAmountAction, setElectionStatus, setSocialStatus, setYearExpenseAction } from "../../store/actions/actions";
 import CustomAlert from '../../components/CustomAlert';
-import { ELECTION_SCREEN_SKIP_ELECTION, ELECTION_SCREEN_LOSE_ELECTION, ELECTION_SCREEN_WIN_ELECTION } from '../../store/constants';
+import { 
+    ELECTION_SCREEN_SKIP_ELECTION, 
+    ELECTION_SCREEN_LOSE_ELECTION, 
+    ELECTION_SCREEN_WIN_ELECTION,
+    ELECTION_SCREEN_NO_MONEY_CHEATING
+} from '../../store/constants';
 
 export const ElectionScreen = ({ navigation }) => {
+    const [, forceUpdate ] = useReducer(x => x + 1, 0);
     const commonSettings = useSelector( getCommonSettings );
-    const wrappedComponent = <Election navigation={ navigation } commonSettings={ commonSettings } />
+    const wrappedComponent = <Election navigation={ navigation } forceUpdate={ forceUpdate } commonSettings={ commonSettings } />
 
     return (
         <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings } />
     )
 };
 
-const Election = ({ navigation, commonSettings }) => {
+const Election = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
-    const { year, currentSocialStatus } = commonSettings;
-    const [ alert, setAlert ] = useState({
-        isVisible: false,
-        data:  ELECTION_SCREEN_SKIP_ELECTION,
-        buttonsCallbacks: [
-            () => {
-                dispatch(setElectionStatus( false, true ));
-                setAlert({ ...alert, isVisible: false });
-                navigation.navigate('GameMainScreen');
-            }
-        ]
-    })
+    const { cash, year, currentSocialStatus, yearsPassed, yearExpense } = commonSettings;
+    const { possessionList } = useSelector( getPossessionSettings );
+    const { businessList } = useSelector( getBusinessSettings );
+    const { employeesList } = useSelector( getEmployeesSettings );
+    const { depositAmount } = useSelector( getBankSettings );
+    const [ alert, setAlert ] = useState({ isVisible: false, data:  ELECTION_SCREEN_SKIP_ELECTION })
+
+    const calcElectionCost = () => {
+        const rnd = Math.random();
+        const nextSocialStatus = currentSocialStatus + 1;
+        return Math.round( 5 ** nextSocialStatus * ( 2 + 5 * rnd ) * 20 );
+    }
+
+    const calcChanceToElect = () => {
+        let temp = 0;
+        let chanceToElect;
+        const nextSocialStatus = currentSocialStatus + 1;
+        for( let i = 1; i <= 5; i++ ) {
+            temp = temp + 0.5 * ( possessionList[ i - 1 ] + businessList[ i - 1 ] ) + 2 * employeesList[ i - 1];
+        }
+        chanceToElect = temp / ( 5 * nextSocialStatus );
+        if( chanceToElect > 1 ) chanceToElect = 1;
+        return chanceToElect;
+    }
+
+    const setCashAmountMinusFine = ( fineAmount ) => {
+        let updatedCash = cash - fineAmount;
+        if( updatedCash < 0 ) {
+            dispatch(setYearExpenseAction( yearExpense - updatedCash ));
+            updatedCash = 0;
+        }
+        dispatch(setCashAmountAction( updatedCash ));
+        forceUpdate();
+    }
+
+    const getFineAmount = () => {
+        const value = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
+        return 1500 + 50 * Math.round( 10 * value );
+    }
+
+    const electionCost = useRef( calcElectionCost() );
+    const chanceToElect = useRef(  calcChanceToElect() );
     
-    const skipElection = () => {
-        setAlert({ ...alert, isVisible: true  });
+    const showSkipElectionAlert = () => {
+        setAlert({
+            isVisible: true,
+            data:  ELECTION_SCREEN_SKIP_ELECTION,
+            buttonsCallbacks: [
+                () => {
+                    dispatch(setElectionStatus( false, true ));
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
     }
 
     useEffect(() => {
-        const backHandler = BackHandler.addEventListener( 'hardwareBackPress', skipElection );
+        const backHandler = BackHandler.addEventListener( 'hardwareBackPress', () => showSkipElectionAlert() );
         return () => backHandler.remove();
     })
 
-    const participateElection = () => {
-        const result = Math.random();
-        if( result < 0.5 ) {
-            dispatch(setSocialStatus( currentSocialStatus + 1, true ));
-            setAlert({ ...alert, 
-                       isVisible: true, 
-                       data: { ...ELECTION_SCREEN_WIN_ELECTION, message: 'Теперь вы ' + SOCIAL_STATUSES[ currentSocialStatus + 1 ] + '. Следующие выборы через 2 года.' }
-                    });
-        } else {
-            setAlert({ ...alert, 
-                        isVisible: true, 
-                        data: { ...ELECTION_SCREEN_LOSE_ELECTION, message: 'Вы набрали только 40% голосов. Следующие выборы через 2 года.' }
-                    });
+    const showCheatingAlert = ( fineAmount ) => {
+        setAlert({ 
+            isVisible: true, 
+            data: { 
+                ...ELECTION_SCREEN_NO_MONEY_CHEATING, 
+                message: `За мошенничество штраф ${ fineAmount }$` 
+            },
+            buttonsCallbacks: [
+                () => {
+                    setCashAmountMinusFine( fineAmount );
+                    dispatch(setElectionStatus( false, true ));
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
+
+    const showWinElectionAlert = () => {
+        setAlert({  
+            isVisible: true, 
+            data: { 
+                ...ELECTION_SCREEN_WIN_ELECTION, 
+                message: `Теперь вы  ${ SOCIAL_STATUSES[ currentSocialStatus + 1 ]}. Следующие выборы через 2 года.` 
+            },
+            buttonsCallbacks: [
+                () => {
+                    //Здесь обработка, если стал президентом.
+                    dispatch(setElectionStatus( false, true ));
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+         });
+    }
+
+    const showLoseElectionAlert = ( numOfVoices ) => {
+        setAlert({  
+            isVisible: true, 
+            data: { 
+                ...ELECTION_SCREEN_LOSE_ELECTION, 
+                message: `Вы набрали только ${ numOfVoices }% голосов. Следующие выборы через 2 года.`
+            },
+            buttonsCallbacks: [
+                () => {
+                    dispatch(setElectionStatus( false, true ));
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+         });
+    }
+
+    const standForElection = () => {
+
+        if( electionCost.current > ( cash + depositAmount )) {
+            const fineAmount = getFineAmount();
+            showCheatingAlert( fineAmount );
+            return;
         }
+
+        const electionResult = Math.random();
+        const updatedCash = cash - electionCost.current;
+        if( updatedCash < 0 ) {
+            dispatch(setYearExpenseAction( yearExpense - updatedCash ));
+            updatedCash = 0;
+        }
+
+        dispatch(setCashAmountAction( updatedCash ));
+
+        if( electionResult > chanceToElect.current ) {
+            const numOfVoices = Math.round(50 * ( 1 - electionResult ));
+            showLoseElectionAlert( numOfVoices );
+            return;
+        }
+       
+        showWinElectionAlert();
     }
 
     const election = (
@@ -68,7 +179,7 @@ const Election = ({ navigation, commonSettings }) => {
             </View> 
             <View style={ styles.socialStatusContainer }>
                 <Image style={ styles.image } resizeMode='center' source={ require('../../assets/images/jentleman.png') } />
-                <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus ] }</Text>
+                <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus - 1 ] }</Text>
             </View>
             <View>
                 <Text style={ styles.text }>Примите участие в выборах.</Text>
@@ -76,10 +187,10 @@ const Election = ({ navigation, commonSettings }) => {
             <View style={ styles.socialStatusContainer }>
                 <Text style={{ ...styles.socialStatusText, marginBottom: 0, marginTop: hp('1%') }}>Избирается:</Text>
                 <Image style={ styles.image } resizeMode='center' source={ require('../../assets/images/jentleman.png') } />
-                <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus + 1 ] }</Text>
+                <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus ] }</Text>
             </View>
             <View>
-                <Text style={ styles.text }>Кампания обойдется в 1500$, вероятность успеха 0%.</Text>
+                <Text style={ styles.text }>Кампания обойдется в { electionCost.current }, вероятность успеха { 100 * chanceToElect.current }%.</Text>
             </View>
             <View style={ styles.downTextContainer }>
                 <Text style={{ ...styles.text, fontSize: THEME.FONT45 }}>Участвуете?</Text>
@@ -90,14 +201,14 @@ const Election = ({ navigation, commonSettings }) => {
                     titleStyle={ styles.nextButtonTitle }
                     type="outline" 
                     title="Да"
-                    onPress={ participateElection }  
+                    onPress={ () => standForElection() }  
                 />
                 <Button
                     buttonStyle={ styles.nextButton } 
                     titleStyle={ styles.nextButtonTitle }
                     type="outline" 
                     title="Нет"
-                    onPress={ skipElection }  
+                    onPress={ () => showSkipElectionAlert() }  
                 />
             </View>
         </ScrollView>
@@ -107,21 +218,23 @@ const Election = ({ navigation, commonSettings }) => {
         <View style={ styles.container }>
             <View style={{ ...styles.dataContainer, justifyContent: 'center' }}>
                 <Text style={ styles.electionNotHeldText }>Год { year }.</Text>
-                <Text style={ styles.electionNotHeldText }>В этом году выборы не проводятся!!!</Text>   
+                <Text style={ styles.electionNotHeldText }>В этом году выборы не проводятся!!!</Text>
+                <View style={{ height: hp('5%') }}></View>
+                <Text style={ styles.electionNotHeldText }>Усвоили?</Text>    
             </View>
             <View style={ styles.buttonsContainer }>
                 <Button
                     buttonStyle={{ ...styles.takePartButton, width: wp('96%'), marginLeft: wp('2%') }} 
                     titleStyle={ styles.nextButtonTitle }
                     type="outline" 
-                    title="Продолжить"
+                    title="Уйти"
                     onPress={ () => navigation.navigate('GameMainScreen') }  
                 />
             </View>
         </View>
     )
 
-    return (Number.isInteger( year / 2 )) ? election : noElection;
+    return (( yearsPassed % 2 ) === 0) ? election : noElection;
 }
 
 const styles = StyleSheet.create({

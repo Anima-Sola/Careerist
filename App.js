@@ -7,7 +7,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 import { AppRootNavigation } from './src/navigation/AppRootNavigator';
 import store from './src/store';
-import Reactotron from 'reactotron-react-native';
 
 export default function App() {
     return (

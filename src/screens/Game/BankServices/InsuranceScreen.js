@@ -100,7 +100,7 @@ const Insurance = ({ navigation }) => {
                                     data: { 
                                         ...INSURANCE_SCREEN_INPUT_AMOUNT,
                                         header: `Страхуем ${ POSSESSION_LIST[ activeItem ].toLowerCase() }?`,
-                                        message: `Максимальная страховая сумма ${ possessionCostList[ activeItem ]}$`
+                                        message: `Максимальная страховая сумма ${ possessionSellCostList[ activeItem ]}$`
                                     }
                                 });
                             }}    

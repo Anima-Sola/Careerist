@@ -17,7 +17,7 @@ import {
     EMPLOYEES_SCREEN_CONTRACT_TERMINATED,
     EMPLOYEES_SCREEN_CONTRACT_TERMINATED_NO_MONEY
 } from '../../store/constants';
-import { setCashAmountAction, setEmployeesList, setEmployeesSalaryList /*, setEmployeesFirePenaltyList*/ } from '../../store/actions/actions';
+import { setCashAmountAction, setEmployeesList, setEmployeesSalaryList, setYearExpenseAction  } from '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
 
 import Makler from "../../assets/images/employees/makler.png";
@@ -38,7 +38,7 @@ export const EmployeesScreen = ({ navigation }) => {
 
 const Employees = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
-    const { cash, posWithinYear, endOfYear, currentSocialStatus } = commonSettings;
+    const { cash, posWithinYear, endOfYear, currentSocialStatus, yearExpense } = commonSettings;
     const { employeesList, employeesSalaryList } = useSelector( getEmployeesSettings );
     const [ activeItem, setActiveItem ] = useState( 0 );
     const [ alert, setAlert ] = useState({
@@ -61,7 +61,10 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
     const fireEmployee = () => {
         employeesList[ activeItem ] = false;
         let updatedCash = cash - 2 * employeesSalaryList[ activeItem ];
-        if( updatedCash < 0 ) updatedCash = 0;
+        if( updatedCash < 0 ) {
+            dispatch(setYearExpenseAction( yearExpense - updatedCash ));
+            updatedCash = 0;
+        }
         dispatch(setCashAmountAction( updatedCash ));
         dispatch(setEmployeesList( employeesList, true ));
         forceUpdate();
@@ -69,7 +72,10 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
 
     const setCashAmountMinusFine = ( fineAmount ) => {
         let updatedCash = cash - fineAmount;
-        if( updatedCash < 0 ) updatedCash = 0;
+        if( updatedCash < 0 ) {
+            dispatch(setYearExpenseAction( yearExpense - updatedCash ));
+            updatedCash = 0;
+        }
         dispatch(setCashAmountAction( updatedCash, true ));
         forceUpdate();
     }

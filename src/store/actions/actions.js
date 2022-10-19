@@ -92,9 +92,21 @@ export const setPosWithinYear = ( item, saveStateToStore = false ) => {
     }
 }
 
-export const saveGameSettingsInitialState = () => {
+export const setYearsPassedAction = ( item, saveStateToStore = false ) => {
     return {
-        type: 'SAVE_GAME_SETTINGS_INITIAL_STATE'
+        type: 'SET_YEARS_PASSED',
+        payload: item,
+        settingsSection: 'commonSettings',
+        saveStateToStore
+    }
+}
+
+export const setYearExpenseAction = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_YEAR_EXPENSE',
+        payload: item,
+        settingsSection: 'commonSettings',
+        saveStateToStore
     }
 }
 
@@ -143,15 +155,6 @@ export const setEmployeesSalaryList = ( list, saveStateToStore = false ) => {
     }
 }
 
-/*export const setEmployeesFirePenaltyList = ( list, saveStateToStore = false ) => {
-    return {
-        type: 'SET_EMPLOYEES_FIRE_PENALTY_LIST',
-        payload: list,
-        settingsSection: 'employeesSettings',
-        saveStateToStore
-    }
-}*/
-
 export const setBusinessList = ( list, saveStateToStore = false ) => {
     return {
         type: 'SET_BUSINESS_LIST',
@@ -179,27 +182,47 @@ export const setBusinessSellCostList = ( list, saveStateToStore = false ) => {
     }
 }
 
-export const setBusinessYearOutcome = ( list, saveStateToStore = false ) => {
+export const setBusinessYearIncome = ( list, saveStateToStore = false ) => {
     return {
-        type: 'SET_BUSINESS_YEAR_OUTCOME',
+        type: 'SET_BUSINESS_YEAR_INCOME',
         payload: list,
         settingsSection: 'businessSettings',
         saveStateToStore
     }
 }
 
-export const setStocksQuantityList = ( list, saveStateToStore = false ) => {
+export const setDepositAmountAction = ( item, saveStateToStore = false ) => {
     return {
-        type: 'SET_STOCKS_QUANTITY_LIST',
-        payload: list,
+        type: 'SET_DEPOSIT_AMOUNT',
+        payload: item,
+        settingsSection: 'bankSettings',
         saveStateToStore
     }
 }
 
-export const setAvgStocksCostList = ( list, saveStateToStore = false ) => {
+export const setStocksQuantityListAction = ( list, saveStateToStore = false ) => {
     return {
-        type: 'SET_AVG_STOCKS_COST_LIST',
+        type: 'SET_STOCKS_QUANTITY_LIST',
         payload: list,
+        settingsSection: 'stockSettings',
+        saveStateToStore
+    }
+}
+
+export const setStocksCostListAction = ( list, saveStateToStore = false ) => {
+    return {
+        type: 'SET_STOCKS_COST_LIST',
+        payload: list,
+        settingsSection: 'stockSettings',
+        saveStateToStore
+    }
+}
+
+export const setDividendsListAction = ( list, saveStateToStore = false ) => {
+    return {
+        type: 'SET_DIVIDENDS_LIST',
+        payload: list,
+        settingsSection: 'stockSettings',
         saveStateToStore
     }
 }
@@ -221,6 +244,13 @@ export const setInsurancePossessionCostList = ( list, saveStateToStore = false )
         saveStateToStore
     }
 }
+
+export const saveGameSettingsInitialState = () => {
+    return {
+        type: 'SAVE_GAME_SETTINGS_INITIAL_STATE'
+    }
+}
+
 
 //App settings actions
 export const loadAppSettings = () => {

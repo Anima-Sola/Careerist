@@ -83,8 +83,8 @@ export const GAME_MAIN_SCREEN_QUIT_GAME_ALERT = {
 }
 
 export const GAME_MAIN_SCREEN_SCLEROSIS_WARNING = {
-    message: 'У вас склероз?!',
-    header: 'Выборов нет!!!',
+    message: 'Выборы больше не проводятся.',
+    header: 'У вас склероз?!',
     iconName: 'grin-tongue-wink',
     iconBackgroundColor: 'red',
     iconColor: 'white',
@@ -92,7 +92,7 @@ export const GAME_MAIN_SCREEN_SCLEROSIS_WARNING = {
     buttons: [
         {   
             key: 0,
-            hint: 'Продолжить',
+            hint: 'Ой',
             //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
             textColor: THEME.TEXT_COLOR,
         } 
@@ -110,6 +110,23 @@ export const ELECTION_SCREEN_SKIP_ELECTION = {
         {   
             key: 0,
             hint: 'Продолжить',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
+export const ELECTION_SCREEN_NO_MONEY_CHEATING = {
+    message: '',
+    header: 'Вы не имеете требуемой суммы!',
+    iconName: 'angry', 
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Ой, уже ухожу',
             //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
             textColor: THEME.TEXT_COLOR,
         }
@@ -150,22 +167,7 @@ export const ELECTION_SCREEN_WIN_ELECTION = {
     ]
 }
 
-export const POSSESSION_SCREEN_NO_MONEY_CHEATING = {
-    message: '',
-    header: 'Вы не имеете требуемой суммы!',
-    iconName: 'angry', 
-    iconBackgroundColor: 'red',
-    iconColor: 'white',
-    isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Ой, уже ухожу',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
-    ]
-}
+export const POSSESSION_SCREEN_NO_MONEY_CHEATING = ELECTION_SCREEN_NO_MONEY_CHEATING;
 
 export const POSSESSION_SCREEN_NOTHING_TO_SALE_CHEATING = {
     message: '',
@@ -334,6 +336,38 @@ export const BUSINESS_SCREEN_NO_MONEY_CHEATING = POSSESSION_SCREEN_NO_MONEY_CHEA
 export const BUSINESS_SCREEN_NOTHING_TO_SALE_CHEATING = POSSESSION_SCREEN_NOTHING_TO_SALE_CHEATING;
 export const BUSINESS_SCREEN_DONT_BE_FOOL_WARNING = POSSESSION_SCREEN_DONT_BE_FOOL_WARNING;
 export const BUSINESS_SCREEN_ANOTHER_DEAL = POSSESSION_SCREEN_ANOTHER_DEAL;
+
+export const STOCKMARKET_SCREEN_INPUT_STOCKS_QUANTITY = {
+    message: 'Введите количество акций',
+    header: '',
+    iconName: 'keyboard', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: true,
+    onlyDigits: true,
+    buttons: [
+        {   
+            key: 0,
+            disabledIfEmpty: true,
+            hint: 'Подтвердить',
+            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            disabledIfEmpty: false,
+            hint: 'Отмена',
+            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
+export const STOCKMARKET_SCREEN_NO_MONEY_CHEATING = POSSESSION_SCREEN_NO_MONEY_CHEATING;
+export const STOCKMARKET_SCREEN_NOTHING_TO_SALE_CHEATING = POSSESSION_SCREEN_NOTHING_TO_SALE_CHEATING;
+export const STOCKMARKET_SCREEN_ANOTHER_DEAL = POSSESSION_SCREEN_ANOTHER_DEAL;
 
 export const INSURANCE_SCREEN_INPUT_AMOUNT = {
     message: '',

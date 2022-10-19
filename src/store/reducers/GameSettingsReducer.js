@@ -9,10 +9,12 @@ const initialState = {
         year: new Date().getFullYear(),                         // Стартовый год
         posWithinYear: 0,                                       // Позиция внутри года
         endOfYear: 10,                                          // Маркер конца года
+        yearsPassed: 0,                                         // Сколько прошло лет с момента начала игры  
         
         cash: 1500,                                             // Сумма налички
+        yearExpense: 0,                                         // Годовые расходы
 
-        currentSocialStatus: 0,                                 // 0 - Бизнесмен, 1 - лидер профсоюза мусорщиков, 2 - шериф, 3 - сенатор, 4 - президент
+        currentSocialStatus: 1,                                 // 1 - Бизнесмен, 2 - лидер профсоюза мусорщиков, 3 - шериф, 4 - сенатор, 5 - президент
         electionStatus: true,                                   // Флаг, true - есть выборы, false - нет выборов
     },
 
@@ -28,19 +30,24 @@ const initialState = {
         businessList: [ false, false, false, false, false ],    // Наличие - true / Отсутствие - false бара, ресторана, магазина, отеля, завода
         businessBuyCostList: [ 0, 0, 0, 0, 0 ],                 // Цена покупки бизнеса
         businessSellCostList: [ 0, 0, 0, 0, 0 ],                // Цена продажи бизнеса
-        businessYearOutcome: [ 0, 0, 0, 0, 0],                  // Годовой доход бизнеса
+        businessYearIncome: [ 0, 0, 0, 0, 0],                   // Годовой доход бизнеса
     },
 
     employeesSettings: {
         employeesList: [ false, false, false, false, false ],   // Наличие - true / Отсутствие - false маклера, врача, адвоката, детектива, личной охраны
         employeesSalaryList: [ 0, 0, 0, 0, 0 ],                 // Зарплата подчиненных
-        //employeesFirePenaltyList: [ 0, 0, 0, 0, 0],             // Неустойка при увольнении
     },
 
-    businessIncome: [ 0, 0, 0, 0, 0 ],                          // Доход от бизнеса
-    stocksQuantity: [ 0, 0, 0, 0, 0 ],                          // Количество акций каждой компании в собственности
-    avgStocksCost: [ 0, 0, 0, 0, 0 ],                           // Средние цены купленных акций
-    depositAmount: 0,                                           // Сумма вклада
+    stockSettings: {
+        stocksQuantityList: [ 0, 0, 0, 0, 0 ],                  // Количество акций каждой компании в собственности
+        stocksCostList: [ 0, 0, 0, 0, 0 ],                      // Цены купленных акций
+        dividendsList: [ 0, 0, 0, 0, 0]                         // Дивиденды
+    },
+    
+    bankSettings: {
+        depositAmount: 0,                                       // Сумма вклада
+    },
+
 }
 
 const saveState = ( state, param, action ) => {
@@ -74,30 +81,42 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
             return saveState( state, 'currentSocialStatus', action );
         case 'SET_ELECTION_STATUS':
             return saveState( state, 'electionStatus', action );
+        case 'SET_YEARS_PASSED':
+            return saveState( state, 'yearsPassed', action );
+        case 'SET_YEAR_EXPENSE':
+            return saveState( state, 'yearExpense', action );
+
         case 'SET_POSSESSION_LIST':
             return saveState( state, 'possessionList', action );
         case 'SET_POSSESSION_BUY_COST_LIST':
             return saveState( state, 'possessionBuyCostList', action );
         case 'SET_POSSESSION_SELL_COST_LIST':
             return saveState( state, 'possessionSellCostList', action );
+
         case 'SET_EMPLOYEES_LIST':
             return saveState( state, 'employeesList', action );
         case 'SET_EMPLOYEES_SALARY_LIST':
             return saveState( state, 'employeesSalaryList', action );
-        /*case 'SET_EMPLOYEES_FIRE_PENALTY_LIST':
-            return saveState( state, 'employeesFirePenaltyList', action );*/
+
         case 'SET_BUSINESS_LIST':
             return saveState( state, 'businessList', action );
         case 'SET_BUSINESS_BUY_COST_LIST':
             return saveState( state, 'businessBuyCostList', action );
         case 'SET_BUSINESS_SELL_COST_LIST':
             return saveState( state, 'businessSellCostList', action );
-        case 'SET_BUSINESS_YEAR_OUTCOME':
-            return saveState( state, 'businessYearOutcome', action );
+        case 'SET_BUSINESS_YEAR_INCOME':
+            return saveState( state, 'businessYearIncome', action );
+
         case 'SET_STOCKS_QUANTITY_LIST':
-            return saveState( state, 'stocksQuantity', action );
-        case 'SET_AVG_STOCKS_COST_LIST':
-            return saveState( state, 'avgStocksCost', action );
+            return saveState( state, 'stocksQuantityList', action );
+        case 'SET_STOCKS_COST_LIST':
+            return saveState( state, 'stocksCostList', action );
+        case 'SET_DIVIDENDS_LIST':
+            return saveState( state, 'dividendsList', action );
+
+        case 'SET_DEPOSIT_AMOUNT':
+            return saveState( state, 'depositAmount', action);
+
         case 'SET_INSURED_POSSESSION_LIST':
             return saveState( state, 'insuredPossessionList', action );
         case 'SET_INSURANCE_POSSESSION_COST_LIST':
