@@ -155,6 +155,15 @@ export const setEmployeesSalaryList = ( list, saveStateToStore = false ) => {
     }
 }
 
+export const setCommonBusinessIncomeAction = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_COMMON_BUSINESS_INCOME',
+        payload: item,
+        settingsSection: 'businessSettings',
+        saveStateToStore
+    }
+}
+
 export const setBusinessList = ( list, saveStateToStore = false ) => {
     return {
         type: 'SET_BUSINESS_LIST',
@@ -221,6 +230,15 @@ export const setStocksCostListAction = ( list, saveStateToStore = false ) => {
 export const setDividendsListAction = ( list, saveStateToStore = false ) => {
     return {
         type: 'SET_DIVIDENDS_LIST',
+        payload: list,
+        settingsSection: 'stockSettings',
+        saveStateToStore
+    }
+}
+
+export const setDividendsIncome = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_DIVIDENDS_INCOME',
         payload: list,
         settingsSection: 'stockSettings',
         saveStateToStore

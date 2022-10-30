@@ -369,6 +369,69 @@ export const STOCKMARKET_SCREEN_NO_MONEY_CHEATING = POSSESSION_SCREEN_NO_MONEY_C
 export const STOCKMARKET_SCREEN_NOTHING_TO_SALE_CHEATING = POSSESSION_SCREEN_NOTHING_TO_SALE_CHEATING;
 export const STOCKMARKET_SCREEN_ANOTHER_DEAL = POSSESSION_SCREEN_ANOTHER_DEAL;
 
+export const STOCKMARKET_SCREEN_PROBLEM = {
+    message: '',
+    header: '',
+    iconName: 'exclamation', 
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Понял, принял',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
+export const STOCKMARKET_SCREEN_CLAIM_PROBLEM = {
+    message: '',
+    header: 'На вас подали в суд!',
+    iconName: 'exclamation', 
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Да',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            hint: 'Нет',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
+export const STOCKMARKET_SCREEN_STOLE_STOCKS_PROBLEM = {
+    message: '',
+    header: 'Кража!',
+    iconName: 'exclamation', 
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Да',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            hint: 'Нет',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
 export const INSURANCE_SCREEN_INPUT_AMOUNT = {
     message: '',
     header: '',

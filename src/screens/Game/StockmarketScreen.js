@@ -1,5 +1,6 @@
-import React, { useState, useReducer, useRef } from 'react';
-import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-native';
+import React, { useState, useReducer, useRef, useEffect } from 'react';
+import { View, Text, StyleSheet, Pressable, ScrollView, Image, BackHandler } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -11,12 +12,14 @@ import {
     setYearExpenseAction,
     setStocksQuantityListAction, 
     setStocksCostListAction,
-    setDividendsListAction 
+    setDividendsListAction,
+    setCommonBusinessIncomeAction
 } from '../../store/actions/actions';
 import { 
     getCommonSettings, 
     getEmployeesSettings, 
-    getStockSettings 
+    getStockSettings,
+    getBusinessSettings 
 } from '../../store/selectors';
 import CustomPrompt from '../../components/CustomPrompt';
 import CustomAlert from '../../components/CustomAlert';
@@ -24,7 +27,10 @@ import {
     STOCKMARKET_SCREEN_INPUT_STOCKS_QUANTITY,
     STOCKMARKET_SCREEN_NO_MONEY_CHEATING,
     STOCKMARKET_SCREEN_NOTHING_TO_SALE_CHEATING,
-    STOCKMARKET_SCREEN_ANOTHER_DEAL 
+    STOCKMARKET_SCREEN_ANOTHER_DEAL,
+    STOCKMARKET_SCREEN_PROBLEM,
+    STOCKMARKET_SCREEN_CLAIM_PROBLEM,
+    STOCKMARKET_SCREEN_STOLE_STOCKS_PROBLEM
 } from '../../store/constants';
 
 import Gazprom from "../../assets/images/logos/gazprom.png";
@@ -45,11 +51,13 @@ export const StockmarketScreen = ({ navigation }) => {
 
 const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
-    const { cash, currentSocialStatus, yearOutcome } = commonSettings;
-    const { stocksQuantityList } = useSelector( getStockSettings );
+    const { cash, currentSocialStatus, yearExpense } = commonSettings;
+    const { stocksQuantityList, stocksCostList, dividendsIncome } = useSelector( getStockSettings );
+    const { commonBusinessIncome } = useSelector( getBusinessSettings );
     const { employeesList } = useSelector( getEmployeesSettings );
     const [ activeItem, setActiveItem ] = useState( 0 );
     const [ currentStocksQuantityList, setCurrentStocksQuantityList ] = useState([ 0, 0, 0, 0, 0 ]);
+    const [ isProblem, setIsProblem ] = useState( true );
     const [ prompt, setPrompt ] = useState({
         isVisible: false,
         data: STOCKMARKET_SCREEN_INPUT_STOCKS_QUANTITY,
@@ -57,10 +65,10 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
     });
     const [ alert, setAlert ] = useState({
         isVisible: false,
-        data: STOCKMARKET_SCREEN_NO_MONEY_CHEATING
+        data: STOCKMARKET_SCREEN_PROBLEM
     })
 
-    const calcStocksPriceList = () => {
+    const calcstocksCurrentPriceList = () => {
         const list = [];
         for( let i = 0; i < 5; i++ ) {
             const rnd = Math.random();
@@ -78,7 +86,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         return list;
     }
 
-    const stocksPriceList = useRef( calcStocksPriceList() );
+    const stocksCurrentPriceList = useRef( calcstocksCurrentPriceList() );
     const stocksDividendsList = useRef( calcStocksDividendsList() );
 
     const setCashAmountMinusFine = ( fineAmount ) => {
@@ -117,7 +125,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
             isVisible: true, 
             data: { 
                 ...STOCKMARKET_SCREEN_ANOTHER_DEAL,
-                message: message + ' \n Еще одна сделка?'
+                message: message + 'Еще одна сделка?'
             },
             buttonsCallbacks: [
                 () => {
@@ -131,24 +139,24 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const buyStocks = ( stocksQuantity ) => {
-        const maxStocksQuantity = stocksPriceList.current[ activeItem ] * 5 * ( currentSocialStatus + 2 * employeesList[ 0 ] );
-        console.log(stocksQuantity, currentStocksQuantityList[ activeItem ]);
+        let message = '';
+        const maxStocksQuantity = stocksCurrentPriceList.current[ activeItem ] * 5 * ( currentSocialStatus + 2 * employeesList[ 0 ] );
         if(( currentStocksQuantityList[ activeItem ] + stocksQuantity - 0.01 ) > maxStocksQuantity ) {
-            stocksQuantity = maxStocksQuantity - currentStocksQuantityList[ activeItem ]; 
+            stocksQuantity = maxStocksQuantity - currentStocksQuantityList[ activeItem ];
+            message = `Удалость скупить ${stocksQuantity}.\n`;
+            if( stocksQuantity <= 0 ) message = message + 'У нас дураков нет!\n'; 
         }
         stocksQuantityList[ activeItem ] = Math.round( stocksQuantityList[ activeItem ] + 0.01 + stocksQuantity );
         currentStocksQuantityList[ activeItem ] =  currentStocksQuantityList[ activeItem ] + stocksQuantity;
         setCurrentStocksQuantityList( currentStocksQuantityList );
-        const updatedCash = cash - stocksPriceList.current[ activeItem ] * stocksQuantity;
+        const updatedCash = cash - stocksCurrentPriceList.current[ activeItem ] * stocksQuantity;
         dispatch(setStocksQuantityListAction( stocksQuantityList ) );
-        dispatch(setStocksCostListAction( stocksPriceList.current ));
+        dispatch(setStocksCostListAction( stocksCurrentPriceList.current ));
         dispatch(setDividendsListAction( stocksDividendsList.current ));
         dispatch(setCashAmountAction( updatedCash ), true );
         forceUpdate();
 
-        let message = `Удалость скупить ${stocksQuantity}.`;
-        if( stocksQuantity === 0 ) message = message + ' \n У нас дураков нет!';
-
+        //Проверка конец года
         setTimeout( () => showAnotherDealAlert( message ), 300 );
     }
 
@@ -163,7 +171,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
             value: '',
             buttonsCallbacks: [
                 ( stocksQuantity ) => {
-                    if( cash < ( stocksQuantity * stocksPriceList.current[ activeItem ] - 0.01 ) ) {
+                    if( cash < ( stocksQuantity * stocksCurrentPriceList.current[ activeItem ] - 0.01 ) ) {
                         const fineAmount = getFineAmount();
                         setPrompt({ ...prompt, isVisible: false })
                         setTimeout( () => showCheatingAlert( STOCKMARKET_SCREEN_NO_MONEY_CHEATING, fineAmount ), 300);
@@ -177,6 +185,27 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                 }
             ]
         })
+    }
+
+    const sellStocks = ( stocksQuantity ) => {
+        let message = '';
+        const maxStocksQuantity = ( 105 - stocksCurrentPriceList.current[ activeItem ]) * 5 * ( currentSocialStatus + 2 * employeesList[ 0 ] );
+        if(( stocksQuantity - currentStocksQuantityList[ activeItem ] - 0.01 ) > maxStocksQuantity ) {
+            stocksQuantity = maxStocksQuantity + currentStocksQuantityList[ activeItem ];
+            message = `Удалость реализовать ${stocksQuantity}.\n`;
+            if( stocksQuantity <= 0 ) message = message + 'У нас дураков нет!\n';
+        }
+        stocksQuantityList[ activeItem ] = Math.round( stocksQuantityList[ activeItem ] + 0.01 - stocksQuantity );
+        currentStocksQuantityList[ activeItem ] = currentStocksQuantityList[ activeItem ] - stocksQuantity;
+        const updatedCash = cash + stocksCurrentPriceList.current[ activeItem ] * stocksQuantity;
+        dispatch(setStocksQuantityListAction( stocksQuantityList ) );
+        dispatch(setStocksCostListAction( stocksCurrentPriceList.current ));
+        dispatch(setDividendsListAction( stocksDividendsList.current ));
+        dispatch(setCashAmountAction( updatedCash ), true );
+        forceUpdate();
+
+        //Проверка конец года
+        setTimeout( () => showAnotherDealAlert( message ), 300 );
     }
 
     const showInputStocksSellQuantityPrompt = () => {
@@ -196,19 +225,149 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                         setTimeout( () => showCheatingAlert( STOCKMARKET_SCREEN_NOTHING_TO_SALE_CHEATING, fineAmount ), 300 );
                         return;
                     }
-                    setPrompt({ ...prompt, isVisible: false })
+                    setPrompt({ ...prompt, isVisible: false });
+                    sellStocks( stocksQuantity );
                 },
                 () => {
-                    setPrompt({ ...prompt, isVisible: false })
+                    setPrompt({ ...prompt, isVisible: false });
                 }
             ]
         })
     }
 
-    const trade = ( buyOrSellStocks ) => {
-        //todo Создание проблем 
-        
+    const showProblemAlert = ( message, loss, header = 'Внештатная ситуация!', iconName = "exclamation", iconBackgroundColor = 'red' ) => {
+        setAlert({
+            isVisible: true, 
+            data: { 
+                ...STOCKMARKET_SCREEN_PROBLEM,
+                message,
+                header,
+                iconName,
+                iconBackgroundColor
+            },
+            buttonsCallbacks: [
+                () => {
+                    setCashAmountMinusFine( loss );
+                    dispatch(setStocksCostListAction( stocksCurrentPriceList.current ));
+                    setAlert({ ...alert, isVisible: false });
+                },
+            ]
+        })
+    }
 
+    const showClaimProblemAlert = ( message, loss, lawyerServiceCost ) => {
+        setAlert({
+            isVisible: true, 
+            data: { 
+                ...STOCKMARKET_SCREEN_CLAIM_PROBLEM,
+                message
+            },
+            buttonsCallbacks: [
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                    const chanceToWinClaim = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
+                    if( chanceToWinClaim < 0.65 ) {
+                        message = `Сбер выплачивает неустойку ${ 2 * lawyerServiceCost }$.\n` +
+                        `Имейте своего адвоката!`;
+                        const income = commonBusinessIncome + lawyerServiceCost;
+                        dispatch(setCommonBusinessIncomeAction( income ));
+                        setTimeout( () => showProblemAlert( message, 0, 'Процесс выигран!', 'hand-peace', 'green' ), 300 );
+                        return;
+                    }
+                    message = `Увы, дело проиграно. Убыток ${ loss }$.\n` +
+                    `Имейте своего адвоката!`;
+                    dispatch(setYearExpenseAction( yearExpense + loss ));
+                    setTimeout(() => showProblemAlert( message, lawyerServiceCost, 'Процесс проигран!', 'sad-cry' ));
+                },
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                    message = `Иск Сбера удовлетворен. Вы потеряли ${ loss }$.`;
+                    setTimeout( () => showProblemAlert( message, loss, 'Процесс проигран!', 'sad-cry' ), 300 );
+                }
+            ]
+        })
+    }
+
+    const showStoleStocksProblemAlert = ( message, loss, searchServiceCost ) => {
+        setAlert({
+            isVisible: true, 
+            data: { 
+                ...STOCKMARKET_SCREEN_STOLE_STOCKS_PROBLEM,
+                message
+            },
+            buttonsCallbacks: [
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                    
+                },
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                    
+                }
+            ]
+        })
+    }
+
+    const createProblem = () => {
+        setIsProblem( false );
+        let problemIndex = Math.round( 10 * Math.random() );
+        let loss = 0;
+        let message = '';
+        
+        problemIndex = 5;
+
+        if( problemIndex === 5 ) {
+            for( let i = 0; i < 5; i++ ) loss = loss + stocksCostList[ i ] * stocksQuantityList[ i ];
+        } else {
+            loss = Math.round(( cash + 200 ) * Math.random() );
+        }
+
+        switch ( problemIndex ) {
+            case 1:
+                if( employeesList[ 0 ] ) return;
+                if( dividendsIncome > 0 ) {
+                    message = `Вы неправильно оформляли сделки. Убыток ${ loss }$. \n Заведите маклера!`;
+                    showProblemAlert( message, loss );
+                }
+                return;
+            case 2:
+                if( employeesList[ 1 ] ) return;
+                loss = loss + 400;
+                message = `Вы забываете о здоровье. Пребывание в больнице обошлось вам в ${ loss }$.`;
+                showProblemAlert( message, loss );
+                return;
+            case 3:
+                if( employeesList[ 2 ] ) return;
+                const lawyerServiceCost = Math.round( 15 * loss * 0.02 );
+                message = `Компания Сбер предъявила иск в ${ loss }$.\n` + 
+                `Услуги адвоката \nобойдутся в ${ lawyerServiceCost }$.\n` +
+                `Вероятность успеха 65%.\nНанимаете?`;
+                showClaimProblemAlert( message, loss, lawyerServiceCost );
+                return;
+            case 4:
+                if( employeesList[ 3 ] ) return;
+                message = `Ваш шантажируют, вымогая ${ loss }.\n ` +
+                `Придется платить!`;
+                showProblemAlert( message, loss );
+                return;
+            case 5:
+                if( employeesList[ 4 ] ) return;
+                const rnd = Math.random();
+                const searchServiceCost = 10 * ( Math.round( 45 * rnd + 80 + 0.03 * loss ));
+                message = `У вас украли все акции.\n` +
+                `Убыток ${ loss }$.\n` + 
+                `Сыскное бюро предлагает свои услуги за ${ searchServiceCost }$.\n` + 
+                `Шанс поимки воров ${ Math.round( 100 * rnd ) }%.\n` + 
+                `Договорились?`;
+                showStoleStocksProblemAlert( message, loss, searchServiceCost )
+                return;
+            default:
+                return;
+        }
+
+    }
+
+    const trade = ( buyOrSellStocks ) => {
         if( buyOrSellStocks ) {
             showInputStocksBuyQuantityPrompt();
             return;
@@ -232,7 +391,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                     </View>
                     <View style={ styles.stockData }>
                         <Text style={ styles.text }>Имеете: { stocksQuantityList[ i ] }</Text>
-                        <Text style={ styles.text }>Цена: { stocksPriceList.current[ i ] }$</Text>
+                        <Text style={ styles.text }>Цена: { stocksCurrentPriceList.current[ i ] }$</Text>
                         <Text style={ styles.text }>Дивиденды: { stocksDividendsList.current[ i ] }%</Text>
                     </View>
                 </Pressable>
@@ -246,6 +405,19 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
             </>
         )
     }
+
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            dispatch(setStocksCostListAction( stocksCurrentPriceList.current ));
+        })
+        return () => backHandler.remove();
+    })
+
+    useFocusEffect(() => {
+        //Проверка конец года
+
+        if(( stocksQuantityList.indexOf( 0 ) !== -1 ) && isProblem ) createProblem();
+    })
 
     return (
         <>
@@ -333,319 +505,3 @@ const styles = StyleSheet.create({
         fontSize: THEME.FONT28,
     }
 })
-
-
-/*
-
-import React, { useState, useReducer } from 'react';
-import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button } from 'react-native-elements';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import { THEME } from '../../styles/theme';
-import GameWrapper from '../../components/GameWrapper';
-import { STOCKS_LIST } from '../../store/constants';
-import { setStocksQuantityListAction, setAvgStocksCostListAction } from '../../store/actions/actions';
-import { getCommonSettings, getStockSettings } from '../../store/selectors';
-
-import Gazprom from "../../assets/images/logos/gazprom.png";
-import Rosneft from "../../assets/images/logos/rosneft.png";
-import Lukoil from "../../assets/images/logos/lukoil.png";
-import Magnit from "../../assets/images/logos/magnit.png";
-import Sber from "../../assets/images/logos/sber.png";
-
-export const StockmarketScreen = ({ navigation }) => {
-    const [, forceUpdate ] = useReducer(x => x + 1, 0);
-    const commonSettings = useSelector( getCommonSettings );
-    const wrappedComponent = <Stockmarket navigation={ navigation } forceUpdate={ forceUpdate } commonSettings={ commonSettings } />
-
-    return (
-        <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
-    )
-};
-
-const setStockPriceList = () => {
-    const priceList = [];
-    for( let i = 0; i < 5; i++ ) priceList.push( Math.round( 100 * Math.random() ));
-    return priceList;
-}
-
-const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
-    const dispatch = useDispatch();
-    const { stocksQuantityList, avgStocksCostList } = useSelector( getStockSettings );
-    const [ currentStocksCostList, ] = useState( setStockPriceList() );
-    const [ stocksBuySellQuantity, setStocksBuySellQuantity ] = useState([ 0, 0, 0, 0, 0 ]);
-    const [ isButtonsDisabled, setIsButtonsDisabled ] = useState([ true, true, true, true, true ]);
-
-    const updateStocksBuySellQuantity = ( id, value ) => {        
-        const buttonsDisabled = isButtonsDisabled;
-        let newQty = stocksBuySellQuantity;
-        const minQty = 0;
-        const maxQty = 100;
-
-        if(( newQty[ id ] + value ) <= minQty ) { 
-            newQty[ id ] = minQty;
-        } else if(( newQty[ id ] + value ) >= maxQty) {
-            newQty[ id ] = maxQty;
-        } else {
-            newQty[ id ] += value;
-        }
-
-        buttonsDisabled[ id ] = ( newQty[ id ] > 0 ) ? false : true;
-
-        setStocksBuySellQuantity( newQty );
-        setIsButtonsDisabled( buttonsDisabled );
-        forceUpdate();
-    }
-
-    const buyStocks = ( id ) => {
-        const qty = stocksQuantityList[ id ] + stocksBuySellQuantity[ id ];
-        const price = Math.round(( stocksQuantityList[ id ] * stocksAvgCostList[ id ] + stocksBuySellQuantity[ id ] * currentStocksCostList[ id ] ) / qty );
-        stocksQuantityList[ id ] = qty;
-        avgStocksCostList[ id ] = price;
-        dispatch(setStocksQuantityListAction( stocksQuantityList ));
-        dispatch(setAvgStocksCostListAction( stocksAvgCostList, true ));
-        navigation.navigate('GameMainScreen');
-    }
-
-    const sellStocks = ( id ) => {
-        const qty = stocksQuantityList[ id ] - stocksBuySellQuantity[ id ];
-        stocksQuantityList[ id ] = qty;
-        if( qty === 0 ) avgStocksCostList[ id ] = 0;
-        dispatch(setStocksQuantityListAction( stocksQuantityList ));
-        dispatch(setAvgStocksCostListAction( avgStocksCostList, true ));
-        navigation.navigate('GameMainScreen');
-    }
-
-    const stocksList = () => {
-        let i = -1;
-        const logosImageFiles = [ Gazprom, Rosneft, Lukoil, Magnit, Sber ];
-
-        const items = STOCKS_LIST.map( element => {
-            i++;
-            return (
-                <View style={ styles.stockItem } key={ i }>
-                    <View style={ styles.stockInfo }>
-                        <View style={ styles.stockLogo }>
-                            <Image style={ styles.logoImage } resizeMode='center' source={ logosImageFiles[ i ] } />
-                        </View>
-                        <View style={ styles.stockName }>
-                            <Text style={ styles.text }>{ element }</Text>
-                        </View>
-                        <View style={ styles.stockPrice }>
-                            <Text style={{ ...styles.text, fontFamily: 'nunito-semibold' }}>{ currentStocksCostList[ i ] }$</Text>
-                        </View>
-                    </View>
-                    <View style={ styles.stockData }>
-                        <View style={ styles.stockQuantity }>
-                            <Text style={{ ...styles.text, fontSize: THEME.FONT22 }}>Имеете: { stocksQuantityList[ i ] }</Text>
-                        </View>
-                        <View style={ styles.stockDividents }>
-                            <Text style={{ ...styles.text, fontSize: THEME.FONT22 }}>Дивиденты: 10%</Text>
-                        </View>
-                    </View>
-                    <View style={ styles.stockDeals }>
-                        <View style={ styles.incDecButtons }>
-                            <Button
-                                buttonStyle={ styles.incDecButton } 
-                                titleStyle={ styles.incDecButtonTitle }
-                                type="outline" 
-                                title="-10"
-                                onPress={ eval('() => updateStocksBuySellQuantity(' + i + ', -10 )') }
-                            />
-                            <Button
-                                buttonStyle={ styles.incDecButton } 
-                                titleStyle={ styles.incDecButtonTitle }
-                                type="outline" 
-                                title="-1"
-                                onPress={ eval('() => updateStocksBuySellQuantity(' + i + ', -1 )') }
-                            />
-                            <View style={ styles.stocksAmount }>
-                                <Text style={ styles.text }>{ stocksBuySellQuantity[ i ] }</Text>
-                            </View>
-                            <Button
-                                buttonStyle={ styles.incDecButton } 
-                                titleStyle={ styles.incDecButtonTitle }
-                                type="outline" 
-                                title="+1"
-                                onPress={ eval('() => updateStocksBuySellQuantity(' + i + ', 1 )') }
-                            />
-                            <Button
-                                buttonStyle={ styles.incDecButton } 
-                                titleStyle={ styles.incDecButtonTitle }
-                                type="outline" 
-                                title="+10"
-                                onPress={ eval('() => updateStocksBuySellQuantity(' + i + ', 10 )') }
-                            />
-                        </View>
-                        <View style={ styles.buySellButtons }>
-                            <Button
-                                buttonStyle={ styles.buySellButton } 
-                                titleStyle={ styles.buySellButtonTitle }
-                                disabledStyle={ styles.buySellButtonDisabledStyle }
-                                disabled={ isButtonsDisabled[ i ] }
-                                type="outline" 
-                                title="Купить"
-                                onPress={ eval('() => buyStocks(' + i + ')') }
-                            />
-                            <Button
-                                buttonStyle={ styles.buySellButton } 
-                                titleStyle={ styles.buySellButtonTitle }
-                                disabledStyle={ styles.buySellButtonDisabledStyle }
-                                disabled={ isButtonsDisabled[ i ] }
-                                type="outline" 
-                                title="Продать"
-                                onPress={ eval('() => sellStocks(' + i + ')') }
-                            />
-                        </View>
-                    </View>
-                </View>
-            )
-        });
-
-        return (
-            <>
-                <Text style={{ ...styles.text, marginBottom: hp('0.5%') }}>Купить/продать акции:</Text>
-                { items }
-            </>
-        )
-    }
-
-    return (
-        <>
-            <ScrollView style={ styles.container }>
-                { stocksList() }
-            </ScrollView>
-            <View style={ styles.buttonContainer }>
-                <Button
-                    buttonStyle={ styles.button } 
-                    titleStyle={ styles.buttonTitle }
-                    type="outline" 
-                    title="Уйти"
-                    onPress={ () => navigation.navigate('GameMainScreen') }  
-                />
-            </View>
-        </>
-    )
-}
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        width: '96%',
-        marginLeft: '2%',
-        marginRight: '2%',
-        marginTop: hp('1%'),
-        marginBottom: hp('1%')
-    },
-    stockItem: {
-        marginTop: hp('1%'),
-        backgroundColor: 'rgba(0, 0, 0, .2)',
-        borderRadius: 10,
-    },
-    stockInfo: {
-        height: hp('7%'),
-        flexDirection: 'row',
-        marginTop: hp('1%'),
-        marginBottom: hp('1%'),     
-    },
-    stockLogo: {
-        paddingLeft: 10,
-        justifyContent: 'center',
-        width: '20%',
-    },
-    logoImage: {
-        height: hp('6%'),
-        width: hp('6%')
-    },
-    stockName: {
-        paddingLeft: 10,
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-        width: '60%',
-    },
-    stockPrice: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        width: '20%',
-    },
-    stockData: {
-        height: hp('5%'),
-        flexDirection: 'row',
-    },
-    stockQuantity: {
-        paddingLeft: 10,
-    },
-    stockDividents: {
-        paddingLeft: 20,
-    },
-    text: {
-        color: THEME.TEXT_COLOR,
-        textAlign: 'center',
-        fontFamily: 'nunito-extralight',
-        fontSize: THEME.FONT35,
-    },
-    stockDeals: {
-        alignItems: 'center',
-        marginBottom: hp('1%'), 
-    },
-    incDecButtons: {
-        flexDirection: 'row',
-        marginBottom: hp('2%')
-    },
-    stocksAmount: {
-        justifyContent: 'center',
-        width: wp('20%'),
-    },
-    incDecButton: {
-        backgroundColor: THEME.FORTH_BACKGROUND_COLOR,
-        borderRadius: 5,
-        marginLeft: wp('0.5%'),
-        marginRight: wp('0.5%'),
-        width: wp('17%')
-    },
-    incDecButtonTitle: {
-        color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
-        fontSize: THEME.FONT28,
-    },
-    buySellButtons: {
-        flexDirection: 'row',
-        marginBottom: hp('0.5%')
-    },
-    buySellButton: {
-        backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-        borderRadius: wp('10%'),
-        marginLeft: wp('1%'),
-        marginRight: wp('1%'),
-        width: wp('44.5%')
-    },
-    buySellButtonTitle: {
-        color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
-        fontSize: THEME.FONT28,
-    },
-    buySellButtonDisabledStyle: {
-        backgroundColor: THEME.DISABLED_BUTTON_COLOR,
-    },
-    buttonContainer: {
-        width: '96%',
-        marginLeft: '2%',
-        marginRight: '2%',
-        justifyContent: 'center',
-        marginBottom: hp('1%')
-    },
-    button: {
-        backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-        width: '100%',
-        height: hp('7%'),
-        borderRadius: wp('10%'),
-    },
-    buttonTitle: {
-        color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
-        fontSize: THEME.FONT28,
-    }
-})
-
-*/

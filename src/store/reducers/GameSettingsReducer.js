@@ -27,6 +27,7 @@ const initialState = {
     },
 
     businessSettings: {
+        commonBusinessIncome: 0,                                // Доход от бизнеса
         businessList: [ false, false, false, false, false ],    // Наличие - true / Отсутствие - false бара, ресторана, магазина, отеля, завода
         businessBuyCostList: [ 0, 0, 0, 0, 0 ],                 // Цена покупки бизнеса
         businessSellCostList: [ 0, 0, 0, 0, 0 ],                // Цена продажи бизнеса
@@ -39,6 +40,7 @@ const initialState = {
     },
 
     stockSettings: {
+        dividendsIncome: 0,                                     // Доход от дивидендов
         stocksQuantityList: [ 0, 0, 0, 0, 0 ],                  // Количество акций каждой компании в собственности
         stocksCostList: [ 0, 0, 0, 0, 0 ],                      // Цены купленных акций
         dividendsList: [ 0, 0, 0, 0, 0]                         // Дивиденды
@@ -106,6 +108,8 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
             return saveState( state, 'businessSellCostList', action );
         case 'SET_BUSINESS_YEAR_INCOME':
             return saveState( state, 'businessYearIncome', action );
+        case 'SET_COMMON_BUSINESS_INCOME':
+            return saveState( state, 'commonBusinessIncome', action );
 
         case 'SET_STOCKS_QUANTITY_LIST':
             return saveState( state, 'stocksQuantityList', action );
@@ -113,6 +117,8 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
             return saveState( state, 'stocksCostList', action );
         case 'SET_DIVIDENDS_LIST':
             return saveState( state, 'dividendsList', action );
+        case 'SET_DIVIDENDS_INCOME':
+            return saveState( state, 'dividendsIncome', action );
 
         case 'SET_DEPOSIT_AMOUNT':
             return saveState( state, 'depositAmount', action);
