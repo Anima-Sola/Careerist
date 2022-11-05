@@ -18,10 +18,10 @@ export const setInitialGameData = () => {
 
     const gameDifficultyLevel = commonSettings.gameDifficultyLevel;
 
-    const deathAge = Math.round( 60 + 20 * Math.random() );
+    const deathAge = Math.floor( 60 + 20 * Math.random() );
     store.dispatch(setDeathAge( deathAge ));
 
-    const endOfYear = Math.round( gameDifficultyLevel + ( 5 - gameDifficultyLevel ) * Math.random() );
+    const endOfYear = Math.floor( gameDifficultyLevel + ( 5 - gameDifficultyLevel ) * Math.random() );
     store.dispatch(setEndOfYear( endOfYear ));
 
     const possessionBuyCostList = [];
@@ -33,16 +33,16 @@ export const setInitialGameData = () => {
 
     for( let i = 1; i <= 5; i++ ) {
         let rndPossession = Math.random();
-        possessionBuyCostList[ i - 1 ] = Math.round( 5 ** i * ( 2 + 5 * rndPossession ) * 20 );
-        possessionSellCostList[ i - 1 ] = Math.round( 0.7 * possessionBuyCostList[ i - 1 ] * ( rndPossession + 0.3 ) );
+        possessionBuyCostList[ i - 1 ] = Math.floor( 5 ** i * ( 2 + 5 * rndPossession ) * 20 );
+        possessionSellCostList[ i - 1 ] = Math.floor( 0.7 * possessionBuyCostList[ i - 1 ] * ( rndPossession + 0.3 ) );
         
         let rndBusiness = Math.random();
-        businessBuyCostList[ i - 1 ] = Math.round( 5 ** i * ( 2 + 5 * rndBusiness ) * 20 );
-        businessSellCostList[ i - 1 ] = Math.round( 0.7 * businessBuyCostList[ i - 1 ] * ( rndBusiness + 0.3 ) );
-        businessYearIncome[ i - 1 ] = Math.round( businessSellCostList[ i - 1 ] * ( rndBusiness - 0.3 ) );
+        businessBuyCostList[ i - 1 ] = Math.floor( 5 ** i * ( 2 + 5 * rndBusiness ) * 20 );
+        businessSellCostList[ i - 1 ] = Math.floor( 0.7 * businessBuyCostList[ i - 1 ] * ( rndBusiness + 0.3 ) );
+        businessYearIncome[ i - 1 ] = Math.floor( businessSellCostList[ i - 1 ] * ( rndBusiness - 0.3 ) );
 
         let rndEmployees = Math.random();
-        employeesSalaryList[ i - 1 ] = Math.round( 4500 * rndEmployees + 2000 * i );
+        employeesSalaryList[ i - 1 ] = Math.floor( 4500 * rndEmployees + 2000 * i );
     }
 
     store.dispatch(setPossessionBuyCostList( possessionBuyCostList ));

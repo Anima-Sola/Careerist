@@ -236,10 +236,10 @@ export const setDividendsListAction = ( list, saveStateToStore = false ) => {
     }
 }
 
-export const setDividendsIncome = ( item, saveStateToStore = false ) => {
+export const setDividendsIncomeAction = ( item, saveStateToStore = false ) => {
     return {
         type: 'SET_DIVIDENDS_INCOME',
-        payload: list,
+        payload: item,
         settingsSection: 'stockSettings',
         saveStateToStore
     }

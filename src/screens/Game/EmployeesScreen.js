@@ -82,7 +82,7 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
 
     const getFineAmount = () => {
         const value = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
-        return 1500 + 50 * Math.round( 10 * value );
+        return 1500 + 50 * Math.floor( 10 * value );
     }
 
     const showDontBeFoolAlert = () => {
@@ -211,7 +211,7 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
         }
         
         if( hireOrFire ) {
-            const restOfTheYear = Math.round( ( 1 - posWithinYear / endOfYear ) * employeesSalaryList[ activeItem ] * 0.01 );
+            const restOfTheYear = Math.floor( ( 1 - posWithinYear / endOfYear ) * employeesSalaryList[ activeItem ] * 0.01 );
             
             if( restOfTheYear <= 0 ) {
                 hireEmployee( false );

@@ -60,7 +60,7 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
 
     const getFineAmount = () => {
         const value = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
-        return 1500 + 50 * Math.round( 10 * value );
+        return 1500 + 50 * Math.floor( 10 * value );
     }
     
     const showDontBeFoolAlert = () => {

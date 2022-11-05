@@ -44,7 +44,7 @@ const Election = ({ navigation, forceUpdate, commonSettings }) => {
     const calcElectionCost = () => {
         const rnd = Math.random();
         const nextSocialStatus = currentSocialStatus + 1;
-        return Math.round( 5 ** nextSocialStatus * ( 2 + 5 * rnd ) * 20 );
+        return Math.floor( 5 ** nextSocialStatus * ( 2 + 5 * rnd ) * 20 );
     }
 
     const calcChanceToElect = () => {
@@ -71,7 +71,7 @@ const Election = ({ navigation, forceUpdate, commonSettings }) => {
 
     const getFineAmount = () => {
         const value = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
-        return 1500 + 50 * Math.round( 10 * value );
+        return 1500 + 50 * Math.floor( 10 * value );
     }
 
     const electionCost = useRef( calcElectionCost() );
@@ -163,7 +163,7 @@ const Election = ({ navigation, forceUpdate, commonSettings }) => {
         dispatch(setCashAmountAction( updatedCash ));
 
         if( electionResult > chanceToElect.current ) {
-            const numOfVoices = Math.round(50 * ( 1 - electionResult ));
+            const numOfVoices = Math.floor(50 * ( 1 - electionResult ));
             showLoseElectionAlert( numOfVoices );
             return;
         }
