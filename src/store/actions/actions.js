@@ -110,6 +110,7 @@ export const setYearExpenseAction = ( item, saveStateToStore = false ) => {
     }
 }
 
+//---------------------------------------------------------------------------------------
 export const setPossessionList = ( list, saveStateToStore = false ) => {
     return {
         type: 'SET_POSSESSION_LIST',
@@ -137,6 +138,7 @@ export const setPossessionSellCostList = ( list, saveStateToStore = false) => {
     }
 }
 
+//---------------------------------------------------------------------------------------
 export const setEmployeesList = ( list, saveStateToStore = false ) => {
     return {
         type: 'SET_EMPLOYEES_LIST',
@@ -164,6 +166,7 @@ export const setCommonBusinessIncomeAction = ( item, saveStateToStore = false ) 
     }
 }
 
+//---------------------------------------------------------------------------------------
 export const setBusinessList = ( list, saveStateToStore = false ) => {
     return {
         type: 'SET_BUSINESS_LIST',
@@ -200,15 +203,7 @@ export const setBusinessYearIncome = ( list, saveStateToStore = false ) => {
     }
 }
 
-export const setDepositAmountAction = ( item, saveStateToStore = false ) => {
-    return {
-        type: 'SET_DEPOSIT_AMOUNT',
-        payload: item,
-        settingsSection: 'bankSettings',
-        saveStateToStore
-    }
-}
-
+//---------------------------------------------------------------------------------------
 export const setStocksQuantityListAction = ( list, saveStateToStore = false ) => {
     return {
         type: 'SET_STOCKS_QUANTITY_LIST',
@@ -245,24 +240,90 @@ export const setDividendsIncomeAction = ( item, saveStateToStore = false ) => {
     }
 }
 
-export const setInsuredPossessionList = ( list, saveStateToStore = false ) => {
+//---------------------------------------------------------------------------------------
+export const setIsBankBankruptAction = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_IS_BANK_BANKRUPT',
+        payload: item,
+        settingsSection: 'bankSettings',
+        saveStateToStore
+    }
+}
+
+
+export const setDepositAmountAction = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_DEPOSIT_AMOUNT',
+        payload: item,
+        settingsSection: 'bankSettings',
+        saveStateToStore
+    }
+}
+
+export const setLendAmountAction = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_LEND_AMOUNT',
+        payload: item,
+        settingsSection: 'bankSettings',
+        saveStateToStore
+    }
+}
+
+export const setLendTermAction = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_LEND_TERM',
+        payload: item,
+        settingsSection: 'bankSettings',
+        saveStateToStore
+    }
+}
+
+export const setBorrowAmountAction = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_BORROW_AMOUNT',
+        payload: item,
+        settingsSection: 'bankSettings',
+        saveStateToStore
+    }
+}
+
+export const setBorrowTermAction = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_BORROW_TERM',
+        payload: item,
+        settingsSection: 'bankSettings',
+        saveStateToStore
+    }
+}
+
+export const setInsuredPossessionListAction = ( list, saveStateToStore = false ) => {
     return {
         type: 'SET_INSURED_POSSESSION_LIST',
         payload: list,
-        settingsSection: 'possessionSettings',
+        settingsSection: 'bankSettings',
         saveStateToStore
     }
 }
 
-export const setInsurancePossessionCostList = ( list, saveStateToStore = false ) => {
+export const setInsurancePossessionCostListAction = ( list, saveStateToStore = false ) => {
     return {
         type: 'SET_INSURANCE_POSSESSION_COST_LIST',
         payload: list,
-        settingsSection: 'possessionSettings',
+        settingsSection: 'bankSettings',
         saveStateToStore
     }
 }
 
+export const setInsurancePossessionTermListAction = ( list, saveStateToStore = false ) => {
+    return {
+        type: 'SET_INSURANCE_POSSESSION_TERM_LIST',
+        payload: list,
+        settingsSection: 'bankSettings',
+        saveStateToStore
+    }
+}
+
+//---------------------------------------------------------------------------------------
 export const saveGameSettingsInitialState = () => {
     return {
         type: 'SAVE_GAME_SETTINGS_INITIAL_STATE'

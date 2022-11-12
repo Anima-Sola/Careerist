@@ -47,7 +47,15 @@ const initialState = {
     },
     
     bankSettings: {
-        depositAmount: 0,                                       // Сумма вклада
+        isBankBankrupt: false,                                          // Бакрот банк или нет false - нет, true - да
+        depositAmount: 0,                                               // Сумма вклада
+        lendAmount: 0,                                                  // Сумма отданной ссуды
+        lendTerm: 0,                                                    // Срок отданной ссуды
+        borrowAmount: 0,                                                // Сумма полученного кредита
+        borrowTerm: 0,                                                  // Срок полученного кредита
+        insuredPossessionList: [ false, false, false, false, false ],   // Застрахованное имущество. true - затраховано, false - нет
+        insurancePossessionCostList: [ 0, 0, 0, 0, 0 ],                 // Стоимость страховки
+        insurancePossessionTermList: [ 0, 0, 0, 0, 0 ]                  // Стоимость страховки
     },
 
 }
@@ -119,14 +127,26 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
             return saveState( state, 'dividendsList', action );
         case 'SET_DIVIDENDS_INCOME':
             return saveState( state, 'dividendsIncome', action );
-
+   
+        case 'SET_IS_BANK_BANKRUPT':
+            return saveState( state, 'isBankBankrupt', action);
         case 'SET_DEPOSIT_AMOUNT':
             return saveState( state, 'depositAmount', action);
-
+        case 'SET_LEND_AMOUNT':
+            return saveState( state, 'lendAmount', action);
+        case 'SET_LEND_TERM':
+            return saveState( state, 'lendTerm', action);
+        case 'SET_BORROW_AMOUNT':
+            return saveState( state, 'borrowAmount', action);
+        case 'SET_BORROW_TERM':
+            return saveState( state, 'borrowTerm', action);
         case 'SET_INSURED_POSSESSION_LIST':
             return saveState( state, 'insuredPossessionList', action );
         case 'SET_INSURANCE_POSSESSION_COST_LIST':
             return saveState( state, 'insurancePossessionCostList', action );
+        case 'SET_INSURANCE_POSSESSION_TERM_LIST':
+            return saveState( state, 'insurancePossessionTermList', action );
+
         case 'LOAD_GAME_SETTINGS':
             if ( action.payload ) return action.payload;
             return state;

@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Image } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { THEME } from '../../../styles/theme';
 import GameWrapper from '../../../components/GameWrapper';
-import { getCommonSettings, getPossessionSettings } from '../../../store/selectors';
+import { getCommonSettings, getPossessionSettings, getBankSettings } from '../../../store/selectors';
 import { POSSESSION_LIST } from '../../../store/constants';
 import CustomPrompt from '../../../components/CustomPrompt';
-import { INSURANCE_SCREEN_INPUT_AMOUNT } from '../../../store/constants';
-import { setInsuredPossessionList, setInsurancePossessionCostList } from '../../../store/actions/actions';
+import CustomAlert from '../../../components/CustomAlert';
+import {
+    INSURANCE_SCREEN_MAX_AMOUNT_WARNING, 
+    INSURANCE_SCREEN_ANOTHER_INSURANCE,
+    INSURANCE_SCREEN_INPUT_TERM,
+    INSURANCE_SCREEN_INPUT_AMOUNT,
+} from '../../../store/constants';
+import { 
+    setInsuredPossessionListAction, 
+    setInsurancePossessionCostListAction, 
+    setInsurancePossessionTermListAction
+} from '../../../store/actions/actions';
 
 import Flat from "../../../assets/images/possession/flat.png";
 import Car from "../../../assets/images/possession/car.png";
@@ -28,22 +39,17 @@ export const InsuranceScreen = ({ navigation }) => {
 
 const Insurance = ({ navigation }) => {
     const dispatch = useDispatch();
-    const { possessionList, possessionSellCostList, insuredPossessionList, insurancePossessionCostList } = useSelector( getPossessionSettings );
+    const { possessionList, possessionSellCostList } = useSelector( getPossessionSettings );
+    const { insuredPossessionList, insurancePossessionCostList, insurancePossessionTermList } = useSelector( getBankSettings );
     const [ activeItem, setActiveItem ] = useState( 0 );
+    const [ alert, setAlert ] = useState({
+        isVisible: false,
+        data: INSURANCE_SCREEN_MAX_AMOUNT_WARNING
+    });
     const [ prompt, setPrompt ] = useState({ 
         isVisible: false, 
-        data: INSURANCE_SCREEN_INPUT_AMOUNT,
+        data: INSURANCE_SCREEN_INPUT_TERM,
         value: '',
-        buttonsCallbacks: [
-            ( value, { activeItem } ) => {
-                insuredPossessionList[ activeItem ] = true;
-                dispatch(setInsuredPossessionList( insuredPossessionList ));
-                insuranceCostList[ activeItem ] = value;
-                dispatch(setInsuranceCostList( insuranceCostList, true ));
-                setPrompt({ ...prompt, isVisible: false, value: '' });
-            },
-            () => setPrompt({ ...prompt, isVisible: false, value: '' })
-        ]
     });
 
     const getListForInsurance = () => {
@@ -80,10 +86,89 @@ const Insurance = ({ navigation }) => {
         )
     }
 
+    const showMaxInsuranceAmountWarningAlert = () => {
+        setAlert({
+            ...alert,
+            isVisible: true,
+            data: INSURANCE_SCREEN_MAX_AMOUNT_WARNING,
+            buttonsCallbacks: [
+                () => {
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
+
+    const showAnotherInsuranceAlert = () => {
+        setAlert({
+            ...alert,
+            isVisible: true,
+            data: INSURANCE_SCREEN_ANOTHER_INSURANCE,
+            buttonsCallbacks: [
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                },
+                () => {
+                    navigation.navigate('BankScreen');
+                }
+            ]
+        })
+    }
+    
+    const showInputInsuranceAmountPrompt = ( insuranceTerm ) => {
+        setPrompt({
+            ...prompt, 
+            isVisible: true,
+            data: { 
+                ...INSURANCE_SCREEN_INPUT_AMOUNT,
+                header: `Страхуем ${ POSSESSION_LIST[ activeItem ].toLowerCase() }.`,
+                message: `На какую сумму? Максимум ${ possessionSellCostList[ activeItem ] }$.`
+            },
+            buttonsCallbacks: [
+                ( insuranceAmount ) => {
+                    setPrompt({ ...prompt, isVisible: false, value: '' });
+                    if( insuranceAmount > possessionSellCostList[ activeItem ] ) {
+                        setTimeout( () => showMaxInsuranceAmountWarningAlert(), 300);
+                        return;
+                    }
+                    insuredPossessionList[ activeItem ] = true;
+                    insurancePossessionTermList [ activeItem ] = insuranceTerm;
+                    insurancePossessionCostList[ activeItem ] = insuranceAmount;
+                    dispatch(setInsuredPossessionListAction( insuredPossessionList ));
+                    dispatch(setInsurancePossessionTermListAction( insurancePossessionTermList ));
+                    dispatch(setInsurancePossessionCostListAction( insurancePossessionCostList ), true);
+
+                    setTimeout( () => showAnotherInsuranceAlert(), 300);
+                },
+                () => setPrompt({ ...prompt, isVisible: false, value: '' })
+            ]
+        });
+    }
+
+    const showInputInsuranceTermPrompt = () => {
+        setPrompt({
+            ...prompt, 
+            isVisible: true,
+            data: { 
+                ...INSURANCE_SCREEN_INPUT_TERM,
+                header: `Страхуем ${ POSSESSION_LIST[ activeItem ].toLowerCase() }.`,
+                message: `На какой срок?`
+            },
+            buttonsCallbacks: [
+                ( insuranceTerm ) => {
+                    setPrompt({ ...prompt, isVisible: false, value: '' });
+                    setTimeout( () => showInputInsuranceAmountPrompt( insuranceTerm ), 300 );
+                },
+                () => setPrompt({ ...prompt, isVisible: false, value: '' })
+            ]
+        });
+    }
+
     const somethingToEnsure = () => {
         return (
                 <>
-                    <CustomPrompt prompt={ prompt } setPrompt={ setPrompt } argsForButtonCallbacks={{ activeItem }} />
+                    <CustomPrompt prompt={ prompt } setPrompt={ setPrompt }/>
+                    <CustomAlert alert={ alert } setAlert={ setAlert }/>
                     <ScrollView style={ styles.container }>
                         { getListForInsurance() }
                     </ScrollView>
@@ -93,17 +178,7 @@ const Insurance = ({ navigation }) => {
                             titleStyle={ styles.buttonTitle }
                             type="outline" 
                             title="Страховать"
-                            onPress={ () => { 
-                                setPrompt({
-                                    ...prompt, 
-                                    isVisible: true,
-                                    data: { 
-                                        ...INSURANCE_SCREEN_INPUT_AMOUNT,
-                                        header: `Страхуем ${ POSSESSION_LIST[ activeItem ].toLowerCase() }?`,
-                                        message: `Максимальная страховая сумма ${ possessionSellCostList[ activeItem ]}$`
-                                    }
-                                });
-                            }}    
+                            onPress={ () => showInputInsuranceTermPrompt() }    
                         />
                         <Button
                             buttonStyle={ styles.exitButton } 
@@ -127,7 +202,7 @@ const Insurance = ({ navigation }) => {
                     <View style={{ height: hp('1%') }}></View>
                     <Text style={ styles.text }>Усвоили?</Text>
                 </View>
-                <View style={ styles.nothingToEnsureContainer }>
+                <View>
                     <Button
                         buttonStyle={ styles.nothingToEnsureButton } 
                         titleStyle={ styles.buttonTitle }
@@ -223,11 +298,6 @@ const styles = StyleSheet.create({
         height: hp('7%'),
         borderRadius: wp('10%'),
         marginLeft: 5,
-    },
-    nothingToEnsureButtonContainer: {
-        justifyContent: 'center',
-        width: '100%',
-        marginBottom: hp('1%'),
     },
     nothingToEnsureButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,

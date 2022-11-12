@@ -5,7 +5,7 @@ import { useStore, useSelector } from "react-redux";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { THEME } from "../../styles/theme";
 import GameWrapper from "../../components/GameWrapper";
-import { getCommonSettings } from "../../store/selectors";
+import { getCommonSettings, getPossessionSettings } from "../../store/selectors";
 import CustomAlert from '../../components/CustomAlert';
 import { GAME_MAIN_SCREEN_QUIT_GAME_ALERT, GAME_MAIN_SCREEN_SCLEROSIS_WARNING } from "../../store/constants";
 
@@ -22,6 +22,7 @@ export const GameMainScreen = ({ navigation }) => {
 const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
     const store = useStore();
     const { cash, electionStatus, yearsPassed } = commonSettings;
+    const { possessionList } = useSelector( getPossessionSettings );
     const [ alert, setAlert ] = useState({ 
         isVisible: false, 
         data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT,
@@ -51,6 +52,10 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
                     return true;
                 case 'ElectionScreen':
                     return (( yearsPassed % 2 ) === 0) ? true : false;
+                case 'InsuranceScreen':
+                    if( possessionList.indexOf( true ) === -1 ) navigation.navigate('GameMainScreen');
+                    else navigation.navigate('BankScreen');
+                    return true;
                 default:
                     return false;
             }
@@ -105,7 +110,10 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
                     </Pressable>
                 </View>
                 <View style={ styles.menuRow }>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'BankScreen' ) }>
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ 
+                        () => navToGameScreens( 'BankScreen', { 
+                            navigateFromMainScreen: true
+                        })}>
                         <Text style={ styles.menuItemText }>Банк</Text>
                     </Pressable>
                     <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } >

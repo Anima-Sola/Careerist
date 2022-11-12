@@ -432,6 +432,74 @@ export const STOCKMARKET_SCREEN_STOLE_STOCKS_PROBLEM = {
     ]
 }
 
+export const INSURANCE_SCREEN_MAX_AMOUNT_WARNING = {
+    message: 'Больше чем на максимальную сумму не страхуем. Усвоили?',
+    header: 'Внимание!',
+    iconName: 'exclamation', 
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Понял, принял',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}
+
+export const INSURANCE_SCREEN_ANOTHER_INSURANCE = {
+    message: 'Еще одна страховка?',
+    header: 'Имущество застраховано!',
+    iconName: 'handshake', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Да',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            hint: 'Нет',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}
+
+export const INSURANCE_SCREEN_INPUT_TERM = {
+    message: '',
+    header: '',
+    iconName: 'keyboard', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: true,
+    onlyDigits: true,
+    buttons: [
+        {   
+            key: 0,
+            disabledIfEmpty: true,
+            hint: 'Продолжить',
+            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            disabledIfEmpty: false,
+            hint: 'Отмена',
+            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
 export const INSURANCE_SCREEN_INPUT_AMOUNT = {
     message: '',
     header: '',

@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, ScrollView, Pressable, Image } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { getCommonSettings } from '../../store/selectors'; 
+import { getCommonSettings, getBankSettings } from '../../store/selectors'; 
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
 import { BANKING_SERVICES } from '../../store/constants';
+import { 
+    setIsBankBankruptAction, 
+    setDepositAmountAction,
+    setBorrowTermAction,
+    setCashAmountAction,
+} from '../../store/actions/actions';
 
 import Ensurance from "../../assets/images/bankservices/ensurance.png";
 import Deposit from "../../assets/images/bankservices/deposit.png";
@@ -14,32 +21,39 @@ import Withdraw from "../../assets/images/bankservices/withdraw.png";
 import Lend from "../../assets/images/bankservices/lend.png";
 import Borrow from "../../assets/images/bankservices/borrow.png";
 
-export const BankScreen = ({ navigation }) => {
+export const BankScreen = ({ navigation, route }) => {
     const commonSettings = useSelector( getCommonSettings );
-    const wrappedComponent = <Bank navigation={ navigation } />
+    const wrappedComponent = <Bank navigation={ navigation } route={ route } commonSettings={ commonSettings }/>
 
     return(
         <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
     )
 };
 
-const Bank = ({ navigation }) => {
+const Bank = ({ navigation, route, commonSettings }) => {
     const dispatch = useDispatch();
+    const { cash, posWithinYear, endOfYear } = commonSettings;
+    const { isBankBankrupt, depositAmount, lendAmount, borrowAmount } = useSelector( getBankSettings );
+    const [ bankruptMessage, setBankruptMessage ] = useState(
+        <Text style={{ ...styles.text, fontFamily: 'nunito-semibold' }}>НАЦИОНАЛЬНЫЙ БАНК банкрот!</Text>
+    );
     const services = [ Ensurance, Deposit, Withdraw, Lend, Borrow ];
     const servicesScreens = [ 'InsuranceScreen', 'DepositScreen', 'WithdrawScreen', 'LendScreen', 'BorrowScreen' ]; 
 
     const showBankingServices = () => {
         let i = -1;
 
-        const items = BANKING_SERVICES.map( element => {
+        const items = services.map( element => {
             i++;
+            if(( i === 3 ) && ( lendAmount > 0 )) return;
+            if(( i === 4 ) && ( borrowAmount > 0 )) return;
             return (
                 <Pressable style={ THEME.PRESSABLE_STYLES(styles.itemContainer) } key={ i } onPress={ eval('() => navigation.navigate("' + servicesScreens [ i ] + '")' )}>
                     <View style={ styles.itemImage }>
-                        <Image style={ styles.image } resizeMode='center' source={ services [ i ] } />
+                        <Image style={ styles.image } resizeMode='center' source={ element } />
                     </View>
                     <View style={ styles.itemName }>
-                        <Text style={ styles.itemText }>{ element }</Text>
+                        <Text style={ styles.itemText }>{ BANKING_SERVICES[ i ] }</Text>
                     </View>
                 </Pressable>
             )
@@ -56,7 +70,7 @@ const Bank = ({ navigation }) => {
         )
     }
 
-    return (
+    const bankNotBankrupt = (
         <>
             <ScrollView style={ styles.container }>
                 { showBankingServices() }
@@ -72,6 +86,47 @@ const Bank = ({ navigation }) => {
             </View>
         </>
     )
+
+    const bankBankrupt = (
+        <>
+            <View style={{ ...styles.container, justifyContent: 'center', alignItems: 'center' }}>
+                { bankruptMessage }
+            </View>
+            <View style={ styles.buttonContainer }>
+                <Button
+                    buttonStyle={ styles.button } 
+                    titleStyle={ styles.buttonTitle }
+                    type="outline" 
+                    title="Уйти"
+                    onPress={ () => navigation.navigate('GameMainScreen') }  
+                />
+            </View>
+        </>
+    )
+
+    useFocusEffect(() => {
+        const navigateFromMainScreen = route.params?.navigateFromMainScreen;
+        if( !isBankBankrupt && navigateFromMainScreen ) {
+            const value = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
+            if( value > 0.97 ) {
+                if( depositAmount > 0) {
+                    const compensation = Math.floor( 0.1 * depositAmount );
+                    setBankruptMessage(
+                        <>
+                            <Text style={{ ...styles.text, fontFamily: 'nunito-semibold' }}>НАЦИОНАЛЬНЫЙ БАНК банкрот!</Text>
+                            <Text style={ styles.text }>Вам выплачена компенсация { compensation }$</Text>
+                        </>
+                    );
+                    dispatch(setCashAmountAction( cash + compensation ));
+                    dispatch(setDepositAmountAction( 0 ));
+                }
+                dispatch(setIsBankBankruptAction( true ));
+                dispatch(setBorrowTermAction( endOfYear - posWithinYear ), true);
+            }
+        }
+    })
+
+    return ( isBankBankrupt ) ? bankBankrupt : bankNotBankrupt;
 }
 
 const styles = StyleSheet.create({
