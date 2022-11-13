@@ -527,3 +527,50 @@ export const INSURANCE_SCREEN_INPUT_AMOUNT = {
         }
     ]
 }
+
+export const DEPOSIT_SCREEN_NO_MONEY_CHEATING = POSSESSION_SCREEN_NO_MONEY_CHEATING;
+
+export const DEPOSIT_SCREEN_DEPOSIT_PLACED = {
+    message: 'Депозит размещен.',
+    header: 'Успех!',
+    iconName: 'handshake', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Отлично',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}
+
+export const DEPOSIT_SCREEN_INPUT_AMOUNT = {
+    message: 'Сколько помещаете?',
+    header: 'Рамещаем депозит.',
+    iconName: 'keyboard', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: true,
+    onlyDigits: true,
+    buttons: [
+        {   
+            key: 0,
+            disabledIfEmpty: true,
+            hint: 'Сделать вклад',
+            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            disabledIfEmpty: false,
+            hint: 'Отмена',
+            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
