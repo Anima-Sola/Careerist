@@ -19,6 +19,7 @@ import {
     setYearExpenseAction,
     setDepositAmountAction
 } from '../../../store/actions/actions';
+import { rndBetweenMinusOneAndOne } from '../../../components/Random';
 
 import DepositImage from "../../../assets/images/bankservices/deposit.png";
 
@@ -57,7 +58,7 @@ const Deposit = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const getFineAmount = () => {
-        const value = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
+        const value = rndBetweenMinusOneAndOne();
         return 1500 + 50 * Math.floor( 10 * value );
     }
 

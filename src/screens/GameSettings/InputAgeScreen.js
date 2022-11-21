@@ -4,9 +4,10 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import { useDispatch } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
-import { setPlayerAgeAction } from   '../../store/actions/actions';
+import { setPlayerAgeAction, setDeathAge } from   '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
 import { INPUT_AGE_SCREEN_BABY_ALERT, INPUT_AGE_SCREEN_OLD_ALERT } from '../../store/constants';
+import random from '../../components/Random';
 
 export const InputAgeScreen = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -32,6 +33,8 @@ export const InputAgeScreen = ({ navigation }) => {
                          : setAlert({ ...alert, isVisible: true, data: INPUT_AGE_SCREEN_OLD_ALERT });
             return;
         }
+        const deathAge = 60 + 20 * random();
+        dispatch(setDeathAge( deathAge ));
         dispatch(setPlayerAgeAction( age, true ));
         navigation.navigate('InputСashAmountScreen');
     }

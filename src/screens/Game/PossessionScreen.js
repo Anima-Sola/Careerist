@@ -16,6 +16,7 @@ import {
 } from '../../store/constants';
 import { setCashAmountAction, setPossessionList, setYearExpenseAction } from '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
+import { rndBetweenMinusOneAndOne } from '../../components/Random';
 
 import Flat from "../../assets/images/possession/flat.png";
 import Car from "../../assets/images/possession/car.png";
@@ -59,7 +60,7 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const getFineAmount = () => {
-        const value = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
+        const value = rndBetweenMinusOneAndOne();
         return 1500 + 50 * Math.floor( 10 * value );
     }
     

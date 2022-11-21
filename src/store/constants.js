@@ -369,6 +369,23 @@ export const STOCKMARKET_SCREEN_NO_MONEY_CHEATING = POSSESSION_SCREEN_NO_MONEY_C
 export const STOCKMARKET_SCREEN_NOTHING_TO_SALE_CHEATING = POSSESSION_SCREEN_NOTHING_TO_SALE_CHEATING;
 export const STOCKMARKET_SCREEN_ANOTHER_DEAL = POSSESSION_SCREEN_ANOTHER_DEAL;
 
+export const STOCKMARKET_IS_CLOSED = {
+    message: 'Биржа закрыта',
+    header: 'Конец года!',
+    iconName: 'lock', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Понял, ухожу',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
 export const STOCKMARKET_SCREEN_PROBLEM = {
     message: '',
     header: '',

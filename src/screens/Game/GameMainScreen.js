@@ -8,6 +8,7 @@ import GameWrapper from "../../components/GameWrapper";
 import { getCommonSettings, getPossessionSettings } from "../../store/selectors";
 import CustomAlert from '../../components/CustomAlert';
 import { GAME_MAIN_SCREEN_QUIT_GAME_ALERT, GAME_MAIN_SCREEN_SCLEROSIS_WARNING } from "../../store/constants";
+import calcSubtotals from "../../components/CalcSubtotals";
 
 export const GameMainScreen = ({ navigation }) => {
     const [, forceUpdate ] = useReducer(x => x + 1, 0);
@@ -64,11 +65,13 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
         return () => backHandler.remove();
     })
 
-    const navToGameScreens = ( screen, params = {} ) => {
+    const navToGameScreens = ( screen, timeStep = 0, params = {} ) => {
+        calcSubtotals( timeStep );
         navigation.navigate( screen, params ); 
     }
 
-    const navToElectionScreen = () => {
+    const navToElectionScreen = ( timeStep = 0 ) => {
+        calcSubtotals( timeStep );
         if( !electionStatus ) {
             setAlert({ ...alert, isVisible: true, data: GAME_MAIN_SCREEN_SCLEROSIS_WARNING })
             return;
@@ -86,26 +89,25 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
                         <Text style={ styles.menuItemText }>Финансовое</Text>
                         <Text style={ styles.menuItemText }>положение</Text>
                     </Pressable>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ navToElectionScreen }>
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToElectionScreen( 0.3 ) }>
                         <Text style={ styles.menuItemText }>Общественное</Text>
                         <Text style={ styles.menuItemText }>положение</Text>
                     </Pressable>
                 </View>
                 <View style={ styles.menuRow }>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'PossessionScreen' ) }>
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'PossessionScreen', 1 ) }>
                         <Text style={ styles.menuItemText }>Личное</Text>
                         <Text style={ styles.menuItemText }>имущество</Text>
                     </Pressable>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'EmployeesScreen' ) }>
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'EmployeesScreen', 1 ) }>
                         <Text style={ styles.menuItemText }>Подчиненные</Text>
                     </Pressable>
                 </View>
                 <View style={ styles.menuRow }>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'BusinessScreen' ) }>
-
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'BusinessScreen', 1 ) }>
                         <Text style={ styles.menuItemText }>Бизнес</Text>
                     </Pressable>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'StockmarketScreen' ) }>
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'StockmarketScreen', 0.4 ) }>
                         <Text style={ styles.menuItemText }>Биржа</Text>
                     </Pressable>
                 </View>

@@ -21,6 +21,8 @@ import {
     ELECTION_SCREEN_WIN_ELECTION,
     ELECTION_SCREEN_NO_MONEY_CHEATING
 } from '../../store/constants';
+import random, { rndBetweenMinusOneAndOne } from '../../components/Random';
+import calcSubtotals from "../../components/CalcSubtotals";
 
 export const ElectionScreen = ({ navigation }) => {
     const [, forceUpdate ] = useReducer(x => x + 1, 0);
@@ -42,9 +44,8 @@ const Election = ({ navigation, forceUpdate, commonSettings }) => {
     const [ alert, setAlert ] = useState({ isVisible: false, data:  ELECTION_SCREEN_SKIP_ELECTION })
 
     const calcElectionCost = () => {
-        const rnd = Math.random();
         const nextSocialStatus = currentSocialStatus + 1;
-        return Math.floor( 5 ** nextSocialStatus * ( 2 + 5 * rnd ) * 20 );
+        return Math.floor( 5 ** nextSocialStatus * ( 2 + 5 * random() ) * 20 );
     }
 
     const calcChanceToElect = () => {
@@ -70,7 +71,7 @@ const Election = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const getFineAmount = () => {
-        const value = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
+        const value = rndBetweenMinusOneAndOne();
         return 1500 + 50 * Math.floor( 10 * value );
     }
 
@@ -146,6 +147,8 @@ const Election = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const standForElection = () => {
+        
+        const electionResult = random();
 
         if( electionCost.current > ( cash + depositAmount )) {
             const fineAmount = getFineAmount();
@@ -153,7 +156,6 @@ const Election = ({ navigation, forceUpdate, commonSettings }) => {
             return;
         }
 
-        const electionResult = Math.random();
         const updatedCash = cash - electionCost.current;
         if( updatedCash < 0 ) {
             dispatch(setYearExpenseAction( yearExpense - updatedCash ));
@@ -169,50 +171,54 @@ const Election = ({ navigation, forceUpdate, commonSettings }) => {
         }
        
         showWinElectionAlert();
+        
     }
 
-    const election = (
-        <ScrollView style={ styles.container }>
-            <CustomAlert alert={ alert } setAlert={ setAlert } />          
-            <View>
-                <Text style={ styles.text }>В настоящее время вы</Text>
-            </View> 
-            <View style={ styles.socialStatusContainer }>
-                <Image style={ styles.image } resizeMode='center' source={ require('../../assets/images/jentleman.png') } />
-                <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus - 1 ] }</Text>
-            </View>
-            <View>
-                <Text style={ styles.text }>Примите участие в выборах.</Text>
-            </View>
-            <View style={ styles.socialStatusContainer }>
-                <Text style={{ ...styles.socialStatusText, marginBottom: 0, marginTop: hp('1%') }}>Избирается:</Text>
-                <Image style={ styles.image } resizeMode='center' source={ require('../../assets/images/jentleman.png') } />
-                <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus ] }</Text>
-            </View>
-            <View>
-                <Text style={ styles.text }>Кампания обойдется в { electionCost.current }, вероятность успеха { 100 * chanceToElect.current }%.</Text>
-            </View>
-            <View style={ styles.downTextContainer }>
-                <Text style={{ ...styles.text, fontSize: THEME.FONT45 }}>Участвуете?</Text>
-            </View>
-            <View style={ styles.buttonsContainer }>
-                <Button
-                    buttonStyle={ styles.takePartButton } 
-                    titleStyle={ styles.nextButtonTitle }
-                    type="outline" 
-                    title="Да"
-                    onPress={ () => standForElection() }  
-                />
-                <Button
-                    buttonStyle={ styles.nextButton } 
-                    titleStyle={ styles.nextButtonTitle }
-                    type="outline" 
-                    title="Нет"
-                    onPress={ () => showSkipElectionAlert() }  
-                />
-            </View>
-        </ScrollView>
-    )
+    const election = () => {
+        calcSubtotals( 0.7 );
+        return (
+            <ScrollView style={ styles.container }>
+                <CustomAlert alert={ alert } setAlert={ setAlert } />          
+                <View>
+                    <Text style={ styles.text }>В настоящее время вы</Text>
+                </View> 
+                <View style={ styles.socialStatusContainer }>
+                    <Image style={ styles.image } resizeMode='center' source={ require('../../assets/images/jentleman.png') } />
+                    <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus - 1 ] }</Text>
+                </View>
+                <View>
+                    <Text style={ styles.text }>Примите участие в выборах.</Text>
+                </View>
+                <View style={ styles.socialStatusContainer }>
+                    <Text style={{ ...styles.socialStatusText, marginBottom: 0, marginTop: hp('1%') }}>Избирается:</Text>
+                    <Image style={ styles.image } resizeMode='center' source={ require('../../assets/images/jentleman.png') } />
+                    <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus ] }</Text>
+                </View>
+                <View>
+                    <Text style={ styles.text }>Кампания обойдется в { electionCost.current }, вероятность успеха { 100 * chanceToElect.current }%.</Text>
+                </View>
+                <View style={ styles.downTextContainer }>
+                    <Text style={{ ...styles.text, fontSize: THEME.FONT45 }}>Участвуете?</Text>
+                </View>
+                <View style={ styles.buttonsContainer }>
+                    <Button
+                        buttonStyle={ styles.takePartButton } 
+                        titleStyle={ styles.nextButtonTitle }
+                        type="outline" 
+                        title="Да"
+                        onPress={ () => standForElection() }  
+                    />
+                    <Button
+                        buttonStyle={ styles.nextButton } 
+                        titleStyle={ styles.nextButtonTitle }
+                        type="outline" 
+                        title="Нет"
+                        onPress={ () => showSkipElectionAlert() }  
+                    />
+                </View>
+            </ScrollView>
+        )
+    }
 
     const noElection = (
         <View style={ styles.container }>
@@ -234,7 +240,7 @@ const Election = ({ navigation, forceUpdate, commonSettings }) => {
         </View>
     )
 
-    return (( yearsPassed % 2 ) === 0) ? election : noElection;
+    return (( yearsPassed % 2 ) === 0) ? election() : noElection;
 }
 
 const styles = StyleSheet.create({

@@ -9,6 +9,7 @@ import { getCommonSettings } from '../../store/selectors';
 import CustomAlert from '../../components/CustomAlert';
 import { INPUT_CASH_AMOUNT_SCREEN_ALERT } from '../../store/constants';
 import { setInitialGameData } from '../../components/SetInitialGameData';
+import random from '../../components/Random';
 
 export const InputСashAmountScreen = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -40,9 +41,9 @@ export const InputСashAmountScreen = ({ navigation }) => {
     }
 
     const checkCashAmount = () => {
-        let maxCash = Math.round( 1500 * gameDifficultyLevel * ( 1 + Math.random() ));
+        let maxCash = 1500 * gameDifficultyLevel * ( 1 + random() );
         if( cashAmount > maxCash ) {
-            maxCash = Math.round( maxCash * 2 / 3 );
+            maxCash = Math.floor( maxCash * 2 / 3 );
             setAlert({ ...alert, isVisible: true, data: { ...INPUT_CASH_AMOUNT_SCREEN_ALERT, message: 'По нашим данным у вас ' + maxCash + '$' }});
             maxCashAmount.current = maxCash;
             return;

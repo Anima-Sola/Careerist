@@ -14,6 +14,7 @@ import {
     setBorrowTermAction,
     setCashAmountAction,
 } from '../../store/actions/actions';
+import { rndBetweenMinusOneAndOne } from '../../components/Random';
 
 import Ensurance from "../../assets/images/bankservices/ensurance.png";
 import Deposit from "../../assets/images/bankservices/deposit.png";
@@ -107,10 +108,10 @@ const Bank = ({ navigation, route, commonSettings }) => {
     useFocusEffect(() => {
         const navigateFromMainScreen = route.params?.navigateFromMainScreen;
         if( !isBankBankrupt && navigateFromMainScreen ) {
-            const value = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
+            const value = rndBetweenMinusOneAndOne();
             if( value > 0.97 ) {
                 if( depositAmount > 0) {
-                    const compensation = Math.floor( 0.1 * depositAmount );
+                    const compensation = 0.1 * depositAmount;
                     setBankruptMessage(
                         <>
                             <Text style={{ ...styles.text, fontFamily: 'nunito-semibold' }}>НАЦИОНАЛЬНЫЙ БАНК банкрот!</Text>

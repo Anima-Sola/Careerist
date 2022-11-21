@@ -31,8 +31,10 @@ import {
     STOCKMARKET_SCREEN_ANOTHER_DEAL,
     STOCKMARKET_SCREEN_PROBLEM,
     STOCKMARKET_SCREEN_CLAIM_PROBLEM,
-    STOCKMARKET_SCREEN_STOLE_STOCKS_PROBLEM
+    STOCKMARKET_SCREEN_STOLE_STOCKS_PROBLEM,
+    STOCKMARKET_IS_CLOSED
 } from '../../store/constants';
+import random, { rndBetweenMinusOneAndOne } from '../../components/Random';
 
 import Gazprom from "../../assets/images/logos/gazprom.png";
 import Rosneft from "../../assets/images/logos/rosneft.png";
@@ -52,7 +54,9 @@ export const StockmarketScreen = ({ navigation }) => {
 
 const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
-    const { cash, currentSocialStatus, yearExpense } = commonSettings;
+    /*const stocksCurrentPriceList = useRef([]);
+    const stocksDividendsList = useRef([]);*/
+    const { cash, currentSocialStatus, yearExpense, posWithinYear, endOfYear } = commonSettings;
     const { stocksQuantityList, stocksCostList, dividendsIncome } = useSelector( getStockSettings );
     const { commonBusinessIncome } = useSelector( getBusinessSettings );
     const { employeesList } = useSelector( getEmployeesSettings );
@@ -69,27 +73,29 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         data: STOCKMARKET_SCREEN_PROBLEM
     })
 
-    const calcstocksCurrentPriceList = () => {
-        const list = [];
+    const calcStocksData = () => {
+        let stocksPrices = [];
+        let stocksDividends = [];
         for( let i = 0; i < 5; i++ ) {
-            const rnd = Math.random();
-            list[ i ] = Math.floor( 100 * rnd );
-            if( list[ i ] < 5 ) list[ i ] = 5;
+            stocksPrices[ i ] = Math.round( 100 * random() );
+            stocksDividends[ i ] = ( 20 * random() ).toFixed( 1 );
         }
-        return list;
+        return { stocksPrices, stocksDividends }
     }
 
-    const calcStocksDividendsList = () => {
-        const list = [];
-        for( let i = 0; i < 5; i++ ) {
-            const rnd = Math.random();
-            list[ i ] = +(20 * rnd).toFixed(1);            
-        }
-        return list;
-    }
+    const stocksData = calcStocksData();
 
-    const stocksCurrentPriceList = useRef( calcstocksCurrentPriceList() );
-    const stocksDividendsList = useRef( calcStocksDividendsList() );
+    const stocksCurrentPriceList = useRef( stocksData.stocksPrices );
+    const stocksDividendsList = useRef( stocksData.stocksDividends );
+
+    useEffect(() => { 
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            dispatch(setDividendsListAction( stocksDividendsList.current ));
+            dispatch(setStocksCostListAction( stocksCurrentPriceList.current ), true);
+            setIsProblem( true );
+        })
+        return () => backHandler.remove();
+    })
 
     const setCashAmountMinusFine = ( fineAmount ) => {
         let updatedCash = cash - fineAmount;
@@ -102,7 +108,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const getFineAmount = () => {
-        const value = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
+        const value = rndBetweenMinusOneAndOne();
         return 1500 + 50 * Math.floor( 10 * value );
     }
 
@@ -140,6 +146,163 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         })
     }
 
+    const showStockmarketIsClosedAlert = () => {
+        setAlert({
+            isVisible: true, 
+            data: STOCKMARKET_IS_CLOSED,
+            buttonsCallbacks: [
+                () => {
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        })
+    }
+
+    const showProblemAlert = ( message, loss, header = 'Внештатная ситуация!', iconName = "exclamation", iconBackgroundColor = 'red' ) => {
+        setAlert({
+            isVisible: true, 
+            data: { 
+                ...STOCKMARKET_SCREEN_PROBLEM,
+                message,
+                header,
+                iconName,
+                iconBackgroundColor
+            },
+            buttonsCallbacks: [
+                () => {
+                    setCashAmountMinusFine( loss );
+                    setAlert({ ...alert, isVisible: false });
+                },
+            ]
+        })
+    }
+
+    const showClaimProblemAlert = ( message, loss, lawyerServiceCost ) => {
+        setAlert({
+            isVisible: true, 
+            data: { 
+                ...STOCKMARKET_SCREEN_CLAIM_PROBLEM,
+                message
+            },
+            buttonsCallbacks: [
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                    const chanceToWinClaim = rndBetweenMinusOneAndOne();
+                    if( 0.65 - chanceToWinClaim < 0 ) {
+                        message = `Сбер выплачивает неустойку ${ 2 * lawyerServiceCost }$.\n` +
+                        `Имейте своего адвоката!`;
+                        const income = commonBusinessIncome + lawyerServiceCost;
+                        dispatch(setCommonBusinessIncomeAction( income ), true );
+                        setTimeout( () => showProblemAlert( message, 0, 'Процесс выигран!', 'hand-peace', 'green' ), 300 );
+                        return;
+                    }
+                    message = `Увы, дело проиграно. Убыток ${ loss }$.\n` +
+                    `Имейте своего адвоката!`;
+                    dispatch(setYearExpenseAction( yearExpense + loss ), true );
+                    setTimeout(() => showProblemAlert( message, lawyerServiceCost, 'Процесс проигран!', 'sad-cry' ));
+                },
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                    message = `Иск Сбера удовлетворен. Вы потеряли ${ loss }$.`;
+                    setTimeout( () => showProblemAlert( message, loss, 'Процесс проигран!', 'sad-cry' ), 300 );
+                }
+            ]
+        })
+    }
+
+    const showStoleStocksProblemAlert = ( message, searchServiceCost, rnd ) => {
+        setAlert({
+            isVisible: true, 
+            data: { 
+                ...STOCKMARKET_SCREEN_STOLE_STOCKS_PROBLEM,
+                message
+            },
+            buttonsCallbacks: [
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                    const chanceToCatchThieves = rndBetweenMinusOneAndOne();
+                    if( chanceToCatchThieves - rnd < 0 ) {
+                        dispatch(setYearExpenseAction( yearExpense + searchServiceCost ), true );
+                        message = 'Воры пойманы!';
+                        setTimeout( () => showProblemAlert( message, 0, 'Успех!', 'hand-peace', 'green' ), 300 );
+                        return;
+                    }
+                    const overheads = Math.floor( 450 * rnd + 800 );
+                    message = `Воры покинули нашу страну. Взыскиваем только накладные расходы ${ overheads }$.\n` +
+                    `Учтите на будущее!`;
+                    dispatch(setYearExpenseAction(yearExpense + overheads));
+                    dispatch(setDividendsIncomeAction(0));
+                    dispatch(setStocksQuantityListAction([ 0, 0, 0, 0, 0 ]), true);
+                    setTimeout(() => showProblemAlert(message, 0, 'Провал!'));
+                },
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                    dispatch( setDividendsIncomeAction( 0 ) );
+                    dispatch( setStocksQuantityListAction([ 0, 0, 0, 0, 0 ]), true );
+                }
+            ]
+        })
+    }
+
+    const createProblem = ( loss ) => {
+        setIsProblem( false );
+        let message = '';
+        let problemIndex = Math.floor( 10 * random() );
+        if( problemIndex !== 5 ) loss = Math.floor(( cash + 200 ) * random() );
+
+        switch ( problemIndex ) {
+            case 1:
+                if( employeesList[ 0 ] ) return;
+                if( dividendsIncome > 0 ) {
+                    message = `Вы неправильно оформляли сделки. Убыток ${ loss }$. \n Заведите маклера!`;
+                    showProblemAlert( message, loss );
+                }
+                return;
+            case 2:
+                if( employeesList[ 1 ] ) return;
+                loss = loss + 400;
+                message = `Вы забываете о здоровье. Пребывание в больнице обошлось вам в ${ loss }$.`;
+                showProblemAlert( message, loss );
+                return;
+            case 3:
+                if( employeesList[ 2 ] ) return;
+                const lawyerServiceCost = Math.floor( 15 * loss * 0.02 );
+                message = `Компания Сбер предъявила иск в ${ loss }$.\n` + 
+                `Услуги адвоката \nобойдутся в ${ lawyerServiceCost }$.\n` +
+                `Вероятность успеха 65%.\nНанимаете?`;
+                showClaimProblemAlert( message, loss, lawyerServiceCost );
+                return;
+            case 4:
+                if( employeesList[ 3 ] ) return;
+                message = `Ваш шантажируют, вымогая ${ loss }.\n ` +
+                `Придется платить!`;
+                showProblemAlert( message, loss );
+                return;
+            case 5:
+                if( employeesList[ 4 ] ) return;
+                const rnd = random();
+                const searchServiceCost = 10 * ( Math.floor( 45 * rnd + 80 + 0.03 * loss ));
+                message = `У вас украли все акции.\n` +
+                `Убыток ${ loss }$.\n` + 
+                `Сыскное бюро предлагает свои услуги за ${ searchServiceCost }$.\n` + 
+                `Шанс поимки воров ${ Math.floor( 100 * rnd ) }%.\n` + 
+                `Договорились?`;
+                showStoleStocksProblemAlert( message, searchServiceCost, rnd )
+                return;
+            default:
+                return;
+        }
+
+    }
+
+    useFocusEffect(() => {
+        if( isProblem ) {
+            let loss = 0;
+            for( let i = 0; i < 5; i++ ) loss = loss + stocksCostList[ i ] * stocksQuantityList[ i ];
+            if( loss > 0 ) createProblem( loss );
+        }
+    })
+
     const buyStocks = ( stocksQuantity ) => {
         let message = '';
         const maxStocksQuantity = stocksCurrentPriceList.current[ activeItem ] * 5 * ( currentSocialStatus + 2 * employeesList[ 0 ] );
@@ -156,7 +319,11 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         dispatch(setCashAmountAction( updatedCash ), true );
         forceUpdate();
 
-        //Проверка конец года
+        if( endOfYear - posWithinYear - 0.1 < 0 ) {
+            showStockmarketIsClosedAlert();
+            return;
+        }
+
         setTimeout( () => showAnotherDealAlert( message ), 300 );
     }
 
@@ -202,7 +369,11 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         dispatch(setCashAmountAction( updatedCash ), true );
         forceUpdate();
 
-        //Проверка конец года
+        if( endOfYear - posWithinYear - 0.1 < 0 ) {
+            showStockmarketIsClosedAlert();
+            return;
+        }
+
         setTimeout( () => showAnotherDealAlert( message ), 300 );
     }
 
@@ -231,147 +402,6 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                 }
             ]
         })
-    }
-
-    const showProblemAlert = ( message, loss, header = 'Внештатная ситуация!', iconName = "exclamation", iconBackgroundColor = 'red' ) => {
-        setAlert({
-            isVisible: true, 
-            data: { 
-                ...STOCKMARKET_SCREEN_PROBLEM,
-                message,
-                header,
-                iconName,
-                iconBackgroundColor
-            },
-            buttonsCallbacks: [
-                () => {
-                    setCashAmountMinusFine( loss );
-                    setAlert({ ...alert, isVisible: false });
-                },
-            ]
-        })
-    }
-
-    const showClaimProblemAlert = ( message, loss, lawyerServiceCost ) => {
-        setAlert({
-            isVisible: true, 
-            data: { 
-                ...STOCKMARKET_SCREEN_CLAIM_PROBLEM,
-                message
-            },
-            buttonsCallbacks: [
-                () => {
-                    setAlert({ ...alert, isVisible: false });
-                    const chanceToWinClaim = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
-                    if( 0.65 - chanceToWinClaim < 0 ) {
-                        message = `Сбер выплачивает неустойку ${ 2 * lawyerServiceCost }$.\n` +
-                        `Имейте своего адвоката!`;
-                        const income = commonBusinessIncome + lawyerServiceCost;
-                        dispatch(setCommonBusinessIncomeAction( income ), true );
-                        setTimeout( () => showProblemAlert( message, 0, 'Процесс выигран!', 'hand-peace', 'green' ), 300 );
-                        return;
-                    }
-                    message = `Увы, дело проиграно. Убыток ${ loss }$.\n` +
-                    `Имейте своего адвоката!`;
-                    dispatch(setYearExpenseAction( yearExpense + loss ), true );
-                    setTimeout(() => showProblemAlert( message, lawyerServiceCost, 'Процесс проигран!', 'sad-cry' ));
-                },
-                () => {
-                    setAlert({ ...alert, isVisible: false });
-                    message = `Иск Сбера удовлетворен. Вы потеряли ${ loss }$.`;
-                    setTimeout( () => showProblemAlert( message, loss, 'Процесс проигран!', 'sad-cry' ), 300 );
-                }
-            ]
-        })
-    }
-
-    const showStoleStocksProblemAlert = ( message, searchServiceCost, rnd ) => {
-        setAlert({
-            isVisible: true, 
-            data: { 
-                ...STOCKMARKET_SCREEN_STOLE_STOCKS_PROBLEM,
-                message
-            },
-            buttonsCallbacks: [
-                () => {
-                    setAlert({ ...alert, isVisible: false });
-                    const chanceToCatchThieves = ( Math.random() < 0.5 ) ? -Math.random() : Math.random();
-                    if( chanceToCatchThieves - rnd < 0 ) {
-                        dispatch(setYearExpenseAction( yearExpense + searchServiceCost ), true );
-                        message = 'Воры пойманы!';
-                        setTimeout( () => showProblemAlert( message, 0, 'Успех!', 'hand-peace', 'green' ), 300 );
-                        return;
-                    }
-                    const overheads = Math.floor( 450 * rnd + 800 );
-                    message = `Воры покинули нашу страну. Взыскиваем только накладные расходы ${ overheads }$.\n` +
-                    `Учтите на будущее!`;
-                    dispatch(setYearExpenseAction(yearExpense + overheads));
-                    dispatch(setDividendsIncomeAction(0));
-                    dispatch(setStocksQuantityListAction([ 0, 0, 0, 0, 0 ]), true);
-                    setTimeout(() => showProblemAlert(message, 0, 'Провал!'));
-                },
-                () => {
-                    setAlert({ ...alert, isVisible: false });
-                    dispatch( setDividendsIncomeAction( 0 ) );
-                    dispatch( setStocksQuantityListAction([ 0, 0, 0, 0, 0 ]), true );
-                }
-            ]
-        })
-    }
-
-    const createProblem = () => {
-        setIsProblem( false );
-        let problemIndex = Math.floor( 10 * Math.random() );
-        let loss = 0;
-        let message = '';
-        
-        for( let i = 0; i < 5; i++ ) loss = loss + stocksCostList[ i ] * stocksQuantityList[ i ];
-        if( loss === 0 ) return;
-        if( problemIndex !== 5 ) loss = Math.floor(( cash + 200 ) * Math.random() );
-
-        switch ( problemIndex ) {
-            case 1:
-                if( employeesList[ 0 ] ) return;
-                if( dividendsIncome + 1 > 0 ) {
-                    message = `Вы неправильно оформляли сделки. Убыток ${ loss }$. \n Заведите маклера!`;
-                    showProblemAlert( message, loss );
-                }
-                return;
-            case 2:
-                if( employeesList[ 1 ] ) return;
-                loss = loss + 400;
-                message = `Вы забываете о здоровье. Пребывание в больнице обошлось вам в ${ loss }$.`;
-                showProblemAlert( message, loss );
-                return;
-            case 3:
-                if( employeesList[ 2 ] ) return;
-                const lawyerServiceCost = Math.floor( 15 * loss * 0.02 );
-                message = `Компания Сбер предъявила иск в ${ loss }$.\n` + 
-                `Услуги адвоката \nобойдутся в ${ lawyerServiceCost }$.\n` +
-                `Вероятность успеха 65%.\nНанимаете?`;
-                showClaimProblemAlert( message, loss, lawyerServiceCost );
-                return;
-            case 4:
-                if( employeesList[ 3 ] ) return;
-                message = `Ваш шантажируют, вымогая ${ loss }.\n ` +
-                `Придется платить!`;
-                showProblemAlert( message, loss );
-                return;
-            case 5:
-                if( employeesList[ 4 ] ) return;
-                const rnd = Math.random();
-                const searchServiceCost = 10 * ( Math.floor( 45 * rnd + 80 + 0.03 * loss ));
-                message = `У вас украли все акции.\n` +
-                `Убыток ${ loss }$.\n` + 
-                `Сыскное бюро предлагает свои услуги за ${ searchServiceCost }$.\n` + 
-                `Шанс поимки воров ${ Math.floor( 100 * rnd ) }%.\n` + 
-                `Договорились?`;
-                showStoleStocksProblemAlert( message, searchServiceCost, rnd )
-                return;
-            default:
-                return;
-        }
-
     }
 
     const trade = ( buyOrSellStocks ) => {
@@ -413,46 +443,56 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         )
     }
 
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-            dispatch(setDividendsListAction( stocksDividendsList.current ));
-            dispatch(setStocksCostListAction( stocksCurrentPriceList.current ), true);
-            setIsProblem( true );
-        })
-        return () => backHandler.remove();
-    })
+    const stockmarketOpened = () => {
+        return (
+            <>
+                <CustomAlert alert={ alert } setAlert={ setAlert } />
+                <CustomPrompt prompt={ prompt } setPrompt={ setPrompt }/>
+                <ScrollView style={ styles.container }>
+                    { stocksList() }
+                </ScrollView>
+                <View style={ styles.buttonContainer }>
+                    <Button
+                        buttonStyle={ styles.button } 
+                        titleStyle={ styles.buttonTitle }
+                        type="outline" 
+                        title="Купить"
+                        onPress={ () => trade( true ) }  
+                    />
+                    <Button
+                        buttonStyle={ styles.button } 
+                        titleStyle={ styles.buttonTitle }
+                        type="outline" 
+                        title="Продать"
+                        onPress={ () => trade( false ) }  
+                    />
+                </View>
+            </>
+        )
+    }
 
-    useFocusEffect(() => {
-        //Проверка конец года
+    const stockmarketClosed = () => {
+        return (
+            <>
+                <View style={{ ...styles.container, textAlign: 'center', justifyContent: 'center' }} >
+                    <Text style={{ ...styles.text, marginBottom: hp('0.5%'), fontSize: THEME.FONT35 }}>
+                        Конец года, биржа закрыта!!!
+                    </Text>
+                </View>
+                <View style={ styles.buttonContainer }>
+                    <Button
+                        buttonStyle={ styles.button2x } 
+                        titleStyle={ styles.buttonTitle }
+                        type="outline" 
+                        title="Уйти"
+                        onPress={ () => navigation.navigate('GameMainScreen') }  
+                    />
+                </View>
+            </>
+        )
+    }
 
-        if(( stocksQuantityList.indexOf( 0 ) !== -1 ) && isProblem ) createProblem();
-    })
-
-    return (
-        <>
-            <CustomAlert alert={ alert } setAlert={ setAlert } />
-            <CustomPrompt prompt={ prompt } setPrompt={ setPrompt }/>
-            <ScrollView style={ styles.container }>
-                { stocksList() }
-            </ScrollView>
-            <View style={ styles.buttonContainer }>
-                <Button
-                    buttonStyle={ styles.button } 
-                    titleStyle={ styles.buttonTitle }
-                    type="outline" 
-                    title="Купить"
-                    onPress={ () => trade( true ) }  
-                />
-                <Button
-                    buttonStyle={ styles.button } 
-                    titleStyle={ styles.buttonTitle }
-                    type="outline" 
-                    title="Продать"
-                    onPress={ () => trade( false ) }  
-                />
-            </View>
-        </>
-    )
+    return ( posWithinYear < endOfYear ) ? stockmarketOpened() : stockmarketClosed();
 }
 
 const styles = StyleSheet.create({
@@ -503,6 +543,14 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
         width: wp('46%'),
+        marginLeft: wp('1%'),
+        marginRight: wp('1%'),
+        height: hp('7%'),
+        borderRadius: wp('10%'),
+    },
+    button2x: {
+        backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+        width: wp('96%'),
         marginLeft: wp('1%'),
         marginRight: wp('1%'),
         height: hp('7%'),
