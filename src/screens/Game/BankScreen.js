@@ -15,6 +15,7 @@ import {
     setCashAmountAction,
 } from '../../store/actions/actions';
 import { rndBetweenMinusOneAndOne } from '../../components/Random';
+import calcSubtotals from '../../components/CalcSubtotals';
 
 import Ensurance from "../../assets/images/bankservices/ensurance.png";
 import Deposit from "../../assets/images/bankservices/deposit.png";
@@ -123,7 +124,9 @@ const Bank = ({ navigation, route, commonSettings }) => {
                 }
                 dispatch(setIsBankBankruptAction( true ));
                 dispatch(setBorrowTermAction( endOfYear - posWithinYear ), true);
+                return;
             }
+            calcSubtotals( 1 );
         }
     })
 

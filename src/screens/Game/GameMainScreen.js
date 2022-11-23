@@ -113,7 +113,7 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
                 </View>
                 <View style={ styles.menuRow }>
                     <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ 
-                        () => navToGameScreens( 'BankScreen', { 
+                        () => navToGameScreens( 'BankScreen', 0, { 
                             navigateFromMainScreen: true
                         })}>
                         <Text style={ styles.menuItemText }>Банк</Text>

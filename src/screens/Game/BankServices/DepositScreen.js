@@ -103,10 +103,9 @@ const Deposit = ({ navigation, forceUpdate, commonSettings }) => {
                         return;
                     }
                     dispatch(setCashAmountAction( cash - amount ));
-                    forceUpdate();
                     dispatch(setDepositAmountAction( depositAmount + 0.95 * amount ), true );
-                    setTimeout( () => showDepositPlacedAlert(), 300 );
                     forceUpdate();
+                    setTimeout( () => showDepositPlacedAlert(), 300 );
                 },
                 () => setPrompt({ ...prompt, isVisible: false, value: '' })
             ]
@@ -157,8 +156,6 @@ const styles = StyleSheet.create({
     dataContainer: {
         flex: 1,
         marginTop: hp('5%'),
-        /*alignItems: 'center',
-        justifyContent: 'center',*/
     },
     text: {
         color: THEME.TEXT_COLOR,
