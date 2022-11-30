@@ -22,8 +22,8 @@ const initialState = {
         possessionList: [ false, false, false, false, false ],        // Наличие - true / Отсутствие - false квартиры, машины, виллы, яхты, самолета
         possessionBuyCostList: [ 0, 0, 0, 0, 0 ],                     // Цена покупки имущества
         possessionSellCostList: [ 0, 0, 0, 0, 0 ],                    // Цена продажи имущества
-        insuredPossessionList: [ false, false, false, false, false ], // Застрахована - true / Не застраховано - false квартира, машина, вилла, яхта, самолет
-        insurancePossessionCostList: [ 0, 0, 0, 0, 0 ],               // Сумма, накоторую застраховано имущество
+        //insuredPossessionList: [ false, false, false, false, false ], // Застрахована - true / Не застраховано - false квартира, машина, вилла, яхта, самолет
+        //insurancePossessionCostList: [ 0, 0, 0, 0, 0 ],               // Сумма, накоторую застраховано имущество
     },
 
     businessSettings: {
@@ -51,6 +51,7 @@ const initialState = {
         depositAmount: 0,                                               // Сумма вклада
         lendAmount: 0,                                                  // Сумма отданной ссуды
         lendTerm: 0,                                                    // Срок отданной ссуды
+        lendPersentages: 0,                                             // Процент отданной ссуды
         borrowAmount: 0,                                                // Сумма полученного кредита
         borrowTerm: 0,                                                  // Срок полученного кредита
         insuredPossessionList: [ false, false, false, false, false ],   // Застрахованное имущество. true - затраховано, false - нет
@@ -136,6 +137,8 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
             return saveState( state, 'lendAmount', action);
         case 'SET_LEND_TERM':
             return saveState( state, 'lendTerm', action);
+        case 'SET_LEND_PERSENTAGES':
+            return saveState( state, 'lendPersentages', action);
         case 'SET_BORROW_AMOUNT':
             return saveState( state, 'borrowAmount', action);
         case 'SET_BORROW_TERM':

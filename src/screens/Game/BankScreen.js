@@ -47,7 +47,7 @@ const Bank = ({ navigation, route, commonSettings }) => {
 
         const items = services.map( element => {
             i++;
-            if(( i === 3 ) && ( lendAmount > 0 )) return;
+            if(( i === 3 ) && ( lendAmount != 0 )) return;
             if(( i === 4 ) && ( borrowAmount > 0 )) return;
             return (
                 <Pressable style={ THEME.PRESSABLE_STYLES(styles.itemContainer) } key={ i } onPress={ eval('() => navigation.navigate("' + servicesScreens [ i ] + '")' )}>

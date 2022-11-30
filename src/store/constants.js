@@ -653,3 +653,146 @@ export const WITHDRAW_SCREEN_INPUT_AMOUNT = {
         }
     ]
 }
+
+export const LEND_SCREEN_NO_MONEY = {
+    message: 'Вы не имеете требуемой суммы наличными!',
+    header: 'Сделка отменяется!',
+    iconName: 'angry', 
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Понял, ухожу',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}
+
+export const LEND_SCREEN_INPUT_AMOUNT = {
+    message: 'Сколько даете?',
+    header: 'Ссужаем деньги.',
+    iconName: 'keyboard', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: true,
+    onlyDigits: true,
+    buttons: [
+        {   
+            key: 0,
+            disabledIfEmpty: true,
+            hint: 'Продолжить',
+            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            disabledIfEmpty: false,
+            hint: 'Отмена',
+            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
+export const LEND_SCREEN_TERM_TOO_LONG = {
+    message: 'Слишком долго!',
+    header: 'Эк загнули!',
+    iconName: 'ban', 
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Понял',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}
+
+export const LEND_SCREEN_INPUT_TERM = {
+    message: 'На сколько лет?',
+    header: 'Ссужаем деньги.',
+    iconName: 'keyboard', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: true,
+    onlyDigits: true,
+    buttons: [
+        {   
+            key: 0,
+            disabledIfEmpty: true,
+            hint: 'Продолжить',
+            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            disabledIfEmpty: false,
+            hint: 'Отмена',
+            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
+export const LEND_SCREEN_INPUT_PERSENTAGES = {
+    message: 'Под какие проценты?',
+    header: 'Ссужаем деньги.',
+    iconName: 'keyboard', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: true,
+    onlyDigits: true,
+    buttons: [
+        {   
+            key: 0,
+            disabledIfEmpty: true,
+            hint: 'Продолжить',
+            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            disabledIfEmpty: false,
+            hint: 'Отмена',
+            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
+export const LEND_SCREEN_LEND_MONEY = {
+    message: '',
+    header: 'Ссужаем деньги.',
+    iconName: 'question', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Да',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            hint: 'Нет',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}
+
+export const LEND_SCREEN_NOT_ARGEE_TO_LEND = EMPLOYEES_SCREEN_NOT_AGREE_TO_PREPAY;

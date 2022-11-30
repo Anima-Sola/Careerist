@@ -278,6 +278,15 @@ export const setLendTermAction = ( item, saveStateToStore = false ) => {
     }
 }
 
+export const setLendPersentagesAction = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_LEND_PERSENTAGES',
+        payload: item,
+        settingsSection: 'bankSettings',
+        saveStateToStore
+    }
+}
+
 export const setBorrowAmountAction = ( item, saveStateToStore = false ) => {
     return {
         type: 'SET_BORROW_AMOUNT',
