@@ -13,9 +13,11 @@ const initialState = {
         
         cash: 1500,                                             // Сумма налички
         yearExpense: 0,                                         // Годовые расходы
+        realEstateCost: 0,                                      // Стоимость активов в недвижимости
 
         currentSocialStatus: 1,                                 // 1 - Бизнесмен, 2 - лидер профсоюза мусорщиков, 3 - шериф, 4 - сенатор, 5 - президент
         electionStatus: true,                                   // Флаг, true - есть выборы, false - нет выборов
+        
     },
 
     possessionSettings: {
@@ -54,6 +56,7 @@ const initialState = {
         lendPersentages: 0,                                             // Процент отданной ссуды
         borrowAmount: 0,                                                // Сумма полученного кредита
         borrowTerm: 0,                                                  // Срок полученного кредита
+        borrowPersentage: 0,                                            // Процент, под который взят кредит
         insuredPossessionList: [ false, false, false, false, false ],   // Застрахованное имущество. true - затраховано, false - нет
         insurancePossessionCostList: [ 0, 0, 0, 0, 0 ],                 // Стоимость страховки
         insurancePossessionTermList: [ 0, 0, 0, 0, 0 ]                  // Стоимость страховки
@@ -96,6 +99,8 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
             return saveState( state, 'yearsPassed', action );
         case 'SET_YEAR_EXPENSE':
             return saveState( state, 'yearExpense', action );
+        case 'SET_REAL_ESTATE_COST':
+            return saveState( state, 'realEstateCost', action );
 
         case 'SET_POSSESSION_LIST':
             return saveState( state, 'possessionList', action );
@@ -143,6 +148,8 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
             return saveState( state, 'borrowAmount', action);
         case 'SET_BORROW_TERM':
             return saveState( state, 'borrowTerm', action);
+        case 'SET_BORROW_PERSENTAGES':
+            return saveState( state, 'borrowPersentages', action);
         case 'SET_INSURED_POSSESSION_LIST':
             return saveState( state, 'insuredPossessionList', action );
         case 'SET_INSURANCE_POSSESSION_COST_LIST':

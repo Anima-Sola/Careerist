@@ -796,3 +796,116 @@ export const LEND_SCREEN_LEND_MONEY = {
 }
 
 export const LEND_SCREEN_NOT_ARGEE_TO_LEND = EMPLOYEES_SCREEN_NOT_AGREE_TO_PREPAY;
+
+export const BORROW_SCREEN_INPUT_AMOUNT = {
+    message: 'Сколько берете?',
+    header: 'Получаем кредит.',
+    iconName: 'keyboard', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: true,
+    onlyDigits: true,
+    buttons: [
+        {   
+            key: 0,
+            disabledIfEmpty: true,
+            hint: 'Продолжить',
+            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            disabledIfEmpty: false,
+            hint: 'Отмена',
+            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
+export const BORROW_SCREEN_INPUT_TERM = {
+    message: 'На какой срок?',
+    header: 'Получаем кредит.',
+    iconName: 'keyboard', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: true,
+    onlyDigits: true,
+    buttons: [
+        {   
+            key: 0,
+            disabledIfEmpty: true,
+            hint: 'Продолжить',
+            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            disabledIfEmpty: false,
+            hint: 'Отмена',
+            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+};
+
+export const BORROW_SCREEN_CANT_READ = {
+    message: 'Читать не умеете?',
+    header: 'Внимательно!',
+    iconName: 'angry', 
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Понял',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}
+
+export const BORROW_SCREEN_BORROW_MONEY = {
+    message: '',
+    header: 'Получаем кредит.',
+    iconName: 'question', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Да',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            hint: 'Нет',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}
+
+export const BORROW_SCREEN_TIME_TO_PAY = {
+    message: '',
+    header: 'Запомните!',
+    iconName: 'handshake', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Понял',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}

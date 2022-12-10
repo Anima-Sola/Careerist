@@ -110,6 +110,15 @@ export const setYearExpenseAction = ( item, saveStateToStore = false ) => {
     }
 }
 
+export const setRealEstateCostAction = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_REAL_ESTATE_COST',
+        payload: item,
+        settingsSection: 'commonSettings',
+        saveStateToStore
+    }
+}
+
 //---------------------------------------------------------------------------------------
 export const setPossessionList = ( list, saveStateToStore = false ) => {
     return {
@@ -299,6 +308,15 @@ export const setBorrowAmountAction = ( item, saveStateToStore = false ) => {
 export const setBorrowTermAction = ( item, saveStateToStore = false ) => {
     return {
         type: 'SET_BORROW_TERM',
+        payload: item,
+        settingsSection: 'bankSettings',
+        saveStateToStore
+    }
+}
+
+export const setBorrowPersentagesAction = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_BORROW_PERSENTAGES',
         payload: item,
         settingsSection: 'bankSettings',
         saveStateToStore

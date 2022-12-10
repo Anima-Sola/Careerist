@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -24,16 +24,15 @@ import { rndBetweenMinusOneAndOne } from '../../../components/Random';
 import DepositImage from "../../../assets/images/bankservices/deposit.png";
 
 export const DepositScreen = ({ navigation }) => {
-    const [, forceUpdate ] = useReducer(x => x + 1, 0);
     const commonSettings = useSelector( getCommonSettings );
-    const wrappedComponent = <Deposit navigation={ navigation } forceUpdate={ forceUpdate } commonSettings={ commonSettings } />
+    const wrappedComponent = <Deposit navigation={ navigation } commonSettings={ commonSettings } />
 
     return (
         <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings } />
     )
 };
 
-const Deposit = ({ navigation, forceUpdate, commonSettings }) => {
+const Deposit = ({ navigation, commonSettings }) => {
     const dispatch = useDispatch();
     const { cash, currentSocialStatus, yearOutcome } = commonSettings;
     const { depositAmount } = useSelector( getBankSettings );
@@ -54,7 +53,6 @@ const Deposit = ({ navigation, forceUpdate, commonSettings }) => {
             updatedCash = 0;
         }
         dispatch(setCashAmountAction( updatedCash, true ));
-        forceUpdate();
     }
 
     const getFineAmount = () => {
@@ -104,7 +102,6 @@ const Deposit = ({ navigation, forceUpdate, commonSettings }) => {
                     }
                     dispatch(setCashAmountAction( cash - amount ));
                     dispatch(setDepositAmountAction( depositAmount + 0.95 * amount ), true );
-                    forceUpdate();
                     setTimeout( () => showDepositPlacedAlert(), 300 );
                 },
                 () => setPrompt({ ...prompt, isVisible: false, value: '' })

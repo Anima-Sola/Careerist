@@ -66,7 +66,7 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
     })
 
     const navToGameScreens = ( screen, timeStep = 0, params = {} ) => {
-        calcSubtotals( timeStep );
+        if( timeStep > 0 ) calcSubtotals( timeStep );
         navigation.navigate( screen, params ); 
     }
 
@@ -118,7 +118,7 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
                         })}>
                         <Text style={ styles.menuItemText }>Банк</Text>
                     </Pressable>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } >
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'EntertainmentScreen', 2.5 ) }>
                         <Text style={ styles.menuItemText }>Развлечения</Text>
                     </Pressable>
                 </View>

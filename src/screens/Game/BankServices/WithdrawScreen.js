@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Button } from 'react-native-elements';
@@ -18,16 +18,15 @@ import {
 import WithdrawImage from "../../../assets/images/bankservices/withdraw.png";
 
 export const WithdrawScreen = ({ navigation }) => {
-    const [, forceUpdate ] = useReducer(x => x + 1, 0);
     const commonSettings = useSelector( getCommonSettings );
-    const wrappedComponent = <Withdraw navigation={ navigation } forceUpdate={ forceUpdate } commonSettings={ commonSettings } />
+    const wrappedComponent = <Withdraw navigation={ navigation } commonSettings={ commonSettings } />
 
     return (
         <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings } />
     )
 };
 
-const Withdraw = ({ navigation, forceUpdate, commonSettings }) => {
+const Withdraw = ({ navigation, commonSettings }) => {
     const dispatch = useDispatch();
     const { cash } = commonSettings;
     const { depositAmount } = useSelector( getBankSettings );
@@ -77,8 +76,7 @@ const Withdraw = ({ navigation, forceUpdate, commonSettings }) => {
                         return;
                     }
                     dispatch(setDepositAmountAction( depositAmount - amount ));
-                    dispatch(setCashAmountAction( cash + 0.95 *amount ), true);
-                    forceUpdate();
+                    dispatch(setCashAmountAction( cash + 0.95 * amount ), true);
                     setTimeout( () => showWithdrawSuccesfulAlert(), 300 );
                 },
                 () => setPrompt({ ...prompt, isVisible: false, value: '' })

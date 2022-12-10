@@ -20,7 +20,7 @@ const calcSubtotals = ( timeStep ) => {
     let { possessionList, possessionSellCostList } = possessionSettings;
 
     const businessSettings = store.getState().gameSettingsReducer.businessSettings;
-    let { businessList, businessYearIncome } = businessSettings;
+    let { businessList, commonBusinessIncome, businessYearIncome } = businessSettings;
 
     const employeesSettings = store.getState().gameSettingsReducer.employeesSettings;
     let { employeesList, employeesSalaryList } = employeesSettings;
@@ -52,10 +52,10 @@ const calcSubtotals = ( timeStep ) => {
     }
 
     yearExpense = yearExpense + subtotalYearExpense * timeStep;
-    businessYearIncome = businessYearIncome + subtotalBusinessIncome * timeStep;
+    commonBusinessIncome = commonBusinessIncome + subtotalBusinessIncome * timeStep;
 
     store.dispatch(setYearExpenseAction( yearExpense ));
-    store.dispatch(setCommonBusinessIncomeAction( businessYearIncome ));
+    store.dispatch(setCommonBusinessIncomeAction( commonBusinessIncome ));
 
     depositAmount = depositAmount * Math.exp( timeStep * Math.log( 1 + 0.02 * currentSocialStatus ));
     store.dispatch(setDepositAmountAction( depositAmount ), true );

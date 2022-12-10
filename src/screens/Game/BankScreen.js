@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import { Text, View, StyleSheet, ScrollView, Pressable, Image } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,6 +16,7 @@ import {
 } from '../../store/actions/actions';
 import { rndBetweenMinusOneAndOne } from '../../components/Random';
 import calcSubtotals from '../../components/CalcSubtotals';
+import store from '../../store';
 
 import Ensurance from "../../assets/images/bankservices/ensurance.png";
 import Deposit from "../../assets/images/bankservices/deposit.png";
@@ -24,15 +25,16 @@ import Lend from "../../assets/images/bankservices/lend.png";
 import Borrow from "../../assets/images/bankservices/borrow.png";
 
 export const BankScreen = ({ navigation, route }) => {
+    const [, forceUpdate ] = useReducer(x => x + 1, 0);
     const commonSettings = useSelector( getCommonSettings );
-    const wrappedComponent = <Bank navigation={ navigation } route={ route } commonSettings={ commonSettings }/>
+    const wrappedComponent = <Bank navigation={ navigation } route={ route } forceUpdate={ forceUpdate } commonSettings={ commonSettings }/>
 
     return(
         <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
     )
 };
 
-const Bank = ({ navigation, route, commonSettings }) => {
+const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
     const { cash, posWithinYear, endOfYear } = commonSettings;
     const { isBankBankrupt, depositAmount, lendAmount, borrowAmount } = useSelector( getBankSettings );
@@ -108,6 +110,10 @@ const Bank = ({ navigation, route, commonSettings }) => {
 
     useFocusEffect(() => {
         const navigateFromMainScreen = route.params?.navigateFromMainScreen;
+        if( !navigateFromMainScreen ) {
+            const currentCash = store.getState().gameSettingsReducer.commonSettings.cash;
+            if( currentCash != cash ) forceUpdate(); 
+        }
         if( !isBankBankrupt && navigateFromMainScreen ) {
             const value = rndBetweenMinusOneAndOne();
             if( value > 0.97 ) {

@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Button } from 'react-native-elements';
@@ -28,16 +28,15 @@ import random from '../../../components/Random';
 import LendImage from "../../../assets/images/bankservices/lend.png";
 
 export const LendScreen = ({ navigation }) => {
-    const [, forceUpdate ] = useReducer(x => x + 1, 0);
     const commonSettings = useSelector( getCommonSettings );
-    const wrappedComponent = <Lend navigation={ navigation } forceUpdate={ forceUpdate } commonSettings={ commonSettings } />
+    const wrappedComponent = <Lend navigation={ navigation } commonSettings={ commonSettings } />
 
     return (
         <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings } />
     )
 };
 
-const Lend = ({ navigation, forceUpdate, commonSettings }) => {
+const Lend = ({ navigation, commonSettings }) => {
     const dispatch = useDispatch();
     const { cash } = commonSettings;
     const lendAmount = useRef( 0 );
@@ -111,7 +110,6 @@ const Lend = ({ navigation, forceUpdate, commonSettings }) => {
                     dispatch(setLendAmountAction( lendAmount.current ));
                     dispatch(setLendTermAction( lendTerm.current ));
                     dispatch(setLendPersentagesAction( lendPersentage.current ), true);
-                    forceUpdate();
                     navigation.navigate('BankScreen');
                 },
                 () => {
