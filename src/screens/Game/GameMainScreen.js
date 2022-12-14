@@ -57,6 +57,8 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
                     if( possessionList.indexOf( true ) === -1 ) navigation.navigate('GameMainScreen');
                     else navigation.navigate('BankScreen');
                     return true;
+                case 'EntertainmentScreen':
+                    return true;
                 default:
                     return false;
             }

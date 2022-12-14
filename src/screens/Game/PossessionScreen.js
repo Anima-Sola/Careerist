@@ -36,7 +36,7 @@ export const PossessionScreen = ({ navigation }) => {
 
 const Possession = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
-    const { cash, currentSocialStatus, yearOutcome } = commonSettings;
+    const { cash, currentSocialStatus, yearExpense } = commonSettings;
     const { possessionList, possessionBuyCostList, possessionSellCostList } = useSelector( getPossessionSettings );
     const [ activeItem, setActiveItem ] = useState( 0 );
     const [ alert, setAlert ] = useState({ isVisible: false, data: POSSESSION_SCREEN_ANOTHER_DEAL });
@@ -52,7 +52,7 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
     const setCashAmountMinusFine = ( fineAmount ) => {
         let updatedCash = cash - fineAmount;
         if( updatedCash < 0 ) {
-            dispatch(setYearExpenseAction( yearOutcome - updatedCash ));
+            dispatch(setYearExpenseAction( yearExpense - updatedCash ));
             updatedCash = 0;
         }
         dispatch(setCashAmountAction( updatedCash, true ));

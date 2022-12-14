@@ -6,6 +6,7 @@ export const EMPLOYEES_LIST = [ 'Маклера', 'Врача', 'Адвокат�
 export const BUSINESS_LIST = [ 'Бар', 'Ресторан', 'Магазин', 'Отель', 'Завод' ];
 export const STOCKS_LIST = [ 'Газпром', 'Роснефть', 'Лукойл', 'Магнит', 'Сбер' ];
 export const BANKING_SERVICES = [ 'Застраховать имущество', 'Сделать вклад', 'Снять со счета', 'Дать ссуду', 'Получить кредит' ];
+export const ENTERTAINMENT_LIST = [ 'Преферанс', 'Монте-Карло', 'Любовница', 'Банкет', 'Круиз' ];
 
 //AlertWindows constants
 export const INPUT_AGE_SCREEN_BABY_ALERT = {
@@ -904,6 +905,82 @@ export const BORROW_SCREEN_TIME_TO_PAY = {
         {   
             key: 0,
             hint: 'Понял',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}
+
+export const ENTERTAINMENT_SCREEN_YOU_ARE_MISER = {
+    message: 'С вами неприятно иметь дело.',
+    header: 'Вы жмот!',
+    iconName: 'meh-rolling-eyes', 
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Ухожу',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}
+
+export const ENTERTAINMENT_SCREEN_NO_MONEY_CHEATING = POSSESSION_SCREEN_NO_MONEY_CHEATING;
+
+export const ENTERTAINMENT_SCREEN_YOU_WIN = {
+    message: 'Довольны?',
+    header: 'Вам подфартило!',
+    iconName: 'smile', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Очень',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}
+
+export const ENTERTAINMENT_SCREEN_YOU_LOSE_NO_MORE_MONEY = {
+    message: 'Одни расходы!',
+    header: 'Не везет!',
+    iconName: 'sad-cry', 
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Ухожу',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}
+
+export const ENTERTAINMENT_SCREEN_YOU_LOSE = {
+    message: 'Одни расходы!\nЕще подравлечемся?',
+    header: 'Не везет!',
+    iconName: 'sad-cry', 
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Да',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+        {   
+            key: 1,
+            hint: 'Нет',
             //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
             textColor: THEME.TEXT_COLOR,
         },
