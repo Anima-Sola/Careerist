@@ -82,7 +82,7 @@ const Deposit = ({ navigation, commonSettings }) => {
             data: DEPOSIT_SCREEN_DEPOSIT_PLACED,
             buttonsCallbacks: [
                 () => {
-                    navigation.navigate('BankScreen');
+                    navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' });
                 }
             ]
         })
@@ -134,7 +134,7 @@ const Deposit = ({ navigation, commonSettings }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Уйти"
-                    onPress={ () => navigation.navigate('BankScreen') }   
+                    onPress={ () => navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' }) }   
                 />
             </View>
         </>

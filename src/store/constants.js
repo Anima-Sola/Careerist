@@ -83,17 +83,68 @@ export const GAME_MAIN_SCREEN_QUIT_GAME_ALERT = {
     ]
 }
 
-export const GAME_MAIN_SCREEN_SCLEROSIS_WARNING = {
-    message: 'Выборы больше не проводятся.',
-    header: 'У вас склероз?!',
-    iconName: 'grin-tongue-wink',
+export const GAME_MAIN_SCREEN_LEND_NOT_REFUND = {
+    message: '',
+    header: 'Вас надули со ссудой!',
+    iconName: 'sad-cry',
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: true,
     buttons: [
         {   
             key: 0,
-            hint: 'Ой',
+            hint: 'Понял, принял',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        } 
+    ]
+}
+
+export const GAME_MAIN_SCREEN_LEND_REFUND = {
+    message: '',
+    header: 'Вы удачно ссудили деньги!',
+    iconName: 'smile',
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: true,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Отлично',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        } 
+    ]
+}
+
+export const GAME_MAIN_SCREEN_BORROW_REFUND = {
+    message: '',
+    header: 'Возврат кредита!',
+    iconName: 'dollar-sign',
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: true,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Отлично',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        } 
+    ]
+}
+
+export const GAME_MAIN_SCREEN_DISASTER = {
+    message: '',
+    header: 'Беда!',
+    iconName: 'sad-cry',
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: true,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Очень жаль',
             //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
             textColor: THEME.TEXT_COLOR,
         } 
@@ -981,6 +1032,41 @@ export const ENTERTAINMENT_SCREEN_YOU_LOSE = {
         {   
             key: 1,
             hint: 'Нет',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}
+
+
+export const TOTAL_SCREEN_VARGANCY = {
+    message: '',
+    header: 'Вы бездомный!',
+    iconName: 'house-damage', 
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Понял, принял',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}
+
+export const TOTAL_SCREEN_GREED = {
+    message: '',
+    header: 'Жадина!',
+    iconName: 'search-dollar', 
+    iconBackgroundColor: 'red',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Понял, принял',
             //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
             textColor: THEME.TEXT_COLOR,
         },

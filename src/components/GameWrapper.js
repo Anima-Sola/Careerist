@@ -1,5 +1,7 @@
-import React, { useRef } from "react";
+import React, { useRef, useReducer } from "react";
 import { View, Text, StyleSheet, Pressable, StatusBar } from 'react-native';
+import { useStore } from "react-redux";
+import { useFocusEffect } from "@react-navigation/native";
 import { Directions, GestureDetector, Gesture } from "react-native-gesture-handler";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,8 +9,18 @@ import { THEME } from "../styles/theme";
 import SideMenu from "./SideMenu";
 
 const GameWrapper = ({ wrappedComponent, commonSettings }) => {
-    const { year, cash, playerAge } = commonSettings;
+    const [, forceUpdate ] = useReducer(x => x + 1, 0);
+    const { year, cash, playerAge, yearsPassed } = commonSettings;
+    const store = useStore();
     const childRef = useRef();
+
+    useFocusEffect(() => {
+        const commonSettings = store.getState().gameSettingsReducer.commonSettings;
+        if( ( commonSettings.cash !== cash) || 
+            ( commonSettings.yearsPassed !== yearsPassed ) || 
+            ( commonSettings.playerAge !== playerAge )) 
+        forceUpdate(); 
+    })
 
     const flingRightGesture = Gesture.Fling()
         .direction(Directions.RIGHT)
@@ -32,7 +44,7 @@ const GameWrapper = ({ wrappedComponent, commonSettings }) => {
                 </View>
                 { wrappedComponent }
                 <View style={ styles.footer }>
-                    <Text style={ styles.footerText }>Год: { year }</Text>
+                    <Text style={ styles.footerText }>Год: { year + yearsPassed }</Text>
                     <Text style={ styles.footerText }>Ваш возраст: { playerAge }</Text>
                 </View>
                 <SideMenu ref={ childRef } navigation={ wrappedComponent.props.navigation }/>

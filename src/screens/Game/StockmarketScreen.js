@@ -140,6 +140,9 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                     setAlert({ ...alert, isVisible: false });
                 },
                 () => {
+                    dispatch(setDividendsListAction( stocksDividendsList.current ));
+                    dispatch(setStocksCostListAction( stocksCurrentPriceList.current ), true);
+                    setIsProblem( true );
                     navigation.navigate('GameMainScreen');
                 }
             ]
@@ -152,6 +155,9 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
             data: STOCKMARKET_IS_CLOSED,
             buttonsCallbacks: [
                 () => {
+                    dispatch(setDividendsListAction( stocksDividendsList.current ));
+                    dispatch(setStocksCostListAction( stocksCurrentPriceList.current ), true);
+                    setIsProblem( true );
                     navigation.navigate('GameMainScreen');
                 }
             ]

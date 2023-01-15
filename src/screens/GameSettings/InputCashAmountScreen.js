@@ -8,7 +8,7 @@ import { setCashAmountAction } from   '../../store/actions/actions';
 import { getCommonSettings } from '../../store/selectors';
 import CustomAlert from '../../components/CustomAlert';
 import { INPUT_CASH_AMOUNT_SCREEN_ALERT } from '../../store/constants';
-import { setInitialGameData } from '../../components/SetInitialGameData';
+import { setInitialGameData } from '../../components/CommonFunctions';
 import random from '../../components/Random';
 
 export const InputСashAmountScreen = ({ navigation }) => {
@@ -37,7 +37,7 @@ export const InputСashAmountScreen = ({ navigation }) => {
     const navToGame = ( cash ) => {
         dispatch(setCashAmountAction( cash, true ));
         setInitialGameData();
-        navigation.navigate('GameMainScreen');
+        navigation.navigate('GameMainScreen', { previousScreen: 'InputCashAmountScreen' });
     }
 
     const checkCashAmount = () => {

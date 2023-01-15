@@ -20,6 +20,7 @@ import { WithdrawScreen } from "../screens/Game/BankServices/WithdrawScreen";
 import { LendScreen } from "../screens/Game/BankServices/LendScreen";
 import { BorrowScreen } from "../screens/Game/BankServices/BorrowScreen";
 import { EntertainmentScreen } from "../screens/Game/EntertainmentScreen"; 
+import { TotalScreen } from "../screens/Game/TotalScreen";
 
 const AppRootNavigator = createNativeStackNavigator();
 
@@ -106,95 +107,12 @@ export function AppRootNavigation () {
                     name = "EntertainmentScreen"
                     component = { EntertainmentScreen }
                 />
-            </AppRootNavigator.Navigator>
-        </NavigationContainer>
-    )
-}
-
-
-
-/*const IntroNavigator = createNativeStackNavigator();
-
-const IntroNavigation = () => {
-    return (
-        <IntroNavigator.Navigator
-            screenOptions = {{
-                headerShown: false,
-            }}>
-            <IntroNavigator.Screen 
-                name = "IntroScreen"
-                component = { IntroScreen }
-            />
-        </IntroNavigator.Navigator>
-    )
-}
-
-const InputGameSettingsNavigator = createNativeStackNavigator();
-    
-const InputGameSettingsNavigation = () => {
-    return (
-        <InputGameSettingsNavigator.Navigator
-            screenOptions = {{
-                headerShown: false,
-            }}>
-            <InputGameSettingsNavigator.Screen
-                name = "SetGameDifficultyScreen"
-                component = { SetGameDifficultyScreen }
-            />
-            <InputGameSettingsNavigator.Screen
-                name = "InputAgeScreen"
-                component = { InputAgeScreen }
-            />
-            <InputGameSettingsNavigator.Screen
-                name = "InputСashAmountScreen"
-                component = { InputСashAmountScreen }
-            />
-        </InputGameSettingsNavigator.Navigator>
-    )
-}
-
-const GameNavigator = createNativeStackNavigator();
-
-const GameNavigation = () => {
-    return (
-        <GameNavigator.Navigator
-            screenOptions = {{
-                headerShown: false,
-            }}>
-            <GameNavigator.Screen
-                name = "MainScreen"
-                component = { MainScreen }
-            />
-        </GameNavigator.Navigator>
-    )
-}
-
-const AppRootNavigator = createNativeStackNavigator();
-
-export const AppRootNavigation = () => {
-    return (
-        <NavigationContainer>
-            <AppRootNavigator.Navigator
-                screenOptions = {{
-                    headerShown: false,
-                }} >
-                <AppRootNavigator.Screen 
-                    name = "LoadingScreen"
-                    component = { LoadingScreen }
-                />
-                <AppRootNavigator.Screen 
-                    name = "IntroNavigation"
-                    component = { IntroNavigation }
-                />
                 <AppRootNavigator.Screen
-                    name = "InputGameSettingsNavigation"
-                    component = { InputGameSettingsNavigation }
-                />
-                 <AppRootNavigator.Screen
-                    name = "GameNavigation"
-                    component = { GameNavigation }
+                    name = "TotalScreen"
+                    component = { TotalScreen }
                 />
             </AppRootNavigator.Navigator>
         </NavigationContainer>
     )
-}*/
+}
+

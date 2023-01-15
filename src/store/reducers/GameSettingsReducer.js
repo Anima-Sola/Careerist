@@ -24,8 +24,6 @@ const initialState = {
         possessionList: [ false, false, false, false, false ],        // Наличие - true / Отсутствие - false квартиры, машины, виллы, яхты, самолета
         possessionBuyCostList: [ 0, 0, 0, 0, 0 ],                     // Цена покупки имущества
         possessionSellCostList: [ 0, 0, 0, 0, 0 ],                    // Цена продажи имущества
-        //insuredPossessionList: [ false, false, false, false, false ], // Застрахована - true / Не застраховано - false квартира, машина, вилла, яхта, самолет
-        //insurancePossessionCostList: [ 0, 0, 0, 0, 0 ],               // Сумма, накоторую застраховано имущество
     },
 
     businessSettings: {

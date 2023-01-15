@@ -182,7 +182,7 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
                     forceUpdate();
                 },
                 () => {
-                    setAlert({ ...alert, isVisible: false });
+                    dispatch(setCashAmountAction( cash - entertainmentData.current[ activeItem ].expenses ));
                     navigation.navigate('GameMainScreen');
                 }
             ]

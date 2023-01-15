@@ -110,7 +110,7 @@ const Lend = ({ navigation, commonSettings }) => {
                     dispatch(setLendAmountAction( lendAmount.current ));
                     dispatch(setLendTermAction( lendTerm.current ));
                     dispatch(setLendPersentagesAction( lendPersentage.current ), true);
-                    navigation.navigate('BankScreen');
+                    navigation.navigate('BankScreen', { previousScreen: 'lendOrBorrowScreen' });
                 },
                 () => {
                     setAlert({ ...alert, isVisible: false });
@@ -202,7 +202,7 @@ const Lend = ({ navigation, commonSettings }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Уйти"
-                    onPress={ () => navigation.navigate('BankScreen') }   
+                    onPress={ () => navigation.navigate('BankScreen', { previousScreen: 'lendOrBorrowScreen' }) }   
                 />
             </View>
         </>

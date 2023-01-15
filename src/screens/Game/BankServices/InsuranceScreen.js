@@ -108,7 +108,7 @@ const Insurance = ({ navigation }) => {
                     setAlert({ ...alert, isVisible: false });
                 },
                 () => {
-                    navigation.navigate('BankScreen');
+                    navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' });
                 }
             ]
         })
@@ -184,7 +184,7 @@ const Insurance = ({ navigation }) => {
                             titleStyle={ styles.buttonTitle }
                             type="outline" 
                             title="Уйти"
-                            onPress={ () => navigation.navigate('BankScreen') }   
+                            onPress={ () => navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' }) }   
                         />
                     </View>
                 </>

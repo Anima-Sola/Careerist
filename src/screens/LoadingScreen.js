@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AppLoading from 'expo-app-loading';
-import { Text, View, StyleSheet, Alert } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { MaterialIndicator } from 'react-native-indicators';
 import { THEME } from '../styles/theme';
 import { loadFonts } from '../styles/bootstrap';

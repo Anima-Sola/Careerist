@@ -12,31 +12,30 @@ import {
     getEmployeesSettings,
     getBankSettings 
 } from "../../store/selectors";
-import { SOCIAL_STATUSES } from "../../store/constants";
 import { setCashAmountAction, setElectionStatus, setSocialStatus, setYearExpenseAction } from "../../store/actions/actions";
 import CustomAlert from '../../components/CustomAlert';
-import { 
+import {
+    SOCIAL_STATUSES, 
     ELECTION_SCREEN_SKIP_ELECTION, 
     ELECTION_SCREEN_LOSE_ELECTION, 
     ELECTION_SCREEN_WIN_ELECTION,
     ELECTION_SCREEN_NO_MONEY_CHEATING
 } from '../../store/constants';
-import random, { rndBetweenMinusOneAndOne } from '../../components/Random';
-import calcSubtotals from "../../components/CalcSubtotals";
+import random from '../../components/Random';
+import { setCashAmountMinusFine, getFineAmount } from "../../components/CommonFunctions";
 
 export const ElectionScreen = ({ navigation }) => {
-    const [, forceUpdate ] = useReducer(x => x + 1, 0);
     const commonSettings = useSelector( getCommonSettings );
-    const wrappedComponent = <Election navigation={ navigation } forceUpdate={ forceUpdate } commonSettings={ commonSettings } />
+    const wrappedComponent = <Election navigation={ navigation } commonSettings={ commonSettings } />
 
     return (
         <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings } />
     )
 };
 
-const Election = ({ navigation, forceUpdate, commonSettings }) => {
+const Election = ({ navigation, commonSettings }) => {
     const dispatch = useDispatch();
-    const { cash, year, currentSocialStatus, yearsPassed, yearExpense } = commonSettings;
+    const { cash, year, currentSocialStatus, yearsPassed, yearExpense, electionStatus } = commonSettings;
     const { possessionList } = useSelector( getPossessionSettings );
     const { businessList } = useSelector( getBusinessSettings );
     const { employeesList } = useSelector( getEmployeesSettings );
@@ -60,21 +59,6 @@ const Election = ({ navigation, forceUpdate, commonSettings }) => {
         return chanceToElect;
     }
 
-    const setCashAmountMinusFine = ( fineAmount ) => {
-        let updatedCash = cash - fineAmount;
-        if( updatedCash < 0 ) {
-            dispatch(setYearExpenseAction( yearExpense - updatedCash ));
-            updatedCash = 0;
-        }
-        dispatch(setCashAmountAction( updatedCash ));
-        forceUpdate();
-    }
-
-    const getFineAmount = () => {
-        const value = rndBetweenMinusOneAndOne();
-        return 1500 + 50 * Math.floor( 10 * value );
-    }
-
     const electionCost = useRef( calcElectionCost() );
     const chanceToElect = useRef(  calcChanceToElect() );
     
@@ -90,11 +74,6 @@ const Election = ({ navigation, forceUpdate, commonSettings }) => {
             ]
         })
     }
-
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener( 'hardwareBackPress', () => showSkipElectionAlert() );
-        return () => backHandler.remove();
-    })
 
     const showCheatingAlert = ( fineAmount ) => {
         setAlert({ 
@@ -113,23 +92,6 @@ const Election = ({ navigation, forceUpdate, commonSettings }) => {
         })
     }
 
-    const showWinElectionAlert = () => {
-        setAlert({  
-            isVisible: true, 
-            data: { 
-                ...ELECTION_SCREEN_WIN_ELECTION, 
-                message: `Теперь вы  ${ SOCIAL_STATUSES[ currentSocialStatus + 1 ]}. Следующие выборы через 2 года.` 
-            },
-            buttonsCallbacks: [
-                () => {
-                    //Здесь обработка, если стал президентом.
-                    dispatch(setElectionStatus( false, true ));
-                    navigation.navigate('GameMainScreen');
-                }
-            ]
-         });
-    }
-
     const showLoseElectionAlert = ( numOfVoices ) => {
         setAlert({  
             isVisible: true, 
@@ -139,6 +101,24 @@ const Election = ({ navigation, forceUpdate, commonSettings }) => {
             },
             buttonsCallbacks: [
                 () => {
+                    dispatch(setElectionStatus( false, true ));
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+         });
+    }
+
+    const showWinElectionAlert = () => {
+        setAlert({  
+            isVisible: true, 
+            data: { 
+                ...ELECTION_SCREEN_WIN_ELECTION, 
+                message: `Теперь вы  ${ SOCIAL_STATUSES[ currentSocialStatus + 1 ]}. Следующие выборы через 2 года.` 
+            },
+            buttonsCallbacks: [
+                () => {
+                    dispatch(setSocialStatus( currentSocialStatus + 1 ));
+                    //Здесь обработка, если стал президентом.
                     dispatch(setElectionStatus( false, true ));
                     navigation.navigate('GameMainScreen');
                 }
@@ -174,8 +154,12 @@ const Election = ({ navigation, forceUpdate, commonSettings }) => {
         
     }
 
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener( 'hardwareBackPress', () => showSkipElectionAlert() );
+        return () => backHandler.remove();
+    })
+
     const election = () => {
-        calcSubtotals( 0.7 );
         return (
             <ScrollView style={ styles.container }>
                 <CustomAlert alert={ alert } setAlert={ setAlert } />          
@@ -220,27 +204,31 @@ const Election = ({ navigation, forceUpdate, commonSettings }) => {
         )
     }
 
-    const noElection = (
-        <View style={ styles.container }>
-            <View style={{ ...styles.dataContainer, justifyContent: 'center' }}>
-                <Text style={ styles.electionNotHeldText }>Год { year }.</Text>
-                <Text style={ styles.electionNotHeldText }>В этом году выборы не проводятся!!!</Text>
-                <View style={{ height: hp('5%') }}></View>
-                <Text style={ styles.electionNotHeldText }>Усвоили?</Text>    
+    const noElection = ( message ) => {
+        return (
+            <View style={ styles.container }>
+                <View style={{ ...styles.dataContainer, justifyContent: 'center' }}>
+                    <Text style={ styles.electionNotHeldText }>Год { year }.</Text>
+                    <Text style={ styles.electionNotHeldText }>{ message }</Text>
+                </View>
+                <View style={ styles.buttonsContainer }>
+                    <Button
+                        buttonStyle={{ ...styles.takePartButton, width: wp('96%'), marginLeft: wp('2%') }} 
+                        titleStyle={ styles.nextButtonTitle }
+                        type="outline" 
+                        title="Уйти"
+                        onPress={ () => {
+                            if( electionStatus ) dispatch(setElectionStatus( false, true ));
+                            navigation.navigate('GameMainScreen');
+                        }}  
+                    />
+                </View>
             </View>
-            <View style={ styles.buttonsContainer }>
-                <Button
-                    buttonStyle={{ ...styles.takePartButton, width: wp('96%'), marginLeft: wp('2%') }} 
-                    titleStyle={ styles.nextButtonTitle }
-                    type="outline" 
-                    title="Уйти"
-                    onPress={ () => navigation.navigate('GameMainScreen') }  
-                />
-            </View>
-        </View>
-    )
+        )
+    }
 
-    return (( yearsPassed % 2 ) === 0) ? election() : noElection;
+    if( !electionStatus ) return noElection('У вас склероз?!');
+    return (( yearsPassed % 2 ) === 0) ? election() : noElection('В этом году выборы не проводятся!!!\n\nУсвоили?');
 }
 
 const styles = StyleSheet.create({
@@ -314,183 +302,3 @@ const styles = StyleSheet.create({
         fontSize: THEME.FONT28
     }
 });
-
-
-/*const Election = ({ navigation }) => {
-    const dispatch = useDispatch();
-    const year = useSelector( getYear );
-    const currentSocialStatus = useSelector( getCurrentSocialStatus );
-    const [ alert, setAlert ] = useState({
-        isVisible: false,
-        data:  ELECTION_SCREEN_SKIP_ELECTION,
-        buttonsCallbacks: [
-            () => {
-                dispatch(setIsElectionOverOrNotHeld( true ));
-                setAlert({ ...alert, isVisible: false });
-                navigation.navigate('GameMainScreen');
-            }
-        ]
-    })
-    
-    const skipElection = () => {
-        setAlert({ ...alert, isVisible: true  });
-    }
-
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener( 'hardwareBackPress', skipElection );
-        return () => backHandler.remove();
-    })
-
-    const participateElection = () => {
-        const result = Math.random();
-        if( result < 0.5 ) {
-            dispatch(setSocialStatus( currentSocialStatus + 1 ));
-            setAlert({ ...alert, 
-                       isVisible: true, 
-                       data: { ...ELECTION_SCREEN_WIN_ELECTION, message: 'Теперь вы ' + SOCIAL_STATUSES[ currentSocialStatus + 1 ] + '. Следующие выборы через 2 года.' }
-                    });
-        } else {
-            setAlert({ ...alert, 
-                        isVisible: true, 
-                        data: { ...ELECTION_SCREEN_LOSE_ELECTION, message: 'Вы набрали только 40% голосов. Следующие выборы через 2 года.' }
-                    });
-        }
-    }
-
-    const isElectionHeld = (
-        <View style={ styles.container }>
-            <CustomAlert alert={ alert } setAlert={ setAlert } />
-            <View style={ styles.dataContainer }>              
-                <View style= {styles.upTextContainer }>
-                    <Text style={ styles.text }>В настоящее время вы</Text>
-                </View>
-                <View style={ styles.electionInfoContainer }>    
-                    <View style={ styles.socialStatusContainer }>
-                        <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus ] }</Text>
-                    </View>
-                    <View>
-                        <Text style={ styles.text }>Примите участие в выборах.</Text>
-                    </View>
-                    <View style={ styles.socialStatusContainer }>
-                        <Text style={ styles.socialStatusText }>Избирается</Text>
-                        <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus + 1 ] }</Text>
-                    </View>
-                    <View>
-                        <Text style={ styles.text }>Кампания обойдется в 1500$, вероятность успеха 0%.</Text>
-                    </View>
-                </View> 
-                <View style={ styles.downTextContainer }>
-                    <Text style={{ ...styles.text, fontSize: THEME.FONT25 }}>Участвуете?</Text>
-                </View>
-            </View>
-            <View style={ styles.buttonsContainer }>
-                <Button
-                    buttonStyle={ styles.takePartButton } 
-                    titleStyle={ styles.nextButtonTitle }
-                    type="outline" 
-                    title="Да"
-                    onPress={ participateElection }  
-                />
-                <Button
-                    buttonStyle={ styles.nextButton } 
-                    titleStyle={ styles.nextButtonTitle }
-                    type="outline" 
-                    title="Нет"
-                    onPress={ skipElection }  
-                />
-            </View>
-        </View>
-    )
-
-    const isElectionNotHeld = (
-        <View style={ styles.container }>
-            <View style={{ ...styles.dataContainer, justifyContent: 'center' }}>
-                <Text style={ styles.electionNotHeldText }>Год { year }.</Text>
-                <Text style={ styles.electionNotHeldText }>В этом году выборы не проводятся!!!</Text>   
-            </View>
-            <View style={ styles.buttonsContainer }>
-                <Button
-                    buttonStyle={{ ...styles.takePartButton, width: THEME.SCREEN_WIDTH - 40 }} 
-                    titleStyle={ styles.nextButtonTitle }
-                    type="outline" 
-                    title="Продолжить"
-                    onPress={ () => navigation.navigate('GameMainScreen') }  
-                />
-            </View>
-        </View>
-    )
-
-    return (Number.isInteger( year / 2 )) ? isElectionHeld : isElectionNotHeld;
-}
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        width: '100%',
-    },
-    dataContainer: {
-        flex: 1,
-        marginTop: 10,
-    },
-    upTextContainer: {
-        flex: 0.08,
-    },
-    electionInfoContainer: {
-        flex: 0.72,
-        justifyContent: 'space-between'
-    },
-    socialStatusContainer: {
-        width: '100%',
-        backgroundColor: 'rgba(0, 0, 0, .2)',
-        justifyContent: 'center',
-        height: THEME.SCREEN_HEIGHT * 0.18
-    },
-    downTextContainer: {
-        flex: 0.18,
-        justifyContent: 'center'
-    },
-    text: {
-        color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-light',
-        fontSize: THEME.FONT20,
-        textAlign: 'center',
-    },
-    socialStatusText: {
-        color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibolditalic',
-        fontSize: THEME.FONT25,
-        textAlign: 'center',
-        lineHeight: 33
-    },
-    electionNotHeldText: {
-        color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibolditalic',
-        fontSize: THEME.FONT30,
-        textAlign: 'center',
-    },
-    buttonsContainer: {
-        flex: 0.1,
-        alignItems: 'center',
-        width:'100%',
-        flexDirection: 'row'
-    },
-    takePartButton: {
-        backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-        height: 50,
-        borderRadius: 25,
-        width: THEME.SCREEN_WIDTH / 2 - 25,
-        marginRight: 5
-    },  
-    nextButton: {
-        backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-        width: THEME.SCREEN_WIDTH / 2 - 25,
-        height: 50,
-        borderRadius: 25,
-        marginLeft: 5
-    },
-    nextButtonTitle: {
-        color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
-        fontSize: THEME.FONT17,
-    }
-});*/

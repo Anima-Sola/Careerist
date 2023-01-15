@@ -1,6 +1,5 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useReducer, useEffect } from 'react';
 import { Text, View, StyleSheet, ScrollView, Pressable, Image } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -15,8 +14,7 @@ import {
     setCashAmountAction,
 } from '../../store/actions/actions';
 import { rndBetweenMinusOneAndOne } from '../../components/Random';
-import calcSubtotals from '../../components/CalcSubtotals';
-import store from '../../store';
+import { calcSubtotals } from '../../components/CommonFunctions';
 
 import Ensurance from "../../assets/images/bankservices/ensurance.png";
 import Deposit from "../../assets/images/bankservices/deposit.png";
@@ -85,7 +83,7 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Уйти"
-                    onPress={ () => navigation.navigate('GameMainScreen') }  
+                    onPress={ () => navigation.navigate('GameMainScreen', { previousScreen: 'AnyScreen' }) }  
                 />
             </View>
         </>
@@ -102,19 +100,17 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Уйти"
-                    onPress={ () => navigation.navigate('GameMainScreen') }  
+                    onPress={ () => navigation.navigate('GameMainScreen', { previousScreen: 'AnyScreen' }) }  
                 />
             </View>
         </>
     )
 
-    useFocusEffect(() => {
-        const navigateFromMainScreen = route.params?.navigateFromMainScreen;
-        if( !navigateFromMainScreen ) {
-            const currentCash = store.getState().gameSettingsReducer.commonSettings.cash;
-            if( currentCash != cash ) forceUpdate(); 
-        }
-        if( !isBankBankrupt && navigateFromMainScreen ) {
+    const onScreenFocus = () => {
+        
+        if( route.params?.previousScreen === 'lendOrBorrowScreen' ) forceUpdate();
+        
+        if( !isBankBankrupt && route.params?.previousScreen === 'GameMainScreen' ) {
             const value = rndBetweenMinusOneAndOne();
             if( value > 0.97 ) {
                 if( depositAmount > 0) {
@@ -134,7 +130,12 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
             }
             calcSubtotals( 1 );
         }
-    })
+    }
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => onScreenFocus() );
+        return unsubscribe;
+    }, [ route.params?.previousScreen ] )
 
     return ( isBankBankrupt ) ? bankBankrupt : bankNotBankrupt;
 }

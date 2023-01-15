@@ -16,7 +16,7 @@ import {
     getCommonSettings,
     getBankSettings,
     getBusinessSettings,
-    getStockSettings
+    getStockSettings,
 } from '../../../store/selectors';
 import { 
     setCashAmountAction,
@@ -27,6 +27,7 @@ import {
 import CustomAlert from '../../../components/CustomAlert';
 import CustomPrompt from '../../../components/CustomPrompt';
 import { rndBetweenMinusOneAndOne } from '../../../components/Random';
+import { calcInEstateAmount } from '../../../components/CommonFunctions';
 
 import BorrowImage from "../../../assets/images/bankservices/borrow.png";
 
@@ -41,7 +42,7 @@ export const BorrowScreen = ({ navigation }) => {
 
 const Borrow = ({ navigation, commonSettings }) => {
     const dispatch = useDispatch();
-    const { cash, year, yearsPassed, yearExpense, realEstateCost, gameDifficultyLevel } = commonSettings;
+    const { cash, year, yearsPassed, yearExpense, gameDifficultyLevel } = commonSettings;
     const { depositAmount } = useSelector( getBankSettings );
     const { commonBusinessIncome } = useSelector( getBusinessSettings );
     const { dividendsIncome } = useSelector( getStockSettings );
@@ -56,7 +57,7 @@ const Borrow = ({ navigation, commonSettings }) => {
     });
 
     const calcWealth = () => {
-        const wealth = cash + depositAmount + dividendsIncome + realEstateCost - yearExpense + commonBusinessIncome;
+        const wealth = cash + depositAmount + dividendsIncome + calcInEstateAmount() - yearExpense + commonBusinessIncome;
         return wealth;
     }
 
@@ -88,8 +89,8 @@ const Borrow = ({ navigation, commonSettings }) => {
                     dispatch(setCashAmountAction( cash + amount ));
                     dispatch(setBorrowAmountAction( amount ));
                     dispatch(setBorrowTermAction( term ));
-                    dispatch( setBorrowPersentagesAction( persentages ), true );
-                    navigation.navigate('BankScreen');
+                    dispatch(setBorrowPersentagesAction( persentages ), true );
+                    navigation.navigate('BankScreen', { previousScreen: 'lendOrBorrowScreen' });
                 }
             ]
         })
@@ -174,7 +175,7 @@ const Borrow = ({ navigation, commonSettings }) => {
                         titleStyle={ styles.buttonTitle }
                         type="outline" 
                         title="Уйти"
-                        onPress={ () => navigation.navigate('BankScreen') }   
+                        onPress={ () => navigation.navigate('BankScreen', { previousScreen: 'lendOrBorrowScreen' }) }   
                     />
                 </View>
             </>
@@ -197,7 +198,7 @@ const Borrow = ({ navigation, commonSettings }) => {
                         titleStyle={ styles.buttonTitle }
                         type="outline" 
                         title="Уйти"
-                        onPress={ () => navigation.navigate('BankScreen') }   
+                        onPress={ () => navigation.navigate('BankScreen', { previousScreen: 'lendOrBorrowScreen' }) }   
                     />
                 </View>
             </>

@@ -58,7 +58,7 @@ const Withdraw = ({ navigation, commonSettings }) => {
             data: WITHDRAW_SCREEN_WITHDRAW_SUCCESSFUL,
             buttonsCallbacks: [
                 () => {
-                    navigation.navigate('BankScreen');
+                    navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' });
                 }
             ]
         })
@@ -108,7 +108,7 @@ const Withdraw = ({ navigation, commonSettings }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Уйти"
-                    onPress={ () => navigation.navigate('BankScreen') }   
+                    onPress={ () => navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' }) }   
                 />
             </View>
         </>

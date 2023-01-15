@@ -1,14 +1,36 @@
 import React, { useState, useEffect, useReducer } from "react";
 import { View, Text, StyleSheet, Pressable, BackHandler, ScrollView } from 'react-native';
-import { useFocusEffect } from "@react-navigation/native";
-import { useStore, useSelector } from "react-redux";
+import { useStore, useSelector, useDispatch } from "react-redux";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { THEME } from "../../styles/theme";
 import GameWrapper from "../../components/GameWrapper";
-import { getCommonSettings, getPossessionSettings } from "../../store/selectors";
+import {
+    getCommonSettings, 
+    getPossessionSettings,
+    getBankSettings,
+    getBusinessSettings,
+} from "../../store/selectors";
 import CustomAlert from '../../components/CustomAlert';
-import { GAME_MAIN_SCREEN_QUIT_GAME_ALERT, GAME_MAIN_SCREEN_SCLEROSIS_WARNING } from "../../store/constants";
-import calcSubtotals from "../../components/CalcSubtotals";
+import { 
+    GAME_MAIN_SCREEN_QUIT_GAME_ALERT,
+    GAME_MAIN_SCREEN_LEND_REFUND,
+    GAME_MAIN_SCREEN_LEND_NOT_REFUND,
+    GAME_MAIN_SCREEN_BORROW_REFUND,
+    GAME_MAIN_SCREEN_DISASTER
+ } from "../../store/constants";
+import {
+    setIsGameStarted, 
+    setCashAmountAction, 
+    setLendAmountAction,
+    setBorrowAmountAction,
+    setPossessionList,
+    setInsuredPossessionListAction,
+    setInsurancePossessionCostListAction,
+    setCommonBusinessIncomeAction,  
+} from "../../store/actions/actions";
+import { calcSubtotals, setCashAmountMinusFine } from "../../components/CommonFunctions";
+import random from "../../components/Random";
+
 
 export const GameMainScreen = ({ navigation }) => {
     const [, forceUpdate ] = useReducer(x => x + 1, 0);
@@ -21,35 +43,179 @@ export const GameMainScreen = ({ navigation }) => {
 }
 
 const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
+    const dispatch = useDispatch();
     const store = useStore();
     const { cash, electionStatus, yearsPassed } = commonSettings;
-    const { possessionList } = useSelector( getPossessionSettings );
-    const [ alert, setAlert ] = useState({ 
-        isVisible: false, 
-        data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT,
-        buttonsCallbacks: [
-            () => setAlert({ ...alert, isVisible: false }),
-            () => { 
-                setAlert({ ...alert, isVisible: false }); 
-                BackHandler.exitApp(); 
-            }
-        ]
-    });
+    const { possessionList, possessionSellCostList } = useSelector( getPossessionSettings );
+    const { lendAmount, lendTerm, lendPersentages, borrowAmount, borrowTerm, borrowPersentage, insuredPossessionList, insurancePossessionCostList } = useSelector( getBankSettings );
+    const { commonBusinessIncome } = useSelector( getBusinessSettings );
+    const [ alert, setAlert ] = useState({ isVisible: false, data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT });
 
-    useFocusEffect(() => {
-        const commonSettings = store.getState().gameSettingsReducer.commonSettings;
-        const currentElectionStatus = commonSettings.electionStatus;
-        const currentCash = commonSettings.cash;
-        if(( currentElectionStatus !== electionStatus ) || ( currentCash != cash )) forceUpdate(); 
-    })
+    const navToTotalScreenIfYearIsOver = () => {
+        const { posWithinYear, endOfYear } = store.getState().gameSettingsReducer.commonSettings;
+        if( endOfYear <= posWithinYear ) navigation.navigate('TotalScreen');
+    }
+
+    const showDisasterAlert = ( message ) => {
+        setAlert({
+            ...alert,
+            isVisible: true,
+            data: {
+                ...GAME_MAIN_SCREEN_DISASTER,
+                message
+            },
+            buttonsCallbacks: [
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                    navToTotalScreenIfYearIsOver();
+                }  
+            ]
+        })
+    }
+
+    const createDisaster = () => {
+        if( random() > 0.2 ) {
+            navToTotalScreenIfYearIsOver();
+            return;
+        }
+
+        const numOfDisaster = Math.floor( 10 * random() );
+        if( ( numOfDisaster <=0 ) || ( numOfDisaster > 5 ) ) {
+            navToTotalScreenIfYearIsOver();
+            return;
+        }
+        if( !possessionList[ numOfDisaster - 1 ] ) {
+            navToTotalScreenIfYearIsOver();
+            return;
+        }
+
+        let message = '';
+        const damage = possessionSellCostList[  numOfDisaster - 1 ];
+
+        switch( numOfDisaster ) {
+            case 1: 
+                message = `Ваша квартира сгорела.\nНанесен ущерб ${ damage }$.`;
+                break;
+            case 2:
+                message = `Вы попали в автокатастрофу.\nВыбросьте остатки своего автомобиля.\nНанесен ущерб ${ damage }$.`;
+                break;
+            case 3:
+                message = `Сионисты взорвали вашу виллу.\nНанесен ущерб ${ damage }$.`;
+                break;
+            case 4:
+                message = `Экстремисты затопили вашу яхту.\nНанесен ущерб ${ damage }$.`;
+                break;
+            case 5:
+                message = `Вы разбились на своем самолете.\nЛетайте самолетами Аэрофлота.\nНанесен ущерб ${ damage }$.`;                
+        }
+
+        possessionList[ numOfDisaster - 1 ] = false;
+        dispatch(setPossessionList( possessionList ));
+
+        if(insuredPossessionList[ numOfDisaster - 1 ]) {
+            message = message + `\nВам выплачивается страховка ${ insurancePossessionCostList[ numOfDisaster - 1 ] }`;
+            dispatch(setCommonBusinessIncomeAction( commonBusinessIncome + insurancePossessionCostList[ numOfDisaster - 1 ] ));
+            insuredPossessionList[ numOfDisaster - 1 ] = false;
+            insurancePossessionCostList[ numOfDisaster - 1 ] = 0;
+            dispatch(setInsuredPossessionListAction( insuredPossessionList ));
+            dispatch(setInsurancePossessionCostListAction( insurancePossessionCostList, true ));
+        }
+
+        setTimeout( () => showDisasterAlert( message ), 300 );
+    }
+
+    const showBorrowRefundAlert = ( refundedAmount ) => {
+        setAlert({
+            ...alert,
+            isVisible: true,
+            message: `С вас удержали кредит с процентами ${ refundedAmount }`,
+            data: GAME_MAIN_SCREEN_BORROW_REFUND,
+            buttonsCallbacks: [
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                    dispatch(setBorrowAmountAction( 0 ));
+                    setCashAmountMinusFine( refundedAmount );
+                    forceUpdate();
+                    createDisaster();
+                }  
+            ]
+        })
+    }
+
+    const borrowRefund = () => {
+        if( ( borrowAmount > 0 ) && ( borrowTerm <= 0 ) ) {
+            const refundedAmount = borrowAmount + borrowAmount * borrowPersentage;
+            setTimeout( () => showBorrowRefundAlert( refundedAmount ), 300 );
+            return;
+        }
+        createDisaster();
+    }
+
+    const showLendRefundAlert = ( isMoneyNotRefunded, message ) => {
+        const data = ( isMoneyNotRefunded ) ? GAME_MAIN_SCREEN_LEND_NOT_REFUND : GAME_MAIN_SCREEN_LEND_REFUND;
+        setAlert({
+            ...alert,
+            isVisible: true,
+            message,
+            data,
+            buttonsCallbacks: [
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                    if( isMoneyNotRefunded ) {
+                        dispatch(setCashAmountAction( cash + lendAmount * ( 1 + lendPersentages ) ));
+                        forceUpdate();
+                    }
+                    dispatch(setLendAmountAction( 0, true ));
+                    borrowRefund();
+                }  
+            ]
+        })
+
+    }
+
+    const lendRefund = () => { 
+        if( ( lendAmount != 0 ) && ( lendTerm <= 0 ) ) {
+            const message = ( lendAmount < 0 ) ? (
+                `Потеряно ${ lendAmount }$`) : (
+                `Получите свои ${ lendAmount } и барыш ${ Math.floor( lendAmount + lendAmount * lendPersentages ) }$` );
+            showLendRefundAlert( lendAmount < 0, message );
+            return;
+        }
+        borrowRefund();
+    }
+
+    const onScreenFocus = () => {
+        if( store.getState().appSettingsReducer.isGameStarted ) {
+            if( cash <= 0 ) calcSubtotals( 0.3 );
+            lendRefund();
+            return;
+        }
+
+        store.dispatch(setIsGameStarted( true, true ));
+    }
+
+    const showQuitGameAlert = () => {
+        setAlert({
+            ...alert,
+            isVisible: true,
+            buttonsCallbacks: [
+                () => setAlert({ ...alert, isVisible: false }),
+                () => { 
+                    setAlert({ ...alert, isVisible: false }); 
+                    BackHandler.exitApp(); 
+                }
+            ]
+        })
+    }
 
     useEffect(() => {
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+        const unsubscribe = navigation.addListener('focus', () => onScreenFocus() );
+        BackHandler.addEventListener('hardwareBackPress', () => {
             const navState = navigation.getState();
             const currentScreenName = navState.routes[ navState.index ].name;
             switch( currentScreenName ) {
                 case 'GameMainScreen':
-                    setAlert({ ...alert, isVisible: true, data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT });
+                    showQuitGameAlert();
                     return true;
                 case 'ElectionScreen':
                     return (( yearsPassed % 2 ) === 0) ? true : false;
@@ -62,10 +228,9 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
                 default:
                     return false;
             }
-
         })
-        return () => backHandler.remove();
-    })
+        return unsubscribe;
+    });
 
     const navToGameScreens = ( screen, timeStep = 0, params = {} ) => {
         if( timeStep > 0 ) calcSubtotals( timeStep );
@@ -73,12 +238,9 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const navToElectionScreen = ( timeStep = 0 ) => {
+        if( ( ( yearsPassed % 2 ) === 0 ) && electionStatus ) timeStep = timeStep + 0.7;
         calcSubtotals( timeStep );
-        if( !electionStatus ) {
-            setAlert({ ...alert, isVisible: true, data: GAME_MAIN_SCREEN_SCLEROSIS_WARNING })
-            return;
-        }
-        navToGameScreens( 'ElectionScreen' );
+        navigation.navigate( 'ElectionScreen' );
     }
 
     return (
@@ -87,7 +249,7 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
             <Text style={ styles.title }>Что вас интересует?</Text>
             <View style={ styles.menu }>
                 <View style={ styles.menuRow }>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'FinancialSituationScreen' ) }>
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'FinancialSituationScreen', 0.1 ) }>
                         <Text style={ styles.menuItemText }>Финансовое</Text>
                         <Text style={ styles.menuItemText }>положение</Text>
                     </Pressable>
@@ -116,7 +278,7 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
                 <View style={ styles.menuRow }>
                     <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ 
                         () => navToGameScreens( 'BankScreen', 0, { 
-                            navigateFromMainScreen: true
+                            previousScreen: 'GameMainScreen'
                         })}>
                         <Text style={ styles.menuItemText }>Банк</Text>
                     </Pressable>
