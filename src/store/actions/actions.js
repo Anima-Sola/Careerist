@@ -110,15 +110,6 @@ export const setYearExpenseAction = ( item, saveStateToStore = false ) => {
     }
 }
 
-export const setRealEstateCostAction = ( item, saveStateToStore = false ) => {
-    return {
-        type: 'SET_REAL_ESTATE_COST',
-        payload: item,
-        settingsSection: 'commonSettings',
-        saveStateToStore
-    }
-}
-
 //---------------------------------------------------------------------------------------
 export const setPossessionList = ( list, saveStateToStore = false ) => {
     return {

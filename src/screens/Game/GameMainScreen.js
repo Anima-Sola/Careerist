@@ -238,8 +238,8 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const navToElectionScreen = ( timeStep = 0 ) => {
-        if( ( ( yearsPassed % 2 ) === 0 ) && electionStatus ) timeStep = timeStep + 0.7;
         calcSubtotals( timeStep );
+        if( ( ( yearsPassed % 2 ) === 0 ) && electionStatus ) calcSubtotals( 0.7 );
         navigation.navigate( 'ElectionScreen' );
     }
 

@@ -96,6 +96,7 @@ export const calcSubtotals = ( timeStep ) => {
     store.dispatch(setInsurancePossessionTermListAction( insurancePossessionTermList ));
 
     let subtotalYearExpense = 500 * ( 2 + currentSocialStatus ** 2 + rndBetweenMinusOneAndOne() );
+    
     let subtotalBusinessIncome = 0;
 
     for( let i = 0; i < 5; i++ ) {

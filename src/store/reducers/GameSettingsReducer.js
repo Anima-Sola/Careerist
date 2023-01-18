@@ -13,7 +13,6 @@ const initialState = {
         
         cash: 1500,                                             // Сумма налички
         yearExpense: 0,                                         // Годовые расходы
-        realEstateCost: 0,                                      // Стоимость активов в недвижимости
 
         currentSocialStatus: 1,                                 // 1 - Бизнесмен, 2 - лидер профсоюза мусорщиков, 3 - шериф, 4 - сенатор, 5 - президент
         electionStatus: true,                                   // Флаг, true - есть выборы, false - нет выборов
@@ -97,8 +96,6 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
             return saveState( state, 'yearsPassed', action );
         case 'SET_YEAR_EXPENSE':
             return saveState( state, 'yearExpense', action );
-        case 'SET_REAL_ESTATE_COST':
-            return saveState( state, 'realEstateCost', action );
 
         case 'SET_POSSESSION_LIST':
             return saveState( state, 'possessionList', action );

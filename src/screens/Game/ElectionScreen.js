@@ -35,6 +35,9 @@ export const ElectionScreen = ({ navigation }) => {
 
 const Election = ({ navigation, commonSettings }) => {
     const dispatch = useDispatch();
+    const [ isRun, setIsRun ] = useState( false );
+    const electionCost = useRef();
+    const chanceToElect = useRef();
     const { cash, year, currentSocialStatus, yearsPassed, yearExpense, electionStatus } = commonSettings;
     const { possessionList } = useSelector( getPossessionSettings );
     const { businessList } = useSelector( getBusinessSettings );
@@ -59,8 +62,11 @@ const Election = ({ navigation, commonSettings }) => {
         return chanceToElect;
     }
 
-    const electionCost = useRef( calcElectionCost() );
-    const chanceToElect = useRef(  calcChanceToElect() );
+    if( !isRun ) {
+        electionCost.current = calcElectionCost();
+        chanceToElect.current = calcChanceToElect();
+        setIsRun( true );
+    }
     
     const showSkipElectionAlert = () => {
         setAlert({

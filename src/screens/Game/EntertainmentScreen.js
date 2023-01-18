@@ -42,6 +42,8 @@ export const EntertainmentScreen = ({ navigation, route }) => {
 
 const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
+    const [ isRun, setIsRun ] = useState( false );
+    const entertainmentData = useRef();
     const { cash, yearExpense } = commonSettings;
     const { depositAmount } = useSelector( getBankSettings );
     const [ activeItem, setActiveItem ] = useState( 0 );
@@ -74,11 +76,6 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
         })
     }
 
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener( 'hardwareBackPress', () => showYouAreMiserAlert() );
-        return () => backHandler.remove();
-    })
-
     const calcEntertainmentData = () => {
         let entertainmentData = [];
         for( let i = 1; i <= 5; i++ ) {
@@ -94,7 +91,10 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
         return entertainmentData;
     }
 
-    const entertainmentData = useRef( calcEntertainmentData() );
+    if( !isRun ) {
+        entertainmentData.current = calcEntertainmentData();
+        setIsRun( true );
+    }
 
     const getEntertainList = () => {
         let i = -1;
@@ -209,6 +209,11 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
         showLoseAlert();
 
     }
+
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener( 'hardwareBackPress', () => showYouAreMiserAlert() );
+        return () => backHandler.remove();
+    }, [])
 
     return (
         <>  
