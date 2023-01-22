@@ -139,3 +139,9 @@ export const calcInEstateAmount = () => {
     }
     return amount;
 }
+
+export const INT = ( value ) => {
+    const intValue = Math.trunc( value );
+    if( intValue === value ) return intValue - 1;
+    return intValue;
+}

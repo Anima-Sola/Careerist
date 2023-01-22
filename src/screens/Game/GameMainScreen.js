@@ -30,6 +30,7 @@ import {
 } from "../../store/actions/actions";
 import { calcSubtotals, setCashAmountMinusFine } from "../../components/CommonFunctions";
 import random from "../../components/Random";
+import { INT } from "../../components/CommonFunctions";
 
 
 export const GameMainScreen = ({ navigation }) => {
@@ -79,7 +80,7 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
             return;
         }
 
-        const numOfDisaster = Math.floor( 10 * random() );
+        const numOfDisaster = INT( 10 * random() );
         if( ( numOfDisaster <=0 ) || ( numOfDisaster > 5 ) ) {
             navToTotalScreenIfYearIsOver();
             return;
