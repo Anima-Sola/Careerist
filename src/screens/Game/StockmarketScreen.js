@@ -284,7 +284,6 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const calcStocksData = () => {
-        console.log('Запущено');
         let stocksPrices = [];
         let stocksDividends = [];
         for( let i = 0; i < 5; i++ ) {

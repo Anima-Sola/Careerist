@@ -35,7 +35,7 @@ export const InputAgeScreen = ({ navigation }) => {
         }
         const deathAge = 60 + 20 * random();
         dispatch(setDeathAge( deathAge ));
-        dispatch(setPlayerAgeAction( age, true ));
+        dispatch(setPlayerAgeAction( +age, true ));
         navigation.navigate('InputСashAmountScreen');
     }
 

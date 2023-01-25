@@ -21,6 +21,8 @@ import { LendScreen } from "../screens/Game/BankServices/LendScreen";
 import { BorrowScreen } from "../screens/Game/BankServices/BorrowScreen";
 import { EntertainmentScreen } from "../screens/Game/EntertainmentScreen"; 
 import { TotalScreen } from "../screens/Game/TotalScreen";
+import { DeathScreen } from "../screens/Game/DeathScreen";
+import { BankruptScreen } from "../screens/Game/BankruptScreen";
 
 const AppRootNavigator = createNativeStackNavigator();
 
@@ -110,6 +112,14 @@ export function AppRootNavigation () {
                 <AppRootNavigator.Screen
                     name = "TotalScreen"
                     component = { TotalScreen }
+                />
+                <AppRootNavigator.Screen
+                    name = "DeathScreen"
+                    component = { DeathScreen }
+                />
+                <AppRootNavigator.Screen
+                    name = "BankruptScreen"
+                    component = { BankruptScreen }
                 />
             </AppRootNavigator.Navigator>
         </NavigationContainer>

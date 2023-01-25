@@ -225,6 +225,8 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
                     else navigation.navigate('BankScreen');
                     return true;
                 case 'EntertainmentScreen':
+                case 'TotalScreen':
+                case 'BankruptScreen':
                     return true;
                 default:
                     return false;

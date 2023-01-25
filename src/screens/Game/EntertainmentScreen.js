@@ -92,8 +92,8 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     if( !isRun ) {
-        entertainmentData.current = calcEntertainmentData();
         setIsRun( true );
+        entertainmentData.current = calcEntertainmentData();
     }
 
     const getEntertainList = () => {

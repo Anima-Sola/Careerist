@@ -1,6 +1,7 @@
 import store from "../store";
 import random, { rndBetweenMinusOneAndOne } from "./Random";
 import {
+    setElectionStatus,
     setEndOfYear,  
     setPosWithinYear,
     setBorrowTermAction,
@@ -15,17 +16,22 @@ import {
     setBusinessBuyCostList,
     setBusinessSellCostList,
     setBusinessYearIncome,
-    setEmployeesSalaryList
+    setEmployeesSalaryList,
+    setIsBankBankruptAction
 } from "../store/actions/actions";
 
 export const setInitialGameData = () => {
     
     const commonSettings = store.getState().gameSettingsReducer.commonSettings;
-
     const gameDifficultyLevel = commonSettings.gameDifficultyLevel;
-
     const endOfYear = gameDifficultyLevel + ( 5 - gameDifficultyLevel ) * random();
+    
     store.dispatch(setEndOfYear( endOfYear ));
+    store.dispatch(setElectionStatus( true ));
+    store.dispatch(setPosWithinYear( 0 ));
+    store.dispatch(setYearExpenseAction( 0 ));
+    store.dispatch(setCommonBusinessIncomeAction( 0.2 ));
+    store.dispatch(setIsBankBankruptAction( false ));
 
     const possessionBuyCostList = [];
     const possessionSellCostList = [];

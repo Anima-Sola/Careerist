@@ -1,7 +1,6 @@
 import React, { useState, useRef, useReducer } from 'react';
 import { Text, View, StyleSheet, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect } from "@react-navigation/native";
 import { Button } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { 
@@ -32,51 +31,53 @@ import GameWrapper from '../../components/GameWrapper';
 import CustomAlert from '../../components/CustomAlert';
 import TotalTable from '../../components/TotalTable';
 import random from '../../components/Random';
+import { setInitialGameData } from '../../components/CommonFunctions';
 
 export const TotalScreen = ({ navigation }) => {
-    const [, forceUpdate ] = useReducer(x => x + 1, 0);
     const commonSettings = useSelector( getCommonSettings );
-    const wrappedComponent = <Total navigation={ navigation } forceUpdate={ forceUpdate } commonSettings={ commonSettings }/>
+    const wrappedComponent = <Total navigation={ navigation } commonSettings={ commonSettings }/>
 
     return(
         <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
     )
 };
 
-const Total = ({ navigation, forceUpdate }) => {
+const Total = ({ navigation }) => {
     const dispatch = useDispatch();
-    const { cash, year, currentSocialStatus, yearExpense, playerAge, yearsPassed } = useSelector( getCommonSettings );
+    const [ isRun, setIsRun ] = useState( false );
+    const { cash, year, currentSocialStatus, yearExpense, playerAge, yearsPassed, deathAge } = useSelector( getCommonSettings );
     const { possessionList } = useSelector( getPossessionSettings );
     const { commonBusinessIncome, businessList } = useSelector( getBusinessSettings );
     const { employeesList } = useSelector( getEmployeesSettings );
     const { insuredPossessionList, insurancePossessionCostList, insurancePossessionTermList } = useSelector( getBankSettings );
-    const { dividendsList, stocksCostList } = useSelector( getStockSettings );
+    const { dividendsList, stocksQuantityList } = useSelector( getStockSettings );
     const [ alert, setAlert ] = useState({ isVisible: false, data: TOTAL_SCREEN_VARGANCY });
     const totalCash = useRef( cash );
 
     const calcVargancyFine = () => {
-        const vargancyFine = 1000 + 20 * Math.floor( random() * totalCash.current / 19 );
+        const vargancyFine = 1000 + 20 * Math.floor( random() * Math.abs( totalCash.current ) / 19 );
         totalCash.current = totalCash.current - vargancyFine;
         return vargancyFine;
     }
 
     const calcGreedFine = () => {
-        const greenFine = 1000 + 25 * Math.floor( random()  * totalCash.current / 23 );
+        const greenFine = 1000 + 25 * Math.floor( random()  * Math.abs( totalCash.current ) / 23 );
         totalCash.current = totalCash.current - greenFine;
         return greenFine;
     }
 
-    useFocusEffect(() => {
+    if( !isRun ) {
+        setIsRun( true );
         let insuranseExpense = 0;
         let dividendsIncome = 0;
         for( let i = 0; i < 5; i++ ) {
             if( insuredPossessionList[ i ] ) insuranseExpense = insuranseExpense  + 0.5 * insurancePossessionCostList[ i ];
             if( insurancePossessionTermList[ i ] <= 0 ) insuredPossessionList[ i ] = false;
-            dividendsIncome = dividendsIncome + dividendsList[ i ] * stocksCostList[ i ];
+            dividendsIncome = dividendsIncome + dividendsList[ i ] * stocksQuantityList[ i ];
         }
         dispatch(setCommonBusinessIncomeAction( commonBusinessIncome + dividendsIncome ));
         dispatch(setYearExpenseAction( yearExpense + insuranseExpense ), true);
-    })
+    }
 
     const showCurrentSocialStatus = () => {
         return (
@@ -113,28 +114,30 @@ const Total = ({ navigation, forceUpdate }) => {
     }
 
     const checkDeficitOfMoney = () => {
-        forceUpdate();
         totalCash.current = totalCash.current + commonBusinessIncome - yearExpense;
+        dispatch(setCashAmountAction( totalCash.current ));
         
         if( totalCash.current < 0 ) {
-            console.log('У Вас дефицит средств ' + totalCash.current);
-        } else {
-            console.log('123');
-            dispatch(setCashAmountAction( totalCash.current ));
+            navigation.navigate('BankruptScreen');
+        } else {            
             dispatch(setPlayerAgeAction( playerAge + 1 ));
             dispatch(setYearsPassedAction( yearsPassed + 1 ), true );
-            navigation.navigate('GameMainScreen');
+            if( deathAge < playerAge + 1 ) {
+                navigation.navigate('DeathScreen');
+            } else {
+                setInitialGameData();
+                navigation.navigate('GameMainScreen');
+            }
         }
-
     }
 
-    const showGreedAlert = ( greenFine ) => {
+    const showGreedAlert = ( greedFine ) => {
         setAlert({
             ...alert,
             isVisible: true,
             data: {
                 ...TOTAL_SCREEN_GREED,
-                message: `Штраф налогового управления ${ greenFine }$ за жмотничество`
+                message: `Штраф налогового управления ${ greedFine }$ за жмотничество`
             },
             buttonsCallbacks: [
                 () => {

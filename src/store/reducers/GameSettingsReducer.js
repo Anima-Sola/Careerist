@@ -26,7 +26,7 @@ const initialState = {
     },
 
     businessSettings: {
-        commonBusinessIncome: 0,                                // Доход от бизнеса
+        commonBusinessIncome: 0.2,                              // Доход от бизнеса
         businessList: [ false, false, false, false, false ],    // Наличие - true / Отсутствие - false бара, ресторана, магазина, отеля, завода
         businessBuyCostList: [ 0, 0, 0, 0, 0 ],                 // Цена покупки бизнеса
         businessSellCostList: [ 0, 0, 0, 0, 0 ],                // Цена продажи бизнеса
