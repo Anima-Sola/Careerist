@@ -111,7 +111,7 @@ export const setYearExpenseAction = ( item, saveStateToStore = false ) => {
 }
 
 //---------------------------------------------------------------------------------------
-export const setPossessionList = ( list, saveStateToStore = false ) => {
+export const setPossessionListAction = ( list, saveStateToStore = false ) => {
     return {
         type: 'SET_POSSESSION_LIST',
         payload: list,
@@ -167,7 +167,7 @@ export const setCommonBusinessIncomeAction = ( item, saveStateToStore = false ) 
 }
 
 //---------------------------------------------------------------------------------------
-export const setBusinessList = ( list, saveStateToStore = false ) => {
+export const setBusinessListAction = ( list, saveStateToStore = false ) => {
     return {
         type: 'SET_BUSINESS_LIST',
         payload: list,

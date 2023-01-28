@@ -22,6 +22,7 @@ import {
 } from "../../store/constants";
 import { 
     setCommonBusinessIncomeAction,
+    setDividendsIncomeAction,
     setYearExpenseAction,
     setPlayerAgeAction,
     setYearsPassedAction,
@@ -116,12 +117,12 @@ const Total = ({ navigation }) => {
     const checkDeficitOfMoney = () => {
         totalCash.current = totalCash.current + commonBusinessIncome - yearExpense;
         dispatch(setCashAmountAction( totalCash.current ));
+        dispatch(setPlayerAgeAction( playerAge + 1 ));
+        dispatch(setYearsPassedAction( yearsPassed + 1 ), true );
         
         if( totalCash.current < 0 ) {
             navigation.navigate('BankruptScreen');
-        } else {            
-            dispatch(setPlayerAgeAction( playerAge + 1 ));
-            dispatch(setYearsPassedAction( yearsPassed + 1 ), true );
+        } else {                
             if( deathAge < playerAge + 1 ) {
                 navigation.navigate('DeathScreen');
             } else {

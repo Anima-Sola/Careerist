@@ -14,7 +14,7 @@ import {
     POSSESSION_SCREEN_DONT_BE_FOOL_WARNING,
     POSSESSION_SCREEN_ANOTHER_DEAL,
 } from '../../store/constants';
-import { setCashAmountAction, setPossessionList, setYearExpenseAction } from '../../store/actions/actions';
+import { setCashAmountAction, setPossessionListAction, setYearExpenseAction } from '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
 import { rndBetweenMinusOneAndOne } from '../../components/Random';
 
@@ -45,7 +45,7 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
         possessionList[ activeItem ] = buyOrSell;
         const updatedCash = ( buyOrSell ) ? cash - possessionBuyCostList[ activeItem ] : cash + possessionSellCostList[ activeItem ];
         dispatch(setCashAmountAction( updatedCash ));
-        dispatch(setPossessionList( possessionList, true ));
+        dispatch(setPossessionListAction( possessionList, true ));
         forceUpdate();
     }
 

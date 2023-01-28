@@ -14,7 +14,7 @@ import {
     BUSINESS_SCREEN_DONT_BE_FOOL_WARNING,
     BUSINESS_SCREEN_ANOTHER_DEAL, 
 } from '../../store/constants';
-import { setCashAmountAction, setBusinessList, setYearExpenseAction } from '../../store/actions/actions';
+import { setCashAmountAction, setBusinessListAction, setYearExpenseAction } from '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
 import { rndBetweenMinusOneAndOne } from '../../components/Random';
 
@@ -45,7 +45,7 @@ const Business = ({ navigation, forceUpdate, commonSettings }) => {
         businessList[ activeItem ] = buyOrSell;
         const updatedCash = ( buyOrSell ) ? cash - businessBuyCostList[ activeItem ] : cash + businessSellCostList[ activeItem ];
         dispatch(setCashAmountAction( updatedCash ));
-        dispatch(setBusinessList( businessList, true ));
+        dispatch(setBusinessListAction( businessList, true ));
         forceUpdate();
     }
 

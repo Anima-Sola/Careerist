@@ -654,7 +654,7 @@ export const WITHDRAW_SCREEN_WITHDRAW_SUCCESSFUL = {
     buttons: [
         {   
             key: 0,
-            hint: 'Уйти',
+            hint: 'Отлично',
             //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
             textColor: THEME.TEXT_COLOR,
         },

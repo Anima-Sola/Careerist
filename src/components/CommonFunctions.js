@@ -146,6 +146,20 @@ export const calcInEstateAmount = () => {
     return amount;
 }
 
+export const calcInStocksAmount = () => {
+    const { stocksCostList, stocksQuantityList } = store.getState().gameSettingsReducer.stockSettings;
+
+    let  amount = 0;
+    for( let i = 0; i < 5; i++ ) amount = amount + stocksQuantityList[ i ] * stocksCostList[ i ];
+    return amount;
+}
+
+export const isEmployeesHired = () => {
+    const { employeesList } = store.getState().gameSettingsReducer.employeesList;
+    if( employeesList.indexof( true ) !== - 1 ) return true;
+    return false;
+}
+
 export const INT = ( value ) => {
     const intValue = Math.trunc( value );
     if( intValue === value ) return intValue - 1;

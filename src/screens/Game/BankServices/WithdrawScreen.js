@@ -11,7 +11,10 @@ import {
     WITHDRAW_SCREEN_WITHDRAW_SUCCESSFUL,
     WITHDRAW_SCREEN_INPUT_AMOUNT
  } from '../../../store/constants';
- import { setCashAmountAction, setDepositAmountAction } from '../../../store/actions/actions';
+ import { 
+    setCashAmountAction, 
+    setDepositAmountAction 
+} from '../../../store/actions/actions';
  import CustomAlert from '../../../components/CustomAlert';
  import CustomPrompt from '../../../components/CustomPrompt';
 
@@ -91,7 +94,7 @@ const Withdraw = ({ navigation, commonSettings }) => {
             <View style={ styles.container }>
                 <View style={ styles.dataContainer }>
                     <Image style={ styles.image } resizeMode='center' source={ WithdrawImage } />
-                    <Text style={ styles.text }>Счет в банке { depositAmount }$.</Text>
+                    <Text style={ styles.text }>Счет в банке { Math.floor( 0.5 + depositAmount ) }$.</Text>
                     <Text style={ styles.text }>Стоимость операции 5%.</Text>
                 </View>
             </View>
@@ -126,6 +129,8 @@ const styles = StyleSheet.create({
     },
     dataContainer: {
         flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
         marginTop: hp('5%'),
     },
     text: {

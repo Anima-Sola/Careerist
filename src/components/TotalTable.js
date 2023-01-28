@@ -9,19 +9,12 @@ import {
     getStockSettings,
 } from '../store/selectors';
 import { THEME } from '../styles/theme';
-import { calcInEstateAmount } from './CommonFunctions';
+import { calcInEstateAmount, calcInStocksAmount } from './CommonFunctions';
 
 const TotalTable = () => {
     const { cash, yearExpense } = useSelector( getCommonSettings );
     const { depositAmount, borrowAmount, borrowPersentage } = useSelector( getBankSettings );
     const { commonBusinessIncome } = useSelector( getBusinessSettings );
-    const { stocksQuantityList, stocksCostList } = useSelector( getStockSettings );
-
-    const calcInStocksAmount = () => {
-        let  amount = 0;
-        for( let i = 0; i < 5; i++ ) amount = amount + stocksQuantityList[ i ] * stocksCostList[ i ];
-        return amount;
-    }
 
     const inStocksAmount = useRef( calcInStocksAmount() );
     const inEstateAmount = useRef( calcInEstateAmount() );

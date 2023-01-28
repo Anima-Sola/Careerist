@@ -12,7 +12,7 @@ const initialState = {
         yearsPassed: 0,                                         // Сколько прошло лет с момента начала игры  
         
         cash: 1500,                                             // Сумма налички
-        yearExpense: 0,                                         // Годовые расходы
+        yearExpense: 0,                                         // Годовой расход
 
         currentSocialStatus: 1,                                 // 1 - Бизнесмен, 2 - лидер профсоюза мусорщиков, 3 - шериф, 4 - сенатор, 5 - президент
         electionStatus: true,                                   // Флаг, true - есть выборы, false - нет выборов
@@ -20,9 +20,9 @@ const initialState = {
     },
 
     possessionSettings: {
-        possessionList: [ false, false, false, false, false ],        // Наличие - true / Отсутствие - false квартиры, машины, виллы, яхты, самолета
-        possessionBuyCostList: [ 0, 0, 0, 0, 0 ],                     // Цена покупки имущества
-        possessionSellCostList: [ 0, 0, 0, 0, 0 ],                    // Цена продажи имущества
+        possessionList: [ false, false, false, false, false ],  // Наличие - true / Отсутствие - false квартиры, машины, виллы, яхты, самолета
+        possessionBuyCostList: [ 0, 0, 0, 0, 0 ],               // Цена покупки имущества
+        possessionSellCostList: [ 0, 0, 0, 0, 0 ],              // Цена продажи имущества
     },
 
     businessSettings: {

@@ -23,7 +23,7 @@ import {
     setCashAmountAction, 
     setLendAmountAction,
     setBorrowAmountAction,
-    setPossessionList,
+    setPossessionListAction,
     setInsuredPossessionListAction,
     setInsurancePossessionCostListAction,
     setCommonBusinessIncomeAction,  
@@ -111,7 +111,7 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
         }
 
         possessionList[ numOfDisaster - 1 ] = false;
-        dispatch(setPossessionList( possessionList ));
+        dispatch(setPossessionListAction( possessionList ));
 
         if(insuredPossessionList[ numOfDisaster - 1 ]) {
             message = message + `\nВам выплачивается страховка ${ insurancePossessionCostList[ numOfDisaster - 1 ] }`;
