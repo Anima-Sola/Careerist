@@ -12,7 +12,7 @@ import {
     getEmployeesSettings,
     getBankSettings 
 } from "../../store/selectors";
-import { setCashAmountAction, setElectionStatus, setSocialStatus, setYearExpenseAction } from "../../store/actions/actions";
+import { setCashAmountAction, setElectionStatus, setSocialStatusAction, setYearExpenseAction } from "../../store/actions/actions";
 import CustomAlert from '../../components/CustomAlert';
 import {
     SOCIAL_STATUSES, 
@@ -123,7 +123,7 @@ const Election = ({ navigation, commonSettings }) => {
             },
             buttonsCallbacks: [
                 () => {
-                    dispatch(setSocialStatus( currentSocialStatus + 1 ));
+                    dispatch(setSocialStatusAction( currentSocialStatus + 1 ));
                     //Здесь обработка, если стал президентом.
                     dispatch(setElectionStatus( false, true ));
                     navigation.navigate('GameMainScreen');

@@ -47,7 +47,7 @@ export const setYear = ( item, saveStateToStore = false ) => {
     }
 }
 
-export const setSocialStatus = ( item, saveStateToStore = false ) => {
+export const setSocialStatusAction = ( item, saveStateToStore = false ) => {
     return {
         type: 'SET_SOCIAL_STATUS',
         payload: item,

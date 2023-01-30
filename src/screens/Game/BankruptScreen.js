@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useReducer, useRef } from 'react';
 import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
@@ -17,7 +17,9 @@ import {
     setStocksQuantityListAction,
     setPossessionListAction,
     setBusinessListAction,
-    setEmployeesList
+    setEmployeesList,
+    setSocialStatusAction,
+    setPlayerAgeAction
 } from '../../store/actions/actions';
 import {
     BANKRUPT_SCREEN_BE_ATTENTIVE,
@@ -42,7 +44,8 @@ export const BankruptScreen = ({ navigation }) => {
 
 const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
-    const { cash } = commonSettings;
+    let { cash, currentSocialStatus, playerAge } = commonSettings;
+    const panishmentScreen = useRef( 'GameMainScreen' );
     const { depositAmount } = useSelector( getBankSettings );
     const [ alert, setAlert ] = useState({
         isVisible: false,
@@ -72,7 +75,6 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
             data: BANKRUPT_SCREEN_WITHDRAW_SUCCESSFUL,
             buttonsCallbacks: [
                 () => {
-                    forceUpdate();
                     setAlert({ ...alert, isVisible: false });                    
                 }
             ]
@@ -97,7 +99,8 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
                         navigation.navigate('GameMainScreen');
                         return;
                     }
-                    setTimeout( () => showWithdrawSuccesfulAlert(), 300 );
+                    if( ( Math.round( depositAmount ) - amount ) > 0 ) setTimeout( () => showWithdrawSuccesfulAlert(), 300 );
+                    forceUpdate();
                 },
                 () => setPrompt({ ...prompt, isVisible: false, value: '' })
             ]
@@ -131,34 +134,84 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
             </>
         )
     }
-    const assetSale = () => {
 
-        let message = '';
-        
+    const sellStocks = () => {
         const inStocksAmount = calcInStocksAmount();
-        const inEstateAmount = calcInEstateAmount();
 
         if( ( inStocksAmount > 0 ) ) {
-            const soldStocksAmount = inStocksAmount * random();
-            message = `Ваши акции распроданы на сумму ${ soldStocksAmount }$.\n`;
-            
+            const soldStocksAmount = Math.floor( inStocksAmount * random() );
             dispatch(setStocksQuantityListAction([ 0, 0, 0, 0, 0 ]), true);
             cash = cash + soldStocksAmount;
+            return (
+                <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Ваши акции распроданы на сумму { soldStocksAmount }$.</Text>
+            )
         }
 
-        if( ( inEstateAmount > 0 ) && ( cash < 0 ) ) {
-            
-            const soldEstateAmount = inEstateAmount * random();
-            message = message + `Имущество пошло с молотка. Выручено ${ soldEstateAmount }$.\n`;
-            if( isEmployeesHired ) {
-                message = message + 'Подчиненные вас бросили!\n';
-                dispatch(setEmployeesList([ false, false, false, false, false ]));
-            }
+        return (<></>);
+    }
+
+    const sellEstate = () => {
+        const inEstateAmount = calcInEstateAmount();
+
+        if( ( cash < 0 ) && ( inEstateAmount > 0 ) ) {
+            const soldEstateAmount = Math.floor( inEstateAmount * random() );
             dispatch(setPossessionListAction([ false, false, false, false, false ]));
             dispatch(setBusinessListAction([ false, false, false, false, false ]), true );
-
+            cash = cash + soldEstateAmount;
+            return (
+                <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Имущество пошло с молотка. Выручено { soldEstateAmount }$.</Text>
+            )
         }
 
+        return (<></>);
+    }
+
+    const employeesFired = () => {
+        if( ( cash < 0 ) && isEmployeesHired ) {
+            dispatch(setEmployeesList([ false, false, false, false, false ], true ));
+            return (
+                <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Подчиненные вас бросили!</Text>
+            )
+        }
+
+        return (<></>);
+    }
+
+    const assignPanishment = () => {
+        if( cash < 0 ) {
+
+            const prisonTerm = 1 + Math.floor( -0.002 * cash );
+            let yearName = '';
+
+            if( prisonTerm === 1 ) yearName = 'год';
+            else if( ( prisonTerm > 1 ) && ( prisonTerm < 5 ) ) yearName = 'года';
+            else yearName = 'лет';
+
+            dispatch(setPlayerAgeAction( playerAge + prisonTerm ));
+            dispatch(setSocialStatusAction( 1, true ));
+
+            if( prisonTerm < 15 ) {
+                panishmentScreen.current = 'JailScreen';
+                return (
+                    <Text style={{ ...styles.text, marginBottom: hp('2%') }}>
+                        За долги вы переезжаете в казенную квартиру сроком на { prisonTerm } { yearName }.
+                    </Text>
+                )
+            } else {
+                panishmentScreen.current = 'DeathScreen';
+                return (
+                    <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Подчиненные вас бросили!</Text>
+                )
+            }
+
+        } else {
+            dispatch(setCashAmountAction( cash, true ));
+        }
+
+        return (<></>);
+    }
+
+    const assetSale = () => {
         return (
             <>
                 <CustomPrompt prompt={ prompt } setPrompt={ setPrompt }/>
@@ -166,9 +219,12 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
                 <ScrollView style={ styles.container }>
                     <View style={ styles.dataContainer }>
                         <Image style={ styles.image } resizeMode='center' source={ SaleImage } />
-                        <Text style={{ ...styles.text, marginBottom: hp('2%') }}>У Вас дефицит средств</Text>
+                        <Text style={ styles.text }>У Вас дефицит средств</Text>
                         <Text style={{ ...styles.bigText, marginBottom: hp('2%') }}>{ -Math.floor( cash ) }$.</Text>
-                        { message }
+                        { sellStocks() }
+                        { sellEstate() }
+                        { employeesFired() }
+                        { assignPanishment() }
                     </View>
                 </ScrollView>
                 <View style={ styles.buttonContainer }>
@@ -177,7 +233,7 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
                         titleStyle={ styles.buttonTitle }
                         type="outline" 
                         title="Продолжить"
-                        onPress={ () => showInputWithdrawAmountPrompt() }  
+                        onPress={ () => navigation.navigate( panishmentScreen.current ) }  
                     />
                 </View>
             </>
@@ -191,12 +247,14 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: '100%',
+        width: '96%',
+        //alignSelf: 'center'
         marginLeft: '2%',
-        marginRight: '2%',
+        marginRight: '2%'
     },
     dataContainer: {
         flex: 1,
+        marginBottom: hp('2%')
     },
     text: {
         color: THEME.TEXT_COLOR,
