@@ -227,6 +227,8 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
                 case 'EntertainmentScreen':
                 case 'TotalScreen':
                 case 'BankruptScreen':
+                case 'DeathScreen':
+                case 'JailScreen':
                     return true;
                 default:
                     return false;

@@ -155,8 +155,8 @@ export const calcInStocksAmount = () => {
 }
 
 export const isEmployeesHired = () => {
-    const { employeesList } = store.getState().gameSettingsReducer.employeesList;
-    if( employeesList.indexof( true ) !== - 1 ) return true;
+    const { employeesList } = store.getState().gameSettingsReducer.employeesSettings;
+    if( employeesList.indexOf( true ) !== - 1 ) return true;
     return false;
 }
 
@@ -164,4 +164,14 @@ export const INT = ( value ) => {
     const intValue = Math.trunc( value );
     if( intValue === value ) return intValue - 1;
     return intValue;
+}
+
+export const getYearName = ( term ) => {
+    let yearName = '';
+
+    if( term === 1 ) yearName = term +' год';
+    else if( ( term > 1 ) && ( term < 5 ) ) yearName = term + ' года';
+    else yearName = term + ' лет';
+
+    return yearName;
 }

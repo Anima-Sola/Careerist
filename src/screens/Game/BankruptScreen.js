@@ -19,14 +19,16 @@ import {
     setBusinessListAction,
     setEmployeesList,
     setSocialStatusAction,
-    setPlayerAgeAction
+    setPrisonTermAction,
+    setPlayerAgeAction,
+    setYearsPassedAction
 } from '../../store/actions/actions';
 import {
     BANKRUPT_SCREEN_BE_ATTENTIVE,
     BANKRUPT_SCREEN_INPUT_AMOUNT,
     BANKRUPT_SCREEN_WITHDRAW_SUCCESSFUL
 } from '../../store/constants';
-import { calcInStocksAmount, calcInEstateAmount, isEmployeesHired, setInitialGameData } from '../../components/CommonFunctions';
+import { calcInStocksAmount, calcInEstateAmount, isEmployeesHired, setInitialGameData, getYearName } from '../../components/CommonFunctions';
 import random from '../../components/Random';
 
 import WithdrawImage from "../../assets/images/bankservices/withdraw.png";
@@ -44,7 +46,7 @@ export const BankruptScreen = ({ navigation }) => {
 
 const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
-    let { cash, currentSocialStatus, playerAge } = commonSettings;
+    let { cash, playerAge, yearsPassed } = commonSettings;
     const panishmentScreen = useRef( 'GameMainScreen' );
     const { depositAmount } = useSelector( getBankSettings );
     const [ alert, setAlert ] = useState({
@@ -140,10 +142,21 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
 
         if( ( inStocksAmount > 0 ) ) {
             const soldStocksAmount = Math.floor( inStocksAmount * random() );
-            dispatch(setStocksQuantityListAction([ 0, 0, 0, 0, 0 ]), true);
+            dispatch(setStocksQuantityListAction([ 0, 0, 0, 0, 0 ], true ));
             cash = cash + soldStocksAmount;
             return (
                 <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Ваши акции распроданы на сумму { soldStocksAmount }$.</Text>
+            )
+        }
+
+        return (<></>);
+    }
+
+    const employeesFired = () => {      
+        if( ( cash < 0 ) && isEmployeesHired() ) {
+            dispatch(setEmployeesList([ false, false, false, false, false ], true ));
+            return (
+                <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Подчиненные вас бросили!</Text>
             )
         }
 
@@ -156,21 +169,13 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
         if( ( cash < 0 ) && ( inEstateAmount > 0 ) ) {
             const soldEstateAmount = Math.floor( inEstateAmount * random() );
             dispatch(setPossessionListAction([ false, false, false, false, false ]));
-            dispatch(setBusinessListAction([ false, false, false, false, false ]), true );
+            dispatch(setBusinessListAction([ false, false, false, false, false ], true ));
             cash = cash + soldEstateAmount;
             return (
-                <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Имущество пошло с молотка. Выручено { soldEstateAmount }$.</Text>
-            )
-        }
-
-        return (<></>);
-    }
-
-    const employeesFired = () => {
-        if( ( cash < 0 ) && isEmployeesHired ) {
-            dispatch(setEmployeesList([ false, false, false, false, false ], true ));
-            return (
-                <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Подчиненные вас бросили!</Text>
+                <>
+                    <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Имущество пошло с молотка. Выручено { soldEstateAmount }$.</Text>
+                    { employeesFired() }
+                </>
             )
         }
 
@@ -181,30 +186,27 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
         if( cash < 0 ) {
 
             const prisonTerm = 1 + Math.floor( -0.002 * cash );
-            let yearName = '';
-
-            if( prisonTerm === 1 ) yearName = 'год';
-            else if( ( prisonTerm > 1 ) && ( prisonTerm < 5 ) ) yearName = 'года';
-            else yearName = 'лет';
-
-            dispatch(setPlayerAgeAction( playerAge + prisonTerm ));
+            
+            dispatch(setPrisonTermAction( prisonTerm ));
             dispatch(setSocialStatusAction( 1, true ));
 
             if( prisonTerm < 15 ) {
                 panishmentScreen.current = 'JailScreen';
+                dispatch(setCashAmountAction( cash, true ));
                 return (
                     <Text style={{ ...styles.text, marginBottom: hp('2%') }}>
-                        За долги вы переезжаете в казенную квартиру сроком на { prisonTerm } { yearName }.
+                        За долги вы переезжаете в казенную квартиру сроком на { getYearName( prisonTerm ) }.
                     </Text>
                 )
             } else {
                 panishmentScreen.current = 'DeathScreen';
                 return (
-                    <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Подчиненные вас бросили!</Text>
+                    <Text style={{ ...styles.text, marginBottom: hp('2%') }}>За огромные долги вы приговорены к высшей мере наказания.</Text>
                 )
             }
 
         } else {
+            setInitialGameData();
             dispatch(setCashAmountAction( cash, true ));
         }
 

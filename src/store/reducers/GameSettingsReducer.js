@@ -16,6 +16,7 @@ const initialState = {
 
         currentSocialStatus: 1,                                 // 1 - Бизнесмен, 2 - лидер профсоюза мусорщиков, 3 - шериф, 4 - сенатор, 5 - президент
         electionStatus: true,                                   // Флаг, true - есть выборы, false - нет выборов
+        prisonTerm: 0                                           //Срок, насколько посадили за долги
         
     },
 
@@ -39,7 +40,6 @@ const initialState = {
     },
 
     stockSettings: {
-        dividendsIncome: 0,                                     // Доход от дивидендов
         stocksQuantityList: [ 0, 0, 0, 0, 0 ],                  // Количество акций каждой компании в собственности
         stocksCostList: [ 0, 0, 0, 0, 0 ],                      // Цены купленных акций
         dividendsList: [ 0, 0, 0, 0, 0]                         // Дивиденды
@@ -96,6 +96,8 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
             return saveState( state, 'yearsPassed', action );
         case 'SET_YEAR_EXPENSE':
             return saveState( state, 'yearExpense', action );
+        case 'SET_PRISON_TERM':
+            return saveState( state, 'prisonTerm', action );
 
         case 'SET_POSSESSION_LIST':
             return saveState( state, 'possessionList', action );
@@ -126,8 +128,6 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
             return saveState( state, 'stocksCostList', action );
         case 'SET_DIVIDENDS_LIST':
             return saveState( state, 'dividendsList', action );
-        case 'SET_DIVIDENDS_INCOME':
-            return saveState( state, 'dividendsIncome', action );
    
         case 'SET_IS_BANK_BANKRUPT':
             return saveState( state, 'isBankBankrupt', action);

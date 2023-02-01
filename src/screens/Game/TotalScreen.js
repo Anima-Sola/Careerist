@@ -117,18 +117,21 @@ const Total = ({ navigation }) => {
     const checkDeficitOfMoney = () => {
         totalCash.current = totalCash.current + commonBusinessIncome - yearExpense;
         dispatch(setCashAmountAction( totalCash.current ));
-        dispatch(setPlayerAgeAction( playerAge + 1 ));
-        dispatch(setYearsPassedAction( yearsPassed + 1 ), true );
         
         if( totalCash.current < 0 ) {
             navigation.navigate('BankruptScreen');
-        } else {                
+        } else {      
+            
+            dispatch(setPlayerAgeAction( playerAge + 1 ));
+            dispatch(setYearsPassedAction( yearsPassed + 1 ), true );
+
             if( deathAge < playerAge + 1 ) {
                 navigation.navigate('DeathScreen');
             } else {
                 setInitialGameData();
                 navigation.navigate('GameMainScreen');
             }
+            
         }
     }
 

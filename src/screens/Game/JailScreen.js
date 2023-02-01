@@ -1,12 +1,15 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { getCommonSettings } from '../../store/selectors';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
-import TotalTable from '../../components/TotalTable';
+import { getYearName } from '../../components/CommonFunctions';
+
+import JailImage from "../../assets/images/jail.png";
+import { ScrollView } from 'react-native-gesture-handler';
 
 export const JailScreen = ({ navigation }) => {
     const commonSettings = useSelector( getCommonSettings );
@@ -18,13 +21,15 @@ export const JailScreen = ({ navigation }) => {
 };
 
 const Jail = ({ navigation, commonSettings }) => {
-    const { cash, year } = commonSettings;
+    const { year, prisonTerm } = commonSettings;
 
     return (
-        <View style={ styles.container }>
-            <Text style={{ ...styles.text, marginBottom: hp('1%') }}>Год { year }</Text>
-            <Text style={{ ...styles.text, marginBottom: hp('1%') }}>Наличные средства { Math.floor( 0.01 + cash ) }$</Text>
-            <TotalTable />
+        <>
+            <ScrollView style={ styles.container }>
+                <Image style={ styles.image } resizeMode='center' source={ JailImage } />
+                <Text style={{ ...styles.text, marginBottom: hp('1%') }}>Год { year }</Text>
+                <Text style={{ ...styles.text, marginBottom: hp('1%') }}>Мотаем срок { getYearName( prisonTerm ) }.</Text>
+            </ScrollView>
             <View style={ styles.buttonContainer }>
                 <Button
                     buttonStyle={ styles.button } 
@@ -34,7 +39,7 @@ const Jail = ({ navigation, commonSettings }) => {
                     onPress={ () => navigation.navigate('GameMainScreen') }  
                 />
             </View>
-        </View>
+        </>
     )
 }
     
@@ -44,7 +49,13 @@ const styles = StyleSheet.create({
         width: '96%',
         marginLeft: '2%',
         marginRight: '2%',
-        marginTop: hp('2%')
+        marginTop: hp('4%')
+    },
+    image: {
+        height: hp('25%'),
+        width: hp('25%'),
+        alignSelf: 'center',
+        marginBottom: hp('4%')
     },
     text: {
         color: THEME.TEXT_COLOR,
@@ -59,9 +70,10 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-        width: '100%',
+        width: '96%',
         height: hp('7%'),
         borderRadius: wp('10%'),
+        alignSelf: 'center'
     },
     buttonTitle: {
         color: THEME.TEXT_COLOR,

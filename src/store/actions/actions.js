@@ -110,6 +110,15 @@ export const setYearExpenseAction = ( item, saveStateToStore = false ) => {
     }
 }
 
+export const setPrisonTermAction = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_PRISON_TERM',
+        payload: item,
+        settingsSection: 'commonSettings',
+        saveStateToStore
+    }
+}
+
 //---------------------------------------------------------------------------------------
 export const setPossessionListAction = ( list, saveStateToStore = false ) => {
     return {
@@ -226,15 +235,6 @@ export const setDividendsListAction = ( list, saveStateToStore = false ) => {
     return {
         type: 'SET_DIVIDENDS_LIST',
         payload: list,
-        settingsSection: 'stockSettings',
-        saveStateToStore
-    }
-}
-
-export const setDividendsIncomeAction = ( item, saveStateToStore = false ) => {
-    return {
-        type: 'SET_DIVIDENDS_INCOME',
-        payload: item,
         settingsSection: 'stockSettings',
         saveStateToStore
     }
