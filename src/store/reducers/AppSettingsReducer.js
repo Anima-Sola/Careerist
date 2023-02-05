@@ -1,7 +1,7 @@
 import { saveDataToStore } from '../../components/FileSystem';
 
 export const initialState = {
-    isGameStarted: false
+    isNewYearBegun: false
 }
 
 const saveState = ( state, param, payload, saveStateToStore ) => {
@@ -16,8 +16,8 @@ export const appSettingsReducer = ( state = initialState, action ) => {
         case 'SAVE_APP_SETTINGS_INITIAL_STATE':
             saveDataToStore( 'APP_SETTINGS', initialState);
             return initialState;
-        case 'SET_IS_GAME_STARTED':
-            return saveState( state, 'isGameStarted', action.payload, action.saveStateToStore );
+        case 'SET_IS_NEW_YEAR_BEGUN':
+            return saveState( state, 'isNewYearBegun', action.payload, action.saveStateToStore );
         case 'LOAD_APP_SETTINGS':
             if ( action.payload ) return action.payload;
             return state;

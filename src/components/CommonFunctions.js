@@ -166,7 +166,7 @@ export const INT = ( value ) => {
     return intValue;
 }
 
-export const getYearName = ( term ) => {
+export const getPrisonTerm = ( term ) => {
     let yearName = '';
 
     if( term === 1 ) yearName = term +' год';

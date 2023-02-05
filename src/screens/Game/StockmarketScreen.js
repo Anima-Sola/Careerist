@@ -14,7 +14,6 @@ import {
     setStocksCostListAction,
     setDividendsListAction,
     setCommonBusinessIncomeAction,
-    setDividendsIncomeAction
 } from '../../store/actions/actions';
 import { 
     getCommonSettings, 
@@ -36,14 +35,13 @@ import {
 } from '../../store/constants';
 import random, { rndBetweenMinusOneAndOne } from '../../components/Random';
 import { INT } from '../../components/CommonFunctions';
-
+import { getFineAmount, setCashAmountMinusFine } from '../../components/CommonFunctions';
 
 import Gazprom from "../../assets/images/logos/gazprom.png";
 import Rosneft from "../../assets/images/logos/rosneft.png";
 import Lukoil from "../../assets/images/logos/lukoil.png";
 import Magnit from "../../assets/images/logos/magnit.png";
 import Sber from "../../assets/images/logos/sber.png";
-import { calcSubtotals } from '../../components/CommonFunctions';
 
 export const StockmarketScreen = ({ navigation }) => {
     const [, forceUpdate ] = useReducer(x => x + 1, 0);
@@ -83,21 +81,6 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         })
         return () => backHandler.remove();
     })
-
-    const setCashAmountMinusFine = ( fineAmount ) => {
-        let updatedCash = cash - fineAmount;
-        if( updatedCash < 0 ) {
-            dispatch(setYearExpenseAction( yearExpense - updatedCash ));
-            updatedCash = 0;
-        }
-        dispatch(setCashAmountAction( updatedCash, true ));
-        forceUpdate();
-    }
-
-    const getFineAmount = () => {
-        const value = rndBetweenMinusOneAndOne();
-        return 1500 + 50 * INT( 10 * value );
-    }
 
     const showCheatingAlert = ( alertData, fineAmount ) => {
         setAlert({ 
@@ -220,13 +203,11 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                     message = `Воры покинули нашу страну. Взыскиваем только накладные расходы ${ overheads }$.\n` +
                     `Учтите на будущее!`;
                     dispatch(setYearExpenseAction(yearExpense + overheads));
-                    dispatch(setDividendsIncomeAction(0));
                     dispatch(setStocksQuantityListAction([ 0, 0, 0, 0, 0 ]), true);
                     setTimeout(() => showProblemAlert(message, 0, 'Провал!'));
                 },
                 () => {
                     setAlert({ ...alert, isVisible: false });
-                    dispatch( setDividendsIncomeAction( 0 ) );
                     dispatch( setStocksQuantityListAction([ 0, 0, 0, 0, 0 ]), true );
                 }
             ]

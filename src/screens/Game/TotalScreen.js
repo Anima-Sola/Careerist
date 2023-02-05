@@ -22,11 +22,11 @@ import {
 } from "../../store/constants";
 import { 
     setCommonBusinessIncomeAction,
-    setDividendsIncomeAction,
     setYearExpenseAction,
     setPlayerAgeAction,
     setYearsPassedAction,
-    setCashAmountAction
+    setCashAmountAction,
+    setIsNewYearBegun
 } from '../../store/actions/actions';
 import GameWrapper from '../../components/GameWrapper';
 import CustomAlert from '../../components/CustomAlert';
@@ -121,13 +121,12 @@ const Total = ({ navigation }) => {
         if( totalCash.current < 0 ) {
             navigation.navigate('BankruptScreen');
         } else {      
-            
-            dispatch(setPlayerAgeAction( playerAge + 1 ));
-            dispatch(setYearsPassedAction( yearsPassed + 1 ), true );
-
-            if( deathAge < playerAge + 1 ) {
+            if( deathAge <= playerAge ) {
                 navigation.navigate('DeathScreen');
             } else {
+                dispatch(setPlayerAgeAction( playerAge + 1 ));
+                dispatch(setYearsPassedAction( yearsPassed + 1 ));
+                dispatch(setIsNewYearBegun( false, true ));
                 setInitialGameData();
                 navigation.navigate('GameMainScreen');
             }

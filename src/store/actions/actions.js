@@ -360,9 +360,9 @@ export const loadAppSettings = () => {
     };
 }
 
-export const setIsGameStarted = ( item, saveStateToStore = false ) => {
+export const setIsNewYearBegun = ( item, saveStateToStore = false ) => {
     return {
-        type: 'SET_IS_GAME_STARTED',
+        type: 'SET_IS_NEW_YEAR_BEGUN',
         payload: item,
         saveStateToStore
     }

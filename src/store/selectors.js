@@ -7,4 +7,4 @@ export const getStockSettings = state => state.gameSettingsReducer.stockSettings
 export const getBankSettings = state => state.gameSettingsReducer.bankSettings;
 
 //App settings selectors
-export const getIsGameStarted = state => state.appSettingsReducer.isGameStarted;
+export const getIsNewYearBegun = state => state.appSettingsReducer.isNewYearBegun;

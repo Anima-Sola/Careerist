@@ -1,15 +1,25 @@
-import React from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { getCommonSettings } from '../../store/selectors';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
-import { getYearName } from '../../components/CommonFunctions';
+import { getPrisonTerm } from '../../components/CommonFunctions';
+import CustomAlert from '../../components/CustomAlert';
+import { JAIL_SCREEN_GREED_GET_OUT_OF_JAIL } from '../../store/constants';
+import random from '../../components/Random';
+import { 
+    setCashAmountAction,
+    setPosWithinYear,
+    setPlayerAgeAction,
+    setYearsPassedAction,
+    setIsNewYearBegun
+} from '../../store/actions/actions';
+import { calcSubtotals, setInitialGameData } from '../../components/CommonFunctions';
 
 import JailImage from "../../assets/images/jail.png";
-import { ScrollView } from 'react-native-gesture-handler';
 
 export const JailScreen = ({ navigation }) => {
     const commonSettings = useSelector( getCommonSettings );
@@ -20,23 +30,59 @@ export const JailScreen = ({ navigation }) => {
     )
 };
 
+
 const Jail = ({ navigation, commonSettings }) => {
-    const { year, prisonTerm } = commonSettings;
+    const dispatch = useDispatch();
+    const { year, prisonTerm, endOfYear, gameDifficultyLevel, playerAge, yearsPassed } = commonSettings;
+    const [ alert, setAlert ] = useState({ isVisible: false, data: JAIL_SCREEN_GREED_GET_OUT_OF_JAIL })
+
+    const showOutOfJailAlert = ( benefit) => {
+        setAlert({
+            isVisible: true,
+            data: {
+                ...JAIL_SCREEN_GREED_GET_OUT_OF_JAIL,
+                message: `Вам выдали подъемные ${ Math.floor( benefit ) }$.\nПолучили урок?`
+            },
+            buttonsCallbacks: [
+                () => {
+                    dispatch(setCashAmountAction( benefit ));
+                    dispatch(setPlayerAgeAction( playerAge + 1 + prisonTerm ));
+                    dispatch(setYearsPassedAction( yearsPassed + 1 + prisonTerm ), true );
+                    dispatch(setIsNewYearBegun( false, true ));
+                    setInitialGameData();
+                    navigation.navigate('GameMainScreen');
+                }
+            ]
+        }) 
+    }
+
+    const getOutOfJail = () => {
+        for( let i = 1; i <= prisonTerm ; i++ ) {
+            dispatch(setPosWithinYear( 0 ));
+            calcSubtotals( endOfYear );
+        }
+        
+        const rnd = random();
+        console.log(rnd);
+        const benefit = 1000 * gameDifficultyLevel * ( 1 + rnd );
+        showOutOfJailAlert( benefit );
+    }
 
     return (
-        <>
+        <>  
+            <CustomAlert alert={ alert } setAlert={ setAlert } />
             <ScrollView style={ styles.container }>
                 <Image style={ styles.image } resizeMode='center' source={ JailImage } />
                 <Text style={{ ...styles.text, marginBottom: hp('1%') }}>Год { year }</Text>
-                <Text style={{ ...styles.text, marginBottom: hp('1%') }}>Мотаем срок { getYearName( prisonTerm ) }.</Text>
+                <Text style={{ ...styles.text, marginBottom: hp('1%') }}>Мотаем срок { getPrisonTerm( prisonTerm ) }.</Text>
             </ScrollView>
             <View style={ styles.buttonContainer }>
                 <Button
                     buttonStyle={ styles.button } 
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
-                    title="Уйти"
-                    onPress={ () => navigation.navigate('GameMainScreen') }  
+                    title="Продолжить"
+                    onPress={ () => getOutOfJail() }  
                 />
             </View>
         </>

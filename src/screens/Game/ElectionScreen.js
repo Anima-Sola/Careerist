@@ -38,7 +38,7 @@ const Election = ({ navigation, commonSettings }) => {
     const [ isRun, setIsRun ] = useState( false );
     const electionCost = useRef();
     const chanceToElect = useRef();
-    const { cash, year, currentSocialStatus, yearsPassed, yearExpense, electionStatus } = commonSettings;
+    const { cash, year, currentSocialStatus, yearExpense, electionStatus, yearsPassed } = commonSettings;
     const { possessionList } = useSelector( getPossessionSettings );
     const { businessList } = useSelector( getBusinessSettings );
     const { employeesList } = useSelector( getEmployeesSettings );

@@ -20,15 +20,14 @@ import {
     setEmployeesList,
     setSocialStatusAction,
     setPrisonTermAction,
-    setPlayerAgeAction,
-    setYearsPassedAction
+    setIsNewYearBegun
 } from '../../store/actions/actions';
 import {
     BANKRUPT_SCREEN_BE_ATTENTIVE,
     BANKRUPT_SCREEN_INPUT_AMOUNT,
     BANKRUPT_SCREEN_WITHDRAW_SUCCESSFUL
 } from '../../store/constants';
-import { calcInStocksAmount, calcInEstateAmount, isEmployeesHired, setInitialGameData, getYearName } from '../../components/CommonFunctions';
+import { calcInStocksAmount, calcInEstateAmount, isEmployeesHired, setInitialGameData, getPrisonTerm } from '../../components/CommonFunctions';
 import random from '../../components/Random';
 
 import WithdrawImage from "../../assets/images/bankservices/withdraw.png";
@@ -46,7 +45,7 @@ export const BankruptScreen = ({ navigation }) => {
 
 const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
-    let { cash, playerAge, yearsPassed } = commonSettings;
+    let { cash } = commonSettings;
     const panishmentScreen = useRef( 'GameMainScreen' );
     const { depositAmount } = useSelector( getBankSettings );
     const [ alert, setAlert ] = useState({
@@ -194,9 +193,14 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
                 panishmentScreen.current = 'JailScreen';
                 dispatch(setCashAmountAction( cash, true ));
                 return (
-                    <Text style={{ ...styles.text, marginBottom: hp('2%') }}>
-                        За долги вы переезжаете в казенную квартиру сроком на { getYearName( prisonTerm ) }.
-                    </Text>
+                    <>
+                        <Text style={{ ...styles.text, marginBottom: hp('2%') }}>
+                            За долги вы переезжаете в казенную квартиру сроком на { getPrisonTerm( prisonTerm ) }.
+                        </Text>
+                        <Text style={{ ...styles.text, marginBottom: hp('2%') }}>
+                            Посидим?
+                        </Text>
+                    </>
                 )
             } else {
                 panishmentScreen.current = 'DeathScreen';
@@ -207,6 +211,7 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
 
         } else {
             setInitialGameData();
+            dispatch(setIsNewYearBegun( false, true ));
             dispatch(setCashAmountAction( cash, true ));
         }
 

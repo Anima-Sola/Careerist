@@ -7,7 +7,7 @@ import { THEME } from '../styles/theme';
 import { loadFonts } from '../styles/bootstrap';
 import { loadAppSettings } from "../store/actions/actions";
 import { loadGameSettings } from "../store/actions/actions";
-import { getIsGameStarted } from "../store/selectors";
+import { getIsNewYearBegun } from "../store/selectors";
 
 export const LoadingScreen = ({ navigation }) => {
     const [ isLoaded, setIsLoaded ] = useState(false);
@@ -17,7 +17,7 @@ export const LoadingScreen = ({ navigation }) => {
         dispatch( loadAppSettings() );
     }, [])
 
-    const isGameStarted = useSelector( getIsGameStarted );
+    const isNewYearBegun = useSelector( getIsNewYearBegun );
 
     const navToIntro = () => {
        navigation.navigate('IntroScreen');
@@ -30,7 +30,7 @@ export const LoadingScreen = ({ navigation }) => {
 
     const startGame = () => {
         setIsLoaded( true );
-        ( isGameStarted ) ? navToMainScreen() : setTimeout( navToIntro, 2000 );
+        ( isNewYearBegun ) ? navToMainScreen() : setTimeout( navToIntro, 2000 );
     }
 
     if (!isLoaded) {

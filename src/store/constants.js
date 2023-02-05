@@ -1076,3 +1076,20 @@ export const TOTAL_SCREEN_GREED = {
 export const BANKRUPT_SCREEN_WITHDRAW_SUCCESSFUL = WITHDRAW_SCREEN_WITHDRAW_SUCCESSFUL;
 export const BANKRUPT_SCREEN_BE_ATTENTIVE = WITHDRAW_SCREEN_BE_ATTENTIVE;
 export const BANKRUPT_SCREEN_INPUT_AMOUNT = WITHDRAW_SCREEN_INPUT_AMOUNT;
+
+export const JAIL_SCREEN_GREED_GET_OUT_OF_JAIL = {
+    message: '',
+    header: 'Вас выпустили!',
+    iconName: 'child', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Спасибо',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}

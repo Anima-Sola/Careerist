@@ -37,7 +37,7 @@ export const InputСashAmountScreen = ({ navigation }) => {
     const navToGame = ( cash ) => {
         dispatch(setCashAmountAction( cash, true ));
         setInitialGameData();
-        navigation.navigate('GameMainScreen', { previousScreen: 'InputCashAmountScreen' });
+        navigation.navigate('GameMainScreen');
     }
 
     const checkCashAmount = () => {

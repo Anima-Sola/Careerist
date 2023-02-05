@@ -16,7 +16,8 @@ const initialState = {
 
         currentSocialStatus: 1,                                 // 1 - Бизнесмен, 2 - лидер профсоюза мусорщиков, 3 - шериф, 4 - сенатор, 5 - президент
         electionStatus: true,                                   // Флаг, true - есть выборы, false - нет выборов
-        prisonTerm: 0                                           //Срок, насколько посадили за долги
+
+        prisonTerm: 0                                           // Срок, насколько посадили за долги
         
     },
 

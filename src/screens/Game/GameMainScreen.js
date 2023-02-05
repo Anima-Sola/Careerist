@@ -6,7 +6,6 @@ import { THEME } from "../../styles/theme";
 import GameWrapper from "../../components/GameWrapper";
 import {
     getCommonSettings, 
-    getPossessionSettings,
     getBankSettings,
     getBusinessSettings,
 } from "../../store/selectors";
@@ -19,14 +18,14 @@ import {
     GAME_MAIN_SCREEN_DISASTER
  } from "../../store/constants";
 import {
-    setIsGameStarted, 
+    setIsNewYearBegun, 
     setCashAmountAction, 
     setLendAmountAction,
     setBorrowAmountAction,
     setPossessionListAction,
     setInsuredPossessionListAction,
     setInsurancePossessionCostListAction,
-    setCommonBusinessIncomeAction,  
+    setCommonBusinessIncomeAction,
 } from "../../store/actions/actions";
 import { calcSubtotals, setCashAmountMinusFine } from "../../components/CommonFunctions";
 import random from "../../components/Random";
@@ -46,8 +45,7 @@ export const GameMainScreen = ({ navigation }) => {
 const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
     const store = useStore();
-    const { cash, electionStatus, yearsPassed } = commonSettings;
-    const { possessionList, possessionSellCostList } = useSelector( getPossessionSettings );
+    const { cash, electionStatus, yearsPassed, yearOfFirstElection } = commonSettings;
     const { lendAmount, lendTerm, lendPersentages, borrowAmount, borrowTerm, borrowPersentage, insuredPossessionList, insurancePossessionCostList } = useSelector( getBankSettings );
     const { commonBusinessIncome } = useSelector( getBusinessSettings );
     const [ alert, setAlert ] = useState({ isVisible: false, data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT });
@@ -81,10 +79,13 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
         }
 
         const numOfDisaster = INT( 10 * random() );
-        if( ( numOfDisaster <=0 ) || ( numOfDisaster > 5 ) ) {
+        if( ( numOfDisaster <= 0 ) || ( numOfDisaster > 5 ) ) {
             navToTotalScreenIfYearIsOver();
             return;
         }
+
+        let { possessionList, possessionSellCostList } = store.getState().gameSettingsReducer.possessionSettings;
+
         if( !possessionList[ numOfDisaster - 1 ] ) {
             navToTotalScreenIfYearIsOver();
             return;
@@ -186,13 +187,13 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const onScreenFocus = () => {
-        if( store.getState().appSettingsReducer.isGameStarted ) {
+        if( store.getState().appSettingsReducer.isNewYearBegun ) {
             if( cash <= 0 ) calcSubtotals( 0.3 );
             lendRefund();
             return;
         }
 
-        store.dispatch(setIsGameStarted( true, true ));
+        store.dispatch(setIsNewYearBegun( true, true ));
     }
 
     const showQuitGameAlert = () => {
