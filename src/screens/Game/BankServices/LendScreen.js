@@ -184,7 +184,7 @@ const Lend = ({ navigation, commonSettings }) => {
             <View style={ styles.container }>
                 <View style={ styles.dataContainer }>
                     <Image style={ styles.image } resizeMode='center' source={ LendImage } />
-                    <Text style={ styles.text }>Наличные средства { cash }$.</Text>
+                    <Text style={ styles.text }>Наличные средства { Math.floor( cash ) }$.</Text>
                     <Text style={ styles.text }>Договоримся об условиях.</Text>
                     <Text style={ styles.text }>Сколько дадите?</Text>
                 </View>

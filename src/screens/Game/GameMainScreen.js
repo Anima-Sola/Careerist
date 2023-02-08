@@ -45,7 +45,7 @@ export const GameMainScreen = ({ navigation }) => {
 const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
     const store = useStore();
-    const { cash, electionStatus, yearsPassed, yearOfFirstElection } = commonSettings;
+    const { cash, yearsPassed } = commonSettings;
     const { lendAmount, lendTerm, lendPersentages, borrowAmount, borrowTerm, borrowPersentage, insuredPossessionList, insurancePossessionCostList } = useSelector( getBankSettings );
     const { commonBusinessIncome } = useSelector( getBusinessSettings );
     const [ alert, setAlert ] = useState({ isVisible: false, data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT });
@@ -244,6 +244,7 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const navToElectionScreen = ( timeStep = 0 ) => {
+        const { yearsPassed, electionStatus } = store.getState().gameSettingsReducer.commonSettings;
         calcSubtotals( timeStep );
         if( ( ( yearsPassed % 2 ) === 0 ) && electionStatus ) calcSubtotals( 0.7 );
         navigation.navigate( 'ElectionScreen' );

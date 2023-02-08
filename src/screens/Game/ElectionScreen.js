@@ -24,6 +24,8 @@ import {
 import random from '../../components/Random';
 import { setCashAmountMinusFine, getFineAmount } from "../../components/CommonFunctions";
 
+import SclerosisImage from '../../assets/images/sclerosis.png';
+
 export const ElectionScreen = ({ navigation }) => {
     const commonSettings = useSelector( getCommonSettings );
     const wrappedComponent = <Election navigation={ navigation } commonSettings={ commonSettings } />
@@ -47,7 +49,7 @@ const Election = ({ navigation, commonSettings }) => {
 
     const calcElectionCost = () => {
         const nextSocialStatus = currentSocialStatus + 1;
-        return Math.floor( 5 ** nextSocialStatus * ( 2 + 5 * random() ) * 20 );
+        return Math.floor( ( 2 + 5 * random() ) * 20 * 5 ** nextSocialStatus );
     }
 
     const calcChanceToElect = () => {
@@ -63,8 +65,13 @@ const Election = ({ navigation, commonSettings }) => {
     }
 
     if( !isRun ) {
-        electionCost.current = calcElectionCost();
-        chanceToElect.current = calcChanceToElect();
+
+        if( electionStatus && (( yearsPassed % 2 ) === 0 )) {
+            electionCost.current = calcElectionCost();
+            console.log(electionCost.current);
+            chanceToElect.current = calcChanceToElect();
+        }
+
         setIsRun( true );
     }
     
@@ -119,7 +126,7 @@ const Election = ({ navigation, commonSettings }) => {
             isVisible: true, 
             data: { 
                 ...ELECTION_SCREEN_WIN_ELECTION, 
-                message: `Теперь вы  ${ SOCIAL_STATUSES[ currentSocialStatus + 1 ]}. Следующие выборы через 2 года.` 
+                message: `Теперь вы ${ SOCIAL_STATUSES[ currentSocialStatus + 1 ]}. Следующие выборы через 2 года.` 
             },
             buttonsCallbacks: [
                 () => {
@@ -151,7 +158,7 @@ const Election = ({ navigation, commonSettings }) => {
         dispatch(setCashAmountAction( updatedCash ));
 
         if( electionResult > chanceToElect.current ) {
-            const numOfVoices = Math.floor(50 * ( 1 - electionResult ));
+            const numOfVoices = Math.floor( 50 * ( 1 - electionResult ) );
             showLoseElectionAlert( numOfVoices );
             return;
         }
@@ -185,7 +192,7 @@ const Election = ({ navigation, commonSettings }) => {
                     <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus ] }</Text>
                 </View>
                 <View>
-                    <Text style={ styles.text }>Кампания обойдется в { electionCost.current }, вероятность успеха { 100 * chanceToElect.current }%.</Text>
+                    <Text style={ styles.text }>Кампания обойдется в { electionCost.current }, вероятность успеха { Math.floor( 100 * chanceToElect.current ) }%.</Text>
                 </View>
                 <View style={ styles.downTextContainer }>
                     <Text style={{ ...styles.text, fontSize: THEME.FONT45 }}>Участвуете?</Text>
@@ -214,6 +221,7 @@ const Election = ({ navigation, commonSettings }) => {
         return (
             <View style={ styles.container }>
                 <View style={{ ...styles.dataContainer, justifyContent: 'center' }}>
+                    <Image style={ styles.sclerosisImage } resizeMode='center' source={ SclerosisImage } />
                     <Text style={ styles.electionNotHeldText }>Год { year }.</Text>
                     <Text style={ styles.electionNotHeldText }>{ message }</Text>
                 </View>
@@ -257,6 +265,12 @@ const styles = StyleSheet.create({
         marginTop: hp('2%'),
         alignSelf: 'center',
         height: hp('40%')
+    },
+    sclerosisImage: {
+        height: hp('25%'),
+        width: hp('25%'),
+        alignSelf: 'center',
+        marginBottom: hp('4%')
     },
     text: {
         color: THEME.TEXT_COLOR,

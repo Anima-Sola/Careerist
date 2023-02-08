@@ -16,7 +16,6 @@ import {
     getCommonSettings,
     getBankSettings,
     getBusinessSettings,
-    getStockSettings,
 } from '../../../store/selectors';
 import { 
     setCashAmountAction,
@@ -27,7 +26,7 @@ import {
 import CustomAlert from '../../../components/CustomAlert';
 import CustomPrompt from '../../../components/CustomPrompt';
 import { rndBetweenMinusOneAndOne } from '../../../components/Random';
-import { calcInEstateAmount } from '../../../components/CommonFunctions';
+import { calcInEstateAmount, calcInStocksAmount } from '../../../components/CommonFunctions';
 
 import BorrowImage from "../../../assets/images/bankservices/borrow.png";
 
@@ -45,7 +44,6 @@ const Borrow = ({ navigation, commonSettings }) => {
     const { cash, year, yearsPassed, yearExpense, gameDifficultyLevel } = commonSettings;
     const { depositAmount } = useSelector( getBankSettings );
     const { commonBusinessIncome } = useSelector( getBusinessSettings );
-    const { dividendsIncome } = useSelector( getStockSettings );
     const [ alert, setAlert ] = useState({
         isVisible: false,
         data: BORROW_SCREEN_CANT_READ
@@ -57,7 +55,7 @@ const Borrow = ({ navigation, commonSettings }) => {
     });
 
     const calcWealth = () => {
-        const wealth = cash + depositAmount + dividendsIncome + calcInEstateAmount() - yearExpense + commonBusinessIncome;
+        const wealth = cash + depositAmount + calcInStocksAmount() + calcInEstateAmount() - yearExpense + commonBusinessIncome;
         return wealth;
     }
 
@@ -156,7 +154,7 @@ const Borrow = ({ navigation, commonSettings }) => {
                 <View style={ styles.container }>
                     <View style={ styles.dataContainer }>
                         <Image style={ styles.image } resizeMode='center' source={ BorrowImage } />
-                        <Text style={ styles.text }>Наличные средства { cash }$.</Text>
+                        <Text style={ styles.text }>Наличные средства { Math.floor( cash ) }$.</Text>
                         <Text style={ styles.text }>Со всеми потрохами</Text>
                         <Text style={ styles.text }>вы стоите: { Math.floor( wealth.current ) }$.</Text>
                         <Text style={ styles.text }>Даем на срок не более 5 лет.</Text>

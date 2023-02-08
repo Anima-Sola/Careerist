@@ -1,12 +1,11 @@
 import React, { useRef } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { 
     getCommonSettings,
     getBusinessSettings,
     getBankSettings,
-    getStockSettings,
 } from '../store/selectors';
 import { THEME } from '../styles/theme';
 import { calcInEstateAmount, calcInStocksAmount } from './CommonFunctions';

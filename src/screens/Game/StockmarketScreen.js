@@ -1,6 +1,5 @@
 import React, { useState, useReducer, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Image, BackHandler } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -14,6 +13,7 @@ import {
     setStocksCostListAction,
     setDividendsListAction,
     setCommonBusinessIncomeAction,
+
 } from '../../store/actions/actions';
 import { 
     getCommonSettings, 
@@ -42,6 +42,8 @@ import Rosneft from "../../assets/images/logos/rosneft.png";
 import Lukoil from "../../assets/images/logos/lukoil.png";
 import Magnit from "../../assets/images/logos/magnit.png";
 import Sber from "../../assets/images/logos/sber.png";
+import StockmarketClosedImage from '../../assets/images/stockclosed.png';
+
 
 export const StockmarketScreen = ({ navigation }) => {
     const [, forceUpdate ] = useReducer(x => x + 1, 0);
@@ -59,7 +61,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
     const stocksCurrentPriceList = useRef([]);
     const stocksDividendsList = useRef([]);
     const { cash, currentSocialStatus, yearExpense, posWithinYear, endOfYear } = commonSettings;
-    const { stocksQuantityList, stocksCostList, dividendsIncome } = useSelector( getStockSettings );
+    const { stocksQuantityList, stocksCostList } = useSelector( getStockSettings );
     const { commonBusinessIncome } = useSelector( getBusinessSettings );
     const { employeesList } = useSelector( getEmployeesSettings );
     const [ activeItem, setActiveItem ] = useState( 0 );
@@ -132,6 +134,22 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         })
     }
 
+    const calcStocksData = () => {
+        let stocksPrices = [];
+        let stocksDividends = [];
+        for( let i = 0; i < 5; i++ ) {
+            stocksPrices[ i ] = Math.round( 100 * random() );
+            stocksDividends[ i ] = ( 20 * random() ).toFixed( 1 );
+        }
+        return { stocksPrices, stocksDividends }
+    }
+ 
+    const setStocksData = () => {
+        const stocksData = calcStocksData();
+        stocksCurrentPriceList.current = stocksData.stocksPrices;
+        stocksDividendsList.current = stocksData.stocksDividends;
+    }
+
     const showProblemAlert = ( message, loss, header = 'Внештатная ситуация!', iconName = "exclamation", iconBackgroundColor = 'red' ) => {
         setAlert({
             isVisible: true, 
@@ -144,14 +162,16 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
             },
             buttonsCallbacks: [
                 () => {
+                    setStocksData();
                     setCashAmountMinusFine( loss );
                     setAlert({ ...alert, isVisible: false });
+                    forceUpdate();
                 },
             ]
         })
     }
 
-    const showClaimProblemAlert = ( message, loss, lawyerServiceCost, chanceToWinClaim ) => {
+    const showClaimProblemAlert = ( message, loss, lawyerServiceCost ) => {
         setAlert({
             isVisible: true, 
             data: { 
@@ -161,18 +181,19 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
             buttonsCallbacks: [
                 () => {
                     setAlert({ ...alert, isVisible: false });
+                    const chanceToWinClaim = rndBetweenMinusOneAndOne();
                     if( 0.65 - chanceToWinClaim < 0 ) {
-                        message = `Сбер выплачивает неустойку ${ 2 * lawyerServiceCost }$.\n` +
+                        message = `Увы, дело проиграно. Убыток ${ loss }$.\n` +
                         `Имейте своего адвоката!`;
-                        const income = commonBusinessIncome + lawyerServiceCost;
-                        dispatch(setCommonBusinessIncomeAction( income ), true );
-                        setTimeout( () => showProblemAlert( message, 0, 'Процесс выигран!', 'hand-peace', 'green' ), 300 );
+                        dispatch(setYearExpenseAction( yearExpense + loss ), true );
+                        setTimeout(() => showProblemAlert( message, lawyerServiceCost, 'Процесс проигран!', 'sad-cry' ));
                         return;
                     }
-                    message = `Увы, дело проиграно. Убыток ${ loss }$.\n` +
+                    message = `Сбер выплачивает неустойку ${ 2 * lawyerServiceCost }$.\n` +
                     `Имейте своего адвоката!`;
-                    dispatch(setYearExpenseAction( yearExpense + loss ), true );
-                    setTimeout(() => showProblemAlert( message, lawyerServiceCost, 'Процесс проигран!', 'sad-cry' ));
+                    const income = commonBusinessIncome + lawyerServiceCost;
+                    dispatch(setCommonBusinessIncomeAction( income ), true );
+                    setTimeout( () => showProblemAlert( message, 0, 'Процесс выигран!', 'hand-peace', 'green' ), 300 );
                 },
                 () => {
                     setAlert({ ...alert, isVisible: false });
@@ -183,7 +204,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         })
     }
 
-    const showStoleStocksProblemAlert = ( message, searchServiceCost, rnd, chanceToCatchThieves ) => {
+    const showStoleStocksProblemAlert = ( message, searchServiceCost, rnd ) => {
         setAlert({
             isVisible: true, 
             data: { 
@@ -193,13 +214,14 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
             buttonsCallbacks: [
                 () => {
                     setAlert({ ...alert, isVisible: false });
+                    const chanceToCatchThieves = rndBetweenMinusOneAndOne();
                     if( chanceToCatchThieves - rnd < 0 ) {
                         dispatch(setYearExpenseAction( yearExpense + searchServiceCost ), true );
                         message = 'Воры пойманы!';
                         setTimeout( () => showProblemAlert( message, 0, 'Успех!', 'hand-peace', 'green' ), 300 );
                         return;
                     }
-                    const overheads = INT( 450 * rnd + 800 );
+                    const overheads = Math.floor( 450 * rnd + 800 );
                     message = `Воры покинули нашу страну. Взыскиваем только накладные расходы ${ overheads }$.\n` +
                     `Учтите на будущее!`;
                     dispatch(setYearExpenseAction(yearExpense + overheads));
@@ -207,6 +229,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                     setTimeout(() => showProblemAlert(message, 0, 'Провал!'));
                 },
                 () => {
+                    setStocksData();
                     setAlert({ ...alert, isVisible: false });
                     dispatch( setStocksQuantityListAction([ 0, 0, 0, 0, 0 ]), true );
                 }
@@ -220,15 +243,13 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         let problemIndex = INT( 10 * random() );
 
         if( 5 - problemIndex < 0 ) return;
-        if( employeesList[ problemIndex ] ) return;
-        if( problemIndex !== 5 ) loss = INT( ( cash + 200 ) * random() );
+        if( employeesList[ problemIndex - 1 ] ) return;
+        if( problemIndex !== 5 ) loss = Math.floor( ( cash + 200 ) * random() );
 
         switch ( problemIndex ) {
             case 1:
-                if( dividendsIncome > 0 ) {
-                    message = `Вы неправильно оформляли сделки. Убыток ${ loss }$. \n Заведите маклера!`;
-                    showProblemAlert( message, loss );
-                }
+                message = `Вы неправильно оформляли сделки. Убыток ${ loss }$. \n Заведите маклера!`;
+                showProblemAlert( message, loss );
                 return;
             case 2:
                 loss = loss + 400;
@@ -236,12 +257,11 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                 showProblemAlert( message, loss );
                 return;
             case 3:
-                const chanceToWinClaim = rndBetweenMinusOneAndOne();
-                const lawyerServiceCost = INT( 15 * loss * 0.02 );
+                const lawyerServiceCost = 15 * Math.floor( loss * 0.02 );
                 message = `Компания Сбер предъявила иск в ${ loss }$.\n` + 
                 `Услуги адвоката \nобойдутся в ${ lawyerServiceCost }$.\n` +
                 `Вероятность успеха 65%.\nНанимаете?`;
-                showClaimProblemAlert( message, loss, lawyerServiceCost, chanceToWinClaim );
+                showClaimProblemAlert( message, loss, lawyerServiceCost );
                 return;
             case 4:
                 message = `Ваш шантажируют, вымогая ${ loss }.\n ` +
@@ -250,28 +270,17 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                 return;
             case 5:
                 const rnd = random();
-                const chanceToCatchThieves = rndBetweenMinusOneAndOne();
-                const searchServiceCost = 10 * ( INT( 45 * rnd + 80 + 0.03 * loss ) );
+                const searchServiceCost = 10 * ( Math.floor( 45 * rnd + 80 + 0.03 * loss ) );
                 message = `У вас украли все акции.\n` +
                 `Убыток ${ loss }$.\n` + 
                 `Сыскное бюро предлагает свои услуги за ${ searchServiceCost }$.\n` + 
-                `Шанс поимки воров ${ INT( 100 * rnd ) }%.\n` + 
+                `Шанс поимки воров ${ Math.floor( 100 * rnd ) }%.\n` + 
                 `Договорились?`;
-                showStoleStocksProblemAlert( message, searchServiceCost, rnd, chanceToCatchThieves )
+                showStoleStocksProblemAlert( message, searchServiceCost, rnd )
             default:
                 return;
         }
 
-    }
-
-    const calcStocksData = () => {
-        let stocksPrices = [];
-        let stocksDividends = [];
-        for( let i = 0; i < 5; i++ ) {
-            stocksPrices[ i ] = Math.round( 100 * random() );
-            stocksDividends[ i ] = ( 20 * random() ).toFixed( 1 );
-        }
-        return { stocksPrices, stocksDividends }
     }
 
     if( !isRun ) {
@@ -279,14 +288,10 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         setIsRun( true );
 
         if( posWithinYear < endOfYear ) {
-            //calcSubtotals( 0.6 ); Bug in original game
+            //calcSubtotals( 0.6 ); Bug in the original game
             let possibleLoss = 0;
             for( let i = 0; i < 5; i++ ) possibleLoss = possibleLoss + stocksCostList[ i ] * stocksQuantityList[ i ];
-            if( possibleLoss > 0 ) createProblem( possibleLoss );
-
-            const stocksData = calcStocksData();
-            stocksCurrentPriceList.current = stocksData.stocksPrices;
-            stocksDividendsList.current = stocksData.stocksDividends;
+            ( possibleLoss > 0 ) ? createProblem( possibleLoss ) : setStocksData();
         }
         
     }
@@ -299,7 +304,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
             message = `Удалость скупить ${stocksQuantity}.\n`;
             if( stocksQuantity <= 0 ) message = message + 'У нас дураков нет!\n'; 
         }
-        stocksQuantityList[ activeItem ] = INT( stocksQuantityList[ activeItem ] + 0.01 + stocksQuantity );
+        stocksQuantityList[ activeItem ] = Math.floor( stocksQuantityList[ activeItem ] + 0.01 + stocksQuantity );
         currentStocksQuantityList[ activeItem ] =  currentStocksQuantityList[ activeItem ] + stocksQuantity;
         setCurrentStocksQuantityList( currentStocksQuantityList );
         const updatedCash = cash - stocksCurrentPriceList.current[ activeItem ] * stocksQuantity;
@@ -350,7 +355,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
             message = `Удалость реализовать ${stocksQuantity}.\n`;
             if( stocksQuantity <= 0 ) message = message + 'У нас дураков нет!\n';
         }
-        stocksQuantityList[ activeItem ] = INT( stocksQuantityList[ activeItem ] + 0.01 - stocksQuantity );
+        stocksQuantityList[ activeItem ] = Math.floor( stocksQuantityList[ activeItem ] + 0.01 - stocksQuantity );
         currentStocksQuantityList[ activeItem ] = currentStocksQuantityList[ activeItem ] - stocksQuantity;
         const updatedCash = cash + stocksCurrentPriceList.current[ activeItem ] * stocksQuantity;
         dispatch(setStocksQuantityListAction( stocksQuantityList ) );
@@ -463,6 +468,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         return (
             <>
                 <View style={{ ...styles.container, textAlign: 'center', justifyContent: 'center' }} >
+                    <Image style={ styles.image } resizeMode='center' source={ StockmarketClosedImage } />
                     <Text style={{ ...styles.text, marginBottom: hp('0.5%'), fontSize: THEME.FONT35 }}>
                         Конец года, биржа закрыта!!!
                     </Text>
@@ -519,6 +525,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'nunito-extralight',
         fontSize: THEME.FONT30,
+    },
+    image: {
+        height: hp('30%'),
+        width: hp('30%'),
+        alignSelf: 'center',
+        marginBottom: hp('4%')
     },
     buttonContainer: {
         width: '96%',

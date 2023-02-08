@@ -20,7 +20,7 @@ import {
     setEmployeesList,
     setSocialStatusAction,
     setPrisonTermAction,
-    setIsNewYearBegun
+    setIsNewYearBegun,
 } from '../../store/actions/actions';
 import {
     BANKRUPT_SCREEN_BE_ATTENTIVE,
