@@ -130,8 +130,10 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
         setAlert({
             ...alert,
             isVisible: true,
-            message: `С вас удержали кредит с процентами ${ refundedAmount }`,
-            data: GAME_MAIN_SCREEN_BORROW_REFUND,
+            data: {
+                ...GAME_MAIN_SCREEN_BORROW_REFUND,
+                message: `С вас удержали кредит с процентами ${ refundedAmount }`,
+            },
             buttonsCallbacks: [
                 () => {
                     setAlert({ ...alert, isVisible: false });
@@ -158,8 +160,10 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
         setAlert({
             ...alert,
             isVisible: true,
-            message,
-            data,
+            data: {
+                ...data,
+                message
+            },
             buttonsCallbacks: [
                 () => {
                     setAlert({ ...alert, isVisible: false });

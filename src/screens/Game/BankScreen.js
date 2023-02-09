@@ -114,7 +114,7 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
             const value = rndBetweenMinusOneAndOne();
             if( value > 0.97 ) {
                 if( depositAmount > 0) {
-                    const compensation = 0.1 * depositAmount;
+                    const compensation = Math.floor( 0.1 * depositAmount);
                     setBankruptMessage(
                         <>
                             <Text style={{ ...styles.text, fontFamily: 'nunito-semibold' }}>НАЦИОНАЛЬНЫЙ БАНК банкрот!</Text>

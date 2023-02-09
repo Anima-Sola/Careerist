@@ -242,8 +242,16 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
 
         let problemIndex = INT( 10 * random() );
 
-        if( 5 - problemIndex < 0 ) return;
-        if( employeesList[ problemIndex - 1 ] ) return;
+        if( 5 - problemIndex < 0 ) {
+            setStocksData();
+            return;
+        }
+
+        if( employeesList[ problemIndex - 1 ] ) {
+            setStocksData();
+            return;
+        }
+
         if( problemIndex !== 5 ) loss = Math.floor( ( cash + 200 ) * random() );
 
         switch ( problemIndex ) {

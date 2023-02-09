@@ -12,7 +12,7 @@ import { calcInEstateAmount, calcInStocksAmount } from './CommonFunctions';
 
 const TotalTable = () => {
     const { cash, yearExpense } = useSelector( getCommonSettings );
-    const { depositAmount, borrowAmount, borrowPersentage } = useSelector( getBankSettings );
+    const { depositAmount, borrowAmount, borrowPersentages } = useSelector( getBankSettings );
     const { commonBusinessIncome } = useSelector( getBusinessSettings );
 
     const inStocksAmount = useRef( calcInStocksAmount() );
@@ -27,7 +27,7 @@ const TotalTable = () => {
                     <Text style={ styles.cellText }>Кредит</Text>
                 </View>
                 <View style={{ ...styles.column, paddingLeft: 50 }}>
-                    <Text style={ styles.cellText }>{ Math.floor( borrowAmount + borrowAmount * borrowPersentage )}</Text>
+                    <Text style={ styles.cellText }>{ Math.floor( borrowAmount + borrowAmount * borrowPersentages )}</Text>
                 </View>
             </View>
         )
