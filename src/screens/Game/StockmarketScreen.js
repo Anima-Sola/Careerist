@@ -242,7 +242,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
 
         let problemIndex = INT( 10 * random() );
 
-        if( 5 - problemIndex < 0 ) {
+        if( ( problemIndex > 5 ) || ( problemIndex < 1 ) ) {
             setStocksData();
             return;
         }

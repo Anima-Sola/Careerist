@@ -4,11 +4,7 @@ import { useStore, useSelector, useDispatch } from "react-redux";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { THEME } from "../../styles/theme";
 import GameWrapper from "../../components/GameWrapper";
-import {
-    getCommonSettings, 
-    getBankSettings,
-    getBusinessSettings,
-} from "../../store/selectors";
+import { getCommonSettings } from "../../store/selectors";
 import CustomAlert from '../../components/CustomAlert';
 import { 
     GAME_MAIN_SCREEN_QUIT_GAME_ALERT,
@@ -31,23 +27,19 @@ import { calcSubtotals, setCashAmountMinusFine } from "../../components/CommonFu
 import random from "../../components/Random";
 import { INT } from "../../components/CommonFunctions";
 
-
 export const GameMainScreen = ({ navigation }) => {
     const [, forceUpdate ] = useReducer(x => x + 1, 0);
     const commonSettings = useSelector( getCommonSettings );
-    const wrappedComponent = <MainMenu navigation={ navigation } forceUpdate={ forceUpdate } commonSettings={ commonSettings }/>
+    const wrappedComponent = <MainMenu navigation={ navigation } forceUpdate={ forceUpdate } />
 
     return(
         <GameWrapper navigation={ navigation } wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
     )
 }
 
-const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
+const MainMenu = ({ navigation, forceUpdate }) => {
     const dispatch = useDispatch();
     const store = useStore();
-    const { cash, yearsPassed } = commonSettings;
-    const { lendAmount, lendTerm, lendPersentages, borrowAmount, borrowTerm, borrowPersentage, insuredPossessionList, insurancePossessionCostList } = useSelector( getBankSettings );
-    const { commonBusinessIncome } = useSelector( getBusinessSettings );
     const [ alert, setAlert ] = useState({ isVisible: false, data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT });
 
     const navToTotalScreenIfYearIsOver = () => {
@@ -85,6 +77,8 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
         }
 
         let { possessionList, possessionSellCostList } = store.getState().gameSettingsReducer.possessionSettings;
+        const { insuredPossessionList, insurancePossessionCostList } = store.getState().gameSettingsReducer.bankSettings;
+        const { commonBusinessIncome } = store.getState().gameSettingsReducer.businessSettings;
 
         if( !possessionList[ numOfDisaster - 1 ] ) {
             navToTotalScreenIfYearIsOver();
@@ -132,7 +126,7 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
             isVisible: true,
             data: {
                 ...GAME_MAIN_SCREEN_BORROW_REFUND,
-                message: `С вас удержали кредит с процентами ${ refundedAmount }`,
+                message: `С вас удержали кредит с процентами ${ Math.floor( refundedAmount ) }.`,
             },
             buttonsCallbacks: [
                 () => {
@@ -147,15 +141,16 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const borrowRefund = () => {
+        const { borrowAmount, borrowTerm, borrowPersentages } = store.getState().gameSettingsReducer.bankSettings;
         if( ( borrowAmount > 0 ) && ( borrowTerm <= 0 ) ) {
-            const refundedAmount = borrowAmount + borrowAmount * borrowPersentage;
+            const refundedAmount = borrowAmount + borrowAmount * borrowPersentages;
             setTimeout( () => showBorrowRefundAlert( refundedAmount ), 300 );
             return;
         }
         createDisaster();
     }
 
-    const showLendRefundAlert = ( isMoneyNotRefunded, message ) => {
+    const showLendRefundAlert = ( isMoneyNotRefunded, lendAmount, lendPersentages, message ) => {
         const data = ( isMoneyNotRefunded ) ? GAME_MAIN_SCREEN_LEND_NOT_REFUND : GAME_MAIN_SCREEN_LEND_REFUND;
         setAlert({
             ...alert,
@@ -167,24 +162,23 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
             buttonsCallbacks: [
                 () => {
                     setAlert({ ...alert, isVisible: false });
-                    if( isMoneyNotRefunded ) {
-                        dispatch(setCashAmountAction( cash + lendAmount * ( 1 + lendPersentages ) ));
-                        forceUpdate();
-                    }
+                    const { cash } = store.getState().gameSettingsReducer.commonSettings;
+                    if( !isMoneyNotRefunded ) dispatch(setCashAmountAction( cash + lendAmount * ( 1 + lendPersentages ) ));
                     dispatch(setLendAmountAction( 0, true ));
+                    forceUpdate();
                     borrowRefund();
                 }  
             ]
         })
-
     }
 
     const lendRefund = () => { 
+        const { lendAmount, lendTerm, lendPersentages } = store.getState().gameSettingsReducer.bankSettings;
         if( ( lendAmount != 0 ) && ( lendTerm <= 0 ) ) {
             const message = ( lendAmount < 0 ) ? (
-                `Потеряно ${ lendAmount }$`) : (
-                `Получите свои ${ lendAmount } и барыш ${ Math.floor( lendAmount + lendAmount * lendPersentages ) }$` );
-            showLendRefundAlert( lendAmount < 0, message );
+                `Потеряно ${ lendAmount }$.`) : (
+                `Получите свои ${ lendAmount } и барыш ${ Math.floor( lendAmount + lendAmount * lendPersentages ) }$.` );
+            showLendRefundAlert( lendAmount < 0, lendAmount, lendPersentages, message );
             return;
         }
         borrowRefund();
@@ -192,6 +186,7 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
 
     const onScreenFocus = () => {
         if( store.getState().appSettingsReducer.isNewYearBegun ) {
+            const { cash } = store.getState().gameSettingsReducer.commonSettings;
             if( cash <= 0 ) calcSubtotals( 0.3 );
             lendRefund();
             return;
@@ -224,6 +219,7 @@ const MainMenu = ({ navigation, forceUpdate, commonSettings }) => {
                     showQuitGameAlert();
                     return true;
                 case 'ElectionScreen':
+                    const { yearsPassed } = store.getState().gameSettingsReducer.commonSettings;
                     return (( yearsPassed % 2 ) === 0) ? true : false;
                 case 'InsuranceScreen':
                     if( possessionList.indexOf( true ) === -1 ) navigation.navigate('GameMainScreen');

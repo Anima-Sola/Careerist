@@ -109,7 +109,7 @@ const Lend = ({ navigation, commonSettings }) => {
 
                     dispatch(setLendAmountAction( lendAmount.current ));
                     dispatch(setLendTermAction( lendTerm.current ));
-                    dispatch(setLendPersentagesAction( lendPersentage.current ), true);
+                    dispatch(setLendPersentagesAction( lendPersentage.current / 100 ), true);
                     navigation.navigate('BankScreen', { previousScreen: 'lendOrBorrowScreen' });
                 },
                 () => {

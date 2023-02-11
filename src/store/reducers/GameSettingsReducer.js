@@ -54,7 +54,7 @@ const initialState = {
         lendPersentages: 0,                                             // Процент отданной ссуды
         borrowAmount: 0,                                                // Сумма полученного кредита
         borrowTerm: 0,                                                  // Срок полученного кредита
-        borrowPersentage: 0,                                            // Процент, под который взят кредит
+        borrowPersentages: 0,                                           // Процент, под который взят кредит
         insuredPossessionList: [ false, false, false, false, false ],   // Застрахованное имущество. true - затраховано, false - нет
         insurancePossessionCostList: [ 0, 0, 0, 0, 0 ],                 // Стоимость страховки
         insurancePossessionTermList: [ 0, 0, 0, 0, 0 ]                  // Стоимость страховки
