@@ -21,6 +21,7 @@ import {
     setPossessionListAction,
     setInsuredPossessionListAction,
     setInsurancePossessionCostListAction,
+    setInsurancePossessionTermListAction,
     setCommonBusinessIncomeAction,
 } from "../../store/actions/actions";
 import { calcSubtotals, setCashAmountMinusFine } from "../../components/CommonFunctions";
@@ -65,19 +66,20 @@ const MainMenu = ({ navigation, forceUpdate }) => {
     }
 
     const createDisaster = () => {
+
         if( random() > 0.2 ) {
             navToTotalScreenIfYearIsOver();
             return;
         }
 
         const numOfDisaster = INT( 10 * random() );
-        if( ( numOfDisaster <= 0 ) || ( numOfDisaster > 5 ) ) {
+        if( ( numOfDisaster < 1 ) || ( numOfDisaster > 5 ) ) {
             navToTotalScreenIfYearIsOver();
             return;
         }
 
         let { possessionList, possessionSellCostList } = store.getState().gameSettingsReducer.possessionSettings;
-        const { insuredPossessionList, insurancePossessionCostList } = store.getState().gameSettingsReducer.bankSettings;
+        const { insuredPossessionList, insurancePossessionCostList, insurancePossessionTermList } = store.getState().gameSettingsReducer.bankSettings;
         const { commonBusinessIncome } = store.getState().gameSettingsReducer.businessSettings;
 
         if( !possessionList[ numOfDisaster - 1 ] ) {
@@ -86,7 +88,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
         }
 
         let message = '';
-        const damage = possessionSellCostList[  numOfDisaster - 1 ];
+        const damage = possessionSellCostList[ numOfDisaster - 1 ];
 
         switch( numOfDisaster ) {
             case 1: 
@@ -108,11 +110,14 @@ const MainMenu = ({ navigation, forceUpdate }) => {
         possessionList[ numOfDisaster - 1 ] = false;
         dispatch(setPossessionListAction( possessionList ));
 
-        if(insuredPossessionList[ numOfDisaster - 1 ]) {
-            message = message + `\nВам выплачивается страховка ${ insurancePossessionCostList[ numOfDisaster - 1 ] }`;
+        //Bug in original game - there is no insurance expiration check
+        if( insuredPossessionList[ numOfDisaster - 1 ] && ( insurancePossessionTermList[ numOfDisaster - 1 ] > 0 )) {
+            message = message + `\nВам выплачивается страховка ${ insurancePossessionCostList[ numOfDisaster - 1 ] }$.`;
             dispatch(setCommonBusinessIncomeAction( commonBusinessIncome + insurancePossessionCostList[ numOfDisaster - 1 ] ));
             insuredPossessionList[ numOfDisaster - 1 ] = false;
             insurancePossessionCostList[ numOfDisaster - 1 ] = 0;
+            insurancePossessionTermList[ numOfDisaster - 1 ] = 0;
+            dispatch(setInsurancePossessionTermListAction( insurancePossessionTermList ));
             dispatch(setInsuredPossessionListAction( insuredPossessionList ));
             dispatch(setInsurancePossessionCostListAction( insurancePossessionCostList, true ));
         }

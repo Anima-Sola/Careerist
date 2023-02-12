@@ -116,7 +116,7 @@ const Deposit = ({ navigation, commonSettings }) => {
             <View style={ styles.container }>
                 <View style={ styles.dataContainer }>
                     <Image style={ styles.image } resizeMode='center' source={ DepositImage } />
-                    <Text style={ styles.text }>Наличные средства { cash }$</Text>
+                    <Text style={ styles.text }>Наличные средства { Math.floor( cash ) }$</Text>
                     <Text style={ styles.text }>Гарантируем доход { 2 * currentSocialStatus }% в год.</Text>
                     <Text style={ styles.text }>Стоимость операции 5%.</Text>
                 </View>
