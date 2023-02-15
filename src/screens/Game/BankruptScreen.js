@@ -97,6 +97,9 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
                     dispatch(setCashAmountAction( cash + 0.95 * amount ), true);
                     if( ( cash + 0.95 * amount ) > 0 ) {
                         setInitialGameData();
+                        dispatch(setPlayerAgeAction( playerAge + 1 ));
+                        dispatch(setYearsPassedAction( yearsPassed + 1 ));
+                        dispatch(setIsNewYearBegun( false, true ));
                         navigation.navigate('GameMainScreen');
                         return;
                     }
@@ -211,6 +214,8 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
 
         } else {
             setInitialGameData();
+            dispatch(setPlayerAgeAction( playerAge + 1 ));
+            dispatch(setYearsPassedAction( yearsPassed + 1 ));
             dispatch(setIsNewYearBegun( false, true ));
             dispatch(setCashAmountAction( cash, true ));
         }

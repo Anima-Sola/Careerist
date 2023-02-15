@@ -219,6 +219,23 @@ export const ELECTION_SCREEN_WIN_ELECTION = {
     ]
 }
 
+export const ELECTION_SCREEN_WIN_PRESIDENT_ELECTION = {
+    message: 'Теперь вы президент.',
+    header: 'ПОЗДРАВЛЯЕМ!!!',
+    iconName: 'hand-peace', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'УРА!!!',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        }
+    ]
+}
+
 export const POSSESSION_SCREEN_NO_MONEY_CHEATING = ELECTION_SCREEN_NO_MONEY_CHEATING;
 
 export const POSSESSION_SCREEN_NOTHING_TO_SALE_CHEATING = {

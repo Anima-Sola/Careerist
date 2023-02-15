@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AppLoading from 'expo-app-loading';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Image } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { MaterialIndicator } from 'react-native-indicators';
 import { THEME } from '../styles/theme';
 import { loadFonts } from '../styles/bootstrap';
 import { loadAppSettings } from "../store/actions/actions";
 import { loadGameSettings } from "../store/actions/actions";
 import { getIsNewYearBegun } from "../store/selectors";
+
+import LogoImage from '../assets/images/logo.png';
 
 export const LoadingScreen = ({ navigation }) => {
     const [ isLoaded, setIsLoaded ] = useState(false);
@@ -45,8 +48,9 @@ export const LoadingScreen = ({ navigation }) => {
 
     return (
         <View style={ styles.container }>
-            <View style={ styles.indicator }>
-                <MaterialIndicator color="white" size={ 40 }/>
+            <View style={ styles.centerContainer }>
+                <Image style={ styles.image } resizeMode='center' source={ LogoImage } />
+                <MaterialIndicator color="white" size={ 60 }/>
                 <Text style={ styles.header }>Загрузка...</Text>
             </View>
         </View>
@@ -60,13 +64,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    indicator: {
-        flex: 0.3
+    centerContainer: {
+        flex: 0.6,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    image: {
+        marginBottom: hp('2%'),
+        height: hp('25%'),
+        width: hp('25%'),
     },
     header: {
         color: '#fff',
         fontFamily: 'nunito-light',
         fontSize: THEME.FONT40,
-        textAlign: 'center',
     }
 });

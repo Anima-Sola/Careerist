@@ -84,7 +84,7 @@ export const calcSubtotals = ( timeStep ) => {
     let { employeesList, employeesSalaryList } = employeesSettings;
 
     const bankSettings = store.getState().gameSettingsReducer.bankSettings;
-    let { depositAmount, borrowTerm, lendTerm, insurancePossessionTermList } = bankSettings;
+    let { depositAmount, borrowTerm, lendTerm, insuredPossessionList, insurancePossessionCostList, insurancePossessionTermList } = bankSettings;
 
     store.dispatch(setPosWithinYear( posWithinYear + timeStep ));
 
@@ -95,7 +95,10 @@ export const calcSubtotals = ( timeStep ) => {
 
     for( let i = 0; i < 5; i++ ) {
         insurancePossessionTermList[ i ] = insurancePossessionTermList[ i ] - timeStep;
-        console.log(insurancePossessionTermList[ i ]);
+        /*if( insurancePossessionTermList[ i ] <= 0 ) {
+            insuredPossessionList[ i ] = false;
+            insurancePossessionCostList[ i ] = 0;
+        }*/
     }
 
     store.dispatch(setBorrowTermAction( borrowTerm - timeStep ));

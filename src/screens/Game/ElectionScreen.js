@@ -19,7 +19,8 @@ import {
     ELECTION_SCREEN_SKIP_ELECTION, 
     ELECTION_SCREEN_LOSE_ELECTION, 
     ELECTION_SCREEN_WIN_ELECTION,
-    ELECTION_SCREEN_NO_MONEY_CHEATING
+    ELECTION_SCREEN_NO_MONEY_CHEATING,
+    ELECTION_SCREEN_WIN_PRESIDENT_ELECTION
 } from '../../store/constants';
 import random from '../../components/Random';
 import { setCashAmountMinusFine, getFineAmount } from "../../components/CommonFunctions";
@@ -40,7 +41,7 @@ const Election = ({ navigation, commonSettings }) => {
     const [ isRun, setIsRun ] = useState( false );
     const electionCost = useRef();
     const chanceToElect = useRef();
-    const { cash, year, currentSocialStatus, yearExpense, electionStatus, yearsPassed } = commonSettings;
+    let { cash, year, currentSocialStatus, yearExpense, electionStatus, yearsPassed } = commonSettings;
     const { possessionList } = useSelector( getPossessionSettings );
     const { businessList } = useSelector( getBusinessSettings );
     const { employeesList } = useSelector( getEmployeesSettings );
@@ -68,7 +69,6 @@ const Election = ({ navigation, commonSettings }) => {
 
         if( electionStatus && (( yearsPassed % 2 ) === 0 )) {
             electionCost.current = calcElectionCost();
-            console.log(electionCost.current);
             chanceToElect.current = calcChanceToElect();
         }
 
@@ -126,14 +126,24 @@ const Election = ({ navigation, commonSettings }) => {
             isVisible: true, 
             data: { 
                 ...ELECTION_SCREEN_WIN_ELECTION, 
-                message: `Теперь вы ${ SOCIAL_STATUSES[ currentSocialStatus + 1 ]}. Следующие выборы через 2 года.` 
+                message: `Теперь вы ${ SOCIAL_STATUSES[ currentSocialStatus - 1 ]}. Следующие выборы через 2 года.` 
             },
             buttonsCallbacks: [
                 () => {
-                    dispatch(setSocialStatusAction( currentSocialStatus + 1 ));
-                    //Здесь обработка, если стал президентом.
                     dispatch(setElectionStatus( false, true ));
                     navigation.navigate('GameMainScreen');
+                }
+            ]
+         });
+    }
+
+    const showWinPresidentElectionAlert = () => {
+        setAlert({  
+            isVisible: true, 
+            data: ELECTION_SCREEN_WIN_PRESIDENT_ELECTION,
+            buttonsCallbacks: [
+                () => {
+                    navigation.navigate('WinScreen');
                 }
             ]
          });
@@ -163,8 +173,14 @@ const Election = ({ navigation, commonSettings }) => {
             return;
         }
        
-        showWinElectionAlert();
-        
+        currentSocialStatus++;
+        dispatch(setSocialStatusAction( currentSocialStatus ));
+
+        if( currentSocialStatus === 5 ) {
+            showWinPresidentElectionAlert();
+        } else {
+            showWinElectionAlert();
+        }
     }
 
     useEffect(() => {
@@ -192,7 +208,7 @@ const Election = ({ navigation, commonSettings }) => {
                     <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus ] }</Text>
                 </View>
                 <View>
-                    <Text style={ styles.text }>Кампания обойдется в { electionCost.current }, вероятность успеха { Math.floor( 100 * chanceToElect.current ) }%.</Text>
+                    <Text style={ styles.text }>Кампания обойдется в { electionCost.current }$, вероятность успеха { Math.floor( 100 * chanceToElect.current ) }%.</Text>
                 </View>
                 <View style={ styles.downTextContainer }>
                     <Text style={{ ...styles.text, fontSize: THEME.FONT45 }}>Участвуете?</Text>

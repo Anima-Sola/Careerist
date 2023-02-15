@@ -94,7 +94,7 @@ const Withdraw = ({ navigation, commonSettings }) => {
             <View style={ styles.container }>
                 <View style={ styles.dataContainer }>
                     <Image style={ styles.image } resizeMode='center' source={ WithdrawImage } />
-                    <Text style={ styles.text }>Счет в банке { Math.floor( 0.5 + depositAmount ) }$.</Text>
+                    <Text style={ styles.text }>Счет в банке { Math.floor( depositAmount ) }$.</Text>
                     <Text style={ styles.text }>Стоимость операции 5%.</Text>
                 </View>
             </View>

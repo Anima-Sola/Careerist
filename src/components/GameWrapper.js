@@ -39,7 +39,7 @@ const GameWrapper = ({ wrappedComponent, commonSettings }) => {
                     </Pressable> 
                     <View style={ styles.walletContainer }>
                         <Ionicons name="wallet-outline" size={32} color="white" />
-                        <Text style={ styles.wallet }>{ Math.floor( cash + 0.01 ) }$</Text>
+                        <Text style={ styles.wallet }>{ Math.floor( cash ) }$</Text>
                     </View>
                 </View>
                 { wrappedComponent }

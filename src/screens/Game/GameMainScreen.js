@@ -111,7 +111,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
         dispatch(setPossessionListAction( possessionList ));
 
         //Bug in original game - there is no insurance expiration check
-        if( insuredPossessionList[ numOfDisaster - 1 ] && ( insurancePossessionTermList[ numOfDisaster - 1 ] > 0 )) {
+        if( insuredPossessionList[ numOfDisaster - 1 ]/* && ( insurancePossessionTermList[ numOfDisaster - 1 ] > 0 )*/) {
             message = message + `\nВам выплачивается страховка ${ insurancePossessionCostList[ numOfDisaster - 1 ] }$.`;
             dispatch(setCommonBusinessIncomeAction( commonBusinessIncome + insurancePossessionCostList[ numOfDisaster - 1 ] ));
             insuredPossessionList[ numOfDisaster - 1 ] = false;
