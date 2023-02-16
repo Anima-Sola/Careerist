@@ -62,9 +62,7 @@ const Jail = ({ navigation, commonSettings }) => {
             calcSubtotals( endOfYear );
         }
         
-        const rnd = random();
-        console.log(rnd);
-        const benefit = 1000 * gameDifficultyLevel * ( 1 + rnd );
+        const benefit = 1000 * gameDifficultyLevel * ( 1 + random() );
         showOutOfJailAlert( benefit );
     }
 

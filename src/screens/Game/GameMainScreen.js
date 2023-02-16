@@ -66,7 +66,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
     }
 
     const createDisaster = () => {
-
+        //Bug in original game - impossible to crash on plain.
         if( random() > 0.2 ) {
             navToTotalScreenIfYearIsOver();
             return;
@@ -104,7 +104,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
                 message = `Экстремисты затопили вашу яхту.\nНанесен ущерб ${ damage }$.`;
                 break;
             case 5:
-                message = `Вы разбились на своем самолете.\nЛетайте самолетами Аэрофлота.\nНанесен ущерб ${ damage }$.`;                
+                message = `Вы разбились на своем самолете.\nНанесен ущерб ${ damage }$.\nЛетайте самолетами Аэрофлота.`;
         }
 
         possessionList[ numOfDisaster - 1 ] = false;
@@ -235,6 +235,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
                 case 'BankruptScreen':
                 case 'DeathScreen':
                 case 'JailScreen':
+                case 'WinScreen':
                     return true;
                 default:
                     return false;

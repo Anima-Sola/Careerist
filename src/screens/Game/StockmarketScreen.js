@@ -138,7 +138,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         let stocksPrices = [];
         let stocksDividends = [];
         for( let i = 0; i < 5; i++ ) {
-            stocksPrices[ i ] = Math.round( 100 * random() );
+            stocksPrices[ i ] = Math.floor( 100 * random() );
             stocksDividends[ i ] = ( 20 * random() ).toFixed( 1 );
         }
         return { stocksPrices, stocksDividends }

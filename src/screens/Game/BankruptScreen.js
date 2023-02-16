@@ -21,6 +21,8 @@ import {
     setSocialStatusAction,
     setPrisonTermAction,
     setIsNewYearBegun,
+    setPlayerAgeAction,
+    setYearsPassedAction
 } from '../../store/actions/actions';
 import {
     BANKRUPT_SCREEN_BE_ATTENTIVE,
@@ -45,7 +47,7 @@ export const BankruptScreen = ({ navigation }) => {
 
 const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
-    let { cash } = commonSettings;
+    let { cash, playerAge, yearsPassed } = commonSettings;
     const panishmentScreen = useRef( 'GameMainScreen' );
     const { depositAmount } = useSelector( getBankSettings );
     const [ alert, setAlert ] = useState({
@@ -89,7 +91,7 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
             buttonsCallbacks: [
                 ( amount ) => {
                     setPrompt({ ...prompt, isVisible: false, value: '' });
-                    if( Math.round( depositAmount ) < amount ) {
+                    if( Math.floor( depositAmount ) < amount ) {
                         setTimeout( () => showBeAttentiveAlert(), 300 );
                         return;
                     }
@@ -103,7 +105,7 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
                         navigation.navigate('GameMainScreen');
                         return;
                     }
-                    if( ( Math.round( depositAmount ) - amount ) > 0 ) setTimeout( () => showWithdrawSuccesfulAlert(), 300 );
+                    if( ( Math.floor( depositAmount ) - amount ) > 0 ) setTimeout( () => showWithdrawSuccesfulAlert(), 300 );
                     forceUpdate();
                 },
                 () => setPrompt({ ...prompt, isVisible: false, value: '' })
@@ -121,7 +123,7 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
                         <Image style={ styles.image } resizeMode='center' source={ WithdrawImage } />
                         <Text style={{ ...styles.text, marginBottom: hp('2%') }}>У Вас дефицит средств</Text>
                         <Text style={{ ...styles.bigText, marginBottom: hp('2%') }}>{ -Math.floor( cash ) }$.</Text>
-                        <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Счет в банке { Math.floor( 0.5 + depositAmount ) }$.</Text>
+                        <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Счет в банке { Math.floor( depositAmount ) }$.</Text>
                         <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Стоимость операции 5%.</Text>
                         <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Сколько берете?</Text>
                     </View>
@@ -252,7 +254,7 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
         )
     }
 
-    if( Math.round( depositAmount ) > 0 ) return withdrawCashFromBank(); 
+    if( Math.floor( depositAmount ) > 0 ) return withdrawCashFromBank(); 
     else return assetSale();
 }
     
@@ -260,7 +262,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: '96%',
-        //alignSelf: 'center'
         marginLeft: '2%',
         marginRight: '2%'
     },

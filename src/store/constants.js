@@ -1110,3 +1110,20 @@ export const JAIL_SCREEN_GREED_GET_OUT_OF_JAIL = {
         },
     ]
 }
+
+export const WIN_SCREEN_GREED_EXIT_GAME = {
+    message: 'До скорого свидания.',
+    header: 'Очень жаль :(',
+    iconName: 'sad-cry', 
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: false,
+    buttons: [
+        {   
+            key: 0,
+            hint: 'Пока',
+            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+            textColor: THEME.TEXT_COLOR,
+        },
+    ]
+}

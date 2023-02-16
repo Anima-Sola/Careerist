@@ -10,15 +10,11 @@ const initialState = {
         posWithinYear: 0,                                       // Позиция внутри года
         endOfYear: 10,                                          // Маркер конца года
         yearsPassed: 0,                                         // Сколько прошло лет с момента начала игры  
-        
         cash: 1500,                                             // Сумма налички
         yearExpense: 0,                                         // Годовой расход
-
         currentSocialStatus: 1,                                 // 1 - Бизнесмен, 2 - лидер профсоюза мусорщиков, 3 - шериф, 4 - сенатор, 5 - президент
         electionStatus: true,                                   // Флаг, true - есть выборы, false - нет выборов
-
         prisonTerm: 0                                           // Срок, насколько посадили за долги
-        
     },
 
     possessionSettings: {

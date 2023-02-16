@@ -41,6 +41,8 @@ export const BorrowScreen = ({ navigation }) => {
 
 const Borrow = ({ navigation, commonSettings }) => {
     const dispatch = useDispatch();
+    const [ isRun, setIsRun ] = useState( false );
+    const wealth = useRef( 0 );
     const { cash, year, yearsPassed, yearExpense, gameDifficultyLevel } = commonSettings;
     const { depositAmount } = useSelector( getBankSettings );
     const { commonBusinessIncome } = useSelector( getBusinessSettings );
@@ -55,11 +57,16 @@ const Borrow = ({ navigation, commonSettings }) => {
     });
 
     const calcWealth = () => {
+        // I don't agree with original game - stock amount calcs in the of the year or then you see
+        // financial sutuation. Not then you buy them.
         const wealth = cash + depositAmount + calcInStocksAmount() + calcInEstateAmount() - yearExpense + commonBusinessIncome;
         return wealth;
     }
 
-    const wealth = useRef( calcWealth() );
+    if( !isRun ) {
+        wealth.current = calcWealth();
+        setIsRun( true );
+    }
 
     const showCantReadAlert = ( amount ) => {
         setAlert({ 
