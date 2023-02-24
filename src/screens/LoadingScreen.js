@@ -1,82 +1,50 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import AppLoading from 'expo-app-loading';
-import { Text, View, StyleSheet, Image } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { MaterialIndicator } from 'react-native-indicators';
-import { THEME } from '../styles/theme';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View } from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
+import { useDispatch, useStore } from "react-redux";
 import { loadFonts } from '../styles/bootstrap';
 import { loadAppSettings } from "../store/actions/actions";
 import { loadGameSettings } from "../store/actions/actions";
-import { getIsNewYearBegun } from "../store/selectors";
 
-import LogoImage from '../assets/images/logo.png';
+SplashScreen.preventAutoHideAsync();
 
-export const LoadingScreen = ({ navigation }) => {
-    const [ isLoaded, setIsLoaded ] = useState(false);
+export const LoadingScreen =({ navigation }) => {
+    const store = useStore();
     const dispatch = useDispatch();
+    const [appIsReady, setAppIsReady] = useState(false);
 
     useEffect(() => {
-        dispatch( loadAppSettings() );
-    }, [])
+        async function prepare() {
+            try {
+                await loadFonts();
+                dispatch( loadAppSettings() );
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            } catch (e) {
+                console.warn(e);
+            } finally {
+                setAppIsReady(true);
+            }
+        }
 
-    const isNewYearBegun = useSelector( getIsNewYearBegun );
+        prepare();
+    }, []);
 
-    const navToIntro = () => {
-       navigation.navigate('IntroScreen');
+    const onLayoutRootView = useCallback(async () => {
+        if (appIsReady) {
+            const isNewYearBegun = store.getState().appSettingsReducer.isNewYearBegun;
+            if( isNewYearBegun ) {
+                dispatch( loadGameSettings() );
+                navigation.navigate('GameMainScreen');
+            } else {
+                navigation.navigate('IntroScreen');
+            }
+            await SplashScreen.hideAsync();
+        }
+    }, [appIsReady]);
+
+    if (!appIsReady) {
+        return null;
     }
 
-    const navToMainScreen = () => {
-        dispatch( loadGameSettings() );
-        setTimeout(() => navigation.navigate('GameMainScreen'), 2000); 
-    }
-
-    const startGame = () => {
-        setIsLoaded( true );
-        ( isNewYearBegun ) ? navToMainScreen() : setTimeout( navToIntro, 2000 );
-    }
-
-    if (!isLoaded) {
-        return (
-            <AppLoading
-                startAsync = { loadFonts }
-                onFinish = { startGame }
-                onError = { err => console.log(err) }
-            />
-        )
-    }
-
-    return (
-        <View style={ styles.container }>
-            <View style={ styles.centerContainer }>
-                <Image style={ styles.image } resizeMode='center' source={ LogoImage } />
-                <MaterialIndicator color="white" size={ 60 }/>
-                <Text style={ styles.header }>Загрузка...</Text>
-            </View>
-        </View>
-    )
+    return ( <><View onLayout={onLayoutRootView} /></> );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    centerContainer: {
-        flex: 0.6,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    image: {
-        marginBottom: hp('2%'),
-        height: hp('25%'),
-        width: hp('25%'),
-    },
-    header: {
-        color: '#fff',
-        fontFamily: 'nunito-light',
-        fontSize: THEME.FONT40,
-    }
-});

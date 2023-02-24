@@ -1,6 +1,6 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator, createSwitchNavigator, createAppContainer } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import IntroScreen from "../screens/Intro/IntroScreen";
 import { SetGameDifficultyScreen } from "../screens/GameSettings/SetGameDifficultyScreen";
 import { InputAgeScreen } from '../screens/GameSettings/InputAgeScreen';
