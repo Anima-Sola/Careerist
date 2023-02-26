@@ -151,7 +151,7 @@ const Election = ({ navigation, commonSettings }) => {
 
     const standForElection = () => {
         
-        /*const electionResult = random();
+        const electionResult = random();
 
         if( electionCost.current > ( cash + depositAmount )) {
             const fineAmount = getFineAmount();
@@ -176,11 +176,11 @@ const Election = ({ navigation, commonSettings }) => {
         currentSocialStatus++;
         dispatch(setSocialStatusAction( currentSocialStatus ));
 
-        if( currentSocialStatus === 5 ) {*/
+        if( currentSocialStatus === 5 ) {
             showWinPresidentElectionAlert();
-       /* } else {
+        } else {
             showWinElectionAlert();
-        }*/
+        }
     }
 
     useEffect(() => {

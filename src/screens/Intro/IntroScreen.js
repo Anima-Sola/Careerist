@@ -14,8 +14,8 @@ const slides = [
     {
         key: 'one',
         title: 'ДОБРО\nПОЖАЛОВАТЬ',
-        text: 'в нашу страну, где каждый может стать президентом',
-        image: require('../../assets/images/jentleman.png'),
+        text: 'в нашу страну, где каждый может стать президентом.',
+        image: require('../../assets/images/intro/jentleman.png'),
         backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
         color: THEME.TEXT_COLOR
     },
@@ -23,35 +23,35 @@ const slides = [
         key: 'two',
         title: 'Представьте, \n что вы имеете:',
         text: 'Квартиру, машину, виллу, яхту, самолет',
-        image: require('../../assets/images/possession.png'),
+        image: require('../../assets/images/intro/possession.png'),
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
     },
     {
         key: 'three',
         title: 'Вы оплачиваете \n услуги:',
         text: 'Маклера, врача, адвоката, \n детектива, личной охраны',
-        image: require('../../assets/images/intro/jentleman.png'),
+        image: require('../../assets/images/intro/employees.png'),
         backgroundColor: THEME.THIRD_BACKGROUND_COLOR,
     },
     {
         key: 'four',
         title: 'В вашем владении \n находятся:',
         text: 'Бар, ресторан, магазин, \n отель, завод',
-        image: require('../../assets/images/intro/jentleman.png'),
+        image: require('../../assets/images/intro/business.png'),
         backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
     },
     {
         key: 'five',
         title: 'И cчет в банке',
-        text: '$1.000.000.000',
-        image: require('../../assets/images/intro/jentleman.png'),
+        text: '1.000.000$',
+        image: require('../../assets/images/intro/money.png'),
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
     },
     {
         key: 'six',
         title: '...но пока это мечты.',
         text: 'Реализуйте их!!!',
-        image: require('../../assets/images/jentleman.png'),
+        image: require('../../assets/images/intro/podium.png'),
         backgroundColor: THEME.THIRD_BACKGROUND_COLOR,
     }
 ];
