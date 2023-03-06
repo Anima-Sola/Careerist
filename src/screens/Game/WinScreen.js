@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     image: {
-        height: hp('30%'),
-        width: hp('30%'),
+        height: hp('35%'),
+        width: hp('35%'),
         alignSelf: 'center',
         marginBottom: hp('4%')
     },

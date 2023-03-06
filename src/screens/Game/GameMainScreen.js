@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer } from "react";
-import { View, Text, StyleSheet, Pressable, BackHandler, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Pressable, BackHandler, ScrollView, Image } from 'react-native';
 import { useStore, useSelector, useDispatch } from "react-redux";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { THEME } from "../../styles/theme";
@@ -111,7 +111,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
         dispatch(setPossessionListAction( possessionList ));
 
         //Bug in original game - there is no insurance expiration check
-        if( insuredPossessionList[ numOfDisaster - 1 ]/* && ( insurancePossessionTermList[ numOfDisaster - 1 ] > 0 )*/) {
+        if( insuredPossessionList[ numOfDisaster - 1 ] && ( insurancePossessionTermList[ numOfDisaster - 1 ] > 0 )) {
             message = message + `\nВам выплачивается страховка ${ insurancePossessionCostList[ numOfDisaster - 1 ] }$.`;
             dispatch(setCommonBusinessIncomeAction( commonBusinessIncome + insurancePossessionCostList[ numOfDisaster - 1 ] ));
             insuredPossessionList[ numOfDisaster - 1 ] = false;
@@ -207,8 +207,8 @@ const MainMenu = ({ navigation, forceUpdate }) => {
             buttonsCallbacks: [
                 () => setAlert({ ...alert, isVisible: false }),
                 () => { 
-                    setAlert({ ...alert, isVisible: false }); 
-                    BackHandler.exitApp(); 
+                    setAlert({ ...alert, isVisible: false });
+                    setTimeout( () => BackHandler.exitApp(), 500 ); 
                 }
             ]
         })
@@ -227,6 +227,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
                     const { yearsPassed } = store.getState().gameSettingsReducer.commonSettings;
                     return (( yearsPassed % 2 ) === 0) ? true : false;
                 case 'InsuranceScreen':
+                    const { possessionList } = store.getState().gameSettingsReducer.possessionSettings;
                     if( possessionList.indexOf( true ) === -1 ) navigation.navigate('GameMainScreen');
                     else navigation.navigate('BankScreen');
                     return true;

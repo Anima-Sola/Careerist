@@ -263,8 +263,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     image: {
-        height: hp('14%'),
-        width: hp('14%')
+        height: hp('12%'),
+        width: hp('12%')
     },
     itemData: {
         width: wp('60%'),

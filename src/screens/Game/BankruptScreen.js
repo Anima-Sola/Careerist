@@ -282,6 +282,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     image: {
+        marginTop: hp('2%'),
+        marginBottom: hp('2%'),
         height: hp('30%'),
         width: hp('30%'),
         alignSelf: 'center',

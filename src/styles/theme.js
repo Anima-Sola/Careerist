@@ -1,5 +1,5 @@
 import { StatusBar, Dimensions } from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const {
     width: SCREEN_WIDTH,

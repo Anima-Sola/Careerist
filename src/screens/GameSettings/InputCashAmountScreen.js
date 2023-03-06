@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
         paddingRight: '2%'
     },
     headerContainer: {
-        flex: 0.1,
+        flex: 0.15,
         justifyContent: 'center',
         width:'100%',
         marginTop: THEME.STATUSBAR_HEIGHT
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         paddingTop: hp('1%')
     },
     inputContainer: {
-        flex: 0.8,
+        flex: 0.75,
         justifyContent: 'center',
         width: '80%'
     },

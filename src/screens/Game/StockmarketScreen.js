@@ -37,11 +37,11 @@ import random, { rndBetweenMinusOneAndOne } from '../../components/Random';
 import { INT } from '../../components/CommonFunctions';
 import { getFineAmount, setCashAmountMinusFine } from '../../components/CommonFunctions';
 
-import Gazprom from "../../assets/images/logos/gazprom.png";
-import Rosneft from "../../assets/images/logos/rosneft.png";
-import Lukoil from "../../assets/images/logos/lukoil.png";
-import Magnit from "../../assets/images/logos/magnit.png";
-import Sber from "../../assets/images/logos/sber.png";
+import Skynet from "../../assets/images/logos/skynet.png";
+import Trolling from "../../assets/images/logos/trolling.png";
+import Nomoney from "../../assets/images/logos/nomoney.png";
+import Hedgehog from "../../assets/images/logos/hedgehog.png";
+import Pear from "../../assets/images/logos/pear.png";
 import StockmarketClosedImage from '../../assets/images/stockclosed.png';
 
 
@@ -266,7 +266,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                 return;
             case 3:
                 const lawyerServiceCost = 15 * Math.floor( loss * 0.02 );
-                message = `Компания Сбер предъявила иск в ${ loss }$.\n` + 
+                message = `Компания Pear предъявила иск в ${ loss }$.\n` + 
                 `Услуги адвоката \nобойдутся в ${ lawyerServiceCost }$.\n` +
                 `Вероятность успеха 65%.\nНанимаете?`;
                 showClaimProblemAlert( message, loss, lawyerServiceCost );
@@ -416,7 +416,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
 
     const stocksList = () => {
         let i = -1;
-        const logosImageFiles = [ Gazprom, Rosneft, Lukoil, Magnit, Sber ];
+        const logosImageFiles = [ Skynet, Trolling, Nomoney, Hedgehog, Pear ];
 
         const items = STOCKS_LIST.map( element => {
             i++;
@@ -517,22 +517,23 @@ const styles = StyleSheet.create({
         width: wp('40%'),
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: hp('1%')
+        //paddingTop: hp('1%')
     },
     logoImage: {
-        height: hp('7%'),
-        width: hp('7%')
+        height: hp('8%'),
+        width: hp('8%')
     },
     stockData: {
         width: wp('56%'),
         justifyContent: 'center',
         alignItems: 'flex-start',
+        marginBottom: hp('0.5%')
     },
     text: {
         color: THEME.TEXT_COLOR,
         textAlign: 'center',
         fontFamily: 'nunito-extralight',
-        fontSize: THEME.FONT30,
+        fontSize: THEME.FONT28,
     },
     image: {
         height: hp('30%'),

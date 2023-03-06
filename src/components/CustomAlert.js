@@ -15,6 +15,15 @@ const CustomAlert = ({ alert, setAlert, argsForButtonCallbacks }) => {
         isOverlayPressable,
         buttons,
     } = alert.data;
+
+    const setNavBarColor = async () => {
+        try{
+            const response = await NavigationBarColor.changeNavigationBarColor('#80b3ff');
+            console.log(response)// {success: true}
+        }catch(e){
+            console.log(e)// {success: false}
+        }
+    };
  
     const buttonsList = () => {
         let i = -1;
@@ -40,6 +49,7 @@ const CustomAlert = ({ alert, setAlert, argsForButtonCallbacks }) => {
             transparent={ true }
             statusBarTranslucent={ true }
             visible={ alert.isVisible }
+            onShow={ () => setNavBarColor() }
             onRequestClose={ () => { if( isOverlayPressable ) setAlert({ isVisible: false, data: alert.data, buttonsCallbacks: alert.buttonsCallbacks }) }} 
         >   
             <Pressable 

@@ -13,45 +13,45 @@ import { saveGameSettingsInitialState, saveAppSettingsInitialState, loadAppSetti
 const slides = [
     {
         key: 'one',
-        title: 'ДОБРО\nПОЖАЛОВАТЬ',
-        text: 'в нашу страну, где каждый может стать президентом.',
+        title: 'ДОБРО \n ПОЖАЛОВАТЬ',
+        text: 'в нашу страну, где каждый \nможет стать президентом.',
         image: require('../../assets/images/intro/jentleman.png'),
         backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
         color: THEME.TEXT_COLOR
     },
     {
         key: 'two',
-        title: 'Представьте, \n что вы имеете:',
-        text: 'Квартиру, машину, виллу, яхту, самолет',
+        title: 'Представьте, что вы \nимеете:',
+        text: 'Квартиру, машину, виллу, \nяхту, самолет.',
         image: require('../../assets/images/intro/possession.png'),
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
     },
     {
         key: 'three',
-        title: 'Вы оплачиваете \n услуги:',
-        text: 'Маклера, врача, адвоката, \n детектива, личной охраны',
+        title: 'У вас в подчинении \nнаходятся:',
+        text: 'Маклер, врач, адвокат, \nдетектив, личная охрана.',
         image: require('../../assets/images/intro/employees.png'),
         backgroundColor: THEME.THIRD_BACKGROUND_COLOR,
     },
     {
         key: 'four',
-        title: 'В вашем владении \n находятся:',
-        text: 'Бар, ресторан, магазин, \n отель, завод',
+        title: 'В вашем владении \nимеются:',
+        text: 'Бар, ресторан, магазин, \nотель, завод.',
         image: require('../../assets/images/intro/business.png'),
         backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
     },
     {
         key: 'five',
-        title: 'И cчет в банке',
-        text: '1.000.000$',
+        title: 'А на счету в банке \nлежит',
+        text: '\n1.000.000$',
         image: require('../../assets/images/intro/money.png'),
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
     },
     {
         key: 'six',
-        title: '...но пока это мечты.',
-        text: 'Реализуйте их!!!',
-        image: require('../../assets/images/intro/podium.png'),
+        title: '...но пока это мечты.\n',
+        text: 'Реализуйте их!!!\n',
+        image: require('../../assets/images/intro/dream.png'),
         backgroundColor: THEME.THIRD_BACKGROUND_COLOR,
     }
 ];
@@ -62,10 +62,8 @@ class Intro extends Component {
         return (
             <View style={{ ...styles.container, backgroundColor: item.backgroundColor }}>
                 <Image style={ styles.image } resizeMode='center' source={ item.image } />
-                <View style={ styles.titleContainer }>
-                    <Text style={ styles.title }>{ item.title }</Text>
-                </View>
                 <View style={ styles.textContainer }>
+                    <Text style={ styles.title }>{ item.title }</Text>
                     <Text style={ styles.text }>{ item.text }</Text>
                 </View>
             </View>
@@ -138,7 +136,7 @@ const IntroScreen = ({ navigation }) => {
             () => setAlert({ ...alert, isVisible: false }),
             () => { 
                 setAlert({ ...alert, isVisible: false }); 
-                BackHandler.exitApp(); 
+                setTimeout( () => BackHandler.exitApp(), 500 ); 
             }
         ]
     });
@@ -178,23 +176,17 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         paddingTop: THEME.STATUSBAR_HEIGHT,
-        paddingLeft: 20,
-        paddingRight: 20
-    },
-    titleContainer: {
-        flex: 0.15,
-        justifyContent: 'center',
     },
     title: {
         color: '#fff',
         fontFamily: 'nunito-light',
         fontSize: THEME.FONT40,
         textAlign: 'center',
-        lineHeight: 40,
-        paddingTop: 10
+        lineHeight: hp('5')
     },
     textContainer: {
-        flex: 0.15,
+        flex: 0.30,
+        width: wp('80%'),
         justifyContent: 'center',
     },
     text: {
@@ -202,7 +194,8 @@ const styles = StyleSheet.create({
         fontFamily: 'nunito-extralight',
         fontSize: THEME.FONT30,
         textAlign: 'center',
-        lineHeight: 40
+        lineHeight: hp('4'),
+        marginTop: hp('3')
     },  
     image: {
         flex: 0.55,

@@ -95,10 +95,10 @@ export const calcSubtotals = ( timeStep ) => {
 
     for( let i = 0; i < 5; i++ ) {
         insurancePossessionTermList[ i ] = insurancePossessionTermList[ i ] - timeStep;
-        /*if( insurancePossessionTermList[ i ] <= 0 ) {
+        if( insurancePossessionTermList[ i ] <= 0 ) {
             insuredPossessionList[ i ] = false;
             insurancePossessionCostList[ i ] = 0;
-        }*/
+        }
     }
 
     store.dispatch(setBorrowTermAction( borrowTerm - timeStep ));
