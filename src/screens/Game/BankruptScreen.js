@@ -122,10 +122,10 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
                     <View style={ styles.dataContainer }>
                         <Image style={ styles.image } resizeMode='center' source={ WithdrawImage } />
                         <Text style={{ ...styles.text, marginBottom: hp('2%') }}>У Вас дефицит средств</Text>
-                        <Text style={{ ...styles.bigText, marginBottom: hp('2%') }}>{ -Math.floor( cash ) }$.</Text>
-                        <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Счет в банке { Math.floor( depositAmount ) }$.</Text>
-                        <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Стоимость операции 5%.</Text>
-                        <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Сколько берете?</Text>
+                        <Text style={{ ...styles.bigText, marginBottom: hp('1.5%') }}>{ -Math.floor( cash ) }$.</Text>
+                        <Text style={{ ...styles.text, marginBottom: hp('1.5%') }}>Счет в банке { Math.floor( depositAmount ) }$.</Text>
+                        <Text style={{ ...styles.text, marginBottom: hp('1.5%') }}>Стоимость операции 5%.</Text>
+                        <Text style={{ ...styles.text, marginBottom: hp('1.5%') }}>Сколько берете?</Text>
                     </View>
                 </ScrollView>
                 <View style={ styles.buttonContainer }>
@@ -282,8 +282,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     image: {
-        marginTop: hp('2%'),
-        marginBottom: hp('2%'),
+        marginTop: hp('6%'),
+        marginBottom: hp('5%'),
         height: hp('30%'),
         width: hp('30%'),
         alignSelf: 'center',

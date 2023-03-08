@@ -263,7 +263,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
             <Text style={ styles.title }>Что вас интересует?</Text>
             <View style={ styles.menu }>
                 <View style={ styles.menuRow }>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'FinancialSituationScreen', 0.1 ) }>
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'JailScreen', 0.1 ) }>
                         <Text style={ styles.menuItemText }>Финансовое</Text>
                         <Text style={ styles.menuItemText }>положение</Text>
                     </Pressable>

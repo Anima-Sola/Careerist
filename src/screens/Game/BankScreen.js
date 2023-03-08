@@ -16,11 +16,11 @@ import {
 import { rndBetweenMinusOneAndOne } from '../../components/Random';
 import { calcSubtotals } from '../../components/CommonFunctions';
 
-import Ensurance from "../../assets/images/bankservices/ensurance.png";
-import Deposit from "../../assets/images/bankservices/deposit.png";
-import Withdraw from "../../assets/images/bankservices/withdraw.png";
-import Lend from "../../assets/images/bankservices/lend.png";
-import Borrow from "../../assets/images/bankservices/borrow.png";
+import Ensurance from "../../assets/images/bankservices/ensurance_icon.png";
+import Deposit from "../../assets/images/bankservices/deposit_icon.png";
+import Withdraw from "../../assets/images/bankservices/withdraw_icon.png";
+import Lend from "../../assets/images/bankservices/lend_icon.png";
+import Borrow from "../../assets/images/bankservices/borrow_icon.png";
 
 export const BankScreen = ({ navigation, route }) => {
     const [, forceUpdate ] = useReducer(x => x + 1, 0);
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     itemName: {
         justifyContent: 'center',
         width: '64%',
-        paddingLeft: 10
+        paddingLeft: wp('3%')
     },  
     itemText: {
         color: THEME.TEXT_COLOR,

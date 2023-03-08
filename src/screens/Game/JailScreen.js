@@ -33,7 +33,7 @@ export const JailScreen = ({ navigation }) => {
 
 const Jail = ({ navigation, commonSettings }) => {
     const dispatch = useDispatch();
-    const { year, prisonTerm, endOfYear, gameDifficultyLevel, playerAge, yearsPassed } = commonSettings;
+    const { year, prisonTerm, endOfYear, gameDifficultyLevel, playerAge, yearsPassed, deathAge } = commonSettings;
     const [ alert, setAlert ] = useState({ isVisible: false, data: JAIL_SCREEN_GREED_GET_OUT_OF_JAIL })
 
     const showOutOfJailAlert = ( benefit) => {
@@ -46,8 +46,8 @@ const Jail = ({ navigation, commonSettings }) => {
             buttonsCallbacks: [
                 () => {
                     dispatch(setCashAmountAction( benefit ));
-                    dispatch(setPlayerAgeAction( playerAge + 1 + prisonTerm ));
-                    dispatch(setYearsPassedAction( yearsPassed + 1 + prisonTerm ), true );
+                    dispatch(setPlayerAgeAction( playerAge + prisonTerm ));
+                    dispatch(setYearsPassedAction( yearsPassed + prisonTerm ), true );
                     dispatch(setIsNewYearBegun( false, true ));
                     setInitialGameData();
                     navigation.navigate('GameMainScreen');
@@ -57,6 +57,15 @@ const Jail = ({ navigation, commonSettings }) => {
     }
 
     const getOutOfJail = () => {
+        //Bug in original game - impossible to die in prison
+        if( deathAge <= ( playerAge + prisonTerm ) ) {
+            dispatch(setPlayerAgeAction( playerAge + prisonTerm ));
+            dispatch(setYearsPassedAction( yearsPassed + prisonTerm ), true );
+            dispatch(setIsNewYearBegun( false, true ));
+            navigation.navigate('DeathScreen');
+            return;
+        }
+
         for( let i = 1; i <= prisonTerm ; i++ ) {
             dispatch(setPosWithinYear( 0 ));
             calcSubtotals( endOfYear );
@@ -96,8 +105,8 @@ const styles = StyleSheet.create({
         marginTop: hp('4%')
     },
     image: {
-        height: hp('25%'),
-        width: hp('25%'),
+        height: hp('35%'),
+        width: hp('35%'),
         alignSelf: 'center',
         marginBottom: hp('4%')
     },

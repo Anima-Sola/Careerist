@@ -230,8 +230,8 @@ const styles = StyleSheet.create({
         marginBottom: hp('1.5%')
     },
     image: {
-        height: hp('25%'),
-        width: hp('25%'),
+        height: hp('30%'),
+        width: hp('30%'),
         alignSelf: 'center',
         marginBottom: hp('5%')
     },

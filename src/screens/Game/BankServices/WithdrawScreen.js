@@ -124,14 +124,11 @@ const styles = StyleSheet.create({
         width: '96%',
         marginLeft: '2%',
         marginRight: '2%',
-        marginTop: hp('1%'),
-        marginBottom: hp('1%'),
     },
     dataContainer: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: hp('5%'),
+        marginTop: hp('6%'),
     },
     text: {
         color: THEME.TEXT_COLOR,
@@ -142,7 +139,7 @@ const styles = StyleSheet.create({
     },
     image: {
         height: hp('30%'),
-        width: hp('25%'),
+        width: hp('30%'),
         alignSelf: 'center',
         marginBottom: hp('5%')
     },

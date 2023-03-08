@@ -18,7 +18,7 @@ const CustomAlert = ({ alert, setAlert, argsForButtonCallbacks }) => {
 
     const setNavBarColor = async () => {
         try{
-            const response = await NavigationBarColor.changeNavigationBarColor('#80b3ff');
+            //const response = await NavigationBarColor.changeNavigationBarColor('#80b3ff');
             console.log(response)// {success: true}
         }catch(e){
             console.log(e)// {success: false}
