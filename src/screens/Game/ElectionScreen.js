@@ -25,7 +25,13 @@ import {
 import random from '../../components/Random';
 import { setCashAmountMinusFine, getFineAmount } from "../../components/CommonFunctions";
 
-import SclerosisImage from '../../assets/images/sclerosis.png';
+import SclerosisImage from '../../assets/images/election/sclerosis.png';
+import BusinessmanImage from '../../assets/images/election/businessman.png';
+import GarbagemanImage from '../../assets/images/election/garbageman.png';
+import SheriffImage from '../../assets/images/election/sheriff.png';
+import SenatorImage from '../../assets/images/election/senator.png';
+
+const electionImages = [ BusinessmanImage, GarbagemanImage, SheriffImage, SenatorImage ]; 
 
 export const ElectionScreen = ({ navigation }) => {
     const commonSettings = useSelector( getCommonSettings );
@@ -193,18 +199,18 @@ const Election = ({ navigation, commonSettings }) => {
             <ScrollView style={ styles.container }>
                 <CustomAlert alert={ alert } setAlert={ setAlert } />          
                 <View>
-                    <Text style={ styles.text }>В настоящее время вы</Text>
+                    <Text style={ styles.text }>В настоящее время вы - </Text>
                 </View> 
                 <View style={ styles.socialStatusContainer }>
-                    <Image style={ styles.image } resizeMode='center' source={ require('../../assets/images/jentleman.png') } />
+                    <Image style={ styles.image } resizeMode='center' source={ electionImages[ currentSocialStatus + 1 ] } />
                     <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus - 1 ] }</Text>
                 </View>
                 <View>
                     <Text style={ styles.text }>Примите участие в выборах.</Text>
+                    <Text style={ styles.text }>Избирается - </Text>
                 </View>
                 <View style={ styles.socialStatusContainer }>
-                    <Text style={{ ...styles.socialStatusText, marginBottom: 0, marginTop: hp('1%') }}>Избирается:</Text>
-                    <Image style={ styles.image } resizeMode='center' source={ require('../../assets/images/jentleman.png') } />
+                    <Image style={ styles.image } resizeMode='center' source={ electionImages[ currentSocialStatus + 2 ] } />
                     <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus ] }</Text>
                 </View>
                 <View>

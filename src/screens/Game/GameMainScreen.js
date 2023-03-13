@@ -28,6 +28,15 @@ import { calcSubtotals, setCashAmountMinusFine } from "../../components/CommonFu
 import random from "../../components/Random";
 import { INT } from "../../components/CommonFunctions";
 
+import FinancialSituationIcon from '../../assets/images/mainscreenicons/financialsituation.png';
+import SocialSituationIcon from '../../assets/images/mainscreenicons/socialsituation.png';
+import PossessionIcon from '../../assets/images/mainscreenicons/possession.png';
+import EmployeesIcon from '../../assets/images/mainscreenicons/employees.png';
+import BusinessIcon from '../../assets/images/mainscreenicons/business.png';
+import StockmarketIcon from '../../assets/images/mainscreenicons/stockmarket.png';
+import BankIcon from '../../assets/images/mainscreenicons/bank.png';
+import EntertainmentIcon from '../../assets/images/mainscreenicons/entertainment.png';
+
 export const GameMainScreen = ({ navigation }) => {
     const [, forceUpdate ] = useReducer(x => x + 1, 0);
     const commonSettings = useSelector( getCommonSettings );
@@ -263,30 +272,27 @@ const MainMenu = ({ navigation, forceUpdate }) => {
             <Text style={ styles.title }>Что вас интересует?</Text>
             <View style={ styles.menu }>
                 <View style={ styles.menuRow }>
-                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'JailScreen', 0.1 ) }>
-                        <Text style={ styles.menuItemText }>Финансовое</Text>
-                        <Text style={ styles.menuItemText }>положение</Text>
+                    <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'FinancialSituationScreen', 0.1 ) }>
+                        <Image style={ styles.image } resizeMode='center' source={ FinancialSituationIcon } />
                     </Pressable>
                     <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToElectionScreen( 0.3 ) }>
-                        <Text style={ styles.menuItemText }>Общественное</Text>
-                        <Text style={ styles.menuItemText }>положение</Text>
+                        <Image style={ styles.image } resizeMode='center' source={ SocialSituationIcon } />
                     </Pressable>
                 </View>
                 <View style={ styles.menuRow }>
                     <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'PossessionScreen', 1 ) }>
-                        <Text style={ styles.menuItemText }>Личное</Text>
-                        <Text style={ styles.menuItemText }>имущество</Text>
+                        <Image style={ styles.image } resizeMode='center' source={ PossessionIcon } />
                     </Pressable>
                     <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'EmployeesScreen', 1 ) }>
-                        <Text style={ styles.menuItemText }>Подчиненные</Text>
+                        <Image style={ styles.image } resizeMode='center' source={ EmployeesIcon } />  
                     </Pressable>
                 </View>
                 <View style={ styles.menuRow }>
                     <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'BusinessScreen', 1 ) }>
-                        <Text style={ styles.menuItemText }>Бизнес</Text>
+                        <Image style={ styles.image } resizeMode='center' source={ BusinessIcon } />
                     </Pressable>
                     <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'StockmarketScreen', 0.4 ) }>
-                        <Text style={ styles.menuItemText }>Биржа</Text>
+                        <Image style={ styles.image } resizeMode='center' source={ StockmarketIcon } />
                     </Pressable>
                 </View>
                 <View style={ styles.menuRow }>
@@ -294,10 +300,10 @@ const MainMenu = ({ navigation, forceUpdate }) => {
                         () => navToGameScreens( 'BankScreen', 0, { 
                             previousScreen: 'GameMainScreen'
                         })}>
-                        <Text style={ styles.menuItemText }>Банк</Text>
+                        <Image style={ styles.image } resizeMode='center' source={ BankIcon } />
                     </Pressable>
                     <Pressable style={ THEME.PRESSABLE_STYLES(styles.menuItem) } onPress={ () => navToGameScreens( 'EntertainmentScreen', 2.5 ) }>
-                        <Text style={ styles.menuItemText }>Развлечения</Text>
+                        <Image style={ styles.image } resizeMode='center' source={ EntertainmentIcon } />
                     </Pressable>
                 </View>
             </View>
@@ -331,12 +337,17 @@ const styles = StyleSheet.create({
         margin: 5,
         width: THEME.SCREEN_WIDTH * 0.5 - wp('4%'),
         borderRadius: wp('3%'),
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     menuItemText: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-light',
         fontSize: THEME.FONT30,
         textAlign: 'center',
+    },
+    image: {
+        height: hp('20%'),
+        width: hp('20%'),
     }
 })

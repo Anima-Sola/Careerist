@@ -58,7 +58,7 @@ const Borrow = ({ navigation, commonSettings }) => {
 
     const calcWealth = () => {
         // I don't agree with original game - stock amount calcs in the of the year or then you see
-        // financial sutuation. Not then you buy them.
+        // financial sutuation. Not then you buy stocks.
         const wealth = cash + depositAmount + calcInStocksAmount() + calcInEstateAmount() - yearExpense + commonBusinessIncome;
         return wealth;
     }

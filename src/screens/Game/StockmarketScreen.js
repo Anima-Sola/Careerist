@@ -475,11 +475,10 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
     const stockmarketClosed = () => {
         return (
             <>
-                <View style={{ ...styles.container, textAlign: 'center', justifyContent: 'center' }} >
+                <View style={{ ...styles.container, textAlign: 'center' }} >
                     <Image style={ styles.image } resizeMode='center' source={ StockmarketClosedImage } />
-                    <Text style={{ ...styles.text, marginBottom: hp('0.5%'), fontSize: THEME.FONT35 }}>
-                        Конец года, биржа закрыта!!!
-                    </Text>
+                    <Text style={{ ...styles.text, fontSize: THEME.FONT40 }}>Конец года,</Text>
+                    <Text style={{ ...styles.text, fontSize: THEME.FONT40 }}>биржа закрыта!!!</Text>
                 </View>
                 <View style={ styles.buttonContainer }>
                     <Button
@@ -517,7 +516,6 @@ const styles = StyleSheet.create({
         width: wp('40%'),
         justifyContent: 'center',
         alignItems: 'center',
-        //paddingTop: hp('1%')
     },
     logoImage: {
         height: hp('8%'),
@@ -539,7 +537,8 @@ const styles = StyleSheet.create({
         height: hp('30%'),
         width: hp('30%'),
         alignSelf: 'center',
-        marginBottom: hp('4%')
+        marginTop: hp('6%'),
+        marginBottom: hp('5%')
     },
     buttonContainer: {
         width: '96%',
