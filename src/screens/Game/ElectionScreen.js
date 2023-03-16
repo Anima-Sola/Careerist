@@ -26,12 +26,14 @@ import random from '../../components/Random';
 import { setCashAmountMinusFine, getFineAmount } from "../../components/CommonFunctions";
 
 import SclerosisImage from '../../assets/images/election/sclerosis.png';
+import NoElectionImage from '../../assets/images/election/noelection.png';
 import BusinessmanImage from '../../assets/images/election/businessman.png';
 import GarbagemanImage from '../../assets/images/election/garbageman.png';
 import SheriffImage from '../../assets/images/election/sheriff.png';
 import SenatorImage from '../../assets/images/election/senator.png';
+import PresidentImage from '../../assets/images/election/president.png';
 
-const electionImages = [ BusinessmanImage, GarbagemanImage, SheriffImage, SenatorImage ]; 
+const electionImages = [ BusinessmanImage, GarbagemanImage, SheriffImage, SenatorImage, PresidentImage ]; 
 
 export const ElectionScreen = ({ navigation }) => {
     const commonSettings = useSelector( getCommonSettings );
@@ -202,15 +204,15 @@ const Election = ({ navigation, commonSettings }) => {
                     <Text style={ styles.text }>В настоящее время вы - </Text>
                 </View> 
                 <View style={ styles.socialStatusContainer }>
-                    <Image style={ styles.image } resizeMode='center' source={ electionImages[ currentSocialStatus + 1 ] } />
+                    <Image style={ styles.image } resizeMode='center' source={ electionImages[ currentSocialStatus - 1 ] } />
                     <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus - 1 ] }</Text>
                 </View>
                 <View>
-                    <Text style={ styles.text }>Примите участие в выборах.</Text>
+                    <Text style={{ ...styles.text, marginBottom: 0 }}>Примите участие в выборах.</Text>
                     <Text style={ styles.text }>Избирается - </Text>
                 </View>
                 <View style={ styles.socialStatusContainer }>
-                    <Image style={ styles.image } resizeMode='center' source={ electionImages[ currentSocialStatus + 2 ] } />
+                    <Image style={ styles.image } resizeMode='center' source={ electionImages[ currentSocialStatus ] } />
                     <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus ] }</Text>
                 </View>
                 <View>
@@ -239,14 +241,13 @@ const Election = ({ navigation, commonSettings }) => {
         )
     }
 
-    const noElection = ( message ) => {
+    const noElection = ( message, image ) => {
         return (
-            <View style={ styles.container }>
-                <View style={{ ...styles.dataContainer, justifyContent: 'center' }}>
-                    <Image style={ styles.sclerosisImage } resizeMode='center' source={ SclerosisImage } />
-                    <Text style={ styles.electionNotHeldText }>Год { year }.</Text>
+            <>
+                <ScrollView style={ styles.container }>
+                    <Image style={ styles.sclerosisImage } resizeMode='center' source={ image } />
                     <Text style={ styles.electionNotHeldText }>{ message }</Text>
-                </View>
+                </ScrollView>
                 <View style={ styles.buttonsContainer }>
                     <Button
                         buttonStyle={{ ...styles.takePartButton, width: wp('96%'), marginLeft: wp('2%') }} 
@@ -259,12 +260,12 @@ const Election = ({ navigation, commonSettings }) => {
                         }}  
                     />
                 </View>
-            </View>
+            </>
         )
     }
 
-    if( !electionStatus ) return noElection('У вас склероз?!');
-    return (( yearsPassed % 2 ) === 0) ? election() : noElection('В этом году выборы не проводятся!!!\n\nУсвоили?');
+    if( !electionStatus ) return noElection( '\nУ вас склероз?!', SclerosisImage );
+    return (( yearsPassed % 2 ) === 0) ? election() : noElection( 'В этом году выборы не проводятся!!!\n\nУсвоили?', NoElectionImage );
 }
 
 const styles = StyleSheet.create({
@@ -276,9 +277,6 @@ const styles = StyleSheet.create({
         marginLeft: '2%',
         marginRight: '2%',
     },
-    dataContainer: {
-       flex: 1,
-    },
     socialStatusContainer: {
         backgroundColor: 'rgba(0, 0, 0, .2)',
         marginBottom: hp('1%')
@@ -289,10 +287,10 @@ const styles = StyleSheet.create({
         height: hp('40%')
     },
     sclerosisImage: {
-        height: hp('25%'),
-        width: hp('25%'),
+        marginTop: hp('2%'),
+        height: hp('40%'),
         alignSelf: 'center',
-        marginBottom: hp('4%')
+        marginBottom: hp('2%')
     },
     text: {
         color: THEME.TEXT_COLOR,
@@ -306,7 +304,8 @@ const styles = StyleSheet.create({
         fontFamily: 'nunito-semibolditalic',
         fontSize: THEME.FONT40,
         textAlign: 'center',
-        marginBottom: hp('2%')
+        marginBottom: hp('2%'),
+        marginTop: hp('1%')
     },
     electionNotHeldText: {
         color: THEME.TEXT_COLOR,
@@ -323,6 +322,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width:'100%',
         flexDirection: 'row',
+        marginBottom: hp('1%')
     },
     takePartButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,

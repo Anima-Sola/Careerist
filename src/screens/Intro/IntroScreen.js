@@ -15,7 +15,7 @@ const slides = [
         key: 'one',
         title: 'ДОБРО \n ПОЖАЛОВАТЬ',
         text: 'в нашу страну, где каждый \nможет стать президентом.',
-        image: require('../../assets/images/intro/jentleman.png'),
+        image: require('../../assets/images/intro/welcome.png'),
         backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
         color: THEME.TEXT_COLOR
     },
@@ -50,7 +50,7 @@ const slides = [
     {
         key: 'six',
         title: '...но пока это мечты.\n',
-        text: 'Реализуйте их!!!\n',
+        text: '\nРеализуйте их!!!',
         image: require('../../assets/images/intro/dream.png'),
         backgroundColor: THEME.THIRD_BACKGROUND_COLOR,
     }

@@ -42,7 +42,7 @@ import Trolling from "../../assets/images/logos/trolling.png";
 import Nomoney from "../../assets/images/logos/nomoney.png";
 import Hedgehog from "../../assets/images/logos/hedgehog.png";
 import Pear from "../../assets/images/logos/pear.png";
-import StockmarketClosedImage from '../../assets/images/stockclosed.png';
+import StockmarketClosedImage from '../../assets/images/logos/stockclosed.png';
 
 
 export const StockmarketScreen = ({ navigation }) => {
