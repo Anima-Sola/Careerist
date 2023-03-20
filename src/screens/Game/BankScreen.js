@@ -73,7 +73,7 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
     }
 
     const bankNotBankrupt = (
-        <>
+        <View style={ styles.wrapper }>
             <ScrollView style={ styles.container }>
                 { showBankingServices() }
             </ScrollView>
@@ -86,11 +86,11 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
                     onPress={ () => navigation.navigate('GameMainScreen', { previousScreen: 'AnyScreen' }) }  
                 />
             </View>
-        </>
+        </View>
     )
 
     const bankBankrupt = (
-        <>
+        <View style={ styles.wrapper }>
             <View style={{ ...styles.container, justifyContent: 'center', alignItems: 'center' }}>
                 { bankruptMessage }
             </View>
@@ -103,7 +103,7 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
                     onPress={ () => navigation.navigate('GameMainScreen', { previousScreen: 'AnyScreen' }) }  
                 />
             </View>
-        </>
+        </View>
     )
 
     const onScreenFocus = () => {
@@ -141,11 +141,17 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
 }
 
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        width: '100%',
+        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
+    },
     container: {
         flex: 1,
         width: '96%',
-        marginLeft: '2%',
-        marginRight: '2%',
+        alignSelf: 'center',
         marginTop: hp('1%'),
         marginBottom: hp('1%')
     },
@@ -189,16 +195,14 @@ const styles = StyleSheet.create({
         marginBottom: hp('1.7%')
     },
     buttonContainer: {
-        flex: 0.1,
-        justifyContent: 'center',
         width: '100%',
+        alignSelf: 'center',
+        marginBottom: hp('1%'),
     },
     button: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
         width: '96%',
-        marginLeft: '2%',
-        marginRight: '2%',
-        marginBottom: hp('1%'),
+        alignSelf: 'center',
         height: hp('7%'),
         borderRadius: wp('10%'),
     },

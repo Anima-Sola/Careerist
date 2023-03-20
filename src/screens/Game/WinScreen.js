@@ -42,12 +42,12 @@ const Win = ({ navigation }) => {
     }
 
     return (
-        <>
+        <View style={ styles.wrapper }>
             <ScrollView style={ styles.container }>
                 <CustomAlert alert={ alert } setAlert={ setAlert } />  
                 <View style={ styles.dataContainer }>
                     <Image style={ styles.image } resizeMode='center' source={ FireworkImage } />
-                    <Text style={{ ...styles.text, marginBottom: hp('4%'), fontFamily: 'nunito-semibold' }}>ПОЗДРАВЛЯЕМ!</Text>
+                    <Text style={{ ...styles.text, marginBottom: hp('3%'), fontFamily: 'nunito-semibold' }}>ПОЗДРАВЛЯЕМ!</Text>
                     <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Вы достигли невозможного!</Text>
                     <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Желаете еще раз попробовать свои силы?</Text>
                 </View>
@@ -68,11 +68,18 @@ const Win = ({ navigation }) => {
                     onPress={ () => showExitGameAlert() }   
                 />
             </View>
-        </>
+        </View>
     )
 }
     
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        width: '100%',
+        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
+    },
     container: {
         flex: 1,
         width: '96%',

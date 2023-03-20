@@ -57,7 +57,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
         if( endOfYear <= posWithinYear ) navigation.navigate('TotalScreen');
     }
 
-    const showDisasterAlert = ( message ) => {
+    const showDisasterAlert = ( message, numOfDisaster = 0 ) => {
         setAlert({
             ...alert,
             isVisible: true,
@@ -67,6 +67,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
             },
             buttonsCallbacks: [
                 () => {
+                    if( numOfDisaster === 5 ) navigation.navigate('DeathScreen');
                     setAlert({ ...alert, isVisible: false });
                     navToTotalScreenIfYearIsOver();
                 }  
@@ -75,7 +76,8 @@ const MainMenu = ({ navigation, forceUpdate }) => {
     }
 
     const createDisaster = () => {
-        //Bug in original game - impossible to crash on plain.
+        //Bug in original game - impossible to crash on plain
+        //I think the author implied that the character would die
         if( random() > 0.2 ) {
             navToTotalScreenIfYearIsOver();
             return;
@@ -113,7 +115,9 @@ const MainMenu = ({ navigation, forceUpdate }) => {
                 message = `Экстремисты затопили вашу яхту.\nНанесен ущерб ${ damage }$.`;
                 break;
             case 5:
-                message = `Вы разбились на своем самолете.\nНанесен ущерб ${ damage }$.\nЛетайте самолетами Аэрофлота.`;
+                message = `Вы разбились на своем самолете.\nЛетайте самолетами Аэрофлота.`;
+                setTimeout( () => showDisasterAlert( message, numOfDisaster ), 300 );
+                return;
         }
 
         possessionList[ numOfDisaster - 1 ] = false;
@@ -267,7 +271,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
     }
 
     return (
-        <ScrollView style={ styles.container }>
+        <ScrollView style={ styles.wrapper }>
             <CustomAlert alert={ alert } setAlert={ setAlert } />
             <Text style={ styles.title }>Что вас интересует?</Text>
             <View style={ styles.menu }>
@@ -312,22 +316,25 @@ const MainMenu = ({ navigation, forceUpdate }) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    wrapper: {
         flex: 1,
         width: '100%',
         marginBottom: hp('1%'),
         marginTop: hp('1%'),
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
     },
     title: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-extralight',
         fontSize: THEME.FONT35,
         textAlign: 'center',
+        marginTop: hp('1%'),
         marginBottom: hp('1%')
     },
     menu: {
         flex: 1,
         alignItems: 'center',
+        marginBottom: hp('0.5%')
     },
     menuRow: {
         flexDirection: 'row',

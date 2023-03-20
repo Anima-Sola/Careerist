@@ -179,7 +179,7 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     return (
-        <>  
+        <View style={ styles.wrapper }>  
             <CustomAlert alert={ alert } setAlert={ setAlert } />
             <ScrollView style={ styles.container }>
                 { listForSale() }
@@ -202,18 +202,22 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
                     onPress={ () => deal( false ) }   
                 />
             </View>
-        </>
-        
-
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        width: '100%',
+        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
+    },
     container: {
         flex: 1,
         width: '96%',
-        marginLeft: '2%',
-        marginRight: '2%',
+        alignSelf: 'center',
         marginTop: hp('1%'),
         marginBottom: hp('1%')
     },

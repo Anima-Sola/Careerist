@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { useDispatch, useStore } from "react-redux";
+import * as NavigationBar from 'expo-navigation-bar';
 import { loadFonts } from '../styles/bootstrap';
 import { loadAppSettings } from "../store/actions/actions";
 import { loadGameSettings } from "../store/actions/actions";
@@ -32,6 +33,8 @@ export const LoadingScreen =({ navigation }) => {
     const onLayoutRootView = useCallback(async () => {
         if (appIsReady) {
             const isNewYearBegun = store.getState().appSettingsReducer.isNewYearBegun;
+            NavigationBar.setPositionAsync('absolute');
+            NavigationBar.setBackgroundColorAsync('#ffffff00');
             if( isNewYearBegun ) {
                 dispatch( loadGameSettings() );
                 navigation.navigate('GameMainScreen');

@@ -6,6 +6,9 @@ const {
     height: SCREEN_HEIGHT,
 } = Dimensions.get('window');
 
+const deviceHeight = Dimensions.get('screen').height;
+const navbarHeight = deviceHeight - SCREEN_HEIGHT - StatusBar.currentHeight;
+
 export const THEME = {
     MAIN_BACKGROUND_COLOR: '#385C74',
     SECOND_BACKGROUND_COLOR: '#B59B52',
@@ -20,6 +23,7 @@ export const THEME = {
     SCREEN_HEIGHT,
     SCREEN_ASPECT_RATIO: SCREEN_HEIGHT/SCREEN_WIDTH,
     STATUSBAR_HEIGHT: StatusBar.currentHeight,
+    NAVBAR_HEIGHT: navbarHeight,
     FONT22: hp('2.2%'),
     FONT25: hp('2.5%'),
     FONT28: hp('2.8%'),

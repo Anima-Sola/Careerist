@@ -446,7 +446,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
 
     const stockmarketOpened = () => {
         return (
-            <>
+            <View style={ styles.wrapper }>
                 <CustomAlert alert={ alert } setAlert={ setAlert } />
                 <CustomPrompt prompt={ prompt } setPrompt={ setPrompt }/>
                 <ScrollView style={ styles.container }>
@@ -468,18 +468,18 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                         onPress={ () => trade( false ) }  
                     />
                 </View>
-            </>
+            </View>
         )
     }
 
     const stockmarketClosed = () => {
         return (
-            <>
-                <View style={{ ...styles.container, textAlign: 'center' }} >
+            <View style={ styles.wrapper }>
+                <ScrollView style={{ ...styles.container, textAlign: 'center' }} >
                     <Image style={ styles.image } resizeMode='center' source={ StockmarketClosedImage } />
                     <Text style={{ ...styles.text, fontSize: THEME.FONT40 }}>Конец года,</Text>
                     <Text style={{ ...styles.text, fontSize: THEME.FONT40 }}>биржа закрыта!!!</Text>
-                </View>
+                </ScrollView>
                 <View style={ styles.buttonContainer }>
                     <Button
                         buttonStyle={ styles.button2x } 
@@ -489,7 +489,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                         onPress={ () => navigation.navigate('GameMainScreen') }  
                     />
                 </View>
-            </>
+            </View>
         )
     }
 
@@ -497,13 +497,20 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
 }
 
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        width: '100%',
+        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
+    },
     container: {
         flex: 1,
         width: '96%',
-        marginLeft: '2%',
-        marginRight: '2%',
+        alignSelf: 'center',
         marginTop: hp('1%'),
-        marginBottom: hp('1%')
+        marginBottom: hp('1%'),
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
     },
     stockItem: {
         marginTop: hp('1%'),
@@ -542,8 +549,7 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         width: '96%',
-        marginLeft: '2%',
-        marginRight: '2%',
+        alignSelf: 'center',
         flexDirection: 'row',
         justifyContent: 'center',
         marginBottom: hp('1%')

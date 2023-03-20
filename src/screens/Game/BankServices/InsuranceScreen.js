@@ -165,7 +165,7 @@ const Insurance = ({ navigation }) => {
 
     const somethingToEnsure = () => {
         return (
-                <>
+                <View style={ styles.wrapper }>
                     <CustomPrompt prompt={ prompt } setPrompt={ setPrompt }/>
                     <CustomAlert alert={ alert } setAlert={ setAlert }/>
                     <ScrollView style={ styles.container }>
@@ -187,21 +187,21 @@ const Insurance = ({ navigation }) => {
                             onPress={ () => navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' }) }   
                         />
                     </View>
-                </>
+                </View>
             )
     }
 
     const nothingToEnsure = () => {
         return (
-            <View style={ styles.container }>
-                <View style={ styles.dataContainer }>
+            <View style={ styles.wrapper }>
+                <View style={{ ...styles.container, justifyContent: 'center' }}>
                     <Text style={{ ...styles.text, fontFamily: 'nunito-semibold' }}>Вам нечего страховать!</Text>
                     <View style={{ height: hp('1%') }}></View>
                     <Text style={ styles.text }>Просим вас немедленно покинуть банк!</Text>
                     <View style={{ height: hp('1%') }}></View>
                     <Text style={ styles.text }>Усвоили?</Text>
                 </View>
-                <View>
+                <View style={ styles.buttonContainer }>
                     <Button
                         buttonStyle={ styles.nothingToEnsureButton } 
                         titleStyle={ styles.buttonTitle }
@@ -220,13 +220,18 @@ const Insurance = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        width: '100%',
+        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
+    },
     container: {
         flex: 1,
         width: '96%',
-        marginLeft: '2%',
-        marginRight: '2%',
-        marginTop: hp('1%'),
-        marginBottom: hp('1%')
+        alignSelf: 'center',
+        paddingTop: hp('1%')
     },
     dataContainer: {
         flex: 1,
@@ -275,13 +280,18 @@ const styles = StyleSheet.create({
         fontFamily: 'nunito-light',
         fontSize: THEME.FONT35,
         textAlign: 'center',
-        marginBottom: hp('1.7%')
+        marginBottom: hp('2.5%')
+    },
+    buttonContainer: {
+        justifyContent: 'center',
+        width: '100%',
+        marginBottom: hp('1%'),  
     },
     buttonsContainer: {
-        flex: 0.1,
-        alignItems: 'center',
-        flexDirection: 'row',
         justifyContent: 'center',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        width: '100%',
         marginBottom: hp('1%')
     },
     ensureButton: {
@@ -300,7 +310,8 @@ const styles = StyleSheet.create({
     },
     nothingToEnsureButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-        width: '100%',
+        width: '96%',
+        alignSelf: 'center',
         height: hp('7%'),
         borderRadius: wp('10%'),
     },

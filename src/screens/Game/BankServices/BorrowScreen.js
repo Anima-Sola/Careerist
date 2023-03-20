@@ -155,7 +155,7 @@ const Borrow = ({ navigation, commonSettings }) => {
     
     const notBankrupt = () => {
         return (
-            <>
+            <View style={ styles.wrapper }>
                 <CustomPrompt prompt={ prompt } setPrompt={ setPrompt }/>
                 <CustomAlert alert={ alert } setAlert={ setAlert }/>
                 <View style={ styles.container }>
@@ -183,13 +183,13 @@ const Borrow = ({ navigation, commonSettings }) => {
                         onPress={ () => navigation.navigate('BankScreen', { previousScreen: 'lendOrBorrowScreen' }) }   
                     />
                 </View>
-            </>
+            </View>
         )
     }
 
     const bankrupt = () => {
         return (
-            <>
+            <View style={ styles.wrapper }>
                 <View style={ styles.container }>
                     <View style={ styles.dataContainer }>
                         <Image style={ styles.image } resizeMode='center' source={ BorrowImage } />
@@ -206,7 +206,7 @@ const Borrow = ({ navigation, commonSettings }) => {
                         onPress={ () => navigation.navigate('BankScreen', { previousScreen: 'lendOrBorrowScreen' }) }   
                     />
                 </View>
-            </>
+            </View>
         )
     }
     
@@ -214,6 +214,13 @@ const Borrow = ({ navigation, commonSettings }) => {
 }
 
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        width: '100%',
+        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
+    },
     container: {
         flex: 1,
         width: '96%',
@@ -240,7 +247,6 @@ const styles = StyleSheet.create({
         marginBottom: hp('5%')
     },
     buttonsContainer: {
-        flex: 0.1,
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'center',

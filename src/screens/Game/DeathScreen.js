@@ -22,7 +22,7 @@ const Death = ({ navigation, commonSettings }) => {
     const { playerAge } = commonSettings;
 
     return (
-        <>
+        <View style={ styles.wrapper }>
             <ScrollView style={ styles.container }>
                 <View style={ styles.dataContainer }>
                     <Image style={ styles.image } resizeMode='center' source={ GraveImage } />
@@ -41,11 +41,18 @@ const Death = ({ navigation, commonSettings }) => {
                     onPress={ () => navigation.navigate('IntroScreen') }  
                 />
             </View>
-        </>
+        </View>
     )
 }
     
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        width: '100%',
+        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
+    },
     container: {
         flex: 1,
         width: '96%',

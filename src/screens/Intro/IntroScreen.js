@@ -117,6 +117,8 @@ class Intro extends Component {
                     renderDoneButton={ this._renderDoneButton }
                     renderNextButton={ this._renderNextButton }
                     renderSkipButton={ this._renderSkipButton }
+                    activeDotStyle = { styles.activePaginationDots }
+                    dotStyle = { styles.paginationDots }
                     onDone={ this._navToSetGameDifficultyScreen }
                     onSkip={ this._navToSetGameDifficultyScreen }
                     ref={( ref ) => ( this.slider = ref )}
@@ -162,16 +164,20 @@ const IntroScreen = ({ navigation }) => {
     })
 
     return (
-        <>
+        <View style={ styles.wrapper }>
             <CustomAlert alert={ alert } setAlert={ setAlert } />
-            <Intro navigation={ navigation } ref={ ref }/>
-        </>
+            <Intro navigation={ navigation } ref={ ref } />
+        </View>
     )
 }
 
 export default IntroScreen;
 
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        width: '100%',
+    },
     container: {
         flex: 1,
         alignItems: 'center',
@@ -209,19 +215,35 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center',
+        bottom: THEME.NAVBAR_HEIGHT - 16
     },
     skipButton: {
         width: 80,
         height: 40,
         backgroundColor: 'rgba(0, 0, 0, .2)',
         borderRadius: 20,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        bottom: THEME.NAVBAR_HEIGHT - 16
     },
     skipButtonText: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-semibold',
         fontSize: THEME.FONT25,
         textAlign: 'center',
-        paddingBottom: 4
+        paddingBottom: 4,
+    },
+    paginationDots: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: 'rgba(0, 0, 0, .3)',
+        bottom: THEME.NAVBAR_HEIGHT - 12
+    },
+    activePaginationDots: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: 'white',
+        bottom: THEME.NAVBAR_HEIGHT - 12
     },
 });

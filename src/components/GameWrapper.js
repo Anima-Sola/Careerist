@@ -56,11 +56,10 @@ const GameWrapper = ({ wrappedComponent, commonSettings }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
+        backgroundColor: THEME.FORTH_BACKGROUND_COLOR,
     },
     paddingStatusBar: {
         paddingTop: THEME.STATUSBAR_HEIGHT,
-        backgroundColor: THEME.FORTH_BACKGROUND_COLOR, 
     },
     header: {
         flexDirection: 'row',
@@ -69,8 +68,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingLeft: wp('5%'),
         paddingRight: wp('5%'),
+        paddingTop: hp('1%'),
         height: hp('8%'),
-        backgroundColor: THEME.FORTH_BACKGROUND_COLOR,
     },
     walletContainer: {
         flexDirection: 'row',
@@ -86,15 +85,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: hp('8%'),
+        height: THEME.NAVBAR_HEIGHT,
         paddingLeft: wp('5%'),
         paddingRight: wp('5%'),
-        backgroundColor: THEME.FORTH_BACKGROUND_COLOR,
+        borderBottomWidth: 1,
+        borderBottomColor: THEME.MAIN_BACKGROUND_COLOR,
+        marginBottom: THEME.NAVBAR_HEIGHT,
     }, 
     footerText: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-semibold',
         fontSize: THEME.FONT30,
+        paddingBottom: hp('1.2%')
     },
 })
 

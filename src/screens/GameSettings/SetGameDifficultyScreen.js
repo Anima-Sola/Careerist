@@ -52,11 +52,9 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
         width: '100%',
-        paddingLeft: '2%',
-        paddingRight: '2%'
     },
     headerContainer: {
-        flex: 0.15,
+        flex: 0.1,
         justifyContent: 'center',
         width:'100%',
         marginTop: THEME.STATUSBAR_HEIGHT
@@ -69,9 +67,11 @@ const styles = StyleSheet.create({
         paddingTop: hp('1%')
     },
     difficultyLevelsContainer: {
-        flex: 0.75,
+        flex: 0.8,
         justifyContent: 'center',
         width:'100%',
+        paddingLeft: '2%',
+        paddingRight: '2%',
     },
     difficultyLevelItem: {
         backgroundColor: 'rgba(0, 0, 0, .2)',
@@ -96,6 +96,11 @@ const styles = StyleSheet.create({
         flex: 0.1,
         justifyContent: 'center',
         width: '100%',
+        marginBottom: THEME.NAVBAR_HEIGHT,
+        borderBottomWidth: 1,
+        borderBottomColor: 'THEME.FORTH_BACKGROUND_COLOR',
+        paddingLeft: '2%',
+        paddingRight: '2%',
     },
     nextButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,

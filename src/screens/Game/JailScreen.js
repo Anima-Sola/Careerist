@@ -76,7 +76,7 @@ const Jail = ({ navigation, commonSettings }) => {
     }
 
     return (
-        <>  
+        <View style={ styles.wrapper }>  
             <CustomAlert alert={ alert } setAlert={ setAlert } />
             <ScrollView style={ styles.container }>
                 <Image style={ styles.image } resizeMode='center' source={ JailImage } />
@@ -92,11 +92,18 @@ const Jail = ({ navigation, commonSettings }) => {
                     onPress={ () => getOutOfJail() }  
                 />
             </View>
-        </>
+        </View>
     )
 }
     
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        width: '100%',
+        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
+    },
     container: {
         flex: 1,
         width: '96%',

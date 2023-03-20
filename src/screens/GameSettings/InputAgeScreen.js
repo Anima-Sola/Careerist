@@ -76,11 +76,9 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
-        paddingLeft: '2%',
-        paddingRight: '2%'
     },
     headerContainer: {
-        flex: 0.15,
+        flex: 0.1,
         justifyContent: 'center',
         width:'100%',
         marginTop: THEME.STATUSBAR_HEIGHT
@@ -93,7 +91,7 @@ const styles = StyleSheet.create({
         paddingTop: hp('1%')
     },
     inputContainer: {
-        flex: 0.75,
+        flex: 0.80,
         justifyContent: 'center',
         width: '40%'
     },
@@ -117,6 +115,11 @@ const styles = StyleSheet.create({
         flex: 0.1,
         justifyContent: 'center',
         width: '100%',
+        marginBottom: THEME.NAVBAR_HEIGHT,
+        borderBottomWidth: 1,
+        borderBottomColor: 'THEME.FORTH_BACKGROUND_COLOR',
+        paddingLeft: '2%',
+        paddingRight: '2%'
     },
     nextButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,

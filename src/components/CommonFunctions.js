@@ -93,6 +93,7 @@ export const calcSubtotals = ( timeStep ) => {
 
     timeStep = timeStep / endOfYear;
 
+    //In the original game the insurance period does not end
     for( let i = 0; i < 5; i++ ) {
         insurancePossessionTermList[ i ] = insurancePossessionTermList[ i ] - timeStep;
         if( insurancePossessionTermList[ i ] <= 0 ) {

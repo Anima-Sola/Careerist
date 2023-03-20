@@ -198,52 +198,54 @@ const Election = ({ navigation, commonSettings }) => {
 
     const election = () => {
         return (
-            <ScrollView style={ styles.container }>
-                <CustomAlert alert={ alert } setAlert={ setAlert } />          
-                <View>
-                    <Text style={ styles.text }>В настоящее время вы - </Text>
-                </View> 
-                <View style={ styles.socialStatusContainer }>
-                    <Image style={ styles.image } resizeMode='center' source={ electionImages[ currentSocialStatus - 1 ] } />
-                    <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus - 1 ] }</Text>
-                </View>
-                <View>
-                    <Text style={{ ...styles.text, marginBottom: 0 }}>Примите участие в выборах.</Text>
-                    <Text style={ styles.text }>Избирается - </Text>
-                </View>
-                <View style={ styles.socialStatusContainer }>
-                    <Image style={ styles.image } resizeMode='center' source={ electionImages[ currentSocialStatus ] } />
-                    <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus ] }</Text>
-                </View>
-                <View>
-                    <Text style={ styles.text }>Кампания обойдется в { electionCost.current }$, вероятность успеха { Math.floor( 100 * chanceToElect.current ) }%.</Text>
-                </View>
-                <View style={ styles.downTextContainer }>
-                    <Text style={{ ...styles.text, fontSize: THEME.FONT45 }}>Участвуете?</Text>
-                </View>
-                <View style={ styles.buttonsContainer }>
-                    <Button
-                        buttonStyle={ styles.takePartButton } 
-                        titleStyle={ styles.nextButtonTitle }
-                        type="outline" 
-                        title="Да"
-                        onPress={ () => standForElection() }  
-                    />
-                    <Button
-                        buttonStyle={ styles.nextButton } 
-                        titleStyle={ styles.nextButtonTitle }
-                        type="outline" 
-                        title="Нет"
-                        onPress={ () => showSkipElectionAlert() }  
-                    />
-                </View>
-            </ScrollView>
+            <View style={ styles.wrapper }>
+                <ScrollView style={ styles.container }>
+                    <CustomAlert alert={ alert } setAlert={ setAlert } />          
+                    <View>
+                        <Text style={ styles.text }>В настоящее время вы - </Text>
+                    </View> 
+                    <View style={ styles.socialStatusContainer }>
+                        <Image style={ styles.image } resizeMode='center' source={ electionImages[ currentSocialStatus - 1 ] } />
+                        <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus - 1 ] }</Text>
+                    </View>
+                    <View>
+                        <Text style={{ ...styles.text, marginBottom: 0 }}>Примите участие в выборах.</Text>
+                        <Text style={ styles.text }>Избирается - </Text>
+                    </View>
+                    <View style={ styles.socialStatusContainer }>
+                        <Image style={ styles.image } resizeMode='center' source={ electionImages[ currentSocialStatus ] } />
+                        <Text style={ styles.socialStatusText }>{ SOCIAL_STATUSES[ currentSocialStatus ] }</Text>
+                    </View>
+                    <View>
+                        <Text style={ styles.text }>Кампания обойдется в { electionCost.current }$, вероятность успеха { Math.floor( 100 * chanceToElect.current ) }%.</Text>
+                    </View>
+                    <View style={ styles.downTextContainer }>
+                        <Text style={{ ...styles.text, fontSize: THEME.FONT45 }}>Участвуете?</Text>
+                    </View>
+                    <View style={{ ...styles.buttonsContainer, marginBottom: hp('2%') }}>
+                        <Button
+                            buttonStyle={ styles.takePartButton } 
+                            titleStyle={ styles.nextButtonTitle }
+                            type="outline" 
+                            title="Да"
+                            onPress={ () => standForElection() }  
+                        />
+                        <Button
+                            buttonStyle={ styles.nextButton } 
+                            titleStyle={ styles.nextButtonTitle }
+                            type="outline" 
+                            title="Нет"
+                            onPress={ () => showSkipElectionAlert() }  
+                        />
+                    </View>
+                </ScrollView>
+            </View>
         )
     }
 
     const noElection = ( message, image ) => {
         return (
-            <>
+            <View style={ styles.wrapper }>
                 <ScrollView style={ styles.container }>
                     <Image style={ styles.sclerosisImage } resizeMode='center' source={ image } />
                     <Text style={ styles.electionNotHeldText }>{ message }</Text>
@@ -260,7 +262,7 @@ const Election = ({ navigation, commonSettings }) => {
                         }}  
                     />
                 </View>
-            </>
+            </View>
         )
     }
 
@@ -269,13 +271,18 @@ const Election = ({ navigation, commonSettings }) => {
 }
 
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        width: '100%',
+        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
+    },
     container: {
         flex: 1,
         width: '96%',
-        marginBottom: hp('1%'),
-        marginTop: hp('1%'),
-        marginLeft: '2%',
-        marginRight: '2%',
+        alignSelf: 'center',
+        paddingTop: hp('1%')
     },
     socialStatusContainer: {
         backgroundColor: 'rgba(0, 0, 0, .2)',
@@ -297,7 +304,7 @@ const styles = StyleSheet.create({
         fontFamily: 'nunito-extralight',
         fontSize: THEME.FONT35,
         textAlign: 'center',
-        marginBottom: hp('1.5%'),
+        marginBottom: hp('1.5%')
     },
     socialStatusText: {
         color: THEME.TEXT_COLOR,
@@ -311,7 +318,7 @@ const styles = StyleSheet.create({
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-semibolditalic',
         fontSize: THEME.FONT40,
-        textAlign: 'center',
+        textAlign: 'center'
     },
     downTextContainer: {
         marginTop: hp('1%'),
@@ -336,7 +343,7 @@ const styles = StyleSheet.create({
         width: wp('46%'),
         height: hp('7%'),
         borderRadius: wp('10%'),
-        marginLeft: 5,
+        marginLeft: 5
     },
     nextButtonTitle: {
         color: THEME.TEXT_COLOR,

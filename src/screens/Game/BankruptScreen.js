@@ -227,7 +227,7 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
 
     const assetSale = () => {
         return (
-            <>
+            <View style={ styles.wrapper }>
                 <CustomPrompt prompt={ prompt } setPrompt={ setPrompt }/>
                 <CustomAlert alert={ alert } setAlert={ setAlert }/>
                 <ScrollView style={ styles.container }>
@@ -250,7 +250,7 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
                         onPress={ () => navigation.navigate( panishmentScreen.current ) }  
                     />
                 </View>
-            </>
+            </View>
         )
     }
 
@@ -259,6 +259,13 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
 }
     
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        width: '100%',
+        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
+    },
     container: {
         flex: 1,
         width: '96%',

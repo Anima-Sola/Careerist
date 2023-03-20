@@ -88,7 +88,7 @@ const Withdraw = ({ navigation, commonSettings }) => {
     }
 
     return (
-        <>
+        <View style={ styles.wrapper }>
             <CustomPrompt prompt={ prompt } setPrompt={ setPrompt }/>
             <CustomAlert alert={ alert } setAlert={ setAlert }/>
             <View style={ styles.container }>
@@ -114,11 +114,18 @@ const Withdraw = ({ navigation, commonSettings }) => {
                     onPress={ () => navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' }) }   
                 />
             </View>
-        </>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        width: '100%',
+        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
+    },
     container: {
         flex: 1,
         width: '96%',
@@ -144,7 +151,6 @@ const styles = StyleSheet.create({
         marginBottom: hp('5%')
     },
     buttonsContainer: {
-        flex: 0.1,
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'center',

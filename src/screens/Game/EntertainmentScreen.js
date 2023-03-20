@@ -216,7 +216,7 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
     }, [])
 
     return (
-        <>  
+        <View style={ styles.wrapper }>  
             <CustomAlert alert={ alert } setAlert={ setAlert } />
             <ScrollView style={ styles.container }>
                 { getEntertainList() }
@@ -237,17 +237,23 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
                     onPress={ () => showYouAreMiserAlert() }   
                 />
             </View>
-        </>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        width: '100%',
+        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
+    },
     container: {
         flex: 1,
         width: '96%',
-        marginLeft: '2%',
-        marginRight: '2%',
-        marginTop: hp('1%'),
+        alignSelf: 'center',
+        marginTop: hp('1.5%'),
         marginBottom: hp('1%')
     },
     itemContainer: {
@@ -286,8 +292,7 @@ const styles = StyleSheet.create({
     },
     buttonsContainer: {
         width: '96%',
-        marginLeft: '2%',
-        marginRight: '2%',
+        alignSelf: 'center',
         flexDirection: 'row',
         justifyContent: 'center',
         marginBottom: hp('1%')

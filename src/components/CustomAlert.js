@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
-//import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { THEME } from "../styles/theme";
 import { Button } from 'react-native-elements';
+import * as NavigationBar from 'expo-navigation-bar';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const CustomAlert = ({ alert, setAlert, argsForButtonCallbacks }) => {
@@ -34,12 +34,18 @@ const CustomAlert = ({ alert, setAlert, argsForButtonCallbacks }) => {
         return list;
     }
 
+    const changeNavbarColor = () => {
+        console.log('123');
+        //NavigationBar.setBackgroundColorAsync( THEME.FORTH_BACKGROUND_COLOR );
+    }
+
     return (
         <Modal
             animationType="fade"
             transparent={ true }
             statusBarTranslucent={ true }
             visible={ alert.isVisible }
+            onShow={ changeNavbarColor }
             onRequestClose={ () => { if( isOverlayPressable ) setAlert({ isVisible: false, data: alert.data, buttonsCallbacks: alert.buttonsCallbacks }) }} 
         >   
             <Pressable 

@@ -189,7 +189,7 @@ const Total = ({ navigation }) => {
     }
 
     return (
-        <>
+        <View style={ styles.wrapper }>
             <ScrollView style={ styles.container }>
                 <CustomAlert alert={ alert } setAlert={ setAlert } />
                 <Text style={ styles.fatText }>Закончился { year + yearsPassed } год.</Text>
@@ -218,17 +218,23 @@ const Total = ({ navigation }) => {
                     onPress={ () => payExpenses( false ) }   
                 />
             </View>
-        </>
+        </View>
     )
 }
     
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        width: '100%',
+        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
+    },
     container: {
         flex: 1,
         width: '96%',
-        marginLeft: '2%',
-        marginRight: '2%',
-        marginTop: hp('1%'),
+        alignSelf: 'center',
+        marginTop: hp('1.5%'),
         marginBottom: hp('1%')
     },
     dataContainer: {

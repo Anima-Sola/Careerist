@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -21,10 +21,12 @@ const FinancialSituation = ({ navigation, commonSettings }) => {
     const { cash, year, yearsPassed } = commonSettings;
 
     return (
-        <View style={ styles.container }>
-            <Text style={{ ...styles.text, marginBottom: hp('1%') }}>Год { year + yearsPassed }</Text>
-            <Text style={{ ...styles.text, marginBottom: hp('1%') }}>Наличные средства { Math.floor( cash ) }$</Text>
-            <TotalTable />
+        <View style={ styles.wrapper }>
+            <ScrollView style={ styles.container }>
+                <Text style={{ ...styles.text, marginBottom: hp('1%') }}>Год { year + yearsPassed }</Text>
+                <Text style={{ ...styles.text, marginBottom: hp('1%') }}>Наличные средства { Math.floor( cash ) }$</Text>
+                <TotalTable />
+            </ScrollView>
             <View style={ styles.buttonContainer }>
                 <Button
                     buttonStyle={ styles.button } 
@@ -39,12 +41,18 @@ const FinancialSituation = ({ navigation, commonSettings }) => {
 }
     
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        width: '100%',
+        marginBottom: hp('1%'),
+        marginTop: hp('1%'),
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
+    },
     container: {
         flex: 1,
         width: '96%',
-        marginLeft: '2%',
-        marginRight: '2%',
-        marginTop: hp('2%')
+        alignSelf: 'center',
+        paddingTop: hp('1.5%')
     },
     text: {
         color: THEME.TEXT_COLOR,
@@ -59,7 +67,8 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-        width: '100%',
+        width: '96%',
+        alignSelf: 'center',
         height: hp('7%'),
         borderRadius: wp('10%'),
     },
