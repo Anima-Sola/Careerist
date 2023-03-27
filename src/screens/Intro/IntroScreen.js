@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Image, StatusBar, BackHandler } from 'react-nat
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch } from "react-redux";
+import * as NavigationBar from 'expo-navigation-bar';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import CustomAlert from '../../components/CustomAlert';
@@ -117,8 +118,6 @@ class Intro extends Component {
                     renderDoneButton={ this._renderDoneButton }
                     renderNextButton={ this._renderNextButton }
                     renderSkipButton={ this._renderSkipButton }
-                    activeDotStyle = { styles.activePaginationDots }
-                    dotStyle = { styles.paginationDots }
                     onDone={ this._navToSetGameDifficultyScreen }
                     onSkip={ this._navToSetGameDifficultyScreen }
                     ref={( ref ) => ( this.slider = ref )}
@@ -160,6 +159,7 @@ const IntroScreen = ({ navigation }) => {
         dispatch( saveGameSettingsInitialState() );
         dispatch( loadAppSettings() );
         dispatch( loadGameSettings() );
+        NavigationBar.setBackgroundColorAsync( '#000' );
         ref.current.slider.goToSlide( 0 );
     })
 
@@ -215,7 +215,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        bottom: THEME.NAVBAR_HEIGHT - 16
     },
     skipButton: {
         width: 80,
@@ -223,7 +222,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, .2)',
         borderRadius: 20,
         justifyContent: 'center',
-        bottom: THEME.NAVBAR_HEIGHT - 16
     },
     skipButtonText: {
         color: THEME.TEXT_COLOR,
@@ -231,19 +229,5 @@ const styles = StyleSheet.create({
         fontSize: THEME.FONT25,
         textAlign: 'center',
         paddingBottom: 4,
-    },
-    paginationDots: {
-        width: 10,
-        height: 10,
-        borderRadius: 5,
-        backgroundColor: 'rgba(0, 0, 0, .3)',
-        bottom: THEME.NAVBAR_HEIGHT - 12
-    },
-    activePaginationDots: {
-        width: 10,
-        height: 10,
-        borderRadius: 5,
-        backgroundColor: 'white',
-        bottom: THEME.NAVBAR_HEIGHT - 12
-    },
+    }
 });

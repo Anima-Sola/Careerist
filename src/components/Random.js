@@ -1,3 +1,4 @@
+//ZX basic RND function
 const RND = () => {
     let seed = 15619;
 

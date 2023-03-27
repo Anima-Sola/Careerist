@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { View, Text, StyleSheet, Pressable, StatusBar } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Button } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
 import { THEME } from '../../styles/theme';
@@ -34,6 +34,7 @@ export const SetGameDifficultyScreen = ({ navigation }) => {
 
     return (
         <View style={ styles.container }>
+            <StatusBar translucent backgroundColor="transparent" />
             <View style={ styles.headerContainer }>
                 <Text style={ styles.header }>Ваш класс?</Text>
             </View>
@@ -50,13 +51,12 @@ export const SetGameDifficultyScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
-        width: '100%',
+        width:'100%',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
     },
     headerContainer: {
-        flex: 0.1,
-        justifyContent: 'center',
-        width:'100%',
         marginTop: THEME.STATUSBAR_HEIGHT
     },
     header: {
@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
         paddingTop: hp('1%')
     },
     difficultyLevelsContainer: {
-        flex: 0.8,
         justifyContent: 'center',
         width:'100%',
         paddingLeft: '2%',
@@ -93,14 +92,11 @@ const styles = StyleSheet.create({
         fontSize: THEME.FONT25,
     },
     nextButtonContainer: {
-        flex: 0.1,
         justifyContent: 'center',
         width: '100%',
-        marginBottom: THEME.NAVBAR_HEIGHT,
-        borderBottomWidth: 1,
-        borderBottomColor: 'THEME.FORTH_BACKGROUND_COLOR',
         paddingLeft: '2%',
         paddingRight: '2%',
+        paddingBottom: hp('1%')
     },
     nextButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,

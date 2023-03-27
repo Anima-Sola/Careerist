@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Button } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
@@ -91,13 +91,11 @@ const Withdraw = ({ navigation, commonSettings }) => {
         <View style={ styles.wrapper }>
             <CustomPrompt prompt={ prompt } setPrompt={ setPrompt }/>
             <CustomAlert alert={ alert } setAlert={ setAlert }/>
-            <View style={ styles.container }>
-                <View style={ styles.dataContainer }>
-                    <Image style={ styles.image } resizeMode='center' source={ WithdrawImage } />
-                    <Text style={ styles.text }>Счет в банке { Math.floor( depositAmount ) }$.</Text>
-                    <Text style={ styles.text }>Стоимость операции 5%.</Text>
-                </View>
-            </View>
+            <ScrollView style={ styles.container }>
+                <Image style={ styles.image } resizeMode='center' source={ WithdrawImage } />
+                <Text style={ styles.text }>Счет в банке { Math.floor( depositAmount ) }$.</Text>
+                <Text style={ styles.text }>Стоимость операции 5%.</Text>
+            </ScrollView>
             <View style={ styles.buttonsContainer }>
                 <Button
                     buttonStyle={ styles.withdrawButton } 
@@ -131,11 +129,7 @@ const styles = StyleSheet.create({
         width: '96%',
         marginLeft: '2%',
         marginRight: '2%',
-    },
-    dataContainer: {
-        flex: 1,
-        alignItems: 'center',
-        marginTop: hp('6%'),
+        marginTop: hp('6%')
     },
     text: {
         color: THEME.TEXT_COLOR,

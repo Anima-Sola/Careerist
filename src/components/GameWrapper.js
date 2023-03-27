@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: THEME.FORTH_BACKGROUND_COLOR,
+        paddingBottom: -500,
     },
     paddingStatusBar: {
         paddingTop: THEME.STATUSBAR_HEIGHT,
@@ -85,12 +86,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: THEME.NAVBAR_HEIGHT,
         paddingLeft: wp('5%'),
         paddingRight: wp('5%'),
+        height: hp('6%'),
         borderBottomWidth: 1,
         borderBottomColor: THEME.MAIN_BACKGROUND_COLOR,
-        marginBottom: THEME.NAVBAR_HEIGHT,
     }, 
     footerText: {
         color: THEME.TEXT_COLOR,

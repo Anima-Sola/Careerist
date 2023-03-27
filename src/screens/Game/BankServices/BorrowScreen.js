@@ -158,15 +158,13 @@ const Borrow = ({ navigation, commonSettings }) => {
             <View style={ styles.wrapper }>
                 <CustomPrompt prompt={ prompt } setPrompt={ setPrompt }/>
                 <CustomAlert alert={ alert } setAlert={ setAlert }/>
-                <View style={ styles.container }>
-                    <View style={ styles.dataContainer }>
-                        <Image style={ styles.image } resizeMode='center' source={ BorrowImage } />
-                        <Text style={ styles.text }>Наличные средства { Math.floor( cash ) }$.</Text>
-                        <Text style={ styles.text }>Со всеми потрохами</Text>
-                        <Text style={ styles.text }>вы стоите: { Math.floor( wealth.current ) }$.</Text>
-                        <Text style={ styles.text }>Даем на срок не более 5 лет.</Text>
-                    </View>
-                </View>
+                <ScrollView style={ styles.container }>
+                    <Image style={ styles.image } resizeMode='center' source={ BorrowImage } />
+                    <Text style={ styles.text }>Наличные средства { Math.floor( cash ) }$.</Text>
+                    <Text style={ styles.text }>Со всеми потрохами</Text>
+                    <Text style={ styles.text }>вы стоите: { Math.floor( wealth.current ) }$.</Text>
+                    <Text style={ styles.text }>Даем на срок не более 5 лет.</Text>
+                </ScrollView>
                 <View style={ styles.buttonsContainer }>
                     <Button
                         buttonStyle={ styles.borrowButton } 
@@ -193,7 +191,7 @@ const Borrow = ({ navigation, commonSettings }) => {
                 <View style={ styles.container }>
                     <View style={ styles.dataContainer }>
                         <Image style={ styles.image } resizeMode='center' source={ BorrowImage } />
-                        <Text style={ styles.text }>Наличные средства { cash }$.</Text>
+                        <Text style={ styles.text }>Наличные средства { Math.floor( cash ) }$.</Text>
                         <Text style={ styles.text }>Банкротам не даем!</Text>
                     </View>
                 </View>
@@ -226,12 +224,8 @@ const styles = StyleSheet.create({
         width: '96%',
         marginLeft: '2%',
         marginRight: '2%',
-        marginTop: hp('1%'),
+        marginTop: hp('6%'),
         marginBottom: hp('1%'),
-    },
-    dataContainer: {
-        flex: 1,
-        marginTop: hp('5%'),
     },
     text: {
         color: THEME.TEXT_COLOR,

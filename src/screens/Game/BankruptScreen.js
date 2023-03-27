@@ -115,7 +115,7 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
 
     const withdrawCashFromBank = () => {
         return (
-            <>
+            <View style={ styles.wrapper }>
                 <CustomPrompt prompt={ prompt } setPrompt={ setPrompt }/>
                 <CustomAlert alert={ alert } setAlert={ setAlert }/>
                 <ScrollView style={ styles.container }>
@@ -137,7 +137,7 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
                         onPress={ () => showInputWithdrawAmountPrompt() }  
                     />
                 </View>
-            </>
+            </View>
         )
     }
 

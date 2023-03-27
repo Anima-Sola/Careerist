@@ -2,7 +2,6 @@ import React from "react";
 import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
 import { THEME } from "../styles/theme";
 import { Button } from 'react-native-elements';
-import * as NavigationBar from 'expo-navigation-bar';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const CustomAlert = ({ alert, setAlert, argsForButtonCallbacks }) => {
@@ -34,18 +33,12 @@ const CustomAlert = ({ alert, setAlert, argsForButtonCallbacks }) => {
         return list;
     }
 
-    const changeNavbarColor = () => {
-        console.log('123');
-        //NavigationBar.setBackgroundColorAsync( THEME.FORTH_BACKGROUND_COLOR );
-    }
-
     return (
         <Modal
             animationType="fade"
             transparent={ true }
             statusBarTranslucent={ true }
             visible={ alert.isVisible }
-            onShow={ changeNavbarColor }
             onRequestClose={ () => { if( isOverlayPressable ) setAlert({ isVisible: false, data: alert.data, buttonsCallbacks: alert.buttonsCallbacks }) }} 
         >   
             <Pressable 
@@ -69,11 +62,11 @@ const CustomAlert = ({ alert, setAlert, argsForButtonCallbacks }) => {
 const styles = StyleSheet.create({
     iOSBackdrop: {
         backgroundColor: "#000000",
-        opacity: 0.3
+        opacity: 0.5
     },
     androidBackdrop: {
         backgroundColor: "#232f34",
-        opacity: 0.32
+        opacity: 0.52
     },
     backdrop: {
         position: 'absolute',

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Modal, Pressable, TextInput } from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { View, Text, StyleSheet, Modal, Pressable, TextInput, KeyboardAvoidingView } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Button } from 'react-native-elements';
 import { THEME } from "../styles/theme";
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -68,7 +68,9 @@ const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
                     if( isOverlayPressable ) setPrompt({ ...prompt, isVisible: false, value: '' });
                 }} 
             />
-            <View style={ styles.container }>
+            <KeyboardAvoidingView 
+                behavior={ 'height' }
+                style={ styles.container }>
                 <View style={{ ...styles.iconContainer, backgroundColor: iconBackgroundColor }}>
                     <Icon style={ styles.icon } name={ iconName } color={ iconColor } size={ 50 }/>
                 </View>
@@ -86,7 +88,7 @@ const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
                     />
                     { buttonsList() }
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         </Modal>
     )
 }
@@ -94,11 +96,11 @@ const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
 const styles = StyleSheet.create({
     iOSBackdrop: {
         backgroundColor: "#000000",
-        opacity: 0.3
+        opacity: 0.5
     },
     androidBackdrop: {
         backgroundColor: "#232f34",
-        opacity: 0.32
+        opacity: 0.52
     },
     backdrop: {
         position: 'absolute',

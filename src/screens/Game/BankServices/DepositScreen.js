@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Button } from 'react-native-elements';
@@ -113,14 +113,12 @@ const Deposit = ({ navigation, commonSettings }) => {
         <View style={ styles.wrapper }>
             <CustomPrompt prompt={ prompt } setPrompt={ setPrompt }/>
             <CustomAlert alert={ alert } setAlert={ setAlert }/>
-            <View style={ styles.container }>
-                <View style={ styles.dataContainer }>
-                    <Image style={ styles.image } resizeMode='center' source={ DepositImage } />
-                    <Text style={ styles.text }>Наличные средства { Math.floor( cash ) }$</Text>
-                    <Text style={ styles.text }>Гарантируем доход { 2 * currentSocialStatus }% в год.</Text>
-                    <Text style={ styles.text }>Стоимость операции 5%.</Text>
-                </View>
-            </View>
+            <ScrollView style={ styles.container }>
+                <Image style={ styles.image } resizeMode='center' source={ DepositImage } />
+                <Text style={ styles.text }>Наличные средства { Math.floor( cash ) }$</Text>
+                <Text style={ styles.text }>Гарантируем доход { 2 * currentSocialStatus }% в год.</Text>
+                <Text style={ styles.text }>Стоимость операции 5%.</Text>
+            </ScrollView>
             <View style={ styles.buttonsContainer }>
                 <Button
                     buttonStyle={ styles.depositButton } 
@@ -154,12 +152,8 @@ const styles = StyleSheet.create({
         width: '96%',
         marginLeft: '2%',
         marginRight: '2%',
-        marginTop: hp('1%'),
+        marginTop: hp('6%'),
         marginBottom: hp('1%'),
-    },
-    dataContainer: {
-        flex: 1,
-        marginTop: hp('5%'),
     },
     text: {
         color: THEME.TEXT_COLOR,

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { View, Text, StyleSheet, TextInput, StatusBar } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { THEME } from '../../styles/theme';
@@ -53,6 +53,7 @@ export const InputСashAmountScreen = ({ navigation }) => {
 
     return (
         <View style={ styles.container }>
+            <StatusBar translucent backgroundColor="transparent" />
             <CustomAlert alert={ alert } setAlert={ setAlert } />
             <View style={ styles.headerContainer }>
                 <Text style={ styles.header }>Стартовый капитал?</Text>
@@ -85,13 +86,12 @@ export const InputСashAmountScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width:'100%',
         alignItems: 'center',
-        backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
+        justifyContent: 'space-between',
+        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
     },
     headerContainer: {
-        flex: 0.15,
-        justifyContent: 'center',
-        width:'100%',
         marginTop: THEME.STATUSBAR_HEIGHT
     },
     header: {
@@ -102,8 +102,6 @@ const styles = StyleSheet.create({
         paddingTop: hp('1%')
     },
     inputContainer: {
-        flex: 0.75,
-        justifyContent: 'center',
         width: '80%'
     },
     input: {
@@ -117,27 +115,24 @@ const styles = StyleSheet.create({
         borderBottomWidth: 3
     },
     nextButtonContainer: {
-        flex: 0.1,
         justifyContent: 'center',
         width: '100%',
-        marginBottom: THEME.NAVBAR_HEIGHT,
-        borderBottomWidth: 1,
-        borderBottomColor: 'THEME.FORTH_BACKGROUND_COLOR',
         paddingLeft: '2%',
-        paddingRight: '2%'
+        paddingRight: '2%',
+        paddingBottom: hp('1%')
     },
     nextButton: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
         width: '100%',
         height: hp('7%'),
-        borderRadius: wp('10%'),
+        borderRadius: wp('10%')
     },
     nextButtonTitle: {
         color: THEME.TEXT_COLOR,
         fontFamily: 'nunito-semibold',
-        fontSize: THEME.FONT28,
+        fontSize: THEME.FONT28
     },
     nextButtonDisabledStyle: {
-        backgroundColor: THEME.DISABLED_BUTTON_COLOR,
+        backgroundColor: THEME.DISABLED_BUTTON_COLOR
     },
 });

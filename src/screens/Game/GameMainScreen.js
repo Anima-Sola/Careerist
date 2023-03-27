@@ -2,6 +2,7 @@ import React, { useState, useEffect, useReducer } from "react";
 import { View, Text, StyleSheet, Pressable, BackHandler, ScrollView, Image } from 'react-native';
 import { useStore, useSelector, useDispatch } from "react-redux";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import * as NavigationBar from 'expo-navigation-bar';
 import { THEME } from "../../styles/theme";
 import GameWrapper from "../../components/GameWrapper";
 import { getCommonSettings } from "../../store/selectors";
@@ -203,6 +204,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
     }
 
     const onScreenFocus = () => {
+        NavigationBar.setBackgroundColorAsync( THEME.FORTH_BACKGROUND_COLOR );
         if( store.getState().appSettingsReducer.isNewYearBegun ) {
             const { cash } = store.getState().gameSettingsReducer.commonSettings;
             if( cash <= 0 ) calcSubtotals( 0.3 );
