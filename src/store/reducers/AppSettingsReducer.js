@@ -1,7 +1,7 @@
 import { saveDataToStore } from '../../components/FileSystem';
 
 export const initialState = {
-    isNewYearBegun: false
+    isNewYearBegun: false,
 }
 
 const saveState = ( state, param, payload, saveStateToStore ) => {

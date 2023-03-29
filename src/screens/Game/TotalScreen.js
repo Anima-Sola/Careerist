@@ -245,13 +245,13 @@ const styles = StyleSheet.create({
     },  
     text: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-extralight',
+        fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT35,
         textAlign: 'center',
     },
     fatText: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
+        fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT35,
         textAlign: 'center',
     },
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     },
     cellText: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-extralight',
+        fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT28,
     },  
     buttonsContainer: {
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
     },
     buttonTitle: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
+        fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT28
     }
 });

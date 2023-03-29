@@ -5,7 +5,7 @@ import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const CustomAlert = ({ alert, setAlert, argsForButtonCallbacks }) => {
-    const {
+    let {
         message, 
         header, 
         iconName, 
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         right: 0,
-        bottom: 0,
+        bottom: 0
     },
     container: {
         flex: 1,
@@ -95,25 +95,24 @@ const styles = StyleSheet.create({
         borderWidth: 5,
         borderColor: THEME.SIDE_MENU_BACKGROUND_COLOR,
         backgroundColor: 'red',
-        padding: 5,
         marginBottom: -40,
+        justifyContent: 'center',
         zIndex: 1, // works on ios
         elevation: 0, // works on android
     },
     icon: {
-        paddingTop: 2,
         alignSelf: 'center'
     },
     header: {
         color: THEME.SIDE_MENU_ITEMS_TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
+        fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT40,
         textAlign: 'center',
         paddingTop: 35
     },
     text: {
         color: THEME.SIDE_MENU_ITEMS_TEXT_COLOR,
-        fontFamily: 'nunito-light',
+        fontFamily: THEME.FONT_LIGHT,
         fontSize: THEME.FONT30,
         textAlign: 'center',
         paddingTop: 10,
@@ -128,9 +127,9 @@ const styles = StyleSheet.create({
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR
     },
     buttonTitle: {
-        fontFamily: 'nunito-semibold',
+        fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT25,
-    },
+    }
 })
 
 export default CustomAlert;

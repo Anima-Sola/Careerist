@@ -37,7 +37,7 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
     const { cash, posWithinYear, endOfYear } = commonSettings;
     const { isBankBankrupt, depositAmount, lendAmount, borrowAmount } = useSelector( getBankSettings );
     const [ bankruptMessage, setBankruptMessage ] = useState(
-        <Text style={{ ...styles.text, fontFamily: 'nunito-semibold' }}>НАЦИОНАЛЬНЫЙ БАНК банкрот!</Text>
+        <Text style={{ ...styles.text, fontFamily: THEME.FONT_SEMIBOLD }}>НАЦИОНАЛЬНЫЙ БАНК банкрот!</Text>
     );
     const services = [ Ensurance, Deposit, Withdraw, Lend, Borrow ];
     const servicesScreens = [ 'InsuranceScreen', 'DepositScreen', 'WithdrawScreen', 'LendScreen', 'BorrowScreen' ]; 
@@ -64,7 +64,7 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
         return (
             <>
                 <View style={{ height: hp('1.5%') }}></View>
-                <Text style={{ ...styles.text, fontFamily: 'nunito-semibold' }}>НАЦИОНАЛЬНЫЙ БАНК приветствует клиента!</Text>
+                <Text style={{ ...styles.text, fontFamily: THEME.FONT_SEMIBOLD }}>НАЦИОНАЛЬНЫЙ БАНК приветствует клиента!</Text>
                 <Text style={ styles.text }>Что желаете?</Text>
                 <View style={{ height: hp('1.5%') }}></View>
                 { items }
@@ -117,7 +117,7 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
                     const compensation = Math.floor( 0.1 * depositAmount);
                     setBankruptMessage(
                         <>
-                            <Text style={{ ...styles.text, fontFamily: 'nunito-semibold' }}>НАЦИОНАЛЬНЫЙ БАНК банкрот!</Text>
+                            <Text style={{ ...styles.text, fontFamily: THEME.FONT_SEMIBOLD }}>НАЦИОНАЛЬНЫЙ БАНК банкрот!</Text>
                             <Text style={ styles.text }>Вам выплачена компенсация { compensation }$</Text>
                         </>
                     );
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     },  
     itemText: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-extralight',
+        fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT30,
     },
     image: {
@@ -182,14 +182,14 @@ const styles = StyleSheet.create({
     },
     text: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-extralight',
+        fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT35,
         textAlign: 'center',
         marginBottom: hp('1%')
     },
     expensesText: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-light',
+        fontFamily: THEME.FONT_LIGHT,
         fontSize: THEME.FONT35,
         textAlign: 'center',
         marginBottom: hp('1.7%')
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     },
     buttonTitle: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
+        fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT28,
     }
 })

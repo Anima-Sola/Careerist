@@ -102,13 +102,13 @@ const styles = StyleSheet.create({
     },
     text: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-extralight',
+        fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT35,
         textAlign: 'center',
     },
     table: {
         borderWidth: 1, 
-        borderColor: '#fff',
+        borderColor: THEME.TEXT_COLOR,
         width: '100%',
     },
     row: {
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     },
     cellText: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-extralight',
+        fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT28,
     },  
 });

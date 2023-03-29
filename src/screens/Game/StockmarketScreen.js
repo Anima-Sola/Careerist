@@ -537,7 +537,7 @@ const styles = StyleSheet.create({
     text: {
         color: THEME.TEXT_COLOR,
         textAlign: 'center',
-        fontFamily: 'nunito-extralight',
+        fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT28,
     },
     image: {
@@ -572,7 +572,7 @@ const styles = StyleSheet.create({
     },
     buttonTitle: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
+        fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT28,
     }
 })

@@ -8,7 +8,25 @@ export const STOCKS_LIST = [ 'Skynet', 'Trolling', 'Nomoney', 'Needles', 'Pear' 
 export const BANKING_SERVICES = [ 'Застраховать имущество', 'Сделать вклад', 'Снять со счета', 'Дать ссуду', 'Получить кредит' ];
 export const ENTERTAINMENT_LIST = [ 'Преферанс', 'Монте-Карло', 'Любовница', 'Банкет', 'Круиз' ];
 
-//AlertWindows constants
+const alertBtn1 = {
+    key: 0,
+    hint: '',
+    textColor: THEME.TEXT_COLOR
+}
+
+const promptBtn1 = {   
+    key: 0,
+    disabledIfEmpty: true,
+    hint: '',
+    backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+    disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
+    textColor: THEME.TEXT_COLOR,
+}
+
+const alertBtn2 = { ...alertBtn1, key: 1 }
+const promptBtn2 = { ...promptBtn1, key: 1 }
+
+//Alerts and Prompts constants
 export const INPUT_AGE_SCREEN_BABY_ALERT = {
     message: 'Младенцам у нас делать нечего!', 
     header: 'Ой!',
@@ -16,14 +34,7 @@ export const INPUT_AGE_SCREEN_BABY_ALERT = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: true,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Продолжить',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Продолжить' } ]
 }
 
 export const INPUT_AGE_SCREEN_OLD_ALERT = {
@@ -33,14 +44,7 @@ export const INPUT_AGE_SCREEN_OLD_ALERT = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: true,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Продолжить',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Продолжить' } ]
 }
 
 export const INPUT_CASH_AMOUNT_SCREEN_ALERT = {
@@ -50,14 +54,7 @@ export const INPUT_CASH_AMOUNT_SCREEN_ALERT = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Продолжить',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Продолжить' } ]
 }
 
 export const GAME_MAIN_SCREEN_QUIT_GAME_ALERT = {
@@ -68,18 +65,8 @@ export const GAME_MAIN_SCREEN_QUIT_GAME_ALERT = {
     iconColor: 'white',
     isOverlayPressable: true,
     buttons: [
-        {   
-            key: 0,
-            hint: 'Остаться',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            hint: 'Выйти',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
+        { ...alertBtn1, hint: 'Остаться' },
+        { ...alertBtn2, hint: 'Выйти' }
     ]
 }
 
@@ -90,14 +77,8 @@ export const GAME_MAIN_SCREEN_LEND_NOT_REFUND = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: true,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Понял, принял',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        } 
-    ]
+    paddingTop: 2,
+    buttons: [ { ...alertBtn1, hint: 'Вот мерзавцы!' } ]
 }
 
 export const GAME_MAIN_SCREEN_LEND_REFUND = {
@@ -107,14 +88,7 @@ export const GAME_MAIN_SCREEN_LEND_REFUND = {
     iconBackgroundColor: 'green',
     iconColor: 'white',
     isOverlayPressable: true,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Отлично',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        } 
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Отлично' } ]
 }
 
 export const GAME_MAIN_SCREEN_BORROW_REFUND = {
@@ -124,14 +98,7 @@ export const GAME_MAIN_SCREEN_BORROW_REFUND = {
     iconBackgroundColor: 'green',
     iconColor: 'white',
     isOverlayPressable: true,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Отлично',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        } 
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Продолжить' } ]
 }
 
 export const GAME_MAIN_SCREEN_DISASTER = {
@@ -141,14 +108,7 @@ export const GAME_MAIN_SCREEN_DISASTER = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: true,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Очень жаль',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        } 
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Очень жаль' } ]
 }
 
 export const ELECTION_SCREEN_SKIP_ELECTION = {
@@ -158,14 +118,7 @@ export const ELECTION_SCREEN_SKIP_ELECTION = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Продолжить',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Продолжить' } ]
 }
 
 export const ELECTION_SCREEN_NO_MONEY_CHEATING = {
@@ -175,14 +128,7 @@ export const ELECTION_SCREEN_NO_MONEY_CHEATING = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Ой, уже ухожу',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Ой, уже ухожу' } ]
 }
 
 export const ELECTION_SCREEN_LOSE_ELECTION = {
@@ -192,14 +138,7 @@ export const ELECTION_SCREEN_LOSE_ELECTION = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Продолжить',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Продолжить' } ]
 }
 
 export const ELECTION_SCREEN_WIN_ELECTION = {
@@ -209,14 +148,7 @@ export const ELECTION_SCREEN_WIN_ELECTION = {
     iconBackgroundColor: 'green',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Продолжить',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Продолжить' } ]
 }
 
 export const ELECTION_SCREEN_WIN_PRESIDENT_ELECTION = {
@@ -226,14 +158,7 @@ export const ELECTION_SCREEN_WIN_PRESIDENT_ELECTION = {
     iconBackgroundColor: 'green',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'УРА!!!',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
-    ]
+    buttons: [ { ...alertBtn1, hint: 'УРА!!!' } ]
 }
 
 export const POSSESSION_SCREEN_NO_MONEY_CHEATING = ELECTION_SCREEN_NO_MONEY_CHEATING;
@@ -245,14 +170,7 @@ export const POSSESSION_SCREEN_NOTHING_TO_SALE_CHEATING = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Ой, уже ухожу',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Ой, уже ухожу' } ]
 }
 
 export const POSSESSION_SCREEN_DONT_BE_FOOL_WARNING = {
@@ -262,14 +180,7 @@ export const POSSESSION_SCREEN_DONT_BE_FOOL_WARNING = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Ой, уже ухожу',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Ой, уже ухожу' } ]
 }
 
 export const POSSESSION_SCREEN_ANOTHER_DEAL = {
@@ -280,18 +191,8 @@ export const POSSESSION_SCREEN_ANOTHER_DEAL = {
     iconColor: 'white',
     isOverlayPressable: false,
     buttons: [
-        {   
-            key: 0,
-            hint: 'Да',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            hint: 'Нет',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
+        { ...alertBtn1, hint: 'Да' },
+        { ...alertBtn2, hint: 'Нет' }
     ]
 }
 
@@ -303,18 +204,8 @@ export const EMPLOYEES_SCREEN_TO_HIRE = {
     iconColor: 'white',
     isOverlayPressable: false,
     buttons: [
-        {   
-            key: 0,
-            hint: 'Да',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            hint: 'Нет',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
+        { ...alertBtn1, hint: 'Да' },
+        { ...alertBtn2, hint: 'Нет' }
     ]
 }
 
@@ -326,18 +217,8 @@ export const EMPLOYEES_SCREEN_CONTRACT_IS_CONCLUDED = {
     iconColor: 'white',
     isOverlayPressable: false,
     buttons: [
-        {   
-            key: 0,
-            hint: 'Да',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            hint: 'Нет',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
+        { ...alertBtn1, hint: 'Да' },
+        { ...alertBtn2, hint: 'Нет' }
     ]
 }
 
@@ -348,14 +229,7 @@ export const EMPLOYEES_SCREEN_NOT_AGREE_TO_PREPAY = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Уйти',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Уйти' } ]
 }
 
 export const EMPLOYEES_SCREEN_CONTRACT_TERMINATED = {
@@ -366,18 +240,8 @@ export const EMPLOYEES_SCREEN_CONTRACT_TERMINATED = {
     iconColor: 'white',
     isOverlayPressable: false,
     buttons: [
-        {   
-            key: 0,
-            hint: 'Да',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            hint: 'Нет',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
+        { ...alertBtn1, hint: 'Да' },
+        { ...alertBtn2, hint: 'Нет' }
     ]
 }
 
@@ -388,14 +252,7 @@ export const EMPLOYEES_SCREEN_CONTRACT_TERMINATED_NO_MONEY = {
     iconBackgroundColor: 'green',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Уйти',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Уйти' } ]
 }
 
 export const EMPLOYEES_SCREEN_NO_MONEY_CHEATING = POSSESSION_SCREEN_NO_MONEY_CHEATING;
@@ -415,22 +272,8 @@ export const STOCKMARKET_SCREEN_INPUT_STOCKS_QUANTITY = {
     isOverlayPressable: true,
     onlyDigits: true,
     buttons: [
-        {   
-            key: 0,
-            disabledIfEmpty: true,
-            hint: 'Подтвердить',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            disabledIfEmpty: false,
-            hint: 'Отмена',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
+        { ...promptBtn1, hint: 'Подтвердить' },
+        { ...promptBtn2, hint: 'Отмена' },
     ]
 }
 
@@ -445,14 +288,7 @@ export const STOCKMARKET_IS_CLOSED = {
     iconBackgroundColor: 'green',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Понял, ухожу',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Уйти' } ]
 }
 
 export const STOCKMARKET_SCREEN_PROBLEM = {
@@ -462,14 +298,7 @@ export const STOCKMARKET_SCREEN_PROBLEM = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Понял, принял',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Жаль :(' } ]
 }
 
 export const STOCKMARKET_SCREEN_CLAIM_PROBLEM = {
@@ -480,18 +309,8 @@ export const STOCKMARKET_SCREEN_CLAIM_PROBLEM = {
     iconColor: 'white',
     isOverlayPressable: false,
     buttons: [
-        {   
-            key: 0,
-            hint: 'Да',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            hint: 'Нет',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
+        { ...alertBtn1, hint: 'Да' },
+        { ...alertBtn2, hint: 'Нет' }
     ]
 }
 
@@ -503,18 +322,8 @@ export const STOCKMARKET_SCREEN_STOLE_STOCKS_PROBLEM = {
     iconColor: 'white',
     isOverlayPressable: false,
     buttons: [
-        {   
-            key: 0,
-            hint: 'Да',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            hint: 'Нет',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
+        { ...alertBtn1, hint: 'Да' },
+        { ...alertBtn2, hint: 'Нет' }
     ]
 }
 
@@ -525,14 +334,7 @@ export const INSURANCE_SCREEN_MAX_AMOUNT_WARNING = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Понял, принял',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Принято' } ]
 }
 
 export const INSURANCE_SCREEN_ANOTHER_INSURANCE = {
@@ -543,18 +345,8 @@ export const INSURANCE_SCREEN_ANOTHER_INSURANCE = {
     iconColor: 'white',
     isOverlayPressable: false,
     buttons: [
-        {   
-            key: 0,
-            hint: 'Да',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            hint: 'Нет',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
+        { ...alertBtn1, hint: 'Да' },
+        { ...alertBtn2, hint: 'Нет' }
     ]
 }
 
@@ -567,22 +359,8 @@ export const INSURANCE_SCREEN_INPUT_TERM = {
     isOverlayPressable: true,
     onlyDigits: true,
     buttons: [
-        {   
-            key: 0,
-            disabledIfEmpty: true,
-            hint: 'Продолжить',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            disabledIfEmpty: false,
-            hint: 'Отмена',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
+        { ...promptBtn1, hint: 'Продолжить' },
+        { ...promptBtn2, hint: 'Отмена' },
     ]
 }
 
@@ -595,22 +373,8 @@ export const INSURANCE_SCREEN_INPUT_AMOUNT = {
     isOverlayPressable: true,
     onlyDigits: true,
     buttons: [
-        {   
-            key: 0,
-            disabledIfEmpty: true,
-            hint: 'Страховать',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            disabledIfEmpty: false,
-            hint: 'Отмена',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
+        { ...promptBtn1, hint: 'Cтраховать' },
+        { ...promptBtn2, hint: 'Отмена' },
     ]
 }
 
@@ -623,14 +387,7 @@ export const DEPOSIT_SCREEN_DEPOSIT_PLACED = {
     iconBackgroundColor: 'green',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Отлично',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Отлично' } ]
 }
 
 export const DEPOSIT_SCREEN_INPUT_AMOUNT = {
@@ -642,22 +399,8 @@ export const DEPOSIT_SCREEN_INPUT_AMOUNT = {
     isOverlayPressable: true,
     onlyDigits: true,
     buttons: [
-        {   
-            key: 0,
-            disabledIfEmpty: true,
-            hint: 'Сделать вклад',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            disabledIfEmpty: false,
-            hint: 'Отмена',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
+        { ...promptBtn1, hint: 'Cделать вклад' },
+        { ...promptBtn2, hint: 'Отмена' },
     ]
 }
 
@@ -668,14 +411,7 @@ export const WITHDRAW_SCREEN_WITHDRAW_SUCCESSFUL = {
     iconBackgroundColor: 'green',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Отлично',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Отлично' } ]
 }
 
 export const WITHDRAW_SCREEN_BE_ATTENTIVE = {
@@ -685,14 +421,7 @@ export const WITHDRAW_SCREEN_BE_ATTENTIVE = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Ой, исправлюсь',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Ой, исправлюсь' } ]
 }
 
 export const WITHDRAW_SCREEN_INPUT_AMOUNT = {
@@ -704,22 +433,8 @@ export const WITHDRAW_SCREEN_INPUT_AMOUNT = {
     isOverlayPressable: true,
     onlyDigits: true,
     buttons: [
-        {   
-            key: 0,
-            disabledIfEmpty: true,
-            hint: 'Снять деньги',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            disabledIfEmpty: false,
-            hint: 'Отмена',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
+        { ...promptBtn1, hint: 'Cнять деньги' },
+        { ...promptBtn2, hint: 'Отмена' },
     ]
 }
 
@@ -730,14 +445,7 @@ export const LEND_SCREEN_NO_MONEY = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Понял, ухожу',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Ой, ухожу' } ]
 }
 
 export const LEND_SCREEN_INPUT_AMOUNT = {
@@ -749,22 +457,8 @@ export const LEND_SCREEN_INPUT_AMOUNT = {
     isOverlayPressable: true,
     onlyDigits: true,
     buttons: [
-        {   
-            key: 0,
-            disabledIfEmpty: true,
-            hint: 'Продолжить',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            disabledIfEmpty: false,
-            hint: 'Отмена',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
+        { ...promptBtn1, hint: 'Продолжить' },
+        { ...promptBtn2, hint: 'Отмена' },
     ]
 }
 
@@ -775,14 +469,7 @@ export const LEND_SCREEN_TERM_TOO_LONG = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Понял',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Принято' } ]
 }
 
 export const LEND_SCREEN_INPUT_TERM = {
@@ -794,22 +481,8 @@ export const LEND_SCREEN_INPUT_TERM = {
     isOverlayPressable: true,
     onlyDigits: true,
     buttons: [
-        {   
-            key: 0,
-            disabledIfEmpty: true,
-            hint: 'Продолжить',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            disabledIfEmpty: false,
-            hint: 'Отмена',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
+        { ...promptBtn1, hint: 'Продолжить' },
+        { ...promptBtn2, hint: 'Отмена' },
     ]
 }
 
@@ -822,22 +495,8 @@ export const LEND_SCREEN_INPUT_PERSENTAGES = {
     isOverlayPressable: true,
     onlyDigits: true,
     buttons: [
-        {   
-            key: 0,
-            disabledIfEmpty: true,
-            hint: 'Продолжить',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            disabledIfEmpty: false,
-            hint: 'Отмена',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
+        { ...promptBtn1, hint: 'Продолжить' },
+        { ...promptBtn2, hint: 'Отмена' },
     ]
 }
 
@@ -849,18 +508,8 @@ export const LEND_SCREEN_LEND_MONEY = {
     iconColor: 'white',
     isOverlayPressable: false,
     buttons: [
-        {   
-            key: 0,
-            hint: 'Да',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            hint: 'Нет',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
+        { ...alertBtn1, hint: 'Да' },
+        { ...alertBtn2, hint: 'Нет' }
     ]
 }
 
@@ -875,22 +524,8 @@ export const BORROW_SCREEN_INPUT_AMOUNT = {
     isOverlayPressable: true,
     onlyDigits: true,
     buttons: [
-        {   
-            key: 0,
-            disabledIfEmpty: true,
-            hint: 'Продолжить',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            disabledIfEmpty: false,
-            hint: 'Отмена',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
+        { ...promptBtn1, hint: 'Продолжить' },
+        { ...promptBtn2, hint: 'Отмена' },
     ]
 }
 
@@ -903,22 +538,8 @@ export const BORROW_SCREEN_INPUT_TERM = {
     isOverlayPressable: true,
     onlyDigits: true,
     buttons: [
-        {   
-            key: 0,
-            disabledIfEmpty: true,
-            hint: 'Продолжить',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            disabledIfEmpty: false,
-            hint: 'Отмена',
-            backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            disabledBackgroundColor: THEME.DISABLED_BUTTON_PROMPT_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        }
+        { ...promptBtn1, hint: 'Продолжить' },
+        { ...promptBtn2, hint: 'Отмена' },
     ]
 };
 
@@ -929,14 +550,7 @@ export const BORROW_SCREEN_CANT_READ = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Понял',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Принято' } ]
 }
 
 export const BORROW_SCREEN_BORROW_MONEY = {
@@ -947,18 +561,8 @@ export const BORROW_SCREEN_BORROW_MONEY = {
     iconColor: 'white',
     isOverlayPressable: false,
     buttons: [
-        {   
-            key: 0,
-            hint: 'Да',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            hint: 'Нет',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
+        { ...alertBtn1, hint: 'Да' },
+        { ...alertBtn2, hint: 'Нет' }
     ]
 }
 
@@ -969,31 +573,17 @@ export const BORROW_SCREEN_TIME_TO_PAY = {
     iconBackgroundColor: 'green',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Понял',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Принято' } ]
 }
 
 export const ENTERTAINMENT_SCREEN_YOU_ARE_MISER = {
     message: 'С вами неприятно иметь дело.',
-    header: 'Вы жмот!',
+    header: 'Вы жадина!',
     iconName: 'meh-rolling-eyes', 
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Ухожу',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Ухожу' } ]
 }
 
 export const ENTERTAINMENT_SCREEN_NO_MONEY_CHEATING = POSSESSION_SCREEN_NO_MONEY_CHEATING;
@@ -1005,14 +595,7 @@ export const ENTERTAINMENT_SCREEN_YOU_WIN = {
     iconBackgroundColor: 'green',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Очень',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Очень :)' } ]
 }
 
 export const ENTERTAINMENT_SCREEN_YOU_LOSE_NO_MORE_MONEY = {
@@ -1022,14 +605,7 @@ export const ENTERTAINMENT_SCREEN_YOU_LOSE_NO_MORE_MONEY = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Ухожу',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Ухожу' } ]
 }
 
 export const ENTERTAINMENT_SCREEN_YOU_LOSE = {
@@ -1040,18 +616,8 @@ export const ENTERTAINMENT_SCREEN_YOU_LOSE = {
     iconColor: 'white',
     isOverlayPressable: false,
     buttons: [
-        {   
-            key: 0,
-            hint: 'Да',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-        {   
-            key: 1,
-            hint: 'Нет',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
+        { ...alertBtn1, hint: 'Да' },
+        { ...alertBtn2, hint: 'Нет' }
     ]
 }
 
@@ -1063,14 +629,7 @@ export const TOTAL_SCREEN_VARGANCY = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Понял, принял',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Принято' } ]
 }
 
 export const TOTAL_SCREEN_GREED = {
@@ -1080,14 +639,7 @@ export const TOTAL_SCREEN_GREED = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Понял, принял',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Принято' } ]
 }
 
 export const BANKRUPT_SCREEN_WITHDRAW_SUCCESSFUL = WITHDRAW_SCREEN_WITHDRAW_SUCCESSFUL;
@@ -1101,29 +653,5 @@ export const JAIL_SCREEN_GREED_GET_OUT_OF_JAIL = {
     iconBackgroundColor: 'green',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Спасибо',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-    ]
-}
-
-export const WIN_SCREEN_GREED_EXIT_GAME = {
-    message: 'До скорого свидания.',
-    header: 'Очень жаль :(',
-    iconName: 'sad-cry', 
-    iconBackgroundColor: 'green',
-    iconColor: 'white',
-    isOverlayPressable: false,
-    buttons: [
-        {   
-            key: 0,
-            hint: 'Пока',
-            //backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-            textColor: THEME.TEXT_COLOR,
-        },
-    ]
+    buttons: [ { ...alertBtn1, hint: 'Наконец-то' } ]
 }

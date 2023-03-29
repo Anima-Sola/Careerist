@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     },
     wallet: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
+        fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT35,
         paddingLeft: 10  
     },
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     }, 
     footerText: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
+        fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT30,
         paddingBottom: hp('1.2%')
     },

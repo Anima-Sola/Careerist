@@ -9,6 +9,7 @@ import GameWrapper from '../../components/GameWrapper';
 import { getPrisonTerm } from '../../components/CommonFunctions';
 import CustomAlert from '../../components/CustomAlert';
 import { JAIL_SCREEN_GREED_GET_OUT_OF_JAIL } from '../../store/constants';
+import Counter from '../../components/Counter';
 import random from '../../components/Random';
 import { 
     setCashAmountAction,
@@ -33,8 +34,9 @@ export const JailScreen = ({ navigation }) => {
 
 const Jail = ({ navigation, commonSettings }) => {
     const dispatch = useDispatch();
-    const { year, prisonTerm, endOfYear, gameDifficultyLevel, playerAge, yearsPassed, deathAge } = commonSettings;
-    const [ alert, setAlert ] = useState({ isVisible: false, data: JAIL_SCREEN_GREED_GET_OUT_OF_JAIL })
+    const { prisonTerm, endOfYear, gameDifficultyLevel, playerAge, yearsPassed, deathAge } = commonSettings;
+    const [ alert, setAlert ] = useState({ isVisible: false, data: JAIL_SCREEN_GREED_GET_OUT_OF_JAIL });
+    const [ isBtnDisabled, setIsBtnDisabled ] = useState( true );
 
     const showOutOfJailAlert = ( benefit) => {
         setAlert({
@@ -80,13 +82,15 @@ const Jail = ({ navigation, commonSettings }) => {
             <CustomAlert alert={ alert } setAlert={ setAlert } />
             <ScrollView style={ styles.container }>
                 <Image style={ styles.image } resizeMode='center' source={ JailImage } />
-                <Text style={{ ...styles.text, marginBottom: hp('1%') }}>Год { year }</Text>
-                <Text style={{ ...styles.text, marginBottom: hp('1%') }}>Мотаем срок { getPrisonTerm( prisonTerm ) }.</Text>
+                <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Мотаем срок { getPrisonTerm( prisonTerm ) }:</Text>
+                <Counter enableBtn = { () => setIsBtnDisabled( false ) } />
             </ScrollView>
             <View style={ styles.buttonContainer }>
                 <Button
-                    buttonStyle={ styles.button } 
+                    buttonStyle={ styles.button }
+                    disabledStyle={{ backgroundColor: THEME.DISABLED_BUTTON_COLOR }} 
                     titleStyle={ styles.buttonTitle }
+                    disabled={ isBtnDisabled }
                     type="outline" 
                     title="Продолжить"
                     onPress={ () => getOutOfJail() }  
@@ -119,7 +123,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-extralight',
+        fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT35,
         textAlign: 'center',
     },
@@ -137,7 +141,7 @@ const styles = StyleSheet.create({
     },
     buttonTitle: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
+        fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT28,
     }
 });

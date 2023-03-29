@@ -138,7 +138,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         position: "absolute",
         top: 0,
-        //left: - THEME.SCREEN_WIDTH,
         width: THEME.SCREEN_WIDTH,
         height: THEME.SCREEN_HEIGHT * 2,
     },
@@ -165,7 +164,7 @@ const styles = StyleSheet.create({
     },
     sideMenuItemText: {
         color: THEME.SIDE_MENU_ITEMS_TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
+        fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT28,
         marginLeft: 10
     },

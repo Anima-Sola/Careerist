@@ -184,8 +184,8 @@ const styles = StyleSheet.create({
         paddingTop: THEME.STATUSBAR_HEIGHT,
     },
     title: {
-        color: '#fff',
-        fontFamily: 'nunito-light',
+        color: THEME.TEXT_COLOR,
+        fontFamily: THEME.FONT_LIGHT,
         fontSize: THEME.FONT40,
         textAlign: 'center',
         lineHeight: hp('5')
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-extralight',
+        fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT30,
         textAlign: 'center',
         lineHeight: hp('4'),
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     },
     skipButtonText: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
+        fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT25,
         textAlign: 'center',
         paddingBottom: 4,

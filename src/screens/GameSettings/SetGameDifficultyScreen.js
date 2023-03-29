@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
         marginTop: THEME.STATUSBAR_HEIGHT
     },
     header: {
-        color: '#fff',
-        fontFamily: 'nunito-light',
+        color: THEME.TEXT_COLOR,
+        fontFamily: THEME.FONT_LIGHT,
         fontSize: THEME.FONT40,
         textAlign: 'center',
         paddingTop: hp('1%')
@@ -83,12 +83,12 @@ const styles = StyleSheet.create({
     },
     difficultyLevelItemDigit: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-light',
+        fontFamily: THEME.FONT_LIGHT,
         fontSize: THEME.FONT40,
     },
     difficultyLevelItemText: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-extralight',
+        fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT25,
     },
     nextButtonContainer: {
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     },
     nextButtonTitle: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
+        fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT28,
     } 
 })

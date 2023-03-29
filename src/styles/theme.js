@@ -1,5 +1,5 @@
-import { StatusBar, Dimensions, Platform } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { StatusBar, Dimensions } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const {
     width: SCREEN_WIDTH,
@@ -26,8 +26,11 @@ export const THEME = {
     FONT35: hp('3.5%'),
     FONT40: hp('4%'),
     FONT45: hp('4.5%'),
-    V_MARGIN10: SCREEN_HEIGHT / 74,
-    H_MARGIN10: SCREEN_WIDTH / 39,
+    FONT50: hp('5%'),
+    FONT_LIGHT: 'nunito-light',
+    FONT_EXTRALIGHT: 'nunito-extralight',
+    FONT_SEMIBOLD: 'nunito-semibold',
+    FONT_SEMIBOLD_ITALIC: 'nunito-semibolditalic',
     PRESSABLE_STYLES: ( itemStyles ) => {
         return (({ pressed }) => 
             [

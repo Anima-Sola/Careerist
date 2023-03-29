@@ -120,7 +120,7 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
 
         return (
             <>
-                <Text style={{ ...styles.text, marginBottom: hp('0.5%'), fontSize: THEME.FONT35, fontFamily: 'nunito-semibold' }}>
+                <Text style={{ ...styles.text, marginBottom: hp('0.5%'), fontSize: THEME.FONT35, fontFamily: THEME.FONT_SEMIBOLD }}>
                     Развлекаясь с умом можно получить и барыш.
                 </Text>
                 <Text style={{ ...styles.text, marginBottom: hp('1%'), fontSize: THEME.FONT35 }}>Чего изволите-с?:</Text>
@@ -281,13 +281,13 @@ const styles = StyleSheet.create({
     textHeader: {
         color: THEME.TEXT_COLOR,
         textAlign: 'center',
-        fontFamily: 'nunito-extralight',
+        fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT30,
     },
     text: {
         color: THEME.TEXT_COLOR,
         textAlign: 'center',
-        fontFamily: 'nunito-extralight',
+        fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT22,
     },
     buttonsContainer: {
@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
     },
     buttonTitle: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
+        fontFamily: THEME.FONT_LIGHT,
         fontSize: THEME.FONT28,
     }
 })

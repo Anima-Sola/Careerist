@@ -301,14 +301,14 @@ const styles = StyleSheet.create({
     },
     text: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-extralight',
+        fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT35,
         textAlign: 'center',
         marginBottom: hp('1.5%')
     },
     socialStatusText: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibolditalic',
+        fontFamily: THEME.FONT_SEMIBOLD_ITALIC,
         fontSize: THEME.FONT40,
         textAlign: 'center',
         marginBottom: hp('2%'),
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
     },
     electionNotHeldText: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibolditalic',
+        fontFamily: THEME.FONT_SEMIBOLD_ITALIC,
         fontSize: THEME.FONT40,
         textAlign: 'center'
     },
@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
     },
     nextButtonTitle: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
+        fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT28
     }
 });

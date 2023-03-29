@@ -84,8 +84,8 @@ const styles = StyleSheet.create({
         marginTop: THEME.STATUSBAR_HEIGHT
     },
     header: {
-        color: '#fff',
-        fontFamily: 'nunito-light',
+        color: THEME.TEXT_COLOR,
+        fontFamily: THEME.FONT_LIGHT,
         fontSize: THEME.FONT40,
         textAlign: 'center',
         paddingTop: hp('1%')
@@ -94,12 +94,12 @@ const styles = StyleSheet.create({
         width: '40%'
     },
     input: {
-        color: '#fff',
-        fontFamily: 'nunito-light',
+        color: THEME.TEXT_COLOR,
+        fontFamily: THEME.FONT_LIGHT,
         fontSize: THEME.FONT35,
         textAlign: 'center',
         paddingBottom: 5,
-        borderColor: "#fff",
+        borderColor: THEME.TEXT_COLOR,
         borderStyle: "solid",
         borderBottomWidth: 3
     },
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     },
     nextButtonTitle: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
+        fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT28,
     },
     nextButtonDisabledStyle: {

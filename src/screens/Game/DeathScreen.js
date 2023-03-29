@@ -26,7 +26,7 @@ const Death = ({ navigation, commonSettings }) => {
             <ScrollView style={ styles.container }>
                 <View style={ styles.dataContainer }>
                     <Image style={ styles.image } resizeMode='center' source={ GraveImage } />
-                    <Text style={{ ...styles.text, marginBottom: hp('4%'), fontFamily: 'nunito-semibold' }}>ГОСПОДА!</Text>
+                    <Text style={{ ...styles.text, marginBottom: hp('4%'), fontFamily: THEME.FONT_SEMIBOLD }}>ГОСПОДА!</Text>
                     <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Бизнес понес невосполнимую утрату.</Text>
                     <Text style={{ ...styles.text, marginBottom: hp('2%') }}>На { playerAge } году оборвалась жизнь нашего коллеги.</Text>
                     <Text style={{ ...styles.text }}>Примите соболезнования :(</Text>
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-extralight',
+        fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT35,
         textAlign: 'center',
     },
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     },
     buttonTitle: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
+        fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT28,
     }
 });

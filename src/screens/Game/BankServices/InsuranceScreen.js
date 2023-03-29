@@ -195,7 +195,7 @@ const Insurance = ({ navigation }) => {
         return (
             <View style={ styles.wrapper }>
                 <View style={{ ...styles.container, justifyContent: 'center' }}>
-                    <Text style={{ ...styles.text, fontFamily: 'nunito-semibold' }}>Вам нечего страховать!</Text>
+                    <Text style={{ ...styles.text, fontFamily: THEME.FONT_SEMIBOLD }}>Вам нечего страховать!</Text>
                     <View style={{ height: hp('1%') }}></View>
                     <Text style={ styles.text }>Просим вас немедленно покинуть банк!</Text>
                     <View style={{ height: hp('1%') }}></View>
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     },  
     itemText: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-extralight',
+        fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT30,
     },
     image: {
@@ -270,14 +270,14 @@ const styles = StyleSheet.create({
     },
     text: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-extralight',
+        fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT35,
         textAlign: 'center',
         marginBottom: hp('1.5%')
     },
     expensesText: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-light',
+        fontFamily: THEME.FONT_LIGHT,
         fontSize: THEME.FONT35,
         textAlign: 'center',
         marginBottom: hp('2.5%')
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
     },
     buttonTitle: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-semibold',
+        fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT28
     }
 })

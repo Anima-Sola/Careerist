@@ -223,7 +223,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
                 () => setAlert({ ...alert, isVisible: false }),
                 () => { 
                     setAlert({ ...alert, isVisible: false });
-                    setTimeout( () => BackHandler.exitApp(), 500 ); 
+                    setTimeout( () => BackHandler.exitApp(), 500 );
                 }
             ]
         })
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-extralight',
+        fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT35,
         textAlign: 'center',
         marginTop: hp('1%'),
@@ -348,12 +348,6 @@ const styles = StyleSheet.create({
         borderRadius: wp('3%'),
         justifyContent: 'center',
         alignItems: 'center'
-    },
-    menuItemText: {
-        color: THEME.TEXT_COLOR,
-        fontFamily: 'nunito-light',
-        fontSize: THEME.FONT30,
-        textAlign: 'center',
     },
     image: {
         height: hp('20%'),
