@@ -110,10 +110,12 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
         
         if( route.params?.previousScreen === 'lendOrBorrowScreen' ) forceUpdate();
         
+        //If you entered the bank from the main screen, it can be bankrupt. Chance 1,5 percent out of 100.
         if( !isBankBankrupt && route.params?.previousScreen === 'GameMainScreen' ) {
             const value = rndBetweenMinusOneAndOne();
             if( value > 0.97 ) {
                 if( depositAmount > 0) {
+                    //In the event of bankruptcy of the bank, compensation is paid
                     const compensation = Math.floor( 0.1 * depositAmount);
                     setBankruptMessage(
                         <>

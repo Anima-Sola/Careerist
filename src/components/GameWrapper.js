@@ -1,3 +1,4 @@
+//Component that wraps another screens of app. Another screens display inside this component
 import React, { useRef, useReducer } from "react";
 import { View, Text, StyleSheet, Pressable, StatusBar } from 'react-native';
 import { useStore } from "react-redux";
@@ -14,6 +15,7 @@ const GameWrapper = ({ wrappedComponent, commonSettings }) => {
     const store = useStore();
     const childRef = useRef();
 
+    //Rerender if cash, yearsPassed, playerAge changed
     useFocusEffect(() => {
         const commonSettings = store.getState().gameSettingsReducer.commonSettings;
         if( ( commonSettings.cash !== cash) || 
@@ -22,6 +24,7 @@ const GameWrapper = ({ wrappedComponent, commonSettings }) => {
         forceUpdate(); 
     })
 
+    //Detect slide to the right to show side menu
     const flingRightGesture = Gesture.Fling()
         .direction(Directions.RIGHT)
         .onStart(() => {

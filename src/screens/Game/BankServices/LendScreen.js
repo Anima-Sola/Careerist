@@ -104,7 +104,7 @@ const Lend = ({ navigation, commonSettings }) => {
                     setAlert({ ...alert, isVisible: false });
                     dispatch(setCashAmountAction( cash - lendAmount.current ));
 
-                    // Обманули или нет считаем сразу.
+                    // Calc if loan will be repaid. If lendAmont < 0 you will be deceived
                     if( ( chanceToEarnMoney / 100 ) < random() ) lendAmount.current = -lendAmount.current;
 
                     dispatch(setLendAmountAction( lendAmount.current ));
@@ -129,6 +129,7 @@ const Lend = ({ navigation, commonSettings }) => {
                 ( persentages ) => {
                     setPrompt({ ...prompt, isVisible: false, value: '' });
                     lendPersentage.current = persentages;
+                    //Calc the chance that the loan will be repaid
                     const value = Math.sqrt(Math.sqrt( term ));
                     const chanceToEarnMoney = Math.floor( 32.94 * value / ( 0.6 + 0.01 * persentages ) );
                     setTimeout( () => showTermLendMoneyAlert( chanceToEarnMoney ), 300 );

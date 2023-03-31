@@ -1,3 +1,4 @@
+//A component that displays a window with input field instead of the standard Alert
 import React, { useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Modal, Pressable, TextInput, KeyboardAvoidingView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -22,6 +23,7 @@ const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
         if( prompt.isVisible ) setTimeout( () => textInput.current.focus(), 100 )
     });
 
+    //Function filters symbols. Only digits valid if parameter "onlyDigits" = true
     const filterDigits = ( text ) => {
         if( onlyDigits === true ) {
             const result = text.replace( /\D/g, '' );
@@ -30,7 +32,8 @@ const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
         }
         setPrompt({ ...prompt, value: +text })
     }
-
+    
+    //Display buttons
     const buttonsList = () => {
         let i = -1;
         const list = buttons.map(({ key, hint, disabledIfEmpty, disabledBackgroundColor, textColor }) => {

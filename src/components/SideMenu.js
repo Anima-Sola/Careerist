@@ -1,3 +1,4 @@
+//Side menu that opens by swipe right gesture
 import React, { useRef, useImperativeHandle, forwardRef } from 'react';
 import { useFocusEffect } from "@react-navigation/native";
 import { Text, View, StyleSheet, Animated, Pressable } from 'react-native';
@@ -72,17 +73,6 @@ const SideMenu = ( props, ref ) => {
             hideSideMenu();
         });
 
-    const pressableStyles = () => {
-        return (({ pressed }) => 
-            [
-                { 
-                    backgroundColor: pressed ? 'rgb(210, 230, 255)': THEME.SIDE_MENU_BACKGROUND_COLOR 
-                },
-                styles.sideMenuItem
-            ]
-        )
-    }
-
     return (
         <GestureDetector gesture={ flingLeftGesture }>
             <Animated.View style={{ ...styles.sideMenuContainer, transform: [{ translateX: animSideMenu }] }}>
@@ -91,31 +81,31 @@ const SideMenu = ( props, ref ) => {
                         <Ionicons name="close-outline" size={ 40 } color= { "black" } />
                     </Pressable>
                     <View style={ styles.sideMenuItems }>
-                        <Pressable style={ pressableStyles() } onPress={ () => props.navigation.navigate('IntroScreen') } >
+                        <Pressable style={ THEME.SIDE_MENU_PRESSABLE_STYLE( styles.sideMenuItem ) } onPress={ () => props.navigation.navigate('IntroScreen') } >
                             <Ionicons name="home-outline" size={ 28 } color= { "black" } />
                             <Text style={ styles.sideMenuItemText }>
                                 Новая игра
                             </Text>
                         </Pressable>
-                        <Pressable style={ pressableStyles() } >
+                        <Pressable style={ THEME.SIDE_MENU_PRESSABLE_STYLE( styles.sideMenuItem ) }>
                             <Ionicons name="settings-outline" size={ 28 } color= { "black" } />
                             <Text style={ styles.sideMenuItemText }>
                                 Настройки
                             </Text>
                         </Pressable>
-                        <Pressable style={ pressableStyles() } >
+                        <Pressable style={ THEME.SIDE_MENU_PRESSABLE_STYLE( styles.sideMenuItem ) }>
                             <Ionicons name="help-circle-outline" size={ 28 } color= { "black" } />
                             <Text style={ styles.sideMenuItemText }>
                                 Об игре
                             </Text>
                         </Pressable>
-                        <Pressable style={ pressableStyles() } >
+                        <Pressable style={ THEME.SIDE_MENU_PRESSABLE_STYLE( styles.sideMenuItem ) }>
                             <Ionicons name="logo-github" size={ 28 } color= { "black" } />
                             <Text style={ styles.sideMenuItemText }>
                                 GitHub
                             </Text>
                         </Pressable>
-                        <Pressable style={ pressableStyles() } >
+                        <Pressable style={ THEME.SIDE_MENU_PRESSABLE_STYLE( styles.sideMenuItem ) }>
                             <Ionicons name="exit-outline" size={ 28 } color= { "black" } />
                             <Text style={ styles.sideMenuItemText }>
                                 Выход

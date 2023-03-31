@@ -1,3 +1,4 @@
+//There are several common functions in this file that are used throughout the application.
 import store from "../store";
 import random, { rndBetweenMinusOneAndOne } from "./Random";
 import {
@@ -20,12 +21,16 @@ import {
     setIsBankBankruptAction
 } from "../store/actions/actions";
 
+//A function that calculates the cost of possession, cost of business, and employees salaries 
+//at the beginning of the game or at the beginning of each year.
+//Also it sets some common parameters
 export const setInitialGameData = () => {
     
     const commonSettings = store.getState().gameSettingsReducer.commonSettings;
     const gameDifficultyLevel = commonSettings.gameDifficultyLevel;
     const endOfYear = gameDifficultyLevel + ( 5 - gameDifficultyLevel ) * random();
     
+    //Set common parameters
     store.dispatch(setEndOfYear( endOfYear ));
     store.dispatch(setElectionStatus( true ));
     store.dispatch(setPosWithinYear( 0 ));
@@ -41,13 +46,15 @@ export const setInitialGameData = () => {
     const employeesSalaryList = [];
 
     let rnd;
-
+    
+    //Calc possession cost
     for( let i = 1; i <= 5; i++ ) {
         rnd = random();
         possessionBuyCostList[ i - 1 ] = Math.floor( ( 2 + 5 * rnd ) * 20 * 5 ** i );
         possessionSellCostList[ i - 1 ] = Math.floor( 0.7 * possessionBuyCostList[ i - 1 ] * ( rnd + 0.3 ) );
     }
-            
+    
+    //Calc business cost
     for( let i = 1; i <= 5; i++ ) {
         rnd = random();
         businessBuyCostList[ i - 1 ] = Math.floor( 5 ** i * ( 2 + 5 * rnd ) * 20 );
@@ -55,6 +62,7 @@ export const setInitialGameData = () => {
         businessYearIncome[ i - 1 ] = Math.floor( businessSellCostList[ i - 1 ] * ( rnd - 0.3 ) );
     }
 
+    //Calc employees salaries
     for( let i = 1; i <= 5; i++ ) {
         rnd = random();
         employeesSalaryList[ i - 1 ] = Math.floor( 4500 * rnd + 2000 * i );
@@ -68,6 +76,8 @@ export const setInitialGameData = () => {
     store.dispatch(setEmployeesSalaryList( employeesSalaryList, true ));
 }
 
+//A function that calculates expenses, income within year, reduction terms
+//timeStep - time period within year
 export const calcSubtotals = ( timeStep ) => {
     const commonSettings = store.getState().gameSettingsReducer.commonSettings;
     let { posWithinYear, endOfYear, currentSocialStatus, yearExpense } = commonSettings;
@@ -93,7 +103,8 @@ export const calcSubtotals = ( timeStep ) => {
 
     timeStep = timeStep / endOfYear;
 
-    //In the original game the insurance period does not end
+    //Insurance term reduction
+    //In the original game the insurance term never ends
     for( let i = 0; i < 5; i++ ) {
         insurancePossessionTermList[ i ] = insurancePossessionTermList[ i ] - timeStep;
         if( insurancePossessionTermList[ i ] <= 0 ) {
@@ -102,14 +113,17 @@ export const calcSubtotals = ( timeStep ) => {
         }
     }
 
+    //borrowTerm, lendTerm reduction term reduction
     store.dispatch(setBorrowTermAction( borrowTerm - timeStep ));
     store.dispatch(setLendTermAction( lendTerm - timeStep ));
     store.dispatch(setInsurancePossessionTermListAction( insurancePossessionTermList ));
 
+    //Calc random expense
     let subtotalYearExpense = 500 * ( 2 + currentSocialStatus ** 2 + rndBetweenMinusOneAndOne() );
     
     let subtotalBusinessIncome = 0;
 
+    //Calc business income and year expense
     for( let i = 0; i < 5; i++ ) {
         subtotalYearExpense = subtotalYearExpense + 0.45 * possessionList[ i ] * possessionSellCostList[ i ] + employeesList[ i ] * employeesSalaryList[ i ];
         subtotalBusinessIncome = subtotalBusinessIncome + businessList[ i ] * businessYearIncome[ i ];
@@ -121,10 +135,12 @@ export const calcSubtotals = ( timeStep ) => {
     store.dispatch(setYearExpenseAction( yearExpense ));
     store.dispatch(setCommonBusinessIncomeAction( commonBusinessIncome ));
 
+    //Accrual of interest on the deposit
     depositAmount = depositAmount * Math.exp( timeStep * Math.log( 1 + 0.02 * currentSocialStatus ));
     store.dispatch(setDepositAmountAction( depositAmount ), true );
 }
 
+//If you do not have enough money to pay the fine, the difference is added to an year expense
 export const setCashAmountMinusFine = ( fineAmount ) => {
     const { cash, yearExpense } = store.getState().gameSettingsReducer.commonSettings;
     let updatedCash = cash - fineAmount;
@@ -135,11 +151,13 @@ export const setCashAmountMinusFine = ( fineAmount ) => {
     store.dispatch(setCashAmountAction( updatedCash, true ));
 }
 
+//Get random fine amount
 export const getFineAmount = () => {
     const value = rndBetweenMinusOneAndOne();
     return 1500 + 50 * Math.floor( 10 * value );
 }
 
+//Calc amount of money in possession and estate
 export const calcInEstateAmount = () => {
     const { businessList, businessSellCostList } = store.getState().gameSettingsReducer.businessSettings;
     const { possessionList, possessionSellCostList } = store.getState().gameSettingsReducer.possessionSettings;
@@ -151,6 +169,7 @@ export const calcInEstateAmount = () => {
     return amount;
 }
 
+//Calc amount of money in stocks
 export const calcInStocksAmount = () => {
     const { stocksCostList, stocksQuantityList } = store.getState().gameSettingsReducer.stockSettings;
 
@@ -159,18 +178,21 @@ export const calcInStocksAmount = () => {
     return amount;
 }
 
+//Check if an employees hired
 export const isEmployeesHired = () => {
     const { employeesList } = store.getState().gameSettingsReducer.employeesSettings;
     if( employeesList.indexOf( true ) !== - 1 ) return true;
     return false;
 }
 
+//ZX Basic INT function
 export const INT = ( value ) => {
     const intValue = Math.trunc( value );
     if( intValue === value ) return intValue - 1;
     return intValue;
 }
 
+//Returns the name of the number of years in Russian
 export const getPrisonTerm = ( term ) => {
     let yearName = '';
 

@@ -1,3 +1,4 @@
+//The theme file in which colors, fonts, etc. are set.
 import { StatusBar, Dimensions } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -36,6 +37,16 @@ export const THEME = {
             [
                 { 
                     backgroundColor: pressed ? THEME.THIRD_BACKGROUND_COLOR : THEME.SECOND_BACKGROUND_COLOR
+                },
+                itemStyles
+            ]
+        )
+    },
+    SIDE_MENU_PRESSABLE_STYLE: ( itemStyles ) => {
+        return (({ pressed }) => 
+            [
+                { 
+                    backgroundColor: pressed ? 'rgb(210, 230, 255)': THEME.SIDE_MENU_BACKGROUND_COLOR 
                 },
                 itemStyles
             ]

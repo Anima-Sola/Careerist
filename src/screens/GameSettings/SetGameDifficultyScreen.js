@@ -1,3 +1,4 @@
+//Set difficulty level
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, StatusBar } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';

@@ -76,6 +76,7 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
         })
     }
 
+    //Calc const, income and chance to win
     const calcEntertainmentData = () => {
         let entertainmentData = [];
         for( let i = 1; i <= 5; i++ ) {
@@ -91,6 +92,7 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
         return entertainmentData;
     }
 
+    //Run only one time
     if( !isRun ) {
         setIsRun( true );
         entertainmentData.current = calcEntertainmentData();
@@ -190,22 +192,26 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const entertain = () => {
+        //You don't have enough money
         if( ( cash + depositAmount ) <= entertainmentData.current[ activeItem ].expenses ) {
             const fineAmount = getFineAmount();
             showCheatingAlert( fineAmount );
             return;
         }
 
+        //You win
         if( ( 100 * random() ) <= entertainmentData.current[ activeItem ].chanceToEarnMoney ) {
             showWinAlert();
             return;
         }
 
+       //You lose all money
         if( cash - entertainmentData.current[ activeItem ].expenses <= 0 ) {
             showLoseAlertNoMoreMoney();
             return;
         }
 
+        //You lose
         showLoseAlert();
 
     }

@@ -134,6 +134,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         })
     }
 
+    //Calc prices and dividends every entering to the stockmarket
     const calcStocksData = () => {
         let stocksPrices = [];
         let stocksDividends = [];
@@ -181,7 +182,9 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
             buttonsCallbacks: [
                 () => {
                     setAlert({ ...alert, isVisible: false });
+                    //Calc chanve to win claim
                     const chanceToWinClaim = rndBetweenMinusOneAndOne();
+                    //Lose claim
                     if( 0.65 - chanceToWinClaim < 0 ) {
                         message = `Увы, дело проиграно. Убыток ${ loss }$.\n` +
                         `Имейте своего адвоката!`;
@@ -189,6 +192,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                         setTimeout(() => showProblemAlert( message, lawyerServiceCost, 'Процесс проигран!', 'sad-cry' ));
                         return;
                     }
+                    //Win clain
                     message = `Сбер выплачивает неустойку ${ 2 * lawyerServiceCost }$.\n` +
                     `Имейте своего адвоката!`;
                     const income = commonBusinessIncome + lawyerServiceCost;
@@ -214,13 +218,16 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
             buttonsCallbacks: [
                 () => {
                     setAlert({ ...alert, isVisible: false });
+                    //Calc chance to catch thieves
                     const chanceToCatchThieves = rndBetweenMinusOneAndOne();
+                    //Thieves caught
                     if( chanceToCatchThieves - rnd < 0 ) {
                         dispatch(setYearExpenseAction( yearExpense + searchServiceCost ), true );
                         message = 'Воры пойманы!';
                         setTimeout( () => showProblemAlert( message, 0, 'Успех!', 'hand-peace', 'green' ), 300 );
                         return;
                     }
+                    //Thieves didn't catch, calc expences
                     const overheads = Math.floor( 450 * rnd + 800 );
                     message = `Воры покинули нашу страну. Взыскиваем только накладные расходы ${ overheads }$.\n` +
                     `Учтите на будущее!`;
@@ -237,21 +244,27 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         })
     }
 
+    //Generate problem event
     const createProblem = ( loss ) => {
         let message = '';
 
+        //Problem event
         let problemIndex = INT( 10 * random() );
 
+        //Chance to get problem 50 percent
         if( ( problemIndex > 5 ) || ( problemIndex < 1 ) ) {
             setStocksData();
             return;
         }
 
+        //Exit if you hire an employee who can solve this problem
         if( employeesList[ problemIndex - 1 ] ) {
             setStocksData();
             return;
         }
 
+        //Calc basic losses for problems number 1-4
+        //For problem 5 is another thing
         if( problemIndex !== 5 ) loss = Math.floor( ( cash + 200 ) * random() );
 
         switch ( problemIndex ) {
@@ -265,6 +278,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                 showProblemAlert( message, loss );
                 return;
             case 3:
+                //Calc how much the lowyer want money to solve problem
                 const lawyerServiceCost = 15 * Math.floor( loss * 0.02 );
                 message = `Компания Pear предъявила иск в ${ loss }$.\n` + 
                 `Услуги адвоката \nобойдутся в ${ lawyerServiceCost }$.\n` +
@@ -278,6 +292,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                 return;
             case 5:
                 const rnd = random();
+                //Calc how much the detective want money to solve problem
                 const searchServiceCost = 10 * ( Math.floor( 45 * rnd + 80 + 0.03 * loss ) );
                 message = `У вас украли все акции.\n` +
                 `Убыток ${ loss }$.\n` + 
@@ -291,14 +306,17 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
 
     }
 
+    //Run only once
     if( !isRun ) {
 
         setIsRun( true );
 
         if( posWithinYear < endOfYear ) {
             //calcSubtotals( 0.6 ); Bug in the original game
+            //Calc possible loss if problem could be
             let possibleLoss = 0;
             for( let i = 0; i < 5; i++ ) possibleLoss = possibleLoss + stocksCostList[ i ] * stocksQuantityList[ i ];
+            //Problem or not
             ( possibleLoss > 0 ) ? createProblem( possibleLoss ) : setStocksData();
         }
         
@@ -306,7 +324,9 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
 
     const buyStocks = ( stocksQuantity ) => {
         let message = '';
+        //Max quantity stocks you can buy
         const maxStocksQuantity = stocksCurrentPriceList.current[ activeItem ] * 5 * ( currentSocialStatus + 2 * employeesList[ 0 ] );
+        //If you want to buy more then max
         if(( currentStocksQuantityList[ activeItem ] + stocksQuantity - 0.01 ) > maxStocksQuantity ) {
             stocksQuantity = maxStocksQuantity - currentStocksQuantityList[ activeItem ];
             message = `Удалость скупить ${stocksQuantity}.\n`;
@@ -320,6 +340,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         dispatch(setCashAmountAction( updatedCash ), true );
         forceUpdate();
 
+        //Check if the stock market is closed at the end of the year
         if( endOfYear - posWithinYear - 0.1 < 0 ) {
             showStockmarketIsClosedAlert();
             return;
@@ -339,6 +360,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
             value: '',
             buttonsCallbacks: [
                 ( stocksQuantity ) => {
+                    //If you don't have enough money
                     if( cash < ( stocksQuantity * stocksCurrentPriceList.current[ activeItem ] - 0.01 ) ) {
                         const fineAmount = getFineAmount();
                         setPrompt({ ...prompt, isVisible: false })
@@ -357,7 +379,9 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
 
     const sellStocks = ( stocksQuantity ) => {
         let message = '';
+        //Max quantity stocks you can sell
         const maxStocksQuantity = ( 105 - stocksCurrentPriceList.current[ activeItem ]) * 5 * ( currentSocialStatus + 2 * employeesList[ 0 ] );
+        //If you want to sell more then max
         if(( stocksQuantity - currentStocksQuantityList[ activeItem ] - 0.01 ) > maxStocksQuantity ) {
             stocksQuantity = maxStocksQuantity + currentStocksQuantityList[ activeItem ];
             message = `Удалость реализовать ${stocksQuantity}.\n`;
@@ -370,6 +394,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         dispatch(setCashAmountAction( updatedCash ), true );
         forceUpdate();
 
+        //Check if the stock market is closed at the end of the year
         if( endOfYear - posWithinYear - 0.1 < 0 ) {
             showStockmarketIsClosedAlert();
             return;
@@ -405,6 +430,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         })
     }
 
+    //Make deal
     const trade = ( buyOrSellStocks ) => {
         if( buyOrSellStocks ) {
             showInputStocksBuyQuantityPrompt();
@@ -493,6 +519,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         )
     }
 
+    //Stockmarket open or close
     return ( posWithinYear < endOfYear ) ? stockmarketOpened() : stockmarketClosed();
 }
 

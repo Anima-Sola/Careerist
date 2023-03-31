@@ -20,6 +20,7 @@ import {
 import { setCashAmountAction, setEmployeesList, setEmployeesSalaryList, setYearExpenseAction  } from '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
 import { rndBetweenMinusOneAndOne } from '../../components/Random';
+import { setCashAmountMinusFine, getFineAmount } from '../../components/CommonFunctions';
 
 import Makler from "../../assets/images/employees/makler.png";
 import Doctor from "../../assets/images/employees/doctor.png";
@@ -71,27 +72,12 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
         forceUpdate();
     }
 
-    const setCashAmountMinusFine = ( fineAmount ) => {
-        let updatedCash = cash - fineAmount;
-        if( updatedCash < 0 ) {
-            dispatch(setYearExpenseAction( yearExpense - updatedCash ));
-            updatedCash = 0;
-        }
-        dispatch(setCashAmountAction( updatedCash, true ));
-        forceUpdate();
-    }
-
-    const getFineAmount = () => {
-        const value = rndBetweenMinusOneAndOne();
-        return 1500 + 50 * Math.floor( 10 * value );
-    }
-
     const showDontBeFoolAlert = () => {
         setAlert({ 
             isVisible: true, 
             data: { 
                 ...EMPLOYEES_SCREEN_DONT_BE_FOOL_WARNING, 
-                header: `Не глупите ${ SOCIAL_STATUSES[ currentSocialStatus ].toLowerCase() }!` 
+                header: `Не глупите ${ SOCIAL_STATUSES[ currentSocialStatus - 1 ].toLowerCase() }!` 
             },
             buttonsCallbacks: [
                 () => {
@@ -199,31 +185,40 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
         })
     }
 
+    //Hire ot fire employee
     const HR = ( hireOrFire ) => {
 
+        //If you are trying to hire an employee you have already hired
         if( employeesList[ activeItem ] && hireOrFire ) {
             showDontBeFoolAlert();
             return;
         }
 
+        //If you are trying to fire an employee you did not hire
         if( !employeesList[ activeItem ] && !hireOrFire ) {
             showDontBeFoolAlert();
             return;
         }
         
+        //Hire employee
         if( hireOrFire ) {
+            //Calc time till the end of the year. The prepayment depends on this.
             const restOfTheYear = Math.floor( ( 1 - posWithinYear / endOfYear ) * employeesSalaryList[ activeItem ] * 0.01 );
             
             if( restOfTheYear <= 0 ) {
                 hireEmployee( false );
                 showContractIsConcludedAlert( false );
             } else {
+                //Calc prepayment
                 const prepayment = 50 * restOfTheYear;
                 showHireEmployeeWithPrepaymentAlert( prepayment );
             }
             return;
         }
 
+        //Fire employee
+        //Calc amount you have to pay for firing
+        //If you don't have money, you can't stay in this screen
         const penaltyAmount = 2 * employeesSalaryList[ activeItem ];
         if(( cash - penaltyAmount ) <= 0 ) {
             fireEmployee();

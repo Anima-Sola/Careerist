@@ -51,6 +51,7 @@ const Insurance = ({ navigation }) => {
         value: '',
     });
 
+    //Shows a list of possession you own
     const getListForInsurance = () => {
         let i = -1;
         const possessionImageFiles = [ Flat, Car, Villa, Yacht, Plane ];

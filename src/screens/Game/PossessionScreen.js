@@ -69,7 +69,7 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
             isVisible: true, 
             data: { 
                 ...POSSESSION_SCREEN_DONT_BE_FOOL_WARNING, 
-                header: `Не глупите ${ SOCIAL_STATUSES[ currentSocialStatus ].toLowerCase() }!` 
+                header: `Не глупите ${ SOCIAL_STATUSES[ currentSocialStatus - 1 ].toLowerCase() }!` 
             },
             buttonsCallbacks: [
                 () => {

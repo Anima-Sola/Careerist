@@ -47,6 +47,7 @@ const Jail = ({ navigation, commonSettings }) => {
             },
             buttonsCallbacks: [
                 () => {
+                    //Beginning of new year
                     dispatch(setCashAmountAction( benefit ));
                     dispatch(setPlayerAgeAction( playerAge + prisonTerm ));
                     dispatch(setYearsPassedAction( yearsPassed + prisonTerm ), true );
@@ -60,6 +61,7 @@ const Jail = ({ navigation, commonSettings }) => {
 
     const getOutOfJail = () => {
         //Bug in original game - impossible to die in prison
+        //If you too old you die
         if( deathAge <= ( playerAge + prisonTerm ) ) {
             dispatch(setPlayerAgeAction( playerAge + prisonTerm ));
             dispatch(setYearsPassedAction( yearsPassed + prisonTerm ), true );
@@ -73,6 +75,7 @@ const Jail = ({ navigation, commonSettings }) => {
             calcSubtotals( endOfYear );
         }
         
+        //Money you give after jail
         const benefit = 1000 * gameDifficultyLevel * ( 1 + random() );
         showOutOfJailAlert( benefit );
     }

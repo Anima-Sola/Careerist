@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useReducer } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Text, View, StyleSheet, BackHandler, Image, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -61,6 +61,7 @@ const Election = ({ navigation, commonSettings }) => {
         return Math.floor( ( 2 + 5 * random() ) * 20 * 5 ** nextSocialStatus );
     }
 
+    //Calc chance to win election
     const calcChanceToElect = () => {
         let temp = 0;
         let chanceToElect;
@@ -73,6 +74,7 @@ const Election = ({ navigation, commonSettings }) => {
         return chanceToElect;
     }
 
+    //Run only one times
     if( !isRun ) {
 
         if( electionStatus && (( yearsPassed % 2 ) === 0 )) {
@@ -113,12 +115,12 @@ const Election = ({ navigation, commonSettings }) => {
         })
     }
 
-    const showLoseElectionAlert = ( numOfVoices ) => {
+    const showLoseElectionAlert = ( numOfVotes ) => {
         setAlert({  
             isVisible: true, 
             data: { 
                 ...ELECTION_SCREEN_LOSE_ELECTION, 
-                message: `Вы набрали только ${ numOfVoices }% голосов. Следующие выборы через 2 года.`
+                message: `Вы набрали только ${ numOfVotes }% голосов. Следующие выборы через 2 года.`
             },
             buttonsCallbacks: [
                 () => {
@@ -157,16 +159,19 @@ const Election = ({ navigation, commonSettings }) => {
          });
     }
 
+    //To take part in election
     const standForElection = () => {
         
         const electionResult = random();
 
+        //If you don't have enough money
         if( electionCost.current > ( cash + depositAmount )) {
             const fineAmount = getFineAmount();
             showCheatingAlert( fineAmount );
             return;
         }
 
+        //Election costs and you pay
         const updatedCash = cash - electionCost.current;
         if( updatedCash < 0 ) {
             dispatch(setYearExpenseAction( yearExpense - updatedCash ));
@@ -175,16 +180,20 @@ const Election = ({ navigation, commonSettings }) => {
 
         dispatch(setCashAmountAction( updatedCash ));
 
+        //If you lose election
         if( electionResult > chanceToElect.current ) {
-            const numOfVoices = Math.floor( 50 * ( 1 - electionResult ) );
-            showLoseElectionAlert( numOfVoices );
+            //Calc of the number of votes
+            const numOfVotes = Math.floor( 50 * ( 1 - electionResult ) );
+            showLoseElectionAlert( numOfVotes );
             return;
         }
        
+        //If you win election
         currentSocialStatus++;
         dispatch(setSocialStatusAction( currentSocialStatus ));
 
         if( currentSocialStatus === 5 ) {
+            //You are President. The game is over.
             showWinPresidentElectionAlert();
         } else {
             showWinElectionAlert();
@@ -266,7 +275,9 @@ const Election = ({ navigation, commonSettings }) => {
         )
     }
 
+    //If an election has already been in election screeen
     if( !electionStatus ) return noElection( '\nУ вас склероз?!', SclerosisImage );
+    //Elections are held every two years
     return (( yearsPassed % 2 ) === 0) ? election() : noElection( 'В этом году выборы не проводятся!!!\n\nУсвоили?', NoElectionImage );
 }
 

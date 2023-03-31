@@ -145,6 +145,7 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
         const inStocksAmount = calcInStocksAmount();
 
         if( ( inStocksAmount > 0 ) ) {
+            //Calc how much money you make from selling stocks
             const soldStocksAmount = Math.floor( inStocksAmount * random() );
             dispatch(setStocksQuantityListAction([ 0, 0, 0, 0, 0 ], true ));
             cash = cash + soldStocksAmount;
@@ -156,6 +157,7 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
         return (<></>);
     }
 
+    //Your employees will abandoned you if after selling stocks and estate cash < 0
     const employeesFired = () => {      
         if( ( cash < 0 ) && isEmployeesHired() ) {
             dispatch(setEmployeesList([ false, false, false, false, false ], true ));
@@ -167,6 +169,7 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
         return (<></>);
     }
 
+    //If, after the sale of the stock, the cash < 0, the estate is also sold
     const sellEstate = () => {
         const inEstateAmount = calcInEstateAmount();
 
@@ -186,14 +189,18 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
         return (<></>);
     }
 
+    //If after selling stock and estate cash < 0, you will go to jail or execution
+    //Otherwise, you will continue to play next year.
     const assignPanishment = () => {
         if( cash < 0 ) {
 
+            //Calc time in prison
             const prisonTerm = 1 + Math.floor( -0.002 * cash );
             
             dispatch(setPrisonTermAction( prisonTerm ));
             dispatch(setSocialStatusAction( 1, true ));
 
+            //If the prison term < 15 you go to jail. Otherwise you go to execution.
             if( prisonTerm < 15 ) {
                 panishmentScreen.current = 'JailScreen';
                 dispatch(setCashAmountAction( cash, true ));
@@ -225,7 +232,8 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
         return (<></>);
     }
 
-    const assetSale = () => {
+    
+    const assetsSale = () => {
         return (
             <View style={ styles.wrapper }>
                 <CustomPrompt prompt={ prompt } setPrompt={ setPrompt }/>
@@ -254,8 +262,10 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
         )
     }
 
+    //If cash < 0 you can withdraw money from bank.
+    //If the deposit is empty, the assets are sold off
     if( Math.floor( depositAmount ) > 0 ) return withdrawCashFromBank(); 
-    else return assetSale();
+    else return assetsSale();
 }
     
 const styles = StyleSheet.create({

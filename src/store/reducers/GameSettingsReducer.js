@@ -3,57 +3,57 @@ import { saveDataToStore } from '../../components/FileSystem';
 const initialState = {
 
     commonSettings: {
-        gameDifficultyLevel: 3,                                 // Уровень сложности
-        playerAge: 18,                                          // Возраст игрока
-        deathAge: 120,                                          // Дата смерти игрока
-        year: new Date().getFullYear(),                         // Стартовый год
-        posWithinYear: 0,                                       // Позиция внутри года
-        endOfYear: 10,                                          // Маркер конца года
-        yearsPassed: 0,                                         // Сколько прошло лет с момента начала игры  
-        cash: 1500,                                             // Сумма налички
-        yearExpense: 0,                                         // Годовой расход
-        currentSocialStatus: 1,                                 // 1 - Бизнесмен, 2 - лидер профсоюза мусорщиков, 3 - шериф, 4 - сенатор, 5 - президент
-        electionStatus: true,                                   // Флаг, true - есть выборы, false - нет выборов
-        prisonTerm: 0                                           // Срок, насколько посадили за долги
+        gameDifficultyLevel: 3,                                         // Difficulty level
+        playerAge: 18,                                                  // Player age
+        deathAge: 120,                                                  // Death age
+        year: new Date().getFullYear(),                                 // Start year
+        posWithinYear: 0,                                               // Position within the current year
+        endOfYear: 10,                                                  // Year-end marker
+        yearsPassed: 0,                                                 // How many years has it been since the game began 
+        cash: 1500,                                                     // Cash amount
+        yearExpense: 0,                                                 // Annual expense
+        currentSocialStatus: 1,                                         // 1 - Businessman, 2 - Trashman union leader, 3 - Sheriff, 4 - Senator, 5 - President
+        electionStatus: true,                                           // Flag, true - there is an election, false - no election
+        prisonTerm: 0                                                   // Term as far as imprisonment for debts
     },
 
     possessionSettings: {
-        possessionList: [ false, false, false, false, false ],  // Наличие - true / Отсутствие - false квартиры, машины, виллы, яхты, самолета
-        possessionBuyCostList: [ 0, 0, 0, 0, 0 ],               // Цена покупки имущества
-        possessionSellCostList: [ 0, 0, 0, 0, 0 ],              // Цена продажи имущества
+        possessionList: [ false, false, false, false, false ],          // Existence - true / Absence - false apartment, car, villa, yacht, plane
+        possessionBuyCostList: [ 0, 0, 0, 0, 0 ],                       // The purchase price of the possession
+        possessionSellCostList: [ 0, 0, 0, 0, 0 ],                      // Selling price of the possession
     },
 
     businessSettings: {
-        commonBusinessIncome: 0.2,                              // Доход от бизнеса
-        businessList: [ false, false, false, false, false ],    // Наличие - true / Отсутствие - false бара, ресторана, магазина, отеля, завода
-        businessBuyCostList: [ 0, 0, 0, 0, 0 ],                 // Цена покупки бизнеса
-        businessSellCostList: [ 0, 0, 0, 0, 0 ],                // Цена продажи бизнеса
-        businessYearIncome: [ 0, 0, 0, 0, 0],                   // Годовой доход бизнеса
+        commonBusinessIncome: 0.2,                                      // Business income
+        businessList: [ false, false, false, false, false ],            // Presence - true / Absence - false bar, restaurant, store, hotel, factory
+        businessBuyCostList: [ 0, 0, 0, 0, 0 ],                         // The price of buying a business
+        businessSellCostList: [ 0, 0, 0, 0, 0 ],                        // Selling price of the business
+        businessYearIncome: [ 0, 0, 0, 0, 0],                           // Annual business income
     },
 
     employeesSettings: {
-        employeesList: [ false, false, false, false, false ],   // Наличие - true / Отсутствие - false маклера, врача, адвоката, детектива, личной охраны
-        employeesSalaryList: [ 0, 0, 0, 0, 0 ],                 // Зарплата подчиненных
+        employeesList: [ false, false, false, false, false ],           // Presence - true / Absence - false broker, doctor, lawyer, detective, personal security
+        employeesSalaryList: [ 0, 0, 0, 0, 0 ],                         // Salaries of employees
     },
 
     stockSettings: {
-        stocksQuantityList: [ 0, 0, 0, 0, 0 ],                  // Количество акций каждой компании в собственности
-        stocksCostList: [ 0, 0, 0, 0, 0 ],                      // Цены купленных акций
-        dividendsList: [ 0, 0, 0, 0, 0]                         // Дивиденды
+        stocksQuantityList: [ 0, 0, 0, 0, 0 ],                          // Number of shares of each company owned
+        stocksCostList: [ 0, 0, 0, 0, 0 ],                              // The prices of purchased shares
+        dividendsList: [ 0, 0, 0, 0, 0]                                 // Dividends
     },
     
     bankSettings: {
-        isBankBankrupt: false,                                          // Бакрот банк или нет false - нет, true - да
-        depositAmount: 0,                                               // Сумма вклада
-        lendAmount: 0,                                                  // Сумма отданной ссуды
-        lendTerm: 0,                                                    // Срок отданной ссуды
-        lendPersentages: 0,                                             // Процент отданной ссуды
-        borrowAmount: 0,                                                // Сумма полученного кредита
-        borrowTerm: 0,                                                  // Срок полученного кредита
-        borrowPersentages: 0,                                           // Процент, под который взят кредит
-        insuredPossessionList: [ false, false, false, false, false ],   // Застрахованное имущество. true - затраховано, false - нет
-        insurancePossessionCostList: [ 0, 0, 0, 0, 0 ],                 // Стоимость страховки
-        insurancePossessionTermList: [ 0, 0, 0, 0, 0 ]                  // Стоимость страховки
+        isBankBankrupt: false,                                          // Bakroth bank or not false - no, true - yes
+        depositAmount: 0,                                               // Deposit amount
+        lendAmount: 0,                                                  // The amount given in debt
+        lendTerm: 0,                                                    // The term given in debt
+        lendPersentages: 0,                                             // Interest on the amount borrowed
+        borrowAmount: 0,                                                // The amount of credit received
+        borrowTerm: 0,                                                  // The term of credit received
+        borrowPersentages: 0,                                           // Percentage at which the credit is taken
+        insuredPossessionList: [ false, false, false, false, false ],   // Insured property. true - insured, false - not insured
+        insurancePossessionCostList: [ 0, 0, 0, 0, 0 ],                 // The cost of insurance
+        insurancePossessionTermList: [ 0, 0, 0, 0, 0 ]                  // The term of insurance
     },
 
 }

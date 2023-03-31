@@ -56,13 +56,15 @@ const Borrow = ({ navigation, commonSettings }) => {
         value: ''
     });
 
+    //Calc how many assets you have
     const calcWealth = () => {
-        // I don't agree with original game - stock amount calcs in the of the year or then you see
-        // financial sutuation. Not then you buy stocks.
+        // I don't agree with original game - stock amount calcs at the of the year or then you enter to the
+        // financial sutuation screen. Not then you buy stocks.
         const wealth = cash + depositAmount + calcInStocksAmount() + calcInEstateAmount() - yearExpense + commonBusinessIncome;
         return wealth;
     }
 
+    //Work only one time
     if( !isRun ) {
         wealth.current = calcWealth();
         setIsRun( true );
@@ -131,6 +133,7 @@ const Borrow = ({ navigation, commonSettings }) => {
                         setTimeout( () => showCantReadAlert( amount ), 300 );
                         return;
                     }
+                    //Calc credit persentages
                     const persentages = 0.01 + ( 3 + rndBetweenMinusOneAndOne() ) * amount * term / wealth.current / ( 2 + gameDifficultyLevel ) / 5;
                     setTimeout( () => showBorrowMoneyAlert( persentages, amount, term ), 300 );
                 },
@@ -153,6 +156,7 @@ const Borrow = ({ navigation, commonSettings }) => {
         })
     }
     
+    //Shows if your wealth > 0
     const notBankrupt = () => {
         return (
             <View style={ styles.wrapper }>
@@ -185,6 +189,7 @@ const Borrow = ({ navigation, commonSettings }) => {
         )
     }
 
+    //Shows if your wealth < 0
     const bankrupt = () => {
         return (
             <View style={ styles.wrapper }>
@@ -208,6 +213,7 @@ const Borrow = ({ navigation, commonSettings }) => {
         )
     }
     
+    //If your wealth < 0 you can't  borrow money
     return ( wealth.current > 0 ) ? notBankrupt() : bankrupt();
 }
 

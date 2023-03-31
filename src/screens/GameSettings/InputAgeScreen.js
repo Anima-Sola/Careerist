@@ -1,3 +1,4 @@
+//Enter your start age
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, StatusBar } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -21,12 +22,14 @@ export const InputAgeScreen = ({ navigation }) => {
         ] 
     });
 
+    //Valid only digits
     const filterData = ( text ) => {
         const result = text.replace( /\D/g, '' );
         ( result !== '' ) ? setIsButtonDisabled( false ) : setIsButtonDisabled( true );
         setAge( result );
     }
 
+    //Check of yu yanger then 18 and older then 60
     const checkAgeAndNavToInputCashAmountScreen = () => {
         if( ( age < 18 ) || ( age > 60 ) ) {
             ( age < 18 ) ? setAlert({ ...alert, isVisible: true }) 

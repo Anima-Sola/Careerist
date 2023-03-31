@@ -16,10 +16,9 @@ import {
 
 import {
     setCashAmountAction,
-    setYearExpenseAction,
     setDepositAmountAction
 } from '../../../store/actions/actions';
-import { rndBetweenMinusOneAndOne } from '../../../components/Random';
+import { setCashAmountMinusFine, getFineAmount } from '../../../components/CommonFunctions';
 
 import DepositImage from "../../../assets/images/bankservices/deposit.png";
 
@@ -45,20 +44,6 @@ const Deposit = ({ navigation, commonSettings }) => {
         data: DEPOSIT_SCREEN_INPUT_AMOUNT,
         value: ''
     });
-
-    const setCashAmountMinusFine = ( fineAmount ) => {
-        let updatedCash = cash - fineAmount;
-        if( updatedCash < 0 ) {
-            dispatch(setYearExpenseAction( yearOutcome - updatedCash ));
-            updatedCash = 0;
-        }
-        dispatch(setCashAmountAction( updatedCash, true ));
-    }
-
-    const getFineAmount = () => {
-        const value = rndBetweenMinusOneAndOne();
-        return 1500 + 50 * Math.floor( 10 * value );
-    }
 
     const showCheatingAlert = ( fineAmount ) => {
         setAlert({ 

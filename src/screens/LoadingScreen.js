@@ -5,7 +5,6 @@ import { useDispatch, useStore } from "react-redux";
 import { loadFonts } from '../styles/bootstrap';
 import { loadAppSettings } from "../store/actions/actions";
 import { loadGameSettings } from "../store/actions/actions";
-import { setIsGameExit } from '../store/actions/actions';
 
 SplashScreen.preventAutoHideAsync();
 

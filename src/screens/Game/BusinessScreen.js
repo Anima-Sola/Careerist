@@ -16,7 +16,7 @@ import {
 } from '../../store/constants';
 import { setCashAmountAction, setBusinessListAction, setYearExpenseAction } from '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
-import { rndBetweenMinusOneAndOne } from '../../components/Random';
+import { getFineAmount, setCashAmountMinusFine } from '../../components/CommonFunctions';
 
 import Bar from "../../assets/images/business/bar.png";
 import Restraunt from "../../assets/images/business/restraunt.png";
@@ -36,7 +36,7 @@ export const BusinessScreen = ({ navigation }) => {
 
 const Business = ({ navigation, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
-    const { cash, currentSocialStatus, yearExpense } = commonSettings;
+    const { cash, currentSocialStatus } = commonSettings;
     const { businessList, businessBuyCostList, businessSellCostList, businessYearIncome } = useSelector( getBusinessSettings );
     const [ activeItem, setActiveItem ] = useState( 0 );
     const [ alert, setAlert ] = useState({ isVisible: false, data: BUSINESS_SCREEN_ANOTHER_DEAL });
@@ -48,28 +48,13 @@ const Business = ({ navigation, forceUpdate, commonSettings }) => {
         dispatch(setBusinessListAction( businessList, true ));
         forceUpdate();
     }
-
-    const setCashAmountMinusFine = ( fineAmount ) => {
-        let updatedCash = cash - fineAmount;
-        if( updatedCash < 0 ) {
-            dispatch(setYearExpenseAction( yearExpense - updatedCash ));
-            updatedCash = 0;
-        }
-        dispatch(setCashAmountAction( updatedCash, true ));
-        forceUpdate();
-    }
-
-    const getFineAmount = () => {
-        const value = rndBetweenMinusOneAndOne();
-        return 1500 + 50 * Math.floor( 10 * value );
-    }
     
     const showDontBeFoolAlert = () => {
         setAlert({ 
             isVisible: true, 
             data: { 
                 ...BUSINESS_SCREEN_DONT_BE_FOOL_WARNING, 
-                header: `Не глупите ${ SOCIAL_STATUSES[ currentSocialStatus ].toLowerCase() }!` 
+                header: `Не глупите ${ SOCIAL_STATUSES[ currentSocialStatus - 1 ].toLowerCase() }!` 
             },
             buttonsCallbacks: [
                 () => {
@@ -113,19 +98,23 @@ const Business = ({ navigation, forceUpdate, commonSettings }) => {
         })
     }
 
+    //Make deal
     const deal = ( buyOrSell ) => {
         
+        //If you try to buy possession you already bought
         if( businessList[ activeItem ] && buyOrSell ) {
             showDontBeFoolAlert();
             return;
         }
 
+        //If you try to sell possession you don't own
         if( !businessList[ activeItem ] && !buyOrSell ) {
             const fineAmount = getFineAmount();
             showCheatingAlert( BUSINESS_SCREEN_NOTHING_TO_SALE_CHEATING, fineAmount );
             return;
         }
 
+        //If you try to buy possesion and don't have enough money
         if(( cash < businessBuyCostList[ activeItem ] ) && buyOrSell ) {
             const fineAmount = getFineAmount();
             showCheatingAlert( BUSINESS_SCREEN_NO_MONEY_CHEATING, fineAmount );

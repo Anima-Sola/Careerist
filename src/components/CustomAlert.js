@@ -1,3 +1,4 @@
+//A component that displays a window instead of the standard Alert
 import React from "react";
 import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
 import { THEME } from "../styles/theme";
@@ -15,6 +16,7 @@ const CustomAlert = ({ alert, setAlert, argsForButtonCallbacks }) => {
         buttons,
     } = alert.data;
  
+    //Display buttons
     const buttonsList = () => {
         let i = -1;
         const list = buttons.map(({ key, hint, textColor }) => {

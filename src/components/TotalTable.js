@@ -1,6 +1,8 @@
+//A component that shows a table with your current financial situation (income, credit etc.)
+//It is called from the Financial Situation screen and the Total screen.
 import React, { useRef } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { 
     getCommonSettings,

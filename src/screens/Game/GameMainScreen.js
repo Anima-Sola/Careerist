@@ -53,6 +53,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
     const store = useStore();
     const [ alert, setAlert ] = useState({ isVisible: false, data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT });
 
+    //If year is over you go to total screen
     const navToTotalScreenIfYearIsOver = () => {
         const { posWithinYear, endOfYear } = store.getState().gameSettingsReducer.commonSettings;
         if( endOfYear <= posWithinYear ) navigation.navigate('TotalScreen');
@@ -76,15 +77,20 @@ const MainMenu = ({ navigation, forceUpdate }) => {
         })
     }
 
+    //Generate disaster event
     const createDisaster = () => {
         //Bug in original game - impossible to crash on plain
         //I think the author implied that the character would die
+        
+        //Chance of disaster is 20 percent
         if( random() > 0.2 ) {
             navToTotalScreenIfYearIsOver();
             return;
         }
 
+        //Get num of disaster
         const numOfDisaster = INT( 10 * random() );
+        //Work only if numDisaster between [ 1, 5 ]
         if( ( numOfDisaster < 1 ) || ( numOfDisaster > 5 ) ) {
             navToTotalScreenIfYearIsOver();
             return;
@@ -94,6 +100,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
         const { insuredPossessionList, insurancePossessionCostList, insurancePossessionTermList } = store.getState().gameSettingsReducer.bankSettings;
         const { commonBusinessIncome } = store.getState().gameSettingsReducer.businessSettings;
 
+        //Exit tf you don't own this possession
         if( !possessionList[ numOfDisaster - 1 ] ) {
             navToTotalScreenIfYearIsOver();
             return;
@@ -117,10 +124,12 @@ const MainMenu = ({ navigation, forceUpdate }) => {
                 break;
             case 5:
                 message = `Вы разбились на своем самолете.\nЛетайте самолетами Аэрофлота.`;
+                //If you crash in an airplane, you die
                 setTimeout( () => showDisasterAlert( message, numOfDisaster ), 300 );
                 return;
         }
 
+         //You lose the property, but if it is insured, you are paid the insurance
         possessionList[ numOfDisaster - 1 ] = false;
         dispatch(setPossessionListAction( possessionList ));
 
@@ -159,6 +168,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
         })
     }
 
+    //Check if the credit term expired
     const borrowRefund = () => {
         const { borrowAmount, borrowTerm, borrowPersentages } = store.getState().gameSettingsReducer.bankSettings;
         if( ( borrowAmount > 0 ) && ( borrowTerm <= 0 ) ) {
@@ -191,6 +201,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
         })
     }
 
+    //Check if the loan term expired
     const lendRefund = () => { 
         const { lendAmount, lendTerm, lendPersentages } = store.getState().gameSettingsReducer.bankSettings;
         if( ( lendAmount != 0 ) && ( lendTerm <= 0 ) ) {
@@ -203,6 +214,8 @@ const MainMenu = ({ navigation, forceUpdate }) => {
         borrowRefund();
     }
 
+    //Check the end of the year. Check if the loan term expired.Check if the credit term expired.
+    //Generate disaster event.
     const onScreenFocus = () => {
         NavigationBar.setBackgroundColorAsync( THEME.FORTH_BACKGROUND_COLOR );
         if( store.getState().appSettingsReducer.isNewYearBegun ) {
@@ -230,6 +243,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
     }
 
     useEffect(() => {
+        //Back handler focus event listener
         const unsubscribe = navigation.addListener('focus', () => onScreenFocus() );
         BackHandler.addEventListener('hardwareBackPress', () => {
             const navState = navigation.getState();
@@ -260,11 +274,13 @@ const MainMenu = ({ navigation, forceUpdate }) => {
         return unsubscribe;
     });
 
+    //Nav to another screens
     const navToGameScreens = ( screen, timeStep = 0, params = {} ) => {
         if( timeStep > 0 ) calcSubtotals( timeStep );
         navigation.navigate( screen, params ); 
     }
 
+    //Nav to election screen
     const navToElectionScreen = ( timeStep = 0 ) => {
         const { yearsPassed, electionStatus } = store.getState().gameSettingsReducer.commonSettings;
         calcSubtotals( timeStep );

@@ -57,6 +57,7 @@ const slides = [
     }
 ];
 
+//Slider component
 class Intro extends Component {
 
     _renderItem = ({ item }) => {
@@ -154,6 +155,7 @@ const IntroScreen = ({ navigation }) => {
         return () => backHandler.remove();
     })
 
+    //Set initial state then focus screen
     useFocusEffect(() => {
         dispatch( saveAppSettingsInitialState() );
         dispatch( saveGameSettingsInitialState() );

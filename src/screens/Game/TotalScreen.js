@@ -55,25 +55,30 @@ const Total = ({ navigation }) => {
     const [ alert, setAlert ] = useState({ isVisible: false, data: TOTAL_SCREEN_VARGANCY });
     const totalCash = useRef( cash );
 
+    //Calc the fine if you don't have flat or villa
     const calcVargancyFine = () => {
         const vargancyFine = 1000 + 20 * Math.floor( random() * Math.abs( totalCash.current ) / 19 );
         totalCash.current = totalCash.current - vargancyFine;
         return vargancyFine;
     }
 
+    //Calc the fine if you don't want to pay for expenses
     const calcGreedFine = () => {
         const greenFine = 1000 + 25 * Math.floor( random()  * Math.abs( totalCash.current ) / 23 );
         totalCash.current = totalCash.current - greenFine;
         return greenFine;
     }
 
+    //Run only once
     if( !isRun ) {
         setIsRun( true );
         let insuranseExpense = 0;
         let dividendsIncome = 0;
         for( let i = 0; i < 5; i++ ) {
+            //Calc expences for insured possession
             if( insuredPossessionList[ i ] ) insuranseExpense = insuranseExpense  + 0.5 * insurancePossessionCostList[ i ];
             if( insurancePossessionTermList[ i ] <= 0 ) insuredPossessionList[ i ] = false;
+            //Calc dividends income
             dividendsIncome = dividendsIncome + dividendsList[ i ] * stocksQuantityList[ i ];
         }
         dispatch(setCommonBusinessIncomeAction( commonBusinessIncome + dividendsIncome ));
@@ -90,6 +95,7 @@ const Total = ({ navigation }) => {
         )
     }
 
+    //Show you possession, businesses, hired employees
     const showAsset = ( list, listNames, text ) => {
         if( list.indexOf( true ) === -1 ) return;
 
@@ -118,12 +124,15 @@ const Total = ({ navigation }) => {
         totalCash.current = totalCash.current + commonBusinessIncome - yearExpense;
         dispatch(setCashAmountAction( totalCash.current ));
         
+        //If you don't have money you bankrupt
         if( totalCash.current < 0 ) {
             navigation.navigate('BankruptScreen');
         } else {      
+            //If you too old you die
             if( deathAge <= playerAge ) {
                 navigation.navigate('DeathScreen');
             } else {
+                //Continue the game next year
                 dispatch(setPlayerAgeAction( playerAge + 1 ));
                 dispatch(setYearsPassedAction( yearsPassed + 1 ));
                 dispatch(setIsNewYearBegun( false, true ));
@@ -174,11 +183,13 @@ const Total = ({ navigation }) => {
 
     const payExpenses = ( toPayOrNotToPay ) => {
         
+        //Calc the fine if you don't have flat or villa
         if( !possessionList[ 0 ] && !possessionList[ 2 ]) {
             showVargancyAlert( toPayOrNotToPay, calcVargancyFine() );
             return;
         }
 
+        //Pay if you don't want to pay expences
         if( !toPayOrNotToPay ) {
             showGreedAlert( calcGreedFine() );
             return;

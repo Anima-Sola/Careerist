@@ -1,3 +1,4 @@
+//Enter your start cash
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, StatusBar } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -28,19 +29,23 @@ export const InputСashAmountScreen = ({ navigation }) => {
         ]
     })
     
+    //Valid only digits
     const filterData = ( text ) => {
         const result = text.replace( /\D/g, '' );
         ( result !== '' ) ? setIsButtonDisabled( false ) : setIsButtonDisabled( true );
         setCashAmount( +result );
     }
 
+    //Start game
     const navToGame = ( cash ) => {
         dispatch(setCashAmountAction( cash, true ));
         setInitialGameData();
         navigation.navigate('GameMainScreen');
     }
 
+    //Calc max start cash amount
     const checkCashAmount = () => {
+        //Max cash amount
         let maxCash = 1500 * gameDifficultyLevel * ( 1 + random() );
         if( cashAmount > maxCash ) {
             maxCash = Math.floor( maxCash * 2 / 3 );
