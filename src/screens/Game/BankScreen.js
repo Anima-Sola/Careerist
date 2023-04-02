@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect } from 'react';
+import React, { useState, useReducer } from 'react';
 import { Text, View, StyleSheet, ScrollView, Pressable, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-native-elements';
@@ -35,7 +35,8 @@ export const BankScreen = ({ navigation, route }) => {
 const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
     const dispatch = useDispatch();
     const { cash, posWithinYear, endOfYear } = commonSettings;
-    const { isBankBankrupt, depositAmount, lendAmount, borrowAmount } = useSelector( getBankSettings );
+    let { isBankBankrupt, depositAmount, lendAmount, borrowAmount } = useSelector( getBankSettings );
+    const [ isRun, setIsRun ] = useState( false );
     const [ bankruptMessage, setBankruptMessage ] = useState(
         <Text style={{ ...styles.text, fontFamily: THEME.FONT_SEMIBOLD }}>НАЦИОНАЛЬНЫЙ БАНК банкрот!</Text>
     );
@@ -106,10 +107,9 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
         </View>
     )
 
-    const onScreenFocus = () => {
-        
+    if( !isRun ) {
         if( route.params?.previousScreen === 'lendOrBorrowScreen' ) forceUpdate();
-        
+
         //If you entered the bank from the main screen, it can be bankrupt. Chance 1,5 percent out of 100.
         if( !isBankBankrupt && route.params?.previousScreen === 'GameMainScreen' ) {
             const value = rndBetweenMinusOneAndOne();
@@ -126,18 +126,15 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
                     dispatch(setCashAmountAction( cash + compensation ));
                     dispatch(setDepositAmountAction( 0 ));
                 }
+                isBankBankrupt = true;
                 dispatch(setIsBankBankruptAction( true ));
                 dispatch(setBorrowTermAction( endOfYear - posWithinYear ), true);
-                return;
             }
             calcSubtotals( 1 );
         }
-    }
 
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => onScreenFocus() );
-        return unsubscribe;
-    }, [ route.params?.previousScreen ] )
+        setIsRun( true );
+    }
 
     return ( isBankBankrupt ) ? bankBankrupt : bankNotBankrupt;
 }

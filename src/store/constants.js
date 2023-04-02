@@ -24,7 +24,7 @@ const promptBtn1 = {
 }
 
 const alertBtn2 = { ...alertBtn1, key: 1 }
-const promptBtn2 = { ...promptBtn1, key: 1 }
+const promptBtn2 = { ...promptBtn1, key: 1, disabledIfEmpty: false }
 
 //Alerts and Prompts constants
 export const INPUT_AGE_SCREEN_BABY_ALERT = {

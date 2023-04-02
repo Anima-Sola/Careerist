@@ -1,11 +1,13 @@
 //Set difficulty level
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, Pressable, StatusBar, ImageBackground } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Button } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
 import { THEME } from '../../styles/theme';
 import { setGameDifficultyLevelAction } from   '../../store/actions/actions';
+
+import BackgroundImage from '../../assets/images/background/background.png';
 
 export const SetGameDifficultyScreen = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -34,28 +36,34 @@ export const SetGameDifficultyScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={ styles.container }>
-            <StatusBar translucent backgroundColor="transparent" />
-            <View style={ styles.headerContainer }>
-                <Text style={ styles.header }>Ваш класс?</Text>
+        <ImageBackground style={ styles.background } source={ BackgroundImage } resizeMode='cover'>
+            <View style={ styles.container }>
+                <StatusBar translucent backgroundColor="transparent" />
+                <View style={ styles.headerContainer }>
+                    <Text style={ styles.header }>Ваш класс?</Text>
+                </View>
+                <View style={ styles.difficultyLevelsContainer }>
+                    { items() }
+                </View>
+                <View style={ styles.nextButtonContainer }>
+                    <Button buttonStyle={ styles.nextButton } titleStyle={ styles.nextButtonTitle } type="outline" title="Продолжить" onPress={ navToInputAgeScreen }/>
+                </View>
             </View>
-            <View style={ styles.difficultyLevelsContainer }>
-                { items() }
-            </View>
-            <View style={ styles.nextButtonContainer }>
-                <Button buttonStyle={ styles.nextButton } titleStyle={ styles.nextButtonTitle } type="outline" title="Продолжить" onPress={ navToInputAgeScreen }/>
-            </View>
-        </View>
+        </ImageBackground>
     )
 }
 
 const styles = StyleSheet.create({
+    background: {
+        flex: 1,
+        width: wp('100%'),
+        height: hp('120%'),
+    },
     container: {
         flex: 1,
         width:'100%',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
     },
     headerContainer: {
         marginTop: THEME.STATUSBAR_HEIGHT

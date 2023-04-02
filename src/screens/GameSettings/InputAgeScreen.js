@@ -1,6 +1,6 @@
 //Enter your start age
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, TextInput, StatusBar, ImageBackground } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch } from 'react-redux';
 import { Button } from 'react-native-elements';
@@ -9,6 +9,8 @@ import { setPlayerAgeAction, setDeathAge } from   '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
 import { INPUT_AGE_SCREEN_BABY_ALERT, INPUT_AGE_SCREEN_OLD_ALERT } from '../../store/constants';
 import random from '../../components/Random';
+
+import BackgroundImage from '../../assets/images/background/background.png';
 
 export const InputAgeScreen = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -43,45 +45,51 @@ export const InputAgeScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={ styles.container }>
-            <StatusBar translucent backgroundColor="transparent" />
-            <CustomAlert alert={ alert } setAlert={ setAlert } />
-            <View style={ styles.headerContainer }>
-                <Text style={ styles.header }>Ваш возраст?</Text>
+        <ImageBackground style={ styles.background } source={ BackgroundImage } resizeMode='cover'>
+            <View style={ styles.container }>
+                <StatusBar translucent backgroundColor="transparent" />
+                <CustomAlert alert={ alert } setAlert={ setAlert } />
+                <View style={ styles.headerContainer }>
+                    <Text style={ styles.header }>Ваш возраст?</Text>
+                </View>
+                <View style={ styles.inputContainer }>
+                    <TextInput
+                        style={ styles.input } 
+                        keyboardType='numeric'
+                        autoFocus={ true }
+                        maxLength={ 2 }
+                        onChangeText={( text ) => filterData( text )}
+                        value={ age }
+                    />
+                    <Text style={ styles.hint }>от 18 до 60 лет</Text>
+                </View>
+                <View style={ styles.nextButtonContainer }>
+                    <Button
+                        buttonStyle={ styles.nextButton } 
+                        titleStyle={ styles.nextButtonTitle }
+                        disabledStyle={ styles.nextButtonDisabledStyle }
+                        type="outline" 
+                        title="Продолжить" 
+                        disabled={ isButtonDisabled }
+                        onPress={ checkAgeAndNavToInputCashAmountScreen } 
+                    />
+                </View>
             </View>
-            <View style={ styles.inputContainer }>
-                <TextInput
-                    style={ styles.input } 
-                    keyboardType='numeric'
-                    autoFocus={ true }
-                    maxLength={ 2 }
-                    onChangeText={( text ) => filterData( text )}
-                    value={ age }
-                />
-                <Text style={ styles.hint }>от 18 до 60 лет</Text>
-            </View>
-            <View style={ styles.nextButtonContainer }>
-                <Button
-                    buttonStyle={ styles.nextButton } 
-                    titleStyle={ styles.nextButtonTitle }
-                    disabledStyle={ styles.nextButtonDisabledStyle }
-                    type="outline" 
-                    title="Продолжить" 
-                    disabled={ isButtonDisabled }
-                    onPress={ checkAgeAndNavToInputCashAmountScreen } 
-                />
-            </View>
-        </View>
+        </ImageBackground>
     )
 }
 
 const styles = StyleSheet.create({
+    background: {
+        flex: 1,
+        width: wp('100%'),
+        height: hp('120%'),
+    },
     container: {
         flex: 1,
         width:'100%',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
     },
     headerContainer: {
         marginTop: THEME.STATUSBAR_HEIGHT

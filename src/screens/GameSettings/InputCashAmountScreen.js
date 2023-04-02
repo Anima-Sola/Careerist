@@ -1,6 +1,6 @@
 //Enter your start cash
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, TextInput, StatusBar, ImageBackground } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-elements';
@@ -11,6 +11,8 @@ import CustomAlert from '../../components/CustomAlert';
 import { INPUT_CASH_AMOUNT_SCREEN_ALERT } from '../../store/constants';
 import { setInitialGameData } from '../../components/CommonFunctions';
 import random from '../../components/Random';
+
+import BackgroundImage from '../../assets/images/background/background.png';
 
 export const InputСashAmountScreen = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -57,44 +59,50 @@ export const InputСashAmountScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={ styles.container }>
-            <StatusBar translucent backgroundColor="transparent" />
-            <CustomAlert alert={ alert } setAlert={ setAlert } />
-            <View style={ styles.headerContainer }>
-                <Text style={ styles.header }>Стартовый капитал?</Text>
+        <ImageBackground style={ styles.background } source={ BackgroundImage } resizeMode='cover'>
+            <View style={ styles.container }>
+                <StatusBar translucent backgroundColor="transparent" />
+                <CustomAlert alert={ alert } setAlert={ setAlert } />
+                <View style={ styles.headerContainer }>
+                    <Text style={ styles.header }>Стартовый капитал?</Text>
+                </View>
+                <View style={ styles.inputContainer }>
+                    <TextInput
+                        style={ styles.input } 
+                        keyboardType='numeric'
+                        maxLength={ 12 }
+                        autoFocus={ true }
+                        onChangeText={( text ) => filterData( text )}
+                        value={ cashAmount.toString() }
+                    />
+                </View>
+                <View style={ styles.nextButtonContainer }>
+                    <Button
+                        buttonStyle={ styles.nextButton } 
+                        titleStyle={ styles.nextButtonTitle }
+                        disabledStyle={ styles.nextButtonDisabledStyle }
+                        type="outline" 
+                        title="Продолжить" 
+                        disabled={ isButtonDisabled }
+                        onPress={ checkCashAmount } 
+                    />
+                </View>
             </View>
-            <View style={ styles.inputContainer }>
-                <TextInput
-                    style={ styles.input } 
-                    keyboardType='numeric'
-                    maxLength={ 12 }
-                    autoFocus={ true }
-                    onChangeText={( text ) => filterData( text )}
-                    value={ cashAmount.toString() }
-                />
-            </View>
-            <View style={ styles.nextButtonContainer }>
-                <Button
-                    buttonStyle={ styles.nextButton } 
-                    titleStyle={ styles.nextButtonTitle }
-                    disabledStyle={ styles.nextButtonDisabledStyle }
-                    type="outline" 
-                    title="Продолжить" 
-                    disabled={ isButtonDisabled }
-                    onPress={ checkCashAmount } 
-                />
-            </View>
-        </View>
+        </ImageBackground>
     )
 }
 
 const styles = StyleSheet.create({
+    background: {
+        flex: 1,
+        width: wp('100%'),
+        height: hp('120%'),
+    },
     container: {
         flex: 1,
         width:'100%',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: THEME.MAIN_BACKGROUND_COLOR
     },
     headerContainer: {
         marginTop: THEME.STATUSBAR_HEIGHT

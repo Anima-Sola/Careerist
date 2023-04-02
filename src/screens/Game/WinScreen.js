@@ -100,3 +100,87 @@ const styles = StyleSheet.create({
         fontSize: THEME.FONT28,
     }
 });
+
+
+/*import React, { useRef, useEffect } from 'react';
+import { View, StyleSheet, Animated, Easing } from 'react-native';
+
+const Fireworks = () => {
+  const circleRefs = useRef([]);
+  const animation = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    animateFireworks();
+  }, []);
+
+  const animateFireworks = () => {
+    Animated.timing(animation, {
+      toValue: 1,
+      duration: 1500,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: true
+    }).start(() => {
+        resetAnimation();
+    });
+  }
+
+  const resetAnimation = () => {
+    animation.setValue(0);
+    circleRefs.current.forEach(circle => {
+        circle.setNativeProps({ style: { backgroundColor: getRandomColor(), transform: [{ scale: 0 }] } });
+    });
+    animateFireworks();
+  }
+
+  const getRandomColor = () => {
+      const colors = ['#FF6B6B', '#FFE66D', '#8BC34A', '#00BCD4', '#9C27B0', '#3F51B5'];
+      return colors[Math.floor(Math.random() * colors.length)];
+  }
+
+  return (
+    <View style={styles.container}>
+      {[1,2,3,4,5,6,7,8,9,10].map((i) => (
+        <View
+          key={i}
+          ref={ref => circleRefs.current[i] = ref}
+          style={[styles.circle, { backgroundColor: getRandomColor() }]}
+        />
+      ))}
+      <View style={styles.circle}>
+        <Animated.View
+          style={[styles.core, {
+              transform: [{
+                  scale: animation.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0.01, 1],
+                  }),
+              }]
+          }]}
+        />
+    </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  circle: {
+    width: 25,
+    height: 25,
+    borderRadius: 25 / 2,
+    backgroundColor: 'red',\n    position: 'absolute'
+  },
+  core: {
+    width: 5,
+    height: 5,
+    borderRadius: 5 / 2,
+    backgroundColor: 'orange',
+    position: 'absolute',
+  },
+});
+
+export default Fireworks;*/
