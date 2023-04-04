@@ -3,6 +3,7 @@ import { saveDataToStore } from '../../components/FileSystem';
 const initialState = {
 
     commonSettings: {
+        isNewYearBegun: false,                                          // New year start flag
         gameDifficultyLevel: 3,                                         // Difficulty level
         playerAge: 18,                                                  // Player age
         deathAge: 120,                                                  // Death age
@@ -71,6 +72,8 @@ export const gameSettingsReducer = ( state = initialState, action ) => {
         case 'SAVE_GAME_SETTINGS_INITIAL_STATE':
             saveDataToStore( 'GAME_SETTINGS', initialState );
             return initialState;
+        case 'SET_IS_NEW_YEAR_BEGUN':
+            return saveState( state, 'isNewYearBegun', action );
         case 'SET_YEAR':
             return saveState( state, 'year', action );
         case 'SET_GAME_DIFFICULTY_LEVEL':

@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
 import { THEME } from "../styles/theme";
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { playSlideChange } from "./Sounds";
 
 const CustomAlert = ({ alert, setAlert, argsForButtonCallbacks }) => {
     let {
@@ -18,17 +19,18 @@ const CustomAlert = ({ alert, setAlert, argsForButtonCallbacks }) => {
  
     //Display buttons
     const buttonsList = () => {
-        let i = -1;
         const list = buttons.map(({ key, hint, textColor }) => {
-            i++;
             return (
                 <Button
                     key={ key } 
                     buttonStyle={ styles.button } 
                     titleStyle={{ ...styles.buttonTitle, color: textColor }}
                     type="outline" 
-                    title={ hint } 
-                    onPress={ eval(`() => alert.buttonsCallbacks[ ${ i } ]({ ...argsForButtonCallbacks })`) }    
+                    title={ hint }  
+                    onPress={ () => {
+                        playSlideChange();
+                        alert.buttonsCallbacks[ key ]({ ...argsForButtonCallbacks });
+                    }}    
                 />
             )
         })
@@ -44,7 +46,8 @@ const CustomAlert = ({ alert, setAlert, argsForButtonCallbacks }) => {
             onRequestClose={ () => { if( isOverlayPressable ) setAlert({ isVisible: false, data: alert.data, buttonsCallbacks: alert.buttonsCallbacks }) }} 
         >   
             <Pressable 
-                style={[Platform.OS === "ios" ? styles.iOSBackdrop : styles.androidBackdrop, styles.backdrop]} 
+                style={[Platform.OS === "ios" ? styles.iOSBackdrop : styles.androidBackdrop, styles.backdrop]}
+                onPressIn={ () => playSlideChange() }  
                 onPress={ () => { if( isOverlayPressable ) setAlert({ isVisible: false, data: alert.data,  buttonsCallbacks: alert.buttonsCallbacks }) }} 
             />
             <View style={ styles.container }>

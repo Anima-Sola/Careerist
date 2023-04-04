@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     },
     buttonTitle: {
         color: THEME.TEXT_COLOR,
-        fontFamily: THEME.FONT_LIGHT,
+        fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT28,
     }
 })

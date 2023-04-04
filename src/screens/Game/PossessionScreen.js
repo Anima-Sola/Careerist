@@ -17,6 +17,7 @@ import {
 import { setCashAmountAction, setPossessionListAction, setYearExpenseAction } from '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
 import { rndBetweenMinusOneAndOne } from '../../components/Random';
+import { playSlideChange } from '../../components/Sounds';
 
 import Flat from "../../assets/images/possession/flat.png";
 import Car from "../../assets/images/possession/car.png";
@@ -136,24 +137,29 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const getListBuyOrSale = ( typeOfDeal = false ) => {
-        let i = -1;
         const typeOfDealName = ( typeOfDeal ) ? 'продать' : 'купить';
         const possessionCostList = ( typeOfDeal ) ? possessionSellCostList : possessionBuyCostList;
         const possessionImageFiles = [ Flat, Car, Villa, Yacht, Plane ];
 
-        const items = possessionList.map( element => {
-            i++;
+        const items = possessionList.map( ( element, key ) => {
             if( element === typeOfDeal ) {
-                const activeItemBackgroudColor = ( i === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
+                const activeItemBackgroudColor = ( key === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
                 return (
-                    <Pressable style={ styles.itemContainer } key={ i } onPress={eval( '() => setActiveItem(' + i + ')' )}>
+                    <Pressable 
+                        style={ styles.itemContainer } 
+                        key={ key } 
+                        onPress={ () => {
+                            setActiveItem( key );
+                            playSlideChange()
+                        }}
+                    >
                         <View style={{ ...styles.itemImage, backgroundColor: activeItemBackgroudColor }}>
-                            <Image style={ styles.image } resizeMode='center' source={ possessionImageFiles[ i ] } />
+                            <Image style={ styles.image } resizeMode='center' source={ possessionImageFiles[ key ] } />
                         </View>
                         <View style={{ ...styles.itemName, backgroundColor: activeItemBackgroudColor }}>
-                            <Text style={ styles.itemText }>{ POSSESSION_LIST[ i ] }</Text>
+                            <Text style={ styles.itemText }>{ POSSESSION_LIST[ key ] }</Text>
                             <View style={{ height: hp('1%') }}></View>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Цена { possessionCostList[ i ] }$</Text>
+                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Цена { possessionCostList[ key ] }$</Text>
                         </View>
                     </Pressable>
                 )

@@ -1,12 +1,15 @@
 //Side menu that opens by swipe right gesture
-import React, { useRef, useImperativeHandle, forwardRef } from 'react';
+import React, { useState, useRef, useImperativeHandle, forwardRef } from 'react';
 import { useFocusEffect } from "@react-navigation/native";
 import { Text, View, StyleSheet, Animated, Pressable } from 'react-native';
 import { Directions, GestureDetector, Gesture } from "react-native-gesture-handler";
 import { Ionicons } from '@expo/vector-icons';
 import { THEME } from '../styles/theme';
+import { SIDE_MENU_START_NEW_GAME } from '../store/constants';
+import CustomAlert from '../components/CustomAlert';
 
 const SideMenu = ( props, ref ) => {
+    const [ alert, setAlert ] = useState({ isVisible: false, data: SIDE_MENU_START_NEW_GAME });
     const animSideMenu = useRef(new Animated.Value( - THEME.SCREEN_WIDTH )).current;
     const animOverlayOpacity = useRef(new Animated.Value(0)).current;
 
@@ -73,15 +76,33 @@ const SideMenu = ( props, ref ) => {
             hideSideMenu();
         });
 
+    const startNewGameAlert = () => {
+        hideSideMenu();
+        setAlert({
+            ...alert,
+            isVisible: true,
+            buttonsCallbacks: [
+                () => {
+                    setAlert({ ...alert, isVisible: false });
+                    props.navigation.navigate('IntroScreen');
+                },
+                () => { 
+                    setAlert({ ...alert, isVisible: false });
+                }
+            ]
+        })
+    }
+
     return (
         <GestureDetector gesture={ flingLeftGesture }>
             <Animated.View style={{ ...styles.sideMenuContainer, transform: [{ translateX: animSideMenu }] }}>
+                <CustomAlert alert={ alert } setAlert={ setAlert } />
                 <View style={ styles.sideMenu }>
                     <Pressable onPress={ hideSideMenu } style={ styles.closeMenuCross }>
                         <Ionicons name="close-outline" size={ 40 } color= { "black" } />
                     </Pressable>
                     <View style={ styles.sideMenuItems }>
-                        <Pressable style={ THEME.SIDE_MENU_PRESSABLE_STYLE( styles.sideMenuItem ) } onPress={ () => props.navigation.navigate('IntroScreen') } >
+                        <Pressable style={ THEME.SIDE_MENU_PRESSABLE_STYLE( styles.sideMenuItem ) } onPress={ () => startNewGameAlert() } >
                             <Ionicons name="home-outline" size={ 28 } color= { "black" } />
                             <Text style={ styles.sideMenuItemText }>
                                 Новая игра
@@ -97,18 +118,6 @@ const SideMenu = ( props, ref ) => {
                             <Ionicons name="help-circle-outline" size={ 28 } color= { "black" } />
                             <Text style={ styles.sideMenuItemText }>
                                 Об игре
-                            </Text>
-                        </Pressable>
-                        <Pressable style={ THEME.SIDE_MENU_PRESSABLE_STYLE( styles.sideMenuItem ) }>
-                            <Ionicons name="logo-github" size={ 28 } color= { "black" } />
-                            <Text style={ styles.sideMenuItemText }>
-                                GitHub
-                            </Text>
-                        </Pressable>
-                        <Pressable style={ THEME.SIDE_MENU_PRESSABLE_STYLE( styles.sideMenuItem ) }>
-                            <Ionicons name="exit-outline" size={ 28 } color= { "black" } />
-                            <Text style={ styles.sideMenuItemText }>
-                                Выход
                             </Text>
                         </Pressable>
                     </View>

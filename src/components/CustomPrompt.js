@@ -5,6 +5,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { Button } from 'react-native-elements';
 import { THEME } from "../styles/theme";
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { playSlideChange } from "./Sounds";
 
 const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
     const textInput = useRef( null );
@@ -35,9 +36,7 @@ const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
     
     //Display buttons
     const buttonsList = () => {
-        let i = -1;
         const list = buttons.map(({ key, hint, disabledIfEmpty, disabledBackgroundColor, textColor }) => {
-            i++;
             const isButtonDisabled = ( prompt.value === ''  ) ? disabledIfEmpty : false ;
             return (
                 <Button
@@ -47,8 +46,11 @@ const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
                     disabledStyle={{ backgroundColor: disabledBackgroundColor }}
                     type="outline" 
                     title={ hint } 
-                    disabled={ isButtonDisabled }
-                    onPress={ eval(`() => prompt.buttonsCallbacks[ ${ i } ]( prompt.value, { ...argsForButtonCallbacks })`) }    
+                    disabled={ isButtonDisabled } 
+                    onPress={ () => {
+                        playSlideChange();
+                        prompt.buttonsCallbacks[ key ]( prompt.value, { ...argsForButtonCallbacks }) 
+                    }}    
                 />
             )
         })
@@ -67,6 +69,7 @@ const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
         >   
             <Pressable 
                 style={[Platform.OS === "ios" ? styles.iOSBackdrop : styles.androidBackdrop, styles.backdrop]} 
+                onPressIn={ () => playSlideChange() }  
                 onPress={ () => {
                     if( isOverlayPressable ) setPrompt({ ...prompt, isVisible: false, value: '' });
                 }} 

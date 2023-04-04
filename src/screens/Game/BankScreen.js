@@ -129,8 +129,9 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
                 isBankBankrupt = true;
                 dispatch(setIsBankBankruptAction( true ));
                 dispatch(setBorrowTermAction( endOfYear - posWithinYear ), true);
+            } else {
+                calcSubtotals( 1 );
             }
-            calcSubtotals( 1 );
         }
 
         setIsRun( true );

@@ -6,6 +6,7 @@ import { Button } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
 import { THEME } from '../../styles/theme';
 import { setGameDifficultyLevelAction } from   '../../store/actions/actions';
+import { playSlideChange, playButtonClick } from '../../components/Sounds';
 
 import BackgroundImage from '../../assets/images/background/background.png';
 
@@ -14,21 +15,28 @@ export const SetGameDifficultyScreen = ({ navigation }) => {
     const [ diffLevel, setDiffLevel ] = useState( 3 );
 
     const navToInputAgeScreen = () => {
+        playButtonClick();
         dispatch(setGameDifficultyLevelAction( diffLevel, true ));
         navigation.navigate('InputAgeScreen');
     }
 
     const items = () => {
-        let i = 4;
         const diffTitles = [ 'Легко', 'Средне', 'Хардкор' ];
+        const diffDigits = [ 3, 2, 1 ];
 
-        const items = diffTitles.map( element => {
-            i--;
-            const activeItemBackgroudColor = (i === diffLevel ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
+        const items = diffDigits.map( ( element, key ) => {
+            const activeItemBackgroudColor = ( element === diffLevel ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
             return ( 
-                <Pressable style={{ ...styles.difficultyLevelItem, backgroundColor: activeItemBackgroudColor }} key={ i } onPress={ eval( '() => setDiffLevel(' + i + ')' )}>
-                    <Text style={ styles.difficultyLevelItemDigit }>{ i }</Text>
-                    <Text style={ styles.difficultyLevelItemText }>{ element }</Text>
+                <Pressable
+                    key={ key }  
+                    style={{ ...styles.difficultyLevelItem, backgroundColor: activeItemBackgroudColor }}
+                    onPress={ () => { 
+                        setDiffLevel( diffDigits[ key ] );
+                        playSlideChange();
+                    }}
+                >
+                    <Text style={ styles.difficultyLevelItemDigit }>{ element }</Text>
+                    <Text style={ styles.difficultyLevelItemText }>{ diffTitles[ key ] }</Text>
                 </Pressable>
             )
         })

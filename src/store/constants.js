@@ -298,7 +298,7 @@ export const STOCKMARKET_SCREEN_PROBLEM = {
     iconBackgroundColor: 'red',
     iconColor: 'white',
     isOverlayPressable: false,
-    buttons: [ { ...alertBtn1, hint: 'Жаль :(' } ]
+    buttons: [ { ...alertBtn1, hint: 'Продолжить' } ]
 }
 
 export const STOCKMARKET_SCREEN_CLAIM_PROBLEM = {
@@ -621,7 +621,6 @@ export const ENTERTAINMENT_SCREEN_YOU_LOSE = {
     ]
 }
 
-
 export const TOTAL_SCREEN_VARGANCY = {
     message: '',
     header: 'Вы бездомный!',
@@ -654,4 +653,17 @@ export const JAIL_SCREEN_GREED_GET_OUT_OF_JAIL = {
     iconColor: 'white',
     isOverlayPressable: false,
     buttons: [ { ...alertBtn1, hint: 'Наконец-то' } ]
+}
+
+export const SIDE_MENU_START_NEW_GAME = {
+    message: 'Вы действительно желаете начать новую игру? \nВсе ваши достижения будут обнулены.',
+    header: 'Новая игра!',
+    iconName: 'question',
+    iconBackgroundColor: 'green',
+    iconColor: 'white',
+    isOverlayPressable: true,
+    buttons: [
+        { ...alertBtn1, hint: 'Да' },
+        { ...alertBtn2, hint: 'Нет' }
+    ]
 }

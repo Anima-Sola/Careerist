@@ -28,6 +28,7 @@ import {
 import { calcSubtotals, setCashAmountMinusFine } from "../../components/CommonFunctions";
 import random from "../../components/Random";
 import { INT } from "../../components/CommonFunctions";
+import { playSlideChange } from "../../components/Sounds";
 
 import FinancialSituationIcon from '../../assets/images/mainscreenicons/financialsituation.png';
 import SocialSituationIcon from '../../assets/images/mainscreenicons/socialsituation.png';
@@ -218,7 +219,8 @@ const MainMenu = ({ navigation, forceUpdate }) => {
     //Generate disaster event.
     const onScreenFocus = () => {
         NavigationBar.setBackgroundColorAsync( THEME.FORTH_BACKGROUND_COLOR );
-        if( store.getState().appSettingsReducer.isNewYearBegun ) {
+        const { isNewYearBegun } = store.getState().gameSettingsReducer.commonSettings;
+        if( isNewYearBegun ) {
             const { cash } = store.getState().gameSettingsReducer.commonSettings;
             if( cash <= 0 ) calcSubtotals( 0.3 );
             lendRefund();
@@ -234,7 +236,8 @@ const MainMenu = ({ navigation, forceUpdate }) => {
             isVisible: true,
             buttonsCallbacks: [
                 () => setAlert({ ...alert, isVisible: false }),
-                () => { 
+                () => {
+                    console.log('qwe') ;
                     setAlert({ ...alert, isVisible: false });
                     setTimeout( () => BackHandler.exitApp(), 500 );
                 }
@@ -276,12 +279,14 @@ const MainMenu = ({ navigation, forceUpdate }) => {
 
     //Nav to another screens
     const navToGameScreens = ( screen, timeStep = 0, params = {} ) => {
+        playSlideChange();
         if( timeStep > 0 ) calcSubtotals( timeStep );
         navigation.navigate( screen, params ); 
     }
 
     //Nav to election screen
     const navToElectionScreen = ( timeStep = 0 ) => {
+        playSlideChange();
         const { yearsPassed, electionStatus } = store.getState().gameSettingsReducer.commonSettings;
         calcSubtotals( timeStep );
         if( ( ( yearsPassed % 2 ) === 0 ) && electionStatus ) calcSubtotals( 0.7 );

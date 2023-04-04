@@ -3,8 +3,8 @@ import { View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { useDispatch, useStore } from "react-redux";
 import { loadFonts } from '../styles/bootstrap';
-import { loadAppSettings } from "../store/actions/actions";
 import { loadGameSettings } from "../store/actions/actions";
+import { playBackgroundTrack } from '../components/Sounds';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -17,7 +17,7 @@ export const LoadingScreen =({ navigation }) => {
         async function prepare() {
             try {
                 await loadFonts();
-                dispatch( loadAppSettings() );
+                dispatch( loadGameSettings() );
                 await new Promise(resolve => setTimeout(resolve, 3000));
             } catch (e) {
                 console.warn(e);
@@ -30,18 +30,18 @@ export const LoadingScreen =({ navigation }) => {
 
     const onLayoutRootView = useCallback(async () => {
         if( appIsReady ) {
-            const isNewYearBegun = store.getState().appSettingsReducer.isNewYearBegun;
+            const { isNewYearBegun } = store.getState().gameSettingsReducer.commonSettings;
+            //playBackgroundTrack();
             if( isNewYearBegun ) {
-                dispatch( loadGameSettings() );
                 navigation.navigate('GameMainScreen');
             } else {
                 navigation.navigate('IntroScreen');
             }
             await SplashScreen.hideAsync();
         }
-    }, [appIsReady]);
+    }, [ appIsReady ]);
 
-    if (!appIsReady) {
+    if ( !appIsReady ) {
         return null;
     }
 

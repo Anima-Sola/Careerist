@@ -11,6 +11,15 @@ export const loadGameSettings = () => {
     };
 }
 
+export const setIsNewYearBegun = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_IS_NEW_YEAR_BEGUN',
+        payload: item,
+        settingsSection: 'commonSettings',
+        saveStateToStore
+    }
+};
+
 export const setGameDifficultyLevelAction = ( item, saveStateToStore = false ) => {
     return {
         type: 'SET_GAME_DIFFICULTY_LEVEL',
@@ -360,13 +369,15 @@ export const loadAppSettings = () => {
     };
 }
 
-export const setIsNewYearBegun = ( item, saveStateToStore = false ) => {
+export const setCurrentBackgroundTrackAction = ( item, saveStateToStore = false ) => {
     return {
-        type: 'SET_IS_NEW_YEAR_BEGUN',
+        type: 'SET_CURRENT_BACKGROUND_TRACK',
         payload: item,
+        settingsSection: 'soundSettings',
         saveStateToStore
     }
 };
+
 
 export const saveAppSettingsInitialState = () => {
     return {

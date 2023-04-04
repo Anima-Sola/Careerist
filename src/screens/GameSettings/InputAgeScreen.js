@@ -9,6 +9,7 @@ import { setPlayerAgeAction, setDeathAge } from   '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
 import { INPUT_AGE_SCREEN_BABY_ALERT, INPUT_AGE_SCREEN_OLD_ALERT } from '../../store/constants';
 import random from '../../components/Random';
+import { playButtonClick } from '../../components/Sounds';
 
 import BackgroundImage from '../../assets/images/background/background.png';
 
@@ -33,6 +34,7 @@ export const InputAgeScreen = ({ navigation }) => {
 
     //Check of yu yanger then 18 and older then 60
     const checkAgeAndNavToInputCashAmountScreen = () => {
+        playButtonClick();
         if( ( age < 18 ) || ( age > 60 ) ) {
             ( age < 18 ) ? setAlert({ ...alert, isVisible: true }) 
                          : setAlert({ ...alert, isVisible: true, data: INPUT_AGE_SCREEN_OLD_ALERT });

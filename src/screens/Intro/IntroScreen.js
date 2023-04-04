@@ -10,6 +10,7 @@ import CustomAlert from '../../components/CustomAlert';
 import { GAME_MAIN_SCREEN_QUIT_GAME_ALERT } from '../../store/constants';
 import { THEME } from '../../styles/theme';
 import { saveGameSettingsInitialState, saveAppSettingsInitialState, loadAppSettings, loadGameSettings } from '../../store/actions/actions';
+import { playSlideChange } from '../../components/Sounds';
 
 const slides = [
     {
@@ -105,6 +106,7 @@ class Intro extends Component {
     }
 
     _navToSetGameDifficultyScreen = () => {
+        playSlideChange();
         this.props.navigation.navigate('SetGameDifficultyScreen');
     }
 
@@ -119,6 +121,7 @@ class Intro extends Component {
                     renderDoneButton={ this._renderDoneButton }
                     renderNextButton={ this._renderNextButton }
                     renderSkipButton={ this._renderSkipButton }
+                    onSlideChange={ () => playSlideChange() }
                     onDone={ this._navToSetGameDifficultyScreen }
                     onSkip={ this._navToSetGameDifficultyScreen }
                     ref={( ref ) => ( this.slider = ref )}
@@ -190,7 +193,7 @@ const styles = StyleSheet.create({
         fontFamily: THEME.FONT_LIGHT,
         fontSize: THEME.FONT40,
         textAlign: 'center',
-        lineHeight: hp('5')
+        lineHeight: hp('5%') / THEME.FONT_SCALE
     },
     textContainer: {
         flex: 0.30,
@@ -202,8 +205,8 @@ const styles = StyleSheet.create({
         fontFamily: THEME.FONT_EXTRALIGHT,
         fontSize: THEME.FONT30,
         textAlign: 'center',
-        lineHeight: hp('4'),
-        marginTop: hp('3')
+        lineHeight: hp('4%') / THEME.FONT_SCALE,
+        marginTop: hp('3%')
     },  
     image: {
         flex: 0.55,

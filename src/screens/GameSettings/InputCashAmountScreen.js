@@ -11,6 +11,7 @@ import CustomAlert from '../../components/CustomAlert';
 import { INPUT_CASH_AMOUNT_SCREEN_ALERT } from '../../store/constants';
 import { setInitialGameData } from '../../components/CommonFunctions';
 import random from '../../components/Random';
+import { playButtonClick } from '../../components/Sounds';
 
 import BackgroundImage from '../../assets/images/background/background.png';
 
@@ -47,6 +48,7 @@ export const InputСashAmountScreen = ({ navigation }) => {
 
     //Calc max start cash amount
     const checkCashAmount = () => {
+        playButtonClick();
         //Max cash amount
         let maxCash = 1500 * gameDifficultyLevel * ( 1 + random() );
         if( cashAmount > maxCash ) {
