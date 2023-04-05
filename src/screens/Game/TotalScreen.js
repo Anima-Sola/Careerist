@@ -33,6 +33,7 @@ import CustomAlert from '../../components/CustomAlert';
 import TotalTable from '../../components/TotalTable';
 import random from '../../components/Random';
 import { setInitialGameData } from '../../components/CommonFunctions';
+import { playButtonClick } from '../../components/Sounds';
 
 export const TotalScreen = ({ navigation }) => {
     const commonSettings = useSelector( getCommonSettings );
@@ -195,6 +196,7 @@ const Total = ({ navigation }) => {
             return;
         }
 
+        playButtonClick();
         checkDeficitOfMoney();
 
     }

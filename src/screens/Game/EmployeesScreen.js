@@ -19,8 +19,8 @@ import {
 } from '../../store/constants';
 import { setCashAmountAction, setEmployeesList, setEmployeesSalaryList, setYearExpenseAction  } from '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
-import { rndBetweenMinusOneAndOne } from '../../components/Random';
 import { setCashAmountMinusFine, getFineAmount } from '../../components/CommonFunctions';
+import { playSlideChange } from '../../components/Sounds';
 
 import Makler from "../../assets/images/employees/makler.png";
 import Doctor from "../../assets/images/employees/doctor.png";
@@ -156,11 +156,14 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
         })
     }
 
-    const showContractTerminatedAlertNoMoney = () => {
+    const showContractTerminatedAlertNoMoney = ( penaltyAmount ) => {
         setAlert({
             ...alert,
             isVisible: true,
-            data: EMPLOYEES_SCREEN_CONTRACT_TERMINATED_NO_MONEY,
+            data: {
+                ...EMPLOYEES_SCREEN_CONTRACT_TERMINATED_NO_MONEY,
+                message: `Вами выплачена неустойка ${ penaltyAmount }$.`
+            },
             buttonsCallbacks: [
                 () => {
                     navigation.navigate('GameMainScreen');
@@ -169,11 +172,14 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
         })
     }
 
-    const showContractTerminatedAlert = () => {
+    const showContractTerminatedAlert = ( penaltyAmount ) => {
         setAlert({
             ...alert,
             isVisible: true,
-            data: EMPLOYEES_SCREEN_CONTRACT_TERMINATED,
+            data: {
+                ...EMPLOYEES_SCREEN_CONTRACT_TERMINATED,
+                message: `Вами выплачена неустойка ${ penaltyAmount }$.`
+            },
             buttonsCallbacks: [
                 () => {
                     setAlert({ ...alert, isVisible: false });
@@ -222,34 +228,39 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
         const penaltyAmount = 2 * employeesSalaryList[ activeItem ];
         if(( cash - penaltyAmount ) <= 0 ) {
             fireEmployee();
-            showContractTerminatedAlertNoMoney();
+            showContractTerminatedAlertNoMoney( penaltyAmount );
             return;
         }
 
         fireEmployee();  
-        showContractTerminatedAlert();
+        showContractTerminatedAlert( penaltyAmount );
     }
 
     const getListHireOrFire = ( typeOfDeal = false ) => {
-        let i = -1;
         const typeOfDealName = ( typeOfDeal ) ? 'уволить' : 'нанять';
         const hireOrFire = ( typeOfDeal ) ? 'Неустойка за увольнение' : 'Зарплата в год';
         const penaltyMultiplier = ( typeOfDeal ) ? 2 : 1;
         const employeesImageFiles = [ Makler, Doctor, Lawyer, Detective, Security ];
 
-        const items = employeesList.map( element => {
-            i++;
+        const items = employeesList.map( ( element, key ) => {
             if( element === typeOfDeal ) {
-                const activeItemBackgroudColor = ( i === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
+                const activeItemBackgroudColor = ( key === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
                 return (
-                    <Pressable style={ styles.itemContainer } key={ i } onPress={eval( '() => setActiveItem(' + i + ')' )}>
+                    <Pressable 
+                        style={ styles.itemContainer } 
+                        key={ key } 
+                        onPress={ () => {
+                            playSlideChange();
+                            setActiveItem( key );
+                        }}
+                    >
                         <View style={{ ...styles.itemImage, backgroundColor: activeItemBackgroudColor }}>
-                            <Image style={ styles.image } resizeMode='center' source={ employeesImageFiles[ i ] } />
+                            <Image style={ styles.image } resizeMode='center' source={ employeesImageFiles[ key ] } />
                         </View>
                         <View style={{ ...styles.itemName, backgroundColor: activeItemBackgroudColor }}>
-                            <Text style={ styles.itemText }>{ EMPLOYEES_LIST[ i ] }</Text>
+                            <Text style={ styles.itemText }>{ EMPLOYEES_LIST[ key ] }</Text>
                             <View style={{ height: hp('1%') }}></View>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>{ hireOrFire } { penaltyMultiplier * employeesSalaryList[ i ] }$</Text>
+                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>{ hireOrFire } { penaltyMultiplier * employeesSalaryList[ key ] }$</Text>
                         </View>
                     </Pressable>
                 )

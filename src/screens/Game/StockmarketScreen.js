@@ -43,6 +43,7 @@ import Nomoney from "../../assets/images/logos/nomoney.png";
 import Hedgehog from "../../assets/images/logos/hedgehog.png";
 import Pear from "../../assets/images/logos/pear.png";
 import StockmarketClosedImage from '../../assets/images/logos/stockclosed.png';
+import { playButtonClick, playSlideChange } from '../../components/Sounds';
 
 
 export const StockmarketScreen = ({ navigation }) => {
@@ -441,22 +442,27 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const stocksList = () => {
-        let i = -1;
         const logosImageFiles = [ Skynet, Trolling, Nomoney, Hedgehog, Pear ];
 
-        const items = STOCKS_LIST.map( element => {
-            i++;
-            const activeItemBackgroudColor = ( i === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
+        const items = STOCKS_LIST.map( ( element, key ) => {
+            const activeItemBackgroudColor = ( key === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
             return (
-                <Pressable style={{ ...styles.stockItem, backgroundColor: activeItemBackgroudColor }} key={ i } onPress={ eval( '() => setActiveItem(' + i + ')' ) }>
+                <Pressable 
+                    style={{ ...styles.stockItem, backgroundColor: activeItemBackgroudColor }} 
+                    key={ key } 
+                    onPress={ () => {
+                        playSlideChange();
+                        setActiveItem( key );
+                    }}
+                >
                     <View style={ styles.stockInfo }>
-                        <Image style={ styles.logoImage } resizeMode='center' source={ logosImageFiles[ i ] } />
+                        <Image style={ styles.logoImage } resizeMode='center' source={ logosImageFiles[ key ] } />
                         <Text style={{ ...styles.text, fontSize: THEME.FONT35 }}>{ element }</Text>
                     </View>
                     <View style={ styles.stockData }>
-                        <Text style={ styles.text }>Имеете: { stocksQuantityList[ i ] }</Text>
-                        <Text style={ styles.text }>Цена: { stocksCurrentPriceList.current[ i ] }$</Text>
-                        <Text style={ styles.text }>Дивиденды: { stocksDividendsList.current[ i ] }%</Text>
+                        <Text style={ styles.text }>Имеете: { stocksQuantityList[ key ] }</Text>
+                        <Text style={ styles.text }>Цена: { stocksCurrentPriceList.current[ key ] }$</Text>
+                        <Text style={ styles.text }>Дивиденды: { stocksDividendsList.current[ key ] }%</Text>
                     </View>
                 </Pressable>
             )
@@ -512,7 +518,10 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                         titleStyle={ styles.buttonTitle }
                         type="outline" 
                         title="Уйти"
-                        onPress={ () => navigation.navigate('GameMainScreen') }  
+                        onPress={ () => { 
+                            playButtonClick();
+                            navigation.navigate('GameMainScreen');
+                        }}  
                     />
                 </View>
             </View>

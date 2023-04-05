@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
 import { THEME } from "../styles/theme";
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { playSlideChange } from "./Sounds";
+import { playSlideChange, playSwoosh } from "./Sounds";
 
 const CustomAlert = ({ alert, setAlert, argsForButtonCallbacks }) => {
     let {
@@ -43,6 +43,7 @@ const CustomAlert = ({ alert, setAlert, argsForButtonCallbacks }) => {
             transparent={ true }
             statusBarTranslucent={ true }
             visible={ alert.isVisible }
+            onShow={ () => playSwoosh() }
             onRequestClose={ () => { if( isOverlayPressable ) setAlert({ isVisible: false, data: alert.data, buttonsCallbacks: alert.buttonsCallbacks }) }} 
         >   
             <Pressable 

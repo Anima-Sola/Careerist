@@ -31,6 +31,7 @@ import {
 } from '../../store/constants';
 import { calcInStocksAmount, calcInEstateAmount, isEmployeesHired, setInitialGameData, getPrisonTerm } from '../../components/CommonFunctions';
 import random from '../../components/Random';
+import { playButtonClick } from '../../components/Sounds';
 
 import WithdrawImage from "../../assets/images/bankservices/withdraw.png";
 import SaleImage from "../../assets/images/sale.png";
@@ -255,7 +256,10 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
                         titleStyle={ styles.buttonTitle }
                         type="outline" 
                         title="Продолжить"
-                        onPress={ () => navigation.navigate( panishmentScreen.current ) }  
+                        onPress={ () => { 
+                            playButtonClick();
+                            navigation.navigate( panishmentScreen.current ) 
+                        }} 
                     />
                 </View>
             </View>

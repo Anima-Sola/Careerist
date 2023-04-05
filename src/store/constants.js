@@ -234,7 +234,7 @@ export const EMPLOYEES_SCREEN_NOT_AGREE_TO_PREPAY = {
 
 export const EMPLOYEES_SCREEN_CONTRACT_TERMINATED = {
     message: 'Еще одна сделка?',
-    header: 'Договор расторгнут.',
+    header: 'Договор расторгнут!',
     iconName: 'handshake-alt-slash', 
     iconBackgroundColor: 'green',
     iconColor: 'white',
@@ -247,7 +247,7 @@ export const EMPLOYEES_SCREEN_CONTRACT_TERMINATED = {
 
 export const EMPLOYEES_SCREEN_CONTRACT_TERMINATED_NO_MONEY = {
     message: '',
-    header: 'Договор расторгнут.',
+    header: 'Договор расторгнут!',
     iconName: 'handshake-alt-slash', 
     iconBackgroundColor: 'green',
     iconColor: 'white',

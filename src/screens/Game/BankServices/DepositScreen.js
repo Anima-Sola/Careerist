@@ -19,6 +19,7 @@ import {
     setDepositAmountAction
 } from '../../../store/actions/actions';
 import { setCashAmountMinusFine, getFineAmount } from '../../../components/CommonFunctions';
+import { playButtonClick } from '../../../components/Sounds';
 
 import DepositImage from "../../../assets/images/bankservices/deposit.png";
 
@@ -117,7 +118,10 @@ const Deposit = ({ navigation, commonSettings }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Уйти"
-                    onPress={ () => navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' }) }   
+                    onPress={ () => { 
+                        playButtonClick();
+                        navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' }) 
+                    }}   
                 />
             </View>
         </View>

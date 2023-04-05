@@ -7,6 +7,7 @@ import { getCommonSettings } from '../../store/selectors';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
 import TotalTable from '../../components/TotalTable';
+import { playButtonClick } from '../../components/Sounds';
 
 export const FinancialSituationScreen = ({ navigation }) => {
     const commonSettings = useSelector( getCommonSettings );
@@ -33,7 +34,10 @@ const FinancialSituation = ({ navigation, commonSettings }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Уйти"
-                    onPress={ () => navigation.navigate('GameMainScreen') }  
+                    onPress={ () => {
+                        playButtonClick();
+                        navigation.navigate('GameMainScreen');
+                    }}  
                 />
             </View>
         </View>

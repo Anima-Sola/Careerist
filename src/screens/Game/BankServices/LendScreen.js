@@ -24,6 +24,7 @@ import {
     setLendPersentagesAction 
 } from '../../../store/actions/actions';
 import random from '../../../components/Random';
+import { playButtonClick } from '../../../components/Sounds';
 
 import LendImage from "../../../assets/images/bankservices/lend.png";
 
@@ -201,7 +202,10 @@ const Lend = ({ navigation, commonSettings }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Уйти"
-                    onPress={ () => navigation.navigate('BankScreen', { previousScreen: 'lendOrBorrowScreen' }) }   
+                    onPress={ () => {
+                        playButtonClick();
+                        navigation.navigate('BankScreen', { previousScreen: 'lendOrBorrowScreen' }) 
+                    }}   
                 />
             </View>
         </View>

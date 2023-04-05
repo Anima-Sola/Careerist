@@ -19,6 +19,7 @@ import {
     setIsNewYearBegun
 } from '../../store/actions/actions';
 import { calcSubtotals, setInitialGameData } from '../../components/CommonFunctions';
+import { playButtonClick } from '../../components/Sounds';
 
 import JailImage from "../../assets/images/jail.png";
 

@@ -15,6 +15,7 @@ import {
 } from '../../store/actions/actions';
 import { rndBetweenMinusOneAndOne } from '../../components/Random';
 import { calcSubtotals } from '../../components/CommonFunctions';
+import { playSlideChange, playButtonClick } from '../../components/Sounds';
 
 import Ensurance from "../../assets/images/bankservices/ensurance_icon.png";
 import Deposit from "../../assets/images/bankservices/deposit_icon.png";
@@ -44,19 +45,24 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
     const servicesScreens = [ 'InsuranceScreen', 'DepositScreen', 'WithdrawScreen', 'LendScreen', 'BorrowScreen' ]; 
 
     const showBankingServices = () => {
-        let i = -1;
 
-        const items = services.map( element => {
-            i++;
-            if(( i === 3 ) && ( lendAmount != 0 )) return;
-            if(( i === 4 ) && ( borrowAmount > 0 )) return;
+        const items = services.map( ( element, key ) => {
+            if(( key === 3 ) && ( lendAmount != 0 )) return;
+            if(( key === 4 ) && ( borrowAmount > 0 )) return;
             return (
-                <Pressable style={ THEME.PRESSABLE_STYLES(styles.itemContainer) } key={ i } onPress={ eval('() => navigation.navigate("' + servicesScreens [ i ] + '")' )}>
+                <Pressable 
+                    style={ THEME.PRESSABLE_STYLES(styles.itemContainer) } 
+                    key={ key } 
+                    onPress={ () => {
+                        playSlideChange();
+                        navigation.navigate( servicesScreens[ key ] )
+                    }}
+                >
                     <View style={ styles.itemImage }>
                         <Image style={ styles.image } resizeMode='center' source={ element } />
                     </View>
                     <View style={ styles.itemName }>
-                        <Text style={ styles.itemText }>{ BANKING_SERVICES[ i ] }</Text>
+                        <Text style={ styles.itemText }>{ BANKING_SERVICES[ key ] }</Text>
                     </View>
                 </Pressable>
             )
@@ -84,7 +90,10 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Уйти"
-                    onPress={ () => navigation.navigate('GameMainScreen', { previousScreen: 'AnyScreen' }) }  
+                    onPress={ () => {
+                        playButtonClick();
+                        navigation.navigate('GameMainScreen', { previousScreen: 'AnyScreen' }) 
+                    }}
                 />
             </View>
         </View>
@@ -101,7 +110,10 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Уйти"
-                    onPress={ () => navigation.navigate('GameMainScreen', { previousScreen: 'AnyScreen' }) }  
+                    onPress={ () => {
+                        playButtonClick();
+                        navigation.navigate('GameMainScreen', { previousScreen: 'AnyScreen' });
+                    }}  
                 />
             </View>
         </View>

@@ -20,6 +20,7 @@ import {
     setInsurancePossessionCostListAction, 
     setInsurancePossessionTermListAction
 } from '../../../store/actions/actions';
+import { playButtonClick } from '../../../components/Sounds';
 
 import Flat from "../../../assets/images/possession/flat.png";
 import Car from "../../../assets/images/possession/car.png";
@@ -185,7 +186,10 @@ const Insurance = ({ navigation }) => {
                             titleStyle={ styles.buttonTitle }
                             type="outline" 
                             title="Уйти"
-                            onPress={ () => navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' }) }   
+                            onPress={ () => {
+                                playButtonClick();
+                                navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' });
+                            }}   
                         />
                     </View>
                 </View>
@@ -208,7 +212,10 @@ const Insurance = ({ navigation }) => {
                         titleStyle={ styles.buttonTitle }
                         type="outline" 
                         title="Ой, уже ухожу"
-                        onPress={ () => navigation.navigate('GameMainScreen') }  
+                        onPress={ () => { 
+                            playButtonClick();
+                            navigation.navigate('GameMainScreen');
+                        }}  
                     />
                 </View>
             </View>

@@ -23,6 +23,7 @@ import {
 } from '../../store/constants';
 import CustomAlert from '../../components/CustomAlert';
 import random, { rndBetweenMinusOneAndOne } from '../../components/Random';
+import { playSlideChange } from '../../components/Sounds';
 
 import Preference from "../../assets/images/entertainment/preference.png";
 import MonteCarlo from "../../assets/images/entertainment/monte-carlo.png";
@@ -99,22 +100,27 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const getEntertainList = () => {
-        let i = -1;
         const entertainmentImageFiles = [ Preference, MonteCarlo, Lover, Banquet, Cruise ];
 
-        const items = ENTERTAINMENT_LIST.map( element => {
-            i++;
-            const activeItemBackgroudColor = ( i === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
+        const items = ENTERTAINMENT_LIST.map(( element, key ) => {
+            const activeItemBackgroudColor = ( key === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
             return (
-                <Pressable style={{ ...styles.itemContainer, backgroundColor: activeItemBackgroudColor }} key={ i } onPress={ eval( '() => setActiveItem(' + i + ')' ) }>
+                <Pressable 
+                    style={{ ...styles.itemContainer, backgroundColor: activeItemBackgroudColor }} 
+                    key={ key } 
+                    onPress={ () => { 
+                        playSlideChange();
+                        setActiveItem( key );
+                    }}
+                >
                     <View style={ styles.itemImage }>
-                        <Image style={ styles.image } resizeMode='center' source={ entertainmentImageFiles[ i ] } />
+                        <Image style={ styles.image } resizeMode='center' source={ entertainmentImageFiles[ key ] } />
                     </View>
                     <View style={ styles.itemData }>
                         <Text style={ styles.textHeader }>{ element }</Text>
-                        <Text style={ styles.text }>Затраты { entertainmentData.current[ i ].expenses }$</Text>
-                        <Text style={ styles.text }>Доход { Math.floor( entertainmentData.current[ i ].income ) }$</Text>
-                        <Text style={ styles.text }>Шанс успеха { Math.floor( entertainmentData.current[ i ].chanceToEarnMoney ) }%</Text>
+                        <Text style={ styles.text }>Затраты { entertainmentData.current[ key ].expenses }$</Text>
+                        <Text style={ styles.text }>Доход { Math.floor( entertainmentData.current[ key ].income ) }$</Text>
+                        <Text style={ styles.text }>Шанс успеха { Math.floor( entertainmentData.current[ key ].chanceToEarnMoney ) }%</Text>
                     </View>
                 </Pressable>
             )
@@ -240,7 +246,7 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Уйти"
-                    onPress={ () => showYouAreMiserAlert() }   
+                    onPress={ () => showYouAreMiserAlert() }
                 />
             </View>
         </View>

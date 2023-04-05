@@ -7,6 +7,7 @@ import { getCommonSettings } from '../../store/selectors';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
 import { setIsNewYearBegun } from '../../store/actions/actions';
+import { playButtonClick } from '../../components/Sounds';
 
 import FireworkImage from "../../assets/images/firework.png";
 
@@ -42,7 +43,10 @@ const Win = ({ navigation }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Начать заново"
-                    onPress={ () => startNewGame() }  
+                    onPress={ () => {
+                      playButtonClick(); 
+                      startNewGame();
+                    }}  
                 />
             </View>
         </View>

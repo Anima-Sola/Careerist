@@ -6,6 +6,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { getCommonSettings } from '../../store/selectors';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
+import { playButtonClick } from '../../components/Sounds';
 
 import GraveImage from "../../assets/images/grave.png";
 
@@ -38,7 +39,10 @@ const Death = ({ navigation, commonSettings }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Начать заново"
-                    onPress={ () => navigation.navigate('IntroScreen') }  
+                    onPress={ () => {
+                        playButtonClick();
+                        navigation.navigate('IntroScreen'); 
+                    }}  
                 />
             </View>
         </View>

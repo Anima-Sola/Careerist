@@ -17,6 +17,7 @@ import {
 import { setCashAmountAction, setBusinessListAction, setYearExpenseAction } from '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
 import { getFineAmount, setCashAmountMinusFine } from '../../components/CommonFunctions';
+import { playSlideChange } from '../../components/Sounds';
 
 import Bar from "../../assets/images/business/bar.png";
 import Restraunt from "../../assets/images/business/restraunt.png";
@@ -125,25 +126,30 @@ const Business = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const getListBuyOrSale = ( typeOfDeal = false ) => {
-        let i = -1;
         const typeOfDealName = ( typeOfDeal ) ? 'продать' : 'купить';
         const businessCostList = ( typeOfDeal ) ? businessSellCostList : businessBuyCostList;
         const businessImageFiles = [ Bar, Restraunt, Shop, Hotel, Plant ];
 
-        const items = businessList.map( element => {
-            i++;
+        const items = businessList.map( ( element, key ) => {
             if( element === typeOfDeal ) {
-                const activeItemBackgroudColor = ( i === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
+                const activeItemBackgroudColor = ( key === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
                 return (
-                    <Pressable style={ styles.itemContainer } key={ i } onPress={eval( '() => setActiveItem(' + i + ')' )}>
+                    <Pressable 
+                        style={ styles.itemContainer } 
+                        key={ key } 
+                        onPress={ () => {
+                            playSlideChange();
+                            setActiveItem( key );
+                        }}
+                    >
                         <View style={{ ...styles.itemImage, backgroundColor: activeItemBackgroudColor }}>
-                            <Image style={ styles.image } resizeMode='center' source={ businessImageFiles[ i ] } />
+                            <Image style={ styles.image } resizeMode='center' source={ businessImageFiles[ key ] } />
                         </View>
                         <View style={{ ...styles.itemName, backgroundColor: activeItemBackgroudColor }}>
-                            <Text style={ styles.itemText }>{ BUSINESS_LIST[ i ] }</Text>
+                            <Text style={ styles.itemText }>{ BUSINESS_LIST[ key ] }</Text>
                             <View style={{ height: hp('1%') }}></View>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Цена { businessCostList[ i ] }$</Text>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Годовой доход { businessYearIncome[ i ] }$</Text>
+                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Цена { businessCostList[ key ] }$</Text>
+                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Годовой доход { businessYearIncome[ key ] }$</Text>
                         </View>
                     </Pressable>
                 )

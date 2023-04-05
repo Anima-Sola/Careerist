@@ -27,6 +27,7 @@ import CustomAlert from '../../../components/CustomAlert';
 import CustomPrompt from '../../../components/CustomPrompt';
 import { rndBetweenMinusOneAndOne } from '../../../components/Random';
 import { calcInEstateAmount, calcInStocksAmount } from '../../../components/CommonFunctions';
+import { playButtonClick } from '../../../components/Sounds';
 
 import BorrowImage from "../../../assets/images/bankservices/borrow.png";
 
@@ -182,7 +183,10 @@ const Borrow = ({ navigation, commonSettings }) => {
                         titleStyle={ styles.buttonTitle }
                         type="outline" 
                         title="Уйти"
-                        onPress={ () => navigation.navigate('BankScreen', { previousScreen: 'lendOrBorrowScreen' }) }   
+                        onPress={ () => {
+                            playButtonClick();
+                            navigation.navigate('BankScreen', { previousScreen: 'lendOrBorrowScreen' }) 
+                        }}   
                     />
                 </View>
             </View>

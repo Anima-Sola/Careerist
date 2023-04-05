@@ -15,8 +15,9 @@ import {
     setCashAmountAction, 
     setDepositAmountAction 
 } from '../../../store/actions/actions';
- import CustomAlert from '../../../components/CustomAlert';
- import CustomPrompt from '../../../components/CustomPrompt';
+import CustomAlert from '../../../components/CustomAlert';
+import CustomPrompt from '../../../components/CustomPrompt';
+import { playButtonClick } from '../../../components/Sounds';
 
 import WithdrawImage from "../../../assets/images/bankservices/withdraw.png";
 
@@ -109,7 +110,10 @@ const Withdraw = ({ navigation, commonSettings }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Уйти"
-                    onPress={ () => navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' }) }   
+                    onPress={ () => {
+                        playButtonClick();
+                        navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' }) 
+                    }}   
                 />
             </View>
         </View>

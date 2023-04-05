@@ -4,7 +4,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useDispatch, useStore } from "react-redux";
 import { loadFonts } from '../styles/bootstrap';
 import { loadGameSettings } from "../store/actions/actions";
-import { playBackgroundTrack } from '../components/Sounds';
+import { playEmergeTrack } from '../components/Sounds';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,10 +31,10 @@ export const LoadingScreen =({ navigation }) => {
     const onLayoutRootView = useCallback(async () => {
         if( appIsReady ) {
             const { isNewYearBegun } = store.getState().gameSettingsReducer.commonSettings;
-            //playBackgroundTrack();
             if( isNewYearBegun ) {
                 navigation.navigate('GameMainScreen');
             } else {
+                playEmergeTrack();
                 navigation.navigate('IntroScreen');
             }
             await SplashScreen.hideAsync();

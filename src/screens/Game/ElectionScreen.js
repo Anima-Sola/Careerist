@@ -24,6 +24,7 @@ import {
 } from '../../store/constants';
 import random from '../../components/Random';
 import { setCashAmountMinusFine, getFineAmount } from "../../components/CommonFunctions";
+import { playButtonClick } from "../../components/Sounds";
 
 import SclerosisImage from '../../assets/images/election/sclerosis.png';
 import NoElectionImage from '../../assets/images/election/noelection.png';
@@ -266,6 +267,7 @@ const Election = ({ navigation, commonSettings }) => {
                         type="outline" 
                         title="Уйти"
                         onPress={ () => {
+                            playButtonClick();
                             if( electionStatus ) dispatch(setElectionStatus( false, true ));
                             navigation.navigate('GameMainScreen');
                         }}  
