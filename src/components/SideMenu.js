@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { THEME } from '../styles/theme';
 import { SIDE_MENU_START_NEW_GAME } from '../store/constants';
 import CustomAlert from '../components/CustomAlert';
+import { playSwoosh } from './Sounds';
 
 const SideMenu = ( props, ref ) => {
     const [ alert, setAlert ] = useState({ isVisible: false, data: SIDE_MENU_START_NEW_GAME });
@@ -29,6 +30,7 @@ const SideMenu = ( props, ref ) => {
     }))
 
     const showSideMenu = () => {
+        playSwoosh();
         Animated.sequence([
             Animated.timing(
                 animSideMenu,
@@ -73,6 +75,7 @@ const SideMenu = ( props, ref ) => {
     const flingLeftGesture = Gesture.Fling()
         .direction(Directions.LEFT)
         .onStart(() => {
+            playSwoosh();
             hideSideMenu();
         });
 
@@ -98,7 +101,13 @@ const SideMenu = ( props, ref ) => {
             <Animated.View style={{ ...styles.sideMenuContainer, transform: [{ translateX: animSideMenu }] }}>
                 <CustomAlert alert={ alert } setAlert={ setAlert } />
                 <View style={ styles.sideMenu }>
-                    <Pressable onPress={ hideSideMenu } style={ styles.closeMenuCross }>
+                    <Pressable 
+                        onPress={ () => {
+                            playSwoosh();
+                            hideSideMenu();
+                        }} 
+                        style={ styles.closeMenuCross }
+                    >
                         <Ionicons name="close-outline" size={ 40 } color= { "black" } />
                     </Pressable>
                     <View style={ styles.sideMenuItems }>

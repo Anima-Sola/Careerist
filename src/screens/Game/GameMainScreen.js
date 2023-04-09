@@ -237,7 +237,6 @@ const MainMenu = ({ navigation, forceUpdate }) => {
             buttonsCallbacks: [
                 () => setAlert({ ...alert, isVisible: false }),
                 () => {
-                    console.log('qwe') ;
                     setAlert({ ...alert, isVisible: false });
                     setTimeout( () => BackHandler.exitApp(), 500 );
                 }

@@ -194,7 +194,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                         return;
                     }
                     //Win clain
-                    message = `Сбер выплачивает неустойку ${ 2 * lawyerServiceCost }$.\n` +
+                    message = `Pear выплачивает неустойку ${ 2 * lawyerServiceCost }$.\n` +
                     `Имейте своего адвоката!`;
                     const income = commonBusinessIncome + lawyerServiceCost;
                     dispatch(setCommonBusinessIncomeAction( income ), true );
@@ -202,7 +202,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                 },
                 () => {
                     setAlert({ ...alert, isVisible: false });
-                    message = `Иск Сбера удовлетворен. Вы потеряли ${ loss }$.`;
+                    message = `Иск Pear удовлетворен. Вы потеряли ${ loss }$.`;
                     setTimeout( () => showProblemAlert( message, loss, 'Процесс проигран!', 'sad-cry' ), 300 );
                 }
             ]

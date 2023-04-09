@@ -5,7 +5,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { Button } from 'react-native-elements';
 import { THEME } from "../styles/theme";
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { playSlideChange, playSwoosh } from "./Sounds";
+import { playSlideChange, playDing } from "./Sounds";
 
 const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
     const textInput = useRef( null );
@@ -63,7 +63,7 @@ const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
             transparent={ true }
             statusBarTranslucent={ true }
             visible={ prompt.isVisible }
-            onShow={ () => playSwoosh() }
+            onShow={ () => playDing() }
             onRequestClose={ () => {
                 if( isOverlayPressable ) setPrompt({ ...prompt, isVisible: false, value: '' });
             }} 

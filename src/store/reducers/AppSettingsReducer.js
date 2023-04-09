@@ -3,8 +3,10 @@ import { saveDataToStore } from '../../components/FileSystem';
 export const initialState = {
     soundSettings: {
         currentBackgroundTrack: 0,
-        backgroundTrackVolume: 0.05,
-        soundsVolume: 0.8
+        isMusicEnabled: true,
+        backgroundTrackVolume: 0.2,
+        isSoundsEnabled: true,
+        soundsVolume: 0.15,
     }    
 }
 
