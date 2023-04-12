@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, StatusBar, ImageBackground } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Button } from 'react-native-elements';
+import { Button } from '@rneui/themed';
 import { useDispatch } from 'react-redux';
 import { THEME } from '../../styles/theme';
 import { setGameDifficultyLevelAction } from   '../../store/actions/actions';

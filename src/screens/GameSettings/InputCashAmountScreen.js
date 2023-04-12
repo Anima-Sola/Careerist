@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, StatusBar, ImageBackground } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button } from 'react-native-elements';
+import { Button } from '@rneui/themed';
 import { THEME } from '../../styles/theme';
 import { setCashAmountAction } from   '../../store/actions/actions';
 import { getCommonSettings } from '../../store/selectors';

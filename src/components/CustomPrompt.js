@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Modal, Pressable, TextInput, KeyboardAvoidingView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Button } from 'react-native-elements';
+import { Button } from '@rneui/themed';
 import { THEME } from "../styles/theme";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { playSlideChange, playDing } from "./Sounds";

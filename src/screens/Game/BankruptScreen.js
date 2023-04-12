@@ -1,7 +1,7 @@
 import React, { useState, useReducer, useRef } from 'react';
 import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button } from 'react-native-elements';
+import { Button } from '@rneui/themed';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { 
     getCommonSettings,

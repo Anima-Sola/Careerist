@@ -2,7 +2,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
 import { THEME } from "../styles/theme";
-import { Button } from 'react-native-elements';
+import { Button } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { playSlideChange, playDing } from "./Sounds";
 

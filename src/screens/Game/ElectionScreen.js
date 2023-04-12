@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Text, View, StyleSheet, BackHandler, Image, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Button } from 'react-native-elements';
+import { Button } from '@rneui/themed';
 import GameWrapper from "../../components/GameWrapper";
 import { THEME } from "../../styles/theme";
 import { 

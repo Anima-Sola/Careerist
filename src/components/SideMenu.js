@@ -111,13 +111,13 @@ const SideMenu = ( props, ref ) => {
                         <Ionicons name="close-outline" size={ 40 } color= { "black" } />
                     </Pressable>
                     <View style={ styles.sideMenuItems }>
-                        <Pressable style={ THEME.SIDE_MENU_PRESSABLE_STYLE( styles.sideMenuItem ) } onPress={ () => startNewGameAlert() } >
+                        <Pressable style={ THEME.SIDE_MENU_PRESSABLE_STYLE( styles.sideMenuItem ) } onPress={ () => startNewGameAlert() }>
                             <Ionicons name="home-outline" size={ 28 } color= { "black" } />
                             <Text style={ styles.sideMenuItemText }>
                                 Новая игра
                             </Text>
                         </Pressable>
-                        <Pressable style={ THEME.SIDE_MENU_PRESSABLE_STYLE( styles.sideMenuItem ) }>
+                        <Pressable style={ THEME.SIDE_MENU_PRESSABLE_STYLE( styles.sideMenuItem ) } onPress={ () => props.navigation.navigate('SettingsScreen') }>
                             <Ionicons name="settings-outline" size={ 28 } color= { "black" } />
                             <Text style={ styles.sideMenuItemText }>
                                 Настройки

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, StatusBar, ImageBackground } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch } from 'react-redux';
-import { Button } from 'react-native-elements';
+import { Button } from '@rneui/themed';
 import { THEME } from '../../styles/theme';
 import { setPlayerAgeAction, setDeathAge } from   '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
