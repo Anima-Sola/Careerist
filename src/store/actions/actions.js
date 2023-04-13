@@ -1,6 +1,12 @@
 import { getDataFromStore } from "../../components/FileSystem";
 
 //Game settings actions
+export const saveGameSettingsInitialState = () => {
+    return {
+        type: 'SAVE_GAME_SETTINGS_INITIAL_STATE'
+    }
+}
+
 export const loadGameSettings = () => {
     return async dispatch => {
         const settings = await getDataFromStore( 'GAME_SETTINGS' );
@@ -350,14 +356,6 @@ export const setInsurancePossessionTermListAction = ( list, saveStateToStore = f
     }
 }
 
-//---------------------------------------------------------------------------------------
-export const saveGameSettingsInitialState = () => {
-    return {
-        type: 'SAVE_GAME_SETTINGS_INITIAL_STATE'
-    }
-}
-
-
 //App settings actions
 export const loadAppSettings = () => {
     return async dispatch => {
@@ -378,6 +376,41 @@ export const setCurrentBackgroundTrackAction = ( item, saveStateToStore = false 
     }
 };
 
+export const setIsMusicEnabledAction = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_IS_MUSIC_ENABLED',
+        payload: item,
+        settingsSection: 'soundSettings',
+        saveStateToStore
+    }
+}
+
+export const setBackgroundTrackVolumeAction = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_BACKGROUND_TRACK_VOLUME',
+        payload: item,
+        settingsSection: 'soundSettings',
+        saveStateToStore
+    }
+}
+
+export const setIsSoundsEnabledAction = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_IS_SOUNDS_ENABLED',
+        payload: item,
+        settingsSection: 'soundSettings',
+        saveStateToStore
+    }
+}
+
+export const setSoundsVolumeAction = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_SOUNDS_VOLUME',
+        payload: item,
+        settingsSection: 'soundSettings',
+        saveStateToStore
+    }
+}
 
 export const saveAppSettingsInitialState = () => {
     return {

@@ -32,10 +32,10 @@ export const LoadingScreen =({ navigation }) => {
         if( appIsReady ) {
             const { isNewYearBegun } = store.getState().gameSettingsReducer.commonSettings;
             if( isNewYearBegun ) {
-                //playBackgroundTrack();
+                playBackgroundTrack();
                 navigation.navigate('GameMainScreen');
             } else {
-                //playEmergeTrack();
+                playEmergeTrack();
                 navigation.navigate('IntroScreen');
             }
             await SplashScreen.hideAsync();

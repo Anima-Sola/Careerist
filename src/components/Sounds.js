@@ -20,7 +20,7 @@ const backgroundTracks = [ Jazz, Relax, Positive, Funk, Funny ];
 const trackSoundObject = new Audio.Sound();
 
 export const setBackgroundTrackVolume = async () => {
-    const { backgroundTrackVolume  } = store.getState().appSettingsReducer.soundSettings;
+    const { isMusicEnabled, backgroundTrackVolume  } = store.getState().appSettingsReducer.soundSettings;
     if( isMusicEnabled ) {
         try {
             await trackSoundObject.setVolumeAsync( backgroundTrackVolume );
@@ -53,7 +53,7 @@ export const playBackgroundTrack = async () => {
         } catch ( error ) {
             console.log( error );
         }
-    }
+    } 
 }
 
 //Play emegre track if the game starts first time

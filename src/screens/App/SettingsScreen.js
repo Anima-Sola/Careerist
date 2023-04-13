@@ -1,26 +1,33 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, ScrollView, Switch } from 'react-native';
-import { Stack } from 'react-native-flex-layout';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button, ButtonGroup, Slider, CheckBox } from '@rneui/themed';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { getCommonSettings, getSoundSettings } from '../../store/selectors';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
-import { playButtonClick } from '../../components/Sounds';
+import { 
+    setGameDifficultyLevelAction,
+    setCurrentBackgroundTrackAction,
+    setIsMusicEnabledAction,
+    setBackgroundTrackVolumeAction,
+    setIsSoundsEnabledAction,
+    setSoundsVolumeAction
+} from '../../store/actions/actions';
+import { playButtonClick, playDing, playBackgroundTrack, setBackgroundTrackVolume, stopBackgroundTrack } from '../../components/Sounds';
 
 export const SettingsScreen = ({ navigation }) => {
     const commonSettings = useSelector( getCommonSettings );
-    const soundSettings = useSelector( getSoundSettings );
-    const wrappedComponent = <Settings navigation={ navigation } commonSettings={ commonSettings } soundSettings={ soundSettings }/>
+    const wrappedComponent = <Settings navigation={ navigation } commonSettings={ commonSettings }/>
 
     return(
         <GameWrapper wrappedComponent={ wrappedComponent } commonSettings={ commonSettings }/>
     )
 };
 
-const Settings = ({ navigation, commonSettings, soundSettings }) => {
-    const { currentBackgroundTrack, isMusicEnabled, backgroundTrackVolume, isSoundsEnabled, soundsVolume } = soundSettings;
+const Settings = ({ navigation, commonSettings }) => {
+    const dispatch = useDispatch();
+    const { currentBackgroundTrack, isMusicEnabled, backgroundTrackVolume, isSoundsEnabled, soundsVolume } = useSelector( getSoundSettings );
     const { gameDifficultyLevel } = commonSettings;
 
     const [ diffLevel, setDiffLevel ] = useState( 3 - gameDifficultyLevel );
@@ -28,7 +35,37 @@ const Settings = ({ navigation, commonSettings, soundSettings }) => {
     const [ sndVolume, setSndVolume ] = useState( soundsVolume * 100 );
     const [ isMscEnabled, setIsMscEnabled ] = useState( isMusicEnabled );
     const [ mscVolume, setMscVolume ] = useState( backgroundTrackVolume * 100 );
-    const [ currBackTrack, setCurrBackTrack] = useState( currentBackgroundTrack );
+    const [ currBackTrack, setCurrBackTrack ] = useState( currentBackgroundTrack );
+
+    const changeBackgroundTrack = ( num ) => {
+        stopBackgroundTrack()
+        dispatch(setCurrentBackgroundTrackAction( num ));
+        setCurrBackTrack( num );
+        setTimeout( () => playBackgroundTrack(), 300 );
+    }
+
+    const onOffSounds = ( onOff ) => {
+        setIsSndEnabled( onOff );
+        dispatch(setIsSoundsEnabledAction( onOff ));
+        playDing();
+    }
+
+    const onOffMusic = ( onOff ) => {
+        stopBackgroundTrack();
+        dispatch(setIsMusicEnabledAction( onOff ));
+        setTimeout( () => playBackgroundTrack(), 300 );
+        setIsMscEnabled( onOff );
+    }
+
+    const setSoundsVolume = ( value ) => {
+        dispatch(setSoundsVolumeAction( value / 100 ));
+        playDing();
+    }
+
+    const setMusicVolume = ( value ) => {
+        dispatch(setBackgroundTrackVolumeAction( value / 100 ));
+        setBackgroundTrackVolume();
+    }
 
     return (
         <View style={ styles.wrapper }>
@@ -40,7 +77,10 @@ const Settings = ({ navigation, commonSettings, soundSettings }) => {
                     containerStyle={ styles.btgContainerStyle }
                     textStyle={ styles.btgTextStyle }
                     selectedButtonStyle={ styles.btgSelectedButtonStyle }
-                    onPress={ ( value ) => setDiffLevel( value ) }
+                    onPress={ ( value ) => {
+                        setDiffLevel( value );
+                        dispatch(setGameDifficultyLevelAction( 3 - value ));
+                    }}
                 />
                 <Text style={{ ...styles.text, marginBottom: hp('1%') }}>Настройка звука</Text>
                 <View style={ styles.soundsOnOffContainer }>
@@ -50,7 +90,7 @@ const Settings = ({ navigation, commonSettings, soundSettings }) => {
                     <Switch 
                         value={ isSndEnabled } 
                         thumbColor={ isSndEnabled ? THEME.TEXT_COLOR : THEME.DISABLED_SWITCHER_COLOR }
-                        onValueChange={ () => setIsSndEnabled( !isSndEnabled ) } 
+                        onValueChange={ () => onOffSounds( !isSndEnabled ) } 
                     />
                 </View>
                 <View style={ styles.soundsOnOffContainer }>
@@ -60,7 +100,7 @@ const Settings = ({ navigation, commonSettings, soundSettings }) => {
                     <Switch 
                         value={ isMscEnabled } 
                         thumbColor={ isMscEnabled ? THEME.TEXT_COLOR : THEME.DISABLED_SWITCHER_COLOR }
-                        onValueChange={ () => setIsMscEnabled( !isMscEnabled ) } 
+                        onValueChange={ () => onOffMusic( !isMscEnabled ) } 
                     />
                 </View>
                 <View style={ styles.soundVolumeSliderContainer } >
@@ -68,6 +108,7 @@ const Settings = ({ navigation, commonSettings, soundSettings }) => {
                     <Slider
                         value={ sndVolume }
                         onValueChange={ setSndVolume }
+                        onSlidingComplete={ ()=> setSoundsVolume( sndVolume ) }
                         maximumValue={ 100 }
                         minimumValue={ 0 }
                         step={ 1 }
@@ -86,6 +127,7 @@ const Settings = ({ navigation, commonSettings, soundSettings }) => {
                     <Slider
                         value={ mscVolume }
                         onValueChange={ setMscVolume }
+                        onSlidingComplete={ ()=> setMusicVolume( mscVolume ) }
                         maximumValue={ 100 }
                         minimumValue={ 0 }
                         step={ 1 }
@@ -99,21 +141,24 @@ const Settings = ({ navigation, commonSettings, soundSettings }) => {
                         }}
                     />
                 </View>
-                <Text style={{ ...styles.text, marginBottom: hp('2%') }}>Выбор трека</Text>
+                <Text style={ styles.text }>Выбор трека</Text>
                     <View style={ styles.checkBoxRow }>
                         <CheckBox
                             checked={ currBackTrack === 0 }
                             title={'Jazz'}
-                            onPress={ () => setCurrBackTrack( 0 ) }
+                            onPress={ () => {
+                                if( currBackTrack !== 0 ) changeBackgroundTrack( 0 );
+                            }}
                             containerStyle={ styles.checkBoxContainerStyle }
-                            wrapperStyle={ styles.checkBoxWrapStyle }
                             textStyle={ styles.checkBoxTextStyle }
                             checkedColor={ THEME.TEXT_COLOR }
                         />
                         <CheckBox
                             checked={ currBackTrack === 1 }
                             title={'Relax'}
-                            onPress={() => setCurrBackTrack( 1 )}
+                            onPress={ () => {
+                                if( currBackTrack !== 1 ) changeBackgroundTrack( 1 );
+                            }}
                             containerStyle={ styles.checkBoxContainerStyle }
                             textStyle={ styles.checkBoxTextStyle }
                             checkedColor={ THEME.TEXT_COLOR }
@@ -123,7 +168,9 @@ const Settings = ({ navigation, commonSettings, soundSettings }) => {
                         <CheckBox
                             checked={ currBackTrack === 2 }
                             title={'Positive'}
-                            onPress={() => setCurrBackTrack( 2 )}
+                            onPress={ () => {
+                                if( currBackTrack !== 2 ) changeBackgroundTrack( 2 );
+                            }}
                             containerStyle={ styles.checkBoxContainerStyle }
                             textStyle={ styles.checkBoxTextStyle }
                             checkedColor={ THEME.TEXT_COLOR }
@@ -131,7 +178,9 @@ const Settings = ({ navigation, commonSettings, soundSettings }) => {
                         <CheckBox
                             checked={ currBackTrack === 3 }
                             title={'Funk'}
-                            onPress={() => setCurrBackTrack( 3 )}
+                            onPress={ () => {
+                                if( currBackTrack !== 3 ) changeBackgroundTrack( 3 );
+                            }}
                             containerStyle={ styles.checkBoxContainerStyle }
                             textStyle={ styles.checkBoxTextStyle }
                             checkedColor={ THEME.TEXT_COLOR }
@@ -141,33 +190,26 @@ const Settings = ({ navigation, commonSettings, soundSettings }) => {
                         <CheckBox
                             checked={ currBackTrack === 4 }
                             title={'Funny'}
-                            onPress={() => setCurrBackTrack( 4 )}
+                            onPress={ () => {
+                                if( currBackTrack !== 4 ) changeBackgroundTrack( 4 );
+                            }}
                             containerStyle={ styles.checkBoxContainerStyle }
                             textStyle={ styles.checkBoxTextStyle }
                             checkedColor={ THEME.TEXT_COLOR }
                         />
                     </View>
+                    <View style={{ marginBottom: hp('5%') }}></View>
             </ScrollView>
-            <View style={ styles.buttonsContainer }>
+            <View style={ styles.buttonContainer }>
                 <Button
-                    buttonStyle={ styles.applyButton } 
+                    buttonStyle={ styles.button } 
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
-                    title="Применить"
+                    title="Уйти"
                     onPress={ () => {
                         playButtonClick();
-                        
-                    }}    
-                />
-                <Button
-                    buttonStyle={ styles.cancelButton } 
-                    titleStyle={ styles.buttonTitle }
-                    type="outline" 
-                    title="Отмена"
-                    onPress={ () => {
-                        playButtonClick();
-                        navigation.navigate('GameMainScreen') 
-                    }}   
+                        navigation.goBack();
+                    }}  
                 />
             </View>
         </View>
@@ -207,7 +249,7 @@ const styles = StyleSheet.create({
     },
     btgTextStyle: {
         fontFamily: THEME.FONT_EXTRALIGHT,
-        fontSize: THEME.FONT28,
+        fontSize: THEME.FONT30,
         color: THEME.TEXT_COLOR,
         paddingBottom: hp('0.5%')
     },
@@ -243,46 +285,33 @@ const styles = StyleSheet.create({
     checkBoxRow: {
         flexDirection: 'row',
         justifyContent: 'center',
-        marginBottom: hp('2%')
+        marginBottom: hp('-3%')
     },
     checkBoxTextStyle: {
         color: THEME.TEXT_COLOR,
         fontFamily: THEME.FONT_EXTRALIGHT,
+        fontWeight: '100',
         fontSize: THEME.FONT30,
-        //paddingBottom: 1
+        paddingBottom: 2
     },
     checkBoxContainerStyle: {
         backgroundColor: THEME.MAIN_BACKGROUND_COLOR,
-        borderColor: '#fff',
-        borderWidth: 1
     },
-    checkBoxWrapStyle: {
-        borderColor: '#fff',
-        borderWidth: 1
-    },
-    buttonsContainer: {
-        alignItems: 'center',
-        flexDirection: 'row',
+    buttonContainer: {
         justifyContent: 'center',
-        marginBottom: hp('1%')
+        width: '100%',
+        marginBottom: hp('1%'),
     },
-    applyButton: {
+    button: {
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
+        width: '96%',
+        alignSelf: 'center',
         height: hp('7%'),
         borderRadius: wp('10%'),
-        width: wp('46%'),
-        marginRight: 5
-    },  
-    cancelButton: {
-        backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
-        width: wp('46%'),
-        height: hp('7%'),
-        borderRadius: wp('10%'),
-        marginLeft: 5,
     },
     buttonTitle: {
         color: THEME.TEXT_COLOR,
         fontFamily: THEME.FONT_SEMIBOLD,
-        fontSize: THEME.FONT28
+        fontSize: THEME.FONT28,
     }
 });

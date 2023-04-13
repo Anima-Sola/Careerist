@@ -26,6 +26,14 @@ export const appSettingsReducer = ( state = initialState, action ) => {
             return initialState;
         case 'SET_CURRENT_BACKGROUND_TRACK':
             return saveState( state, 'currentBackgroundTrack', action );
+        case 'SET_IS_MUSIC_ENABLED':
+            return saveState( state, 'isMusicEnabled', action );
+        case 'SET_BACKGROUND_TRACK_VOLUME':
+            return saveState( state, 'backgroundTrackVolume', action );
+        case 'SET_IS_SOUNDS_ENABLED':
+            return saveState( state, 'isSoundsEnabled', action );
+        case 'SET_SOUNDS_VOLUME':
+            return saveState( state, 'soundsVolume', action );
         case 'LOAD_APP_SETTINGS':
             if ( action.payload ) return action.payload;
             return state;
