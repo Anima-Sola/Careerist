@@ -4,17 +4,17 @@ import store from '../store';
 
 const EmergeSound = require('../assets/music/emerge.mp3');
 const Jazz = require('../assets/music/jazz.mp3');
-const Relax = require('../assets/music/relax.wav');
-const Positive = require('../assets/music/positive.wav');
-const Funk = require('../assets/music/funk.wav');
-const Funny = require('../assets/music/funny.wav');
+const Sunrise = require('../assets/music/sunrise.mp3');
+const Country = require('../assets/music/country.mp3');
+const Calm = require('../assets/music/calm.mp3');
+const Fiesta = require('../assets/music/fiesta.mp3');
 
 const buttonClickSound = require('../assets/sounds/buttonclick.mp3');
 const slideChangeSound = require('../assets/sounds/slidechange.mp3');
 const dingSound = require('../assets/sounds/ding.mp3');
 const swooshSound = require('../assets/sounds/swoosh.mp3');
 
-const backgroundTracks = [ Jazz, Relax, Positive, Funk, Funny ];
+const backgroundTracks = [ Jazz, Sunrise, Country, Calm, Fiesta ];
 
 //Play tracks
 const trackSoundObject = new Audio.Sound();

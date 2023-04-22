@@ -10,10 +10,13 @@ export const saveGameSettingsInitialState = () => {
 export const loadGameSettings = () => {
     return async dispatch => {
         const settings = await getDataFromStore( 'GAME_SETTINGS' );
-        dispatch({
-            type: 'LOAD_GAME_SETTINGS',
-            payload: settings
-        });
+        if( settings === null ) saveGameSettingsInitialState();
+        else {
+            dispatch({
+                type: 'LOAD_GAME_SETTINGS',
+                payload: settings
+            });
+        }
     };
 }
 
@@ -366,6 +369,15 @@ export const loadAppSettings = () => {
         });
     };
 }
+
+export const setNavFromGameMainScreenAction = ( item, saveStateToStore = false ) => {
+    return {
+        type: 'SET_NAV_FROM_GAME_MAIN_SCREEN',
+        payload: item,
+        settingsSection: 'soundSettings',
+        saveStateToStore
+    }
+};
 
 export const setCurrentBackgroundTrackAction = ( item, saveStateToStore = false ) => {
     return {

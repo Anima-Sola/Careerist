@@ -57,6 +57,8 @@ const Election = ({ navigation, commonSettings }) => {
     const { depositAmount } = useSelector( getBankSettings );
     const [ alert, setAlert ] = useState({ isVisible: false, data:  ELECTION_SCREEN_SKIP_ELECTION })
 
+    console.log('123')
+
     const calcElectionCost = () => {
         const nextSocialStatus = currentSocialStatus + 1;
         return Math.floor( ( 2 + 5 * random() ) * 20 * 5 ** nextSocialStatus );

@@ -2,9 +2,10 @@ import { saveDataToStore } from '../../components/FileSystem';
 
 export const initialState = {
     soundSettings: {
-        currentBackgroundTrack: 0,
+        navFromGameMainScreen: false,
+        currentBackgroundTrack: 1,
         isMusicEnabled: true,
-        backgroundTrackVolume: 0.2,
+        backgroundTrackVolume: 0.15,
         isSoundsEnabled: true,
         soundsVolume: 0.15,
     }    
@@ -24,6 +25,8 @@ export const appSettingsReducer = ( state = initialState, action ) => {
         case 'SAVE_APP_SETTINGS_INITIAL_STATE':
             saveDataToStore( 'APP_SETTINGS', initialState);
             return initialState;
+        case 'SET_NAV_FROM_GAME_MAIN_SCREEN':
+            return saveState( state, 'navFromGameMainScreen', action );
         case 'SET_CURRENT_BACKGROUND_TRACK':
             return saveState( state, 'currentBackgroundTrack', action );
         case 'SET_IS_MUSIC_ENABLED':

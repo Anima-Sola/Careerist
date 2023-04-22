@@ -309,7 +309,6 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
 
     //Run only once
     if( !isRun ) {
-
         setIsRun( true );
 
         if( posWithinYear < endOfYear ) {

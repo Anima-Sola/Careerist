@@ -2,14 +2,17 @@
 import React, { useState, useRef, useImperativeHandle, forwardRef } from 'react';
 import { useFocusEffect } from "@react-navigation/native";
 import { Text, View, StyleSheet, Animated, Pressable } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { Directions, GestureDetector, Gesture } from "react-native-gesture-handler";
 import { Ionicons } from '@expo/vector-icons';
 import { THEME } from '../styles/theme';
 import { SIDE_MENU_START_NEW_GAME } from '../store/constants';
 import CustomAlert from '../components/CustomAlert';
 import { playSwoosh } from './Sounds';
+import { setNavFromGameMainScreenAction } from '../store/actions/actions';
 
 const SideMenu = ( props, ref ) => {
+    const dispatch = useDispatch();
     const [ alert, setAlert ] = useState({ isVisible: false, data: SIDE_MENU_START_NEW_GAME });
     const animSideMenu = useRef(new Animated.Value( - THEME.SCREEN_WIDTH )).current;
     const animOverlayOpacity = useRef(new Animated.Value(0)).current;
@@ -117,7 +120,14 @@ const SideMenu = ( props, ref ) => {
                                 Новая игра
                             </Text>
                         </Pressable>
-                        <Pressable style={ THEME.SIDE_MENU_PRESSABLE_STYLE( styles.sideMenuItem ) } onPress={ () => props.navigation.navigate('SettingsScreen') }>
+                        <Pressable style={ THEME.SIDE_MENU_PRESSABLE_STYLE( styles.sideMenuItem ) } onPress={ () => {
+                            const navState = props.navigation.getState();
+                            const currentScreenName = navState.routes[ navState.index ].name;
+                            //Passing the current screen is necessary to set the isNewYearBegun flag in SettingsScreen
+                            //Where it doesn't calculate disaster, etc., when you go back to GameMainScreen
+                            if( currentScreenName === 'GameMainScreen' ) dispatch(setNavFromGameMainScreenAction( true, true ));
+                            props.navigation.navigate( 'SettingsScreen' );
+                        }}>
                             <Ionicons name="settings-outline" size={ 28 } color= { "black" } />
                             <Text style={ styles.sideMenuItemText }>
                                 Настройки

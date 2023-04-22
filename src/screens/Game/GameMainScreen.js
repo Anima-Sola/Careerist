@@ -24,6 +24,7 @@ import {
     setInsurancePossessionCostListAction,
     setInsurancePossessionTermListAction,
     setCommonBusinessIncomeAction,
+    setNavFromGameMainScreenAction
 } from "../../store/actions/actions";
 import { calcSubtotals, setCashAmountMinusFine } from "../../components/CommonFunctions";
 import random from "../../components/Random";
@@ -219,6 +220,13 @@ const MainMenu = ({ navigation, forceUpdate }) => {
     //Generate disaster event.
     const onScreenFocus = () => {
         NavigationBar.setBackgroundColorAsync( THEME.FORTH_BACKGROUND_COLOR );
+        
+        const { navFromGameMainScreen } = store.getState().appSettingsReducer.soundSettings;
+        if( navFromGameMainScreen ) {
+            dispatch(setNavFromGameMainScreenAction( false, true ));
+            return;
+        }
+        
         const { isNewYearBegun } = store.getState().gameSettingsReducer.commonSettings;
         if( isNewYearBegun ) {
             const { cash } = store.getState().gameSettingsReducer.commonSettings;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, ScrollView, Switch } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Switch, BackHandler } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, ButtonGroup, Slider, CheckBox } from '@rneui/themed';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -12,7 +12,7 @@ import {
     setIsMusicEnabledAction,
     setBackgroundTrackVolumeAction,
     setIsSoundsEnabledAction,
-    setSoundsVolumeAction
+    setSoundsVolumeAction,
 } from '../../store/actions/actions';
 import { playButtonClick, playDing, playBackgroundTrack, setBackgroundTrackVolume, stopBackgroundTrack } from '../../components/Sounds';
 
@@ -39,31 +39,31 @@ const Settings = ({ navigation, commonSettings }) => {
 
     const changeBackgroundTrack = ( num ) => {
         stopBackgroundTrack()
-        dispatch(setCurrentBackgroundTrackAction( num ));
+        dispatch(setCurrentBackgroundTrackAction( num, true ));
         setCurrBackTrack( num );
         setTimeout( () => playBackgroundTrack(), 300 );
     }
 
     const onOffSounds = ( onOff ) => {
         setIsSndEnabled( onOff );
-        dispatch(setIsSoundsEnabledAction( onOff ));
+        dispatch(setIsSoundsEnabledAction( onOff, true ));
         playDing();
     }
 
     const onOffMusic = ( onOff ) => {
         stopBackgroundTrack();
-        dispatch(setIsMusicEnabledAction( onOff ));
+        dispatch(setIsMusicEnabledAction( onOff, true ));
         setTimeout( () => playBackgroundTrack(), 300 );
         setIsMscEnabled( onOff );
     }
 
     const setSoundsVolume = ( value ) => {
-        dispatch(setSoundsVolumeAction( value / 100 ));
+        dispatch(setSoundsVolumeAction( value / 100, true ));
         playDing();
     }
 
     const setMusicVolume = ( value ) => {
-        dispatch(setBackgroundTrackVolumeAction( value / 100 ));
+        dispatch(setBackgroundTrackVolumeAction( value / 100, true ));
         setBackgroundTrackVolume();
     }
 
@@ -79,7 +79,7 @@ const Settings = ({ navigation, commonSettings }) => {
                     selectedButtonStyle={ styles.btgSelectedButtonStyle }
                     onPress={ ( value ) => {
                         setDiffLevel( value );
-                        dispatch(setGameDifficultyLevelAction( 3 - value ));
+                        dispatch(setGameDifficultyLevelAction( 3 - value, true ));
                     }}
                 />
                 <Text style={{ ...styles.text, marginBottom: hp('1%') }}>Настройка звука</Text>
@@ -155,7 +155,7 @@ const Settings = ({ navigation, commonSettings }) => {
                         />
                         <CheckBox
                             checked={ currBackTrack === 1 }
-                            title={'Relax'}
+                            title={'Sunrise'}
                             onPress={ () => {
                                 if( currBackTrack !== 1 ) changeBackgroundTrack( 1 );
                             }}
@@ -167,7 +167,7 @@ const Settings = ({ navigation, commonSettings }) => {
                     <View style={ styles.checkBoxRow }>
                         <CheckBox
                             checked={ currBackTrack === 2 }
-                            title={'Positive'}
+                            title={'Country'}
                             onPress={ () => {
                                 if( currBackTrack !== 2 ) changeBackgroundTrack( 2 );
                             }}
@@ -177,7 +177,7 @@ const Settings = ({ navigation, commonSettings }) => {
                         />
                         <CheckBox
                             checked={ currBackTrack === 3 }
-                            title={'Funk'}
+                            title={'Calm'}
                             onPress={ () => {
                                 if( currBackTrack !== 3 ) changeBackgroundTrack( 3 );
                             }}
@@ -189,7 +189,7 @@ const Settings = ({ navigation, commonSettings }) => {
                     <View style={ styles.checkBoxRow }>
                         <CheckBox
                             checked={ currBackTrack === 4 }
-                            title={'Funny'}
+                            title={'Fiesta'}
                             onPress={ () => {
                                 if( currBackTrack !== 4 ) changeBackgroundTrack( 4 );
                             }}
@@ -270,8 +270,8 @@ const styles = StyleSheet.create({
         marginTop: hp('1%'),
     },
     thumbStyle: {
-        width: wp('12%'), 
-        height: hp('3%'), 
+        width: wp('14%'), 
+        height: hp('4%'), 
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
         alignItems: 'center',
         justifyContent: 'center',
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     },
     sliderThumbText: {
         fontFamily: THEME.FONT_LIGHT,
-        fontSize: THEME.FONT18,
+        fontSize: THEME.FONT22,
         color: THEME.TEXT_COLOR
     },
     checkBoxRow: {

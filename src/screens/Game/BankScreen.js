@@ -92,7 +92,7 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
                     title="Уйти"
                     onPress={ () => {
                         playButtonClick();
-                        navigation.navigate('GameMainScreen', { previousScreen: 'AnyScreen' }) 
+                        navigation.navigate('GameMainScreen') 
                     }}
                 />
             </View>
@@ -112,7 +112,7 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
                     title="Уйти"
                     onPress={ () => {
                         playButtonClick();
-                        navigation.navigate('GameMainScreen', { previousScreen: 'AnyScreen' });
+                        navigation.navigate('GameMainScreen');
                     }}  
                 />
             </View>

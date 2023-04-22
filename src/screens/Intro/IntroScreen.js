@@ -9,7 +9,7 @@ import AppIntroSlider from 'react-native-app-intro-slider';
 import CustomAlert from '../../components/CustomAlert';
 import { GAME_MAIN_SCREEN_QUIT_GAME_ALERT } from '../../store/constants';
 import { THEME } from '../../styles/theme';
-import { saveGameSettingsInitialState, saveAppSettingsInitialState, loadAppSettings, loadGameSettings } from '../../store/actions/actions';
+import { saveGameSettingsInitialState, loadAppSettings, loadGameSettings } from '../../store/actions/actions';
 import { playSlideChange } from '../../components/Sounds';
 
 const slides = [
@@ -160,7 +160,6 @@ const IntroScreen = ({ navigation }) => {
 
     //Set initial state then focus screen
     useFocusEffect(() => {
-        dispatch( saveAppSettingsInitialState() );
         dispatch( saveGameSettingsInitialState() );
         dispatch( loadAppSettings() );
         dispatch( loadGameSettings() );
