@@ -24,7 +24,7 @@ import {
 } from '../../store/constants';
 import random from '../../components/Random';
 import { setCashAmountMinusFine, getFineAmount } from "../../components/CommonFunctions";
-import { playButtonClick } from "../../components/Sounds";
+import { playButtonClick, stopBackgroundTrack, playTushTrack } from "../../components/Sounds";
 
 import SclerosisImage from '../../assets/images/election/sclerosis.png';
 import NoElectionImage from '../../assets/images/election/noelection.png';
@@ -56,8 +56,6 @@ const Election = ({ navigation, commonSettings }) => {
     const { employeesList } = useSelector( getEmployeesSettings );
     const { depositAmount } = useSelector( getBankSettings );
     const [ alert, setAlert ] = useState({ isVisible: false, data:  ELECTION_SCREEN_SKIP_ELECTION })
-
-    console.log('123')
 
     const calcElectionCost = () => {
         const nextSocialStatus = currentSocialStatus + 1;
@@ -156,6 +154,8 @@ const Election = ({ navigation, commonSettings }) => {
             data: ELECTION_SCREEN_WIN_PRESIDENT_ELECTION,
             buttonsCallbacks: [
                 () => {
+                    stopBackgroundTrack();
+                    setTimeout( () => playTushTrack(), 300 );
                     navigation.navigate('WinScreen');
                 }
             ]

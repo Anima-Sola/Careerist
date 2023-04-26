@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 import { Button } from '@rneui/themed';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { getCommonSettings } from '../../store/selectors';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
-import { playButtonClick } from '../../components/Sounds';
+import { playButtonClick, stopBackgroundTrack, playBackgroundTrack, playMarshTrack } from '../../components/Sounds';
 
 import GraveImage from "../../assets/images/grave.png";
 
@@ -21,6 +22,11 @@ export const DeathScreen = ({ navigation }) => {
 
 const Death = ({ navigation, commonSettings }) => {
     const { playerAge } = commonSettings;
+
+    useFocusEffect(() => {
+        stopBackgroundTrack();
+        setTimeout( () => playMarshTrack(), 300 );
+    })
 
     return (
         <View style={ styles.wrapper }>
@@ -41,6 +47,8 @@ const Death = ({ navigation, commonSettings }) => {
                     title="Начать заново"
                     onPress={ () => {
                         playButtonClick();
+                        stopBackgroundTrack();
+                        setTimeout( () => playBackgroundTrack(), 300 );
                         navigation.navigate('IntroScreen'); 
                     }}  
                 />

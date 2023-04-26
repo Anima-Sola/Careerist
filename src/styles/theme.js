@@ -24,7 +24,6 @@ export const THEME = {
     SCREEN_HEIGHT,
     FONT_SCALE: fontScale,
     STATUSBAR_HEIGHT: StatusBar.currentHeight,
-    //FONT18: hp('1.8%') / fontScale,
     FONT22: hp('2.2%') / fontScale,
     FONT25: hp('2.5%') / fontScale,
     FONT28: hp('2.8%') / fontScale,

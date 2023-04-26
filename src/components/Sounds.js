@@ -8,6 +8,8 @@ const Sunrise = require('../assets/music/sunrise.mp3');
 const Country = require('../assets/music/country.mp3');
 const Calm = require('../assets/music/calm.mp3');
 const Fiesta = require('../assets/music/fiesta.mp3');
+const Tush = require('../assets/music/tush.mp3');
+const Marsh = require('../assets/music/marsh.mp3');
 
 const buttonClickSound = require('../assets/sounds/buttonclick.mp3');
 const slideChangeSound = require('../assets/sounds/slidechange.mp3');
@@ -47,6 +49,34 @@ export const playBackgroundTrack = async () => {
     if( isMusicEnabled ) {
         try {
             await trackSoundObject.loadAsync( backgroundTracks[ currentBackgroundTrack ] );
+            await trackSoundObject.setVolumeAsync( backgroundTrackVolume );
+            await trackSoundObject.setIsLoopingAsync( true );
+            await trackSoundObject.playAsync();
+        } catch ( error ) {
+            console.log( error );
+        }
+    } 
+}
+
+export const playTushTrack = async () => {
+    const { isMusicEnabled, backgroundTrackVolume } = store.getState().appSettingsReducer.soundSettings;
+    if( isMusicEnabled ) {
+        try {
+            await trackSoundObject.loadAsync( Tush );
+            await trackSoundObject.setVolumeAsync( backgroundTrackVolume );
+            await trackSoundObject.setIsLoopingAsync( true );
+            await trackSoundObject.playAsync();
+        } catch ( error ) {
+            console.log( error );
+        }
+    } 
+}
+
+export const playMarshTrack = async () => {
+    const { isMusicEnabled, backgroundTrackVolume } = store.getState().appSettingsReducer.soundSettings;
+    if( isMusicEnabled ) {
+        try {
+            await trackSoundObject.loadAsync( Marsh );
             await trackSoundObject.setVolumeAsync( backgroundTrackVolume );
             await trackSoundObject.setIsLoopingAsync( true );
             await trackSoundObject.playAsync();

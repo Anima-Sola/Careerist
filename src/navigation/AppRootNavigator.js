@@ -26,6 +26,7 @@ import { BankruptScreen } from "../screens/Game/BankruptScreen";
 import { JailScreen } from "../screens/Game/JailScreen";
 import { WinScreen } from "../screens/Game/WinScreen";
 import { SettingsScreen } from "../screens/App/SettingsScreen";
+import { AboutScreen } from "../screens/App/AboutScreen";
 
 const AppRootNavigator = createNativeStackNavigator();
 
@@ -135,6 +136,10 @@ export function AppRootNavigation () {
                 <AppRootNavigator.Screen
                     name = "SettingsScreen"
                     component = { SettingsScreen }
+                />
+                <AppRootNavigator.Screen
+                    name = "AboutScreen"
+                    component = { AboutScreen }
                 />
             </AppRootNavigator.Navigator>
         </NavigationContainer>

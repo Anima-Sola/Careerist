@@ -7,7 +7,7 @@ import { getCommonSettings } from '../../store/selectors';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
 import { setIsNewYearBegun } from '../../store/actions/actions';
-import { playButtonClick } from '../../components/Sounds';
+import { playButtonClick, stopBackgroundTrack, playBackgroundTrack } from '../../components/Sounds';
 
 import FireworkImage from "../../assets/images/firework.png";
 
@@ -25,6 +25,9 @@ const Win = ({ navigation }) => {
 
     const startNewGame = () => {
         dispatch(setIsNewYearBegun( false, true ));
+        playButtonClick();
+        stopBackgroundTrack();
+        setTimeout( () => playBackgroundTrack(), 300 );
         navigation.navigate('IntroScreen');
     }
 
@@ -43,10 +46,7 @@ const Win = ({ navigation }) => {
                     titleStyle={ styles.buttonTitle }
                     type="outline" 
                     title="Начать заново"
-                    onPress={ () => {
-                      playButtonClick(); 
-                      startNewGame();
-                    }}  
+                    onPress={ () => startNewGame() }  
                 />
             </View>
         </View>
