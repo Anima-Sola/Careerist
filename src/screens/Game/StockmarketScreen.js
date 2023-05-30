@@ -35,7 +35,7 @@ import {
 } from '../../store/constants';
 import random, { rndBetweenMinusOneAndOne } from '../../components/Random';
 import { INT } from '../../components/CommonFunctions';
-import { getFineAmount, setCashAmountMinusFine } from '../../components/CommonFunctions';
+import { getFineAmount, setCashAmountMinusFine, calcSubtotals } from '../../components/CommonFunctions';
 
 import Skynet from "../../assets/images/logos/skynet.png";
 import Trolling from "../../assets/images/logos/trolling.png";
@@ -147,6 +147,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
     }
  
     const setStocksData = () => {
+        calcSubtotals( 0.6 ); //Bug in the original game - this is disabled
         const stocksData = calcStocksData();
         stocksCurrentPriceList.current = stocksData.stocksPrices;
         stocksDividendsList.current = stocksData.stocksDividends;
@@ -312,7 +313,6 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         setIsRun( true );
 
         if( posWithinYear < endOfYear ) {
-            //calcSubtotals( 0.6 ); Bug in the original game
             //Calc possible loss if problem could be
             let possibleLoss = 0;
             for( let i = 0; i < 5; i++ ) possibleLoss = possibleLoss + stocksCostList[ i ] * stocksQuantityList[ i ];

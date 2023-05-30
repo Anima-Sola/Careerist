@@ -10,13 +10,10 @@ export const saveGameSettingsInitialState = () => {
 export const loadGameSettings = () => {
     return async dispatch => {
         const settings = await getDataFromStore( 'GAME_SETTINGS' );
-        if( settings === null ) saveGameSettingsInitialState();
-        else {
-            dispatch({
-                type: 'LOAD_GAME_SETTINGS',
-                payload: settings
-            });
-        }
+        dispatch({
+            type: 'LOAD_GAME_SETTINGS',
+            payload: settings
+        });
     };
 }
 
@@ -363,10 +360,13 @@ export const setInsurancePossessionTermListAction = ( list, saveStateToStore = f
 export const loadAppSettings = () => {
     return async dispatch => {
         const settings = await getDataFromStore( 'APP_SETTINGS' );
-        dispatch({
-            type: 'LOAD_APP_SETTINGS',
-            payload: settings
-        });
+        if( settings === null ) saveAppSettingsInitialState();
+        else {
+            dispatch({
+                type: 'LOAD_APP_SETTINGS',
+                payload: settings
+            });
+        }
     };
 }
 

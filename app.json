@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "President",
+    "name": "Карьерист",
     "slug": "president",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,9 +17,7 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    },
+    "ios": {},
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",

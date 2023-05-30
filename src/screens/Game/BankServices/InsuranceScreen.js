@@ -20,7 +20,7 @@ import {
     setInsurancePossessionCostListAction, 
     setInsurancePossessionTermListAction
 } from '../../../store/actions/actions';
-import { playButtonClick } from '../../../components/Sounds';
+import { playButtonClick, playSlideChange } from '../../../components/Sounds';
 
 import Flat from "../../../assets/images/possession/flat.png";
 import Car from "../../../assets/images/possession/car.png";
@@ -57,21 +57,25 @@ const Insurance = ({ navigation }) => {
         let i = -1;
         const possessionImageFiles = [ Flat, Car, Villa, Yacht, Plane ];
 
-        const items = possessionList.map( () => {
-            i++;
-            if( possessionList[ i ] ) {
-                const activeItemBackgroudColor = ( i === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
+        const items = possessionList.map( ( element, key ) => {
+            if( element ) {
+                const activeItemBackgroudColor = ( key === activeItem ) ? THEME.THIRD_BACKGROUND_COLOR : 'rgba(0, 0, 0, .2)';
                 return (
-                    <Pressable style={ styles.itemContainer } key={ i } onPress={eval( `() => setActiveItem(${ i })` )}>
+                    <Pressable style={ styles.itemContainer } 
+                        key={ key } 
+                        onPress={ () => {
+                            playSlideChange();
+                            setActiveItem( key );
+                        }}>
                         <View style={{ ...styles.itemImage, backgroundColor: activeItemBackgroudColor }}>
-                            <Image style={ styles.image } resizeMode='center' source={ possessionImageFiles[ i ] } />
+                            <Image style={ styles.image } resizeMode='center' source={ possessionImageFiles[ key ] } />
                         </View>
                         <View style={{ ...styles.itemName, backgroundColor: activeItemBackgroudColor }}>
-                            <Text style={ styles.itemText }>{ POSSESSION_LIST[ i ] }</Text>
+                            <Text style={ styles.itemText }>{ POSSESSION_LIST[ key ] }</Text>
                             <View style={{ height: hp('1%') }}></View>
                             <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>Максимальная сумма</Text>
                             <View style={{ height: hp('1%') }}></View>
-                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>{ possessionSellCostList[ i ] }$</Text>
+                            <Text style={{ ...styles.itemText, fontSize: THEME.FONT22 }}>{ possessionSellCostList[ key ] }$</Text>
                         </View>
                     </Pressable>
                 )

@@ -173,7 +173,7 @@ const Election = ({ navigation, commonSettings }) => {
         }
 
         //Election costs and you pay
-        const updatedCash = cash - electionCost.current;
+        let updatedCash = cash - electionCost.current;
         if( updatedCash < 0 ) {
             dispatch(setYearExpenseAction( yearExpense - updatedCash ));
             updatedCash = 0;

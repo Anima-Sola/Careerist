@@ -94,7 +94,7 @@ export const playEmergeTrack = async () => {
         emergeSoundObject.setOnPlaybackStatusUpdate(( status ) => {
             if ( !status.didJustFinish ) return;
             emergeSoundObject.unloadAsync();
-            playBackgroundTrack();
+            setTimeout( () => playBackgroundTrack(), 300 );
         });
         await emergeSoundObject.loadAsync( EmergeSound );
         await emergeSoundObject.setVolumeAsync( backgroundTrackVolume );

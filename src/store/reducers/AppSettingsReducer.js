@@ -3,11 +3,11 @@ import { saveDataToStore } from '../../components/FileSystem';
 export const initialState = {
     soundSettings: {
         navFromGameMainScreen: false,
-        currentBackgroundTrack: 1,
+        currentBackgroundTrack: 2,
         isMusicEnabled: true,
-        backgroundTrackVolume: 0.15,
+        backgroundTrackVolume: 0.7,
         isSoundsEnabled: true,
-        soundsVolume: 0.15,
+        soundsVolume: 0.5,
     }    
 }
 

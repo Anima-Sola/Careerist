@@ -8,7 +8,8 @@ import { Provider } from 'react-redux';
 import { AppRootNavigation } from './src/navigation/AppRootNavigator';
 import store from './src/store';
 
-export default function App() {
+//export default function App() {
+const App = () => {
     return (
         <Provider store={store}>
             <GestureHandlerRootView style={ styles.container }>
@@ -23,3 +24,5 @@ const styles = StyleSheet.create({
         flex: 1
     }
 })
+
+export default App;

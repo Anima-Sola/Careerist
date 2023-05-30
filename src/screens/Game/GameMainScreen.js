@@ -85,13 +85,14 @@ const MainMenu = ({ navigation, forceUpdate }) => {
         //I think the author implied that the character would die
         
         //Chance of disaster is 20 percent
-        if( random() > 0.2 ) {
+        if( random() > 1 ) {
             navToTotalScreenIfYearIsOver();
             return;
         }
 
         //Get num of disaster
-        const numOfDisaster = INT( 10 * random() );
+        let numOfDisaster = INT( 10 * random() );
+        numOfDisaster = 5;
         //Work only if numDisaster between [ 1, 5 ]
         if( ( numOfDisaster < 1 ) || ( numOfDisaster > 5 ) ) {
             navToTotalScreenIfYearIsOver();
@@ -242,6 +243,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
         setAlert({
             ...alert,
             isVisible: true,
+            data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT,
             buttonsCallbacks: [
                 () => setAlert({ ...alert, isVisible: false }),
                 () => {

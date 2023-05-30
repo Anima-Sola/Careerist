@@ -107,7 +107,7 @@ export const GAME_MAIN_SCREEN_DISASTER = {
     iconName: 'sad-cry',
     iconBackgroundColor: 'red',
     iconColor: 'white',
-    isOverlayPressable: true,
+    isOverlayPressable: false,
     buttons: [ { ...alertBtn1, hint: 'Очень жаль' } ]
 }
 

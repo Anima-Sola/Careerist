@@ -21,8 +21,10 @@ const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
     } = prompt.data;
     
     useEffect(() => {
-        if( prompt.isVisible ) setTimeout( () => textInput.current.focus(), 100 )
-    });
+        if( prompt.isVisible ) setTimeout( () => {
+            if( textInput.current !== null ) textInput.current.focus();
+        }, 100 )
+    })
 
     //Function filters symbols. Only digits valid if parameter "onlyDigits" = true
     const filterDigits = ( text ) => {
