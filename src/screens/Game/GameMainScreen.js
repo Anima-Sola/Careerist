@@ -71,10 +71,11 @@ const MainMenu = ({ navigation, forceUpdate }) => {
             },
             buttonsCallbacks: [
                 () => {
+                    setAlert({ ...alert, isVisible: false });
                     if( numOfDisaster === 5 ) {
                         navigation.navigate('DeathScreen');
+                        return;
                     }
-                    setAlert({ ...alert, isVisible: false });
                     navToTotalScreenIfYearIsOver();
                 }  
             ]
