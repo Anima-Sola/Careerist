@@ -71,7 +71,9 @@ const MainMenu = ({ navigation, forceUpdate }) => {
             },
             buttonsCallbacks: [
                 () => {
-                    if( numOfDisaster === 5 ) navigation.navigate('DeathScreen');
+                    if( numOfDisaster === 5 ) {
+                        navigation.navigate('DeathScreen');
+                    }
                     setAlert({ ...alert, isVisible: false });
                     navToTotalScreenIfYearIsOver();
                 }  
@@ -85,14 +87,14 @@ const MainMenu = ({ navigation, forceUpdate }) => {
         //I think the author implied that the character would die
         
         //Chance of disaster is 20 percent
-        if( random() > 1 ) {
+        if( random() > 0.2 ) {
             navToTotalScreenIfYearIsOver();
             return;
         }
 
         //Get num of disaster
-        let numOfDisaster = INT( 10 * random() );
-        numOfDisaster = 5;
+        const numOfDisaster = INT( 10 * random() );
+
         //Work only if numDisaster between [ 1, 5 ]
         if( ( numOfDisaster < 1 ) || ( numOfDisaster > 5 ) ) {
             navToTotalScreenIfYearIsOver();
