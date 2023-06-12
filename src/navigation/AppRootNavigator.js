@@ -27,6 +27,7 @@ import { JailScreen } from "../screens/Game/JailScreen";
 import { WinScreen } from "../screens/Game/WinScreen";
 import { SettingsScreen } from "../screens/App/SettingsScreen";
 import { AboutScreen } from "../screens/App/AboutScreen";
+import { InstructionScreen } from "../screens/App/InstructionScreen";
 
 const AppRootNavigator = createNativeStackNavigator();
 
@@ -140,6 +141,10 @@ export function AppRootNavigation () {
                 <AppRootNavigator.Screen
                     name = "AboutScreen"
                     component = { AboutScreen }
+                />
+                <AppRootNavigator.Screen
+                    name = "InstructionScreen"
+                    component = { InstructionScreen }
                 />
             </AppRootNavigator.Navigator>
         </NavigationContainer>

@@ -53,7 +53,7 @@ export const setInitialGameData = () => {
         possessionBuyCostList[ i - 1 ] = Math.floor( ( 2 + 5 * rnd ) * 20 * 5 ** i );
         possessionSellCostList[ i - 1 ] = Math.floor( 0.7 * possessionBuyCostList[ i - 1 ] * ( rnd + 0.3 ) );
     }
-    
+
     //Calc business cost
     for( let i = 1; i <= 5; i++ ) {
         rnd = random();

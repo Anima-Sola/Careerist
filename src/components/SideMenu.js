@@ -139,6 +139,19 @@ const SideMenu = ( props, ref ) => {
                             //Passing the current screen is necessary to set the isNewYearBegun flag in SettingsScreen
                             //Where it doesn't calculate disaster, etc., when you go back to GameMainScreen
                             if( currentScreenName === 'GameMainScreen' ) dispatch(setNavFromGameMainScreenAction( true, true ));
+                            props.navigation.navigate( 'InstructionScreen' );
+                        }}>
+                            <Ionicons name="school-outline" size={ 28 } color= { "black" } />
+                            <Text style={ styles.sideMenuItemText }>
+                                Как играть?
+                            </Text>
+                        </Pressable>
+                        <Pressable style={ THEME.SIDE_MENU_PRESSABLE_STYLE( styles.sideMenuItem ) } onPress={ () => {
+                            const navState = props.navigation.getState();
+                            const currentScreenName = navState.routes[ navState.index ].name;
+                            //Passing the current screen is necessary to set the isNewYearBegun flag in SettingsScreen
+                            //Where it doesn't calculate disaster, etc., when you go back to GameMainScreen
+                            if( currentScreenName === 'GameMainScreen' ) dispatch(setNavFromGameMainScreenAction( true, true ));
                             props.navigation.navigate( 'AboutScreen' );
                         }}>
                             <Ionicons name="help-circle-outline" size={ 28 } color= { "black" } />
