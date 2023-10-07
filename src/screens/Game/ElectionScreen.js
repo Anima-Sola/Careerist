@@ -137,10 +137,11 @@ const Election = ({ navigation, commonSettings }) => {
             isVisible: true, 
             data: { 
                 ...ELECTION_SCREEN_WIN_ELECTION, 
-                message: `Теперь вы ${ SOCIAL_STATUSES[ currentSocialStatus - 1 ]}. Следующие выборы через 2 года.` 
+                message: `Теперь вы ${ SOCIAL_STATUSES[ currentSocialStatus ]}. Следующие выборы через 2 года.` 
             },
             buttonsCallbacks: [
                 () => {
+                    dispatch(setSocialStatusAction( currentSocialStatus + 1 ));
                     dispatch(setElectionStatus( false, true ));
                     navigation.navigate('GameMainScreen');
                 }
@@ -190,10 +191,7 @@ const Election = ({ navigation, commonSettings }) => {
         }
        
         //If you win election
-        currentSocialStatus++;
-        dispatch(setSocialStatusAction( currentSocialStatus ));
-
-        if( currentSocialStatus === 5 ) {
+        if(( currentSocialStatus + 1 ) === 5 ) {
             //You are President. The game is over.
             showWinPresidentElectionAlert();
         } else {

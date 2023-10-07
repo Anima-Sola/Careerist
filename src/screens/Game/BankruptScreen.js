@@ -126,6 +126,7 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
                         <Text style={{ ...styles.bigText, marginBottom: hp('1.5%') }}>{ -Math.floor( cash ) }$.</Text>
                         <Text style={{ ...styles.text, marginBottom: hp('1.5%') }}>Счет в банке { Math.floor( depositAmount ) }$.</Text>
                         <Text style={{ ...styles.text, marginBottom: hp('1.5%') }}>Стоимость операции 5%.</Text>
+                        <Text style={{ ...styles.text, marginBottom: hp('1.5%') }}>Т.е. 5% снимаемой суммы заберет банк.</Text>
                         <Text style={{ ...styles.text, marginBottom: hp('1.5%') }}>Сколько берете?</Text>
                     </View>
                 </ScrollView>

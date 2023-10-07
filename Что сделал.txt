@@ -1,3 +1,5 @@
 В AndroidManifest.xml убрал  package="com.animasola.Careerist"
 
 В gradle.properties добавил android.disableAutomaticComponentCreation=true
+
+npx expo run:android --variant release
