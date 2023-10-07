@@ -14,3 +14,5 @@ It is based on a text game, written for the ZX-Spectrum platform, in the 80s or 
 You can contact the developer by e-mail: animasola@yandex.ru
 
 The game is written in React Native.
+
+Link - https://apps.rustore.ru/app/com.animasola.president
