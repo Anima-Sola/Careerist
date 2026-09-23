@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Pressable, StatusBar } from 'react-native';
 import { useStore } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
 import { Directions, GestureDetector, Gesture } from "react-native-gesture-handler";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Ionicons } from '@expo/vector-icons';
 import { THEME } from "../styles/theme";
@@ -11,6 +12,7 @@ import SideMenu from "./SideMenu";
 
 const GameWrapper = ({ wrappedComponent, commonSettings }) => {
     const [, forceUpdate ] = useReducer(x => x + 1, 0);
+    const insets = useSafeAreaInsets();
     const { year, cash, playerAge, yearsPassed } = commonSettings;
     const store = useStore();
     const childRef = useRef();
@@ -35,10 +37,10 @@ const GameWrapper = ({ wrappedComponent, commonSettings }) => {
         <GestureDetector gesture={ flingRightGesture }>
             <View style={ styles.container }>
                 <StatusBar translucent backgroundColor="transparent" />
-                <View style={ styles.paddingStatusBar }></View>
+                <View style={ styles.paddingStatusBar } />
                 <View style={ styles.header }>
                     <Pressable onPress={() => { childRef.current.showSideMenu() }}>  
-                        <Ionicons name="ios-menu" size={32} color="white"/>
+                        <Ionicons name="menu" size={32} color="white"/>
                     </Pressable> 
                     <View style={ styles.walletContainer }>
                         <Ionicons name="wallet-outline" size={32} color="white" />
@@ -46,7 +48,7 @@ const GameWrapper = ({ wrappedComponent, commonSettings }) => {
                     </View>
                 </View>
                 { wrappedComponent }
-                <View style={ styles.footer }>
+                <View style={{ ...styles.footer, paddingBottom: insets.bottom + 10 }}>
                     <Text style={ styles.footerText }>Год: { year + yearsPassed }</Text>
                     <Text style={ styles.footerText }>Ваш возраст: { playerAge }</Text>
                 </View>
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingLeft: wp('5%'),
         paddingRight: wp('5%'),
-        height: hp('6%'),
+        //height: hp('6%'),
         borderBottomWidth: 1,
         borderBottomColor: THEME.MAIN_BACKGROUND_COLOR,
     }, 
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
         color: THEME.TEXT_COLOR,
         fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT30,
-        paddingBottom: hp('1.2%')
+        //paddingBottom: hp('1.2%')
     },
 })
 

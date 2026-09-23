@@ -79,6 +79,10 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
 
     useEffect(() => { 
         const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            const navState = navigation.getState();
+            const currentScreenName = navState.routes[ navState.index ].name;
+            if(currentScreenName !== 'StockmarketScreen') return;
+
             dispatch(setDividendsListAction( stocksDividendsList.current ));
             dispatch(setStocksCostListAction( stocksCurrentPriceList.current ), true);
         })

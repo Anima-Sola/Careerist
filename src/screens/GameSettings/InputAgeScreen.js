@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TextInput, StatusBar, ImageBackground } from 'r
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch } from 'react-redux';
 import { Button } from '@rneui/themed';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { THEME } from '../../styles/theme';
 import { setPlayerAgeAction, setDeathAge } from   '../../store/actions/actions';
 import CustomAlert from '../../components/CustomAlert';
@@ -16,6 +17,7 @@ import BackgroundImage from '../../assets/images/background/background.png';
 export const InputAgeScreen = ({ navigation }) => {
     const dispatch = useDispatch();
     const [ isButtonDisabled, setIsButtonDisabled ] = useState( true );
+    const insets = useSafeAreaInsets();
     const [ age, setAge ] = useState( '' );
     const [ alert, setAlert ] = useState({ 
         isVisible: false, 
@@ -48,7 +50,7 @@ export const InputAgeScreen = ({ navigation }) => {
 
     return (
         <ImageBackground style={ styles.background } source={ BackgroundImage } resizeMode='cover'>
-            <View style={ styles.container }>
+            <View style={{ ...styles.container, paddingBottom: insets.bottom }}>
                 <StatusBar translucent backgroundColor="transparent" />
                 <CustomAlert alert={ alert } setAlert={ setAlert } />
                 <View style={ styles.headerContainer }>

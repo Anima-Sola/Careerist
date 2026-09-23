@@ -111,7 +111,7 @@ const Lend = ({ navigation, commonSettings }) => {
                     dispatch(setLendAmountAction( lendAmount.current ));
                     dispatch(setLendTermAction( lendTerm.current ));
                     dispatch(setLendPersentagesAction( lendPersentage.current / 100 ), true);
-                    navigation.navigate('BankScreen', { previousScreen: 'lendOrBorrowScreen' });
+                    navigation.goBack();
                 },
                 () => {
                     setAlert({ ...alert, isVisible: false });
@@ -204,7 +204,7 @@ const Lend = ({ navigation, commonSettings }) => {
                     title="Уйти"
                     onPress={ () => {
                         playButtonClick();
-                        navigation.navigate('BankScreen', { previousScreen: 'lendOrBorrowScreen' }) 
+                        navigation.goBack(); 
                     }}   
                 />
             </View>

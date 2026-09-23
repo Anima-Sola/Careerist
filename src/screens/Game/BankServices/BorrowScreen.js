@@ -77,8 +77,9 @@ const Borrow = ({ navigation, commonSettings }) => {
             isVisible: true,
             buttonsCallbacks: [
                 () => {
+                    setAlert({ ...alert, isVisible: false });
                     setTimeout( () => showInputBorrowTermPrompt( amount ), 300 );
-                }
+                },
             ]
         })
     }
@@ -98,7 +99,7 @@ const Borrow = ({ navigation, commonSettings }) => {
                     dispatch(setBorrowAmountAction( amount ));
                     dispatch(setBorrowTermAction( term ));
                     dispatch(setBorrowPersentagesAction( persentages ), true );
-                    navigation.navigate('BankScreen', { previousScreen: 'lendOrBorrowScreen' });
+                    navigation.goBack();
                 }
             ]
         })
@@ -138,7 +139,9 @@ const Borrow = ({ navigation, commonSettings }) => {
                     const persentages = 0.01 + ( 3 + rndBetweenMinusOneAndOne() ) * amount * term / wealth.current / ( 2 + gameDifficultyLevel ) / 5;
                     setTimeout( () => showBorrowMoneyAlert( persentages, amount, term ), 300 );
                 },
-                () => setPrompt({ ...prompt, isVisible: false, value: '' })
+                () => {
+                    setPrompt({ ...prompt, isVisible: false, value: '' }); 
+                },
             ]
         })
     }
@@ -185,7 +188,7 @@ const Borrow = ({ navigation, commonSettings }) => {
                         title="Уйти"
                         onPress={ () => {
                             playButtonClick();
-                            navigation.navigate('BankScreen', { previousScreen: 'lendOrBorrowScreen' }) 
+                            navigation.goBack(); 
                         }}   
                     />
                 </View>
@@ -210,7 +213,7 @@ const Borrow = ({ navigation, commonSettings }) => {
                         titleStyle={ styles.buttonTitle }
                         type="outline" 
                         title="Уйти"
-                        onPress={ () => navigation.navigate('BankScreen', { previousScreen: 'lendOrBorrowScreen' }) }   
+                        onPress={ () => navigation.goBack() }   
                     />
                 </View>
             </View>

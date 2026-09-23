@@ -1,7 +1,6 @@
 //A component that displays a window with input field instead of the standard Alert
-import React, { useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Modal, Pressable, TextInput, KeyboardAvoidingView } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import React, { useEffect, useRef, useState } from "react";
+import { View, Text, StyleSheet, Modal, Pressable, TextInput, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
 import { Button } from '@rneui/themed';
 import { THEME } from "../styles/theme";
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -9,6 +8,8 @@ import { playSlideChange, playDing } from "./Sounds";
 
 const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
     const textInput = useRef( null );
+    const keyboardInput = useRef( null );
+    const [ isPromptReady, setIsPromptReady ] = useState( false );
     const {
         message, 
         header,
@@ -21,10 +22,31 @@ const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
     } = prompt.data;
     
     useEffect(() => {
-        if( prompt.isVisible ) setTimeout( () => {
-            if( textInput.current !== null ) textInput.current.focus();
-        }, 100 )
-    })
+        if (!prompt.isVisible) {
+            setIsPromptReady( false );
+            return;
+        }
+
+        setIsPromptReady( false );
+        const keyboardDidShow = Keyboard.addListener( 'keyboardDidShow', () => {
+            setIsPromptReady( true );
+        });
+
+        const timer = setTimeout(() => {
+            keyboardInput.current?.focus();
+        }, 100);
+
+        return () => {
+            clearTimeout( timer );
+            keyboardDidShow.remove();
+        };
+    }, [prompt.isVisible]);
+
+    useEffect(() => {
+        if (isPromptReady) {
+            textInput.current?.focus();
+        }
+    }, [isPromptReady]);
 
     //Function filters symbols. Only digits valid if parameter "onlyDigits" = true
     const filterDigits = ( text ) => {
@@ -61,7 +83,7 @@ const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
 
     return (
         <Modal
-            animationType="fade"
+            animationType="none"
             transparent={ true }
             statusBarTranslucent={ true }
             visible={ prompt.isVisible }
@@ -69,7 +91,16 @@ const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
             onRequestClose={ () => {
                 if( isOverlayPressable ) setPrompt({ ...prompt, isVisible: false, value: '' });
             }} 
-        >   
+        >
+            {!isPromptReady && (
+                <TextInput
+                    ref={ keyboardInput }
+                    style={ styles.keyboardInput }
+                    keyboardType='numeric'
+                    autoFocus={ false }
+                />
+            )}
+            {isPromptReady && <>
             <Pressable 
                 style={[Platform.OS === "ios" ? styles.iOSBackdrop : styles.androidBackdrop, styles.backdrop]} 
                 onPressIn={ () => playSlideChange() }  
@@ -78,7 +109,7 @@ const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
                 }} 
             />
             <KeyboardAvoidingView 
-                behavior={ 'height' }
+                behavior={ Platform.OS === 'ios' ? 'padding' : 'height' }
                 style={ styles.container }>
                 <View style={{ ...styles.iconContainer, backgroundColor: iconBackgroundColor }}>
                     <Icon style={ styles.icon } name={ iconName } color={ iconColor } size={ 50 }/>
@@ -98,6 +129,7 @@ const CustomPrompt = ({ prompt, setPrompt, argsForButtonCallbacks }) => {
                     { buttonsList() }
                 </View>
             </KeyboardAvoidingView>
+            </>}
         </Modal>
     )
 }
@@ -163,14 +195,24 @@ const styles = StyleSheet.create({
     },
     input: {
         width: '100%',
-        height: hp('5%'),
+        minHeight: 52,
+        height: 52,
         fontSize: THEME.FONT30,
+        lineHeight: 34,
         color: '#000',
-        marginBottom: 30,
+        marginBottom: 24,
+        paddingVertical: 0,
         textAlign: 'center',
+        textAlignVertical: 'center',
         borderColor: "#000",
         borderStyle: "solid",
         borderBottomWidth: 3
+    },
+    keyboardInput: {
+        position: 'absolute',
+        width: 1,
+        height: 1,
+        opacity: 0
     },
     button: {
         width: '100%',

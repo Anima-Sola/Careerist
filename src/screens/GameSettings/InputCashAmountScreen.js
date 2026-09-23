@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TextInput, StatusBar, ImageBackground } from 'r
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@rneui/themed';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { THEME } from '../../styles/theme';
 import { setCashAmountAction } from   '../../store/actions/actions';
 import { getCommonSettings } from '../../store/selectors';
@@ -17,6 +18,7 @@ import BackgroundImage from '../../assets/images/background/background.png';
 
 export const InputСashAmountScreen = ({ navigation }) => {
     const dispatch = useDispatch();
+    const insets = useSafeAreaInsets();
     const { gameDifficultyLevel } = useSelector( getCommonSettings );
     const [ isButtonDisabled, setIsButtonDisabled ] = useState( true );
     const [ cashAmount, setCashAmount ] = useState( '' );
@@ -62,7 +64,7 @@ export const InputСashAmountScreen = ({ navigation }) => {
 
     return (
         <ImageBackground style={ styles.background } source={ BackgroundImage } resizeMode='cover'>
-            <View style={ styles.container }>
+            <View style={{ ...styles.container, paddingBottom: insets.bottom }}>
                 <StatusBar translucent backgroundColor="transparent" />
                 <CustomAlert alert={ alert } setAlert={ setAlert } />
                 <View style={ styles.headerContainer }>

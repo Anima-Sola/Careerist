@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Pressable, StatusBar, ImageBackground } from 'r
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Button } from '@rneui/themed';
 import { useDispatch } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { THEME } from '../../styles/theme';
 import { setGameDifficultyLevelAction } from   '../../store/actions/actions';
 import { playSlideChange, playButtonClick } from '../../components/Sounds';
@@ -13,6 +14,7 @@ import BackgroundImage from '../../assets/images/background/background.png';
 export const SetGameDifficultyScreen = ({ navigation }) => {
     const dispatch = useDispatch();
     const [ diffLevel, setDiffLevel ] = useState( 3 );
+    const insets = useSafeAreaInsets();
 
     const navToInputAgeScreen = () => {
         playButtonClick();
@@ -45,7 +47,7 @@ export const SetGameDifficultyScreen = ({ navigation }) => {
 
     return (
         <ImageBackground style={ styles.background } source={ BackgroundImage } resizeMode='cover'>
-            <View style={ styles.container }>
+            <View style={{ ...styles.container, paddingBottom: insets.bottom }}>
                 <StatusBar translucent backgroundColor="transparent" />
                 <View style={ styles.headerContainer }>
                     <Text style={ styles.header }>Ваш класс?</Text>

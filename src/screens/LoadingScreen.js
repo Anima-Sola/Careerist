@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { useDispatch, useStore } from "react-redux";
 import { loadFonts } from '../styles/bootstrap';
-import { loadGameSettings } from "../store/actions/actions";
+import { loadGameSettings, loadAppSettings } from "../store/actions/actions";
 import { playBackgroundTrack, playEmergeTrack } from '../components/Sounds';
 
 SplashScreen.preventAutoHideAsync();
@@ -18,6 +18,7 @@ export const LoadingScreen =({ navigation }) => {
             try {
                 await loadFonts();
                 dispatch( loadGameSettings() );
+                dispatch( loadAppSettings() );
                 await new Promise(resolve => setTimeout(resolve, 3000));
             } catch (e) {
                 console.warn(e);
@@ -46,5 +47,5 @@ export const LoadingScreen =({ navigation }) => {
         return null;
     }
 
-    return ( <><View onLayout={ onLayoutRootView } /></> );
+    return ( <View onLayout={ onLayoutRootView } /> );
 }

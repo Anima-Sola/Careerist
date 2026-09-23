@@ -113,9 +113,7 @@ const Insurance = ({ navigation }) => {
                 () => {
                     setAlert({ ...alert, isVisible: false });
                 },
-                () => {
-                    navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' });
-                }
+                () => navigation.goBack()
             ]
         })
     }
@@ -192,7 +190,7 @@ const Insurance = ({ navigation }) => {
                             title="Уйти"
                             onPress={ () => {
                                 playButtonClick();
-                                navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' });
+                                navigation.goBack();
                             }}   
                         />
                     </View>

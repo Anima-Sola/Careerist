@@ -62,7 +62,7 @@ const Withdraw = ({ navigation, commonSettings }) => {
             data: WITHDRAW_SCREEN_WITHDRAW_SUCCESSFUL,
             buttonsCallbacks: [
                 () => {
-                    navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' });
+                    navigation.goBack();
                 }
             ]
         })
@@ -113,7 +113,7 @@ const Withdraw = ({ navigation, commonSettings }) => {
                     title="Уйти"
                     onPress={ () => {
                         playButtonClick();
-                        navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' }) 
+                        navigation.goBack();
                     }}   
                 />
             </View>

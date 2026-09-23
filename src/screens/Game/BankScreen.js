@@ -1,4 +1,5 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useReducer, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { Text, View, StyleSheet, ScrollView, Pressable, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '@rneui/themed';
@@ -26,6 +27,11 @@ import Borrow from "../../assets/images/bankservices/borrow_icon.png";
 export const BankScreen = ({ navigation, route }) => {
     const [, forceUpdate ] = useReducer(x => x + 1, 0);
     const commonSettings = useSelector( getCommonSettings );
+
+    useFocusEffect(useCallback(() => {
+        forceUpdate();
+    }, []));
+
     const wrappedComponent = <Bank navigation={ navigation } route={ route } forceUpdate={ forceUpdate } commonSettings={ commonSettings }/>
 
     return(
@@ -120,8 +126,6 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
     )
 
     if( !isRun ) {
-        if( route.params?.previousScreen === 'lendOrBorrowScreen' ) forceUpdate();
-
         //If you entered the bank from the main screen, it can be bankrupt. Chance 1,5 percent out of 100.
         if( !isBankBankrupt && route.params?.previousScreen === 'GameMainScreen' ) {
             const value = rndBetweenMinusOneAndOne();

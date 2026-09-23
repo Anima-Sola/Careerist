@@ -1,9 +1,11 @@
 import React, { Component, useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, Image, StatusBar, BackHandler } from 'react-native';
+import { StyleSheet, View, Text, Image, StatusBar, BackHandler, TouchableOpacity } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch } from "react-redux";
-import * as NavigationBar from 'expo-navigation-bar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { NavigationBar } from "expo-navigation-bar";
+import * as SystemUI from 'expo-system-ui';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import CustomAlert from '../../components/CustomAlert';
@@ -45,14 +47,14 @@ const slides = [
     {
         key: 'five',
         title: 'А на счету в банке \nлежит',
-        text: '\n1.000.000$',
+        text: '1.000.000$\n',
         image: require('../../assets/images/intro/money.png'),
         backgroundColor: THEME.SECOND_BACKGROUND_COLOR,
     },
     {
         key: 'six',
         title: '...но пока это мечты.\n',
-        text: '\nРеализуйте их!!!',
+        text: 'Реализуйте их!!!\n',
         image: require('../../assets/images/intro/dream.png'),
         backgroundColor: THEME.THIRD_BACKGROUND_COLOR,
     }
@@ -89,11 +91,11 @@ class Intro extends Component {
         return (
             <View style={ styles.buttonCircle }>
                 <Icon
-                    name="md-checkmark"
+                    name="checkmark"
                     color="rgba(255, 255, 255, .9)"
                     size={24}
                 />
-        </View>
+            </View>
         );
     };
 
@@ -105,9 +107,49 @@ class Intro extends Component {
         );
     }
 
+    _renderPagination = (activeIndex) => {
+        const isLastSlide = activeIndex === slides.length - 1;
+
+        return (
+            <View style={[ styles.paginationContainer, { bottom: this.props.insets.bottom + 16 } ]}>
+                <View style={ styles.paginationDots }>
+                    {slides.map((_, index) => (
+                        <TouchableOpacity
+                            key={index}
+                            style={[ styles.dot, index === activeIndex ? styles.activeDot : styles.dotInactive ]}
+                            onPress={() => this.slider.goToSlide(index, true)}
+                        />
+                    ))}
+                </View>
+                <TouchableOpacity
+                    style={styles.rightButtonContainer}
+                    onPress={() => isLastSlide
+                        ? this._navToSetGameDifficultyScreen()
+                        : this.slider.goToSlide(activeIndex + 1, true)}
+                >
+                    {isLastSlide ? this._renderDoneButton() : this._renderNextButton()}
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.leftButtonContainer}
+                    onPress={this._navToSetGameDifficultyScreen}
+                >
+                    {this._renderSkipButton()}
+                </TouchableOpacity>
+            </View>
+        );
+    }
+
     _navToSetGameDifficultyScreen = () => {
         playSlideChange();
         this.props.navigation.navigate('SetGameDifficultyScreen');
+    }
+
+    _setSlideBackground = (index) => {
+        SystemUI.setBackgroundColorAsync(slides[index].backgroundColor);
+    }
+
+    componentDidMount() {
+        this._setSlideBackground(0);
     }
 
     render() {
@@ -121,11 +163,16 @@ class Intro extends Component {
                     renderDoneButton={ this._renderDoneButton }
                     renderNextButton={ this._renderNextButton }
                     renderSkipButton={ this._renderSkipButton }
-                    onSlideChange={ () => playSlideChange() }
+                    renderPagination={ this._renderPagination }
+                    onSlideChange={ (index) => {
+                        playSlideChange();
+                        this._setSlideBackground(index);
+                    } }
                     onDone={ this._navToSetGameDifficultyScreen }
                     onSkip={ this._navToSetGameDifficultyScreen }
                     ref={( ref ) => ( this.slider = ref )}
                 />
+                <NavigationBar hidden={false} />
             </View>
         );
     }
@@ -134,6 +181,7 @@ class Intro extends Component {
 const IntroScreen = ({ navigation }) => {
     const ref = useRef();
     const dispatch = useDispatch();
+    const insets = useSafeAreaInsets();
     const [ alert, setAlert ] = useState({ 
         isVisible: false, 
         data: GAME_MAIN_SCREEN_QUIT_GAME_ALERT,
@@ -150,10 +198,10 @@ const IntroScreen = ({ navigation }) => {
         const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
             const navState = navigation.getState();
             const currentScreenName = navState.routes[ navState.index ].name;
-            if( currentScreenName === 'IntroScreen' ) {
-                setAlert({ ...alert, isVisible: true });
-                return true;
-            }
+            if( currentScreenName !== 'IntroScreen' ) return;
+                
+            setAlert({ ...alert, isVisible: true });
+            return true;
         })
         return () => backHandler.remove();
     })
@@ -163,14 +211,13 @@ const IntroScreen = ({ navigation }) => {
         dispatch( saveGameSettingsInitialState() );
         dispatch( loadAppSettings() );
         dispatch( loadGameSettings() );
-        NavigationBar.setBackgroundColorAsync( '#000' );
         ref.current.slider.goToSlide( 0 );
     })
 
     return (
         <View style={ styles.wrapper }>
             <CustomAlert alert={ alert } setAlert={ setAlert } />
-            <Intro navigation={ navigation } ref={ ref } />
+            <Intro navigation={ navigation } ref={ ref } insets={insets}/>
         </View>
     )
 }
@@ -190,7 +237,7 @@ const styles = StyleSheet.create({
     title: {
         color: THEME.TEXT_COLOR,
         fontFamily: THEME.FONT_LIGHT,
-        fontSize: THEME.FONT40,
+        fontSize: THEME.FONT35,
         textAlign: 'center',
         lineHeight: hp('5%') / THEME.FONT_SCALE
     },
@@ -202,7 +249,7 @@ const styles = StyleSheet.create({
     text: {
         color: THEME.TEXT_COLOR,
         fontFamily: THEME.FONT_EXTRALIGHT,
-        fontSize: THEME.FONT30,
+        fontSize: THEME.FONT25,
         textAlign: 'center',
         lineHeight: hp('4%') / THEME.FONT_SCALE,
         marginTop: hp('3%')
@@ -220,6 +267,39 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    paginationContainer: {
+        position: 'absolute',
+        left: 16,
+        right: 16,
+        justifyContent: 'center',
+    },
+    paginationDots: {
+        height: 16,
+        margin: 16,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    dot: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        marginHorizontal: 4,
+    },
+    activeDot: {
+        backgroundColor: 'rgba(255, 255, 255, .9)',
+    },
+    dotInactive: {
+        backgroundColor: 'rgba(0, 0, 0, .2)',
+    },
+    leftButtonContainer: {
+        position: 'absolute',
+        left: 0,
+    },
+    rightButtonContainer: {
+        position: 'absolute',
+        right: 0,
+    },
     skipButton: {
         width: 80,
         height: 40,
@@ -230,7 +310,7 @@ const styles = StyleSheet.create({
     skipButtonText: {
         color: THEME.TEXT_COLOR,
         fontFamily: THEME.FONT_SEMIBOLD,
-        fontSize: THEME.FONT25,
+        fontSize: THEME.FONT22,
         textAlign: 'center',
         paddingBottom: 4,
     }

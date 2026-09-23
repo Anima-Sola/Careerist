@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, StyleSheet, Text, ImageBackground } from 'react-native';
 import { useDispatch } from 'react-redux';
-import * as NavigationBar from 'expo-navigation-bar';
 import { useFocusEffect } from '@react-navigation/native';
 import { Button } from '@rneui/themed';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { THEME } from '../../styles/theme';
 import { setIsNewYearBegun } from '../../store/actions/actions';
@@ -13,9 +13,9 @@ import Firework from "../../assets/images/firework.gif";
 
 export const WinScreen = ({ navigation }) => {
     const dispatch = useDispatch();
+    const insets = useSafeAreaInsets();
 
     useFocusEffect(() => {
-        NavigationBar.setBackgroundColorAsync( '#000' );
         stopBackgroundTrack();
         setTimeout( () => playTushTrack(), 300 );
     })
@@ -29,7 +29,7 @@ export const WinScreen = ({ navigation }) => {
     }
 
     return (
-        <ImageBackground style={ styles.wrapper } source={ Firework } resizeMode="cover">
+        <ImageBackground style={{ ...styles.wrapper, paddingBottom: insets.bottom }} source={ Firework } resizeMode="cover">
             <View style={ styles.container }>
                 <Text style={{ ...styles.text, marginBottom: hp('2%') }}>ВЫ ДОСТИГЛИ НЕВОЗМОЖНОГО!</Text>
                 <Text style={ styles.text }>Поздравляем, теперь вы ПРЕЗИДЕНТ!</Text>

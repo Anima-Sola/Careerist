@@ -1,6 +1,6 @@
 //A component that displays a window instead of the standard Alert
 import React from "react";
-import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Modal, Pressable, Platform } from 'react-native';
 import { THEME } from "../styles/theme";
 import { Button } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -39,7 +39,7 @@ const CustomAlert = ({ alert, setAlert, argsForButtonCallbacks }) => {
 
     return (
         <Modal
-            animationType="fade"
+            animationType="none"
             transparent={ true }
             statusBarTranslucent={ true }
             visible={ alert.isVisible }

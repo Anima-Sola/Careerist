@@ -66,6 +66,10 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const showYouAreMiserAlert = () => {
+        const navState = navigation.getState();
+        const currentScreenName = navState.routes[ navState.index ].name;
+        if(currentScreenName !== 'EntertainmentScreen') return;
+
         setAlert({
             ...alert,
             isVisible: true,
@@ -225,7 +229,7 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
     useEffect(() => {
         const backHandler = BackHandler.addEventListener( 'hardwareBackPress', () => showYouAreMiserAlert() );
         return () => backHandler.remove();
-    }, [])
+    })
 
     return (
         <View style={ styles.wrapper }>  

@@ -68,7 +68,7 @@ const Deposit = ({ navigation, commonSettings }) => {
             data: DEPOSIT_SCREEN_DEPOSIT_PLACED,
             buttonsCallbacks: [
                 () => {
-                    navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' });
+                    navigation.goBack();
                 }
             ]
         })
@@ -108,19 +108,19 @@ const Deposit = ({ navigation, commonSettings }) => {
             <View style={ styles.buttonsContainer }>
                 <Button
                     buttonStyle={ styles.depositButton } 
-                    titleStyle={ styles.buttonTitle }
+                    titleStyle={ styles.depositButtonTitle }
                     type="outline" 
                     title="Сделать вклад"
                     onPress={ () => showInputDepositAmountPrompt() }    
                 />
                 <Button
                     buttonStyle={ styles.exitButton } 
-                    titleStyle={ styles.buttonTitle }
+                    titleStyle={ styles.exitButtonTitle }
                     type="outline" 
                     title="Уйти"
                     onPress={ () => { 
                         playButtonClick();
-                        navigation.navigate('BankScreen', { previousScreen: 'AnyScreen' }) 
+                        navigation.goBack();
                     }}   
                 />
             </View>
@@ -177,7 +177,13 @@ const styles = StyleSheet.create({
         borderRadius: wp('10%'),
         marginLeft: 5,
     },
-    buttonTitle: {
+    depositButtonTitle: {
+        color: THEME.TEXT_COLOR,
+        fontFamily: THEME.FONT_SEMIBOLD,
+        fontSize: THEME.FONT28,
+        marginTop: 4,
+    },
+    exitButtonTitle: {
         color: THEME.TEXT_COLOR,
         fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT28

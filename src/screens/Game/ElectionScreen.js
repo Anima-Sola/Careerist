@@ -87,6 +87,10 @@ const Election = ({ navigation, commonSettings }) => {
     }
     
     const showSkipElectionAlert = () => {
+        const navState = navigation.getState();
+        const currentScreenName = navState.routes[ navState.index ].name;
+        if(currentScreenName !== 'ElectionScreen') return;
+
         setAlert({
             isVisible: true,
             data:  ELECTION_SCREEN_SKIP_ELECTION,
@@ -257,6 +261,7 @@ const Election = ({ navigation, commonSettings }) => {
                 <ScrollView style={ styles.container }>
                     <Image style={ styles.sclerosisImage } resizeMode='center' source={ image } />
                     <Text style={ styles.electionNotHeldText }>{ message }</Text>
+                    <View style={styles.footer} />
                 </ScrollView>
                 <View style={ styles.buttonsContainer }>
                     <Button
@@ -360,5 +365,8 @@ const styles = StyleSheet.create({
         color: THEME.TEXT_COLOR,
         fontFamily: THEME.FONT_SEMIBOLD,
         fontSize: THEME.FONT28
+    },
+    footer: {
+        height: 100,
     }
 });

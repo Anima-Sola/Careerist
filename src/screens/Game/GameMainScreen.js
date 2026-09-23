@@ -2,7 +2,6 @@ import React, { useState, useEffect, useReducer } from "react";
 import { View, Text, StyleSheet, Pressable, BackHandler, ScrollView, Image } from 'react-native';
 import { useStore, useSelector, useDispatch } from "react-redux";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import * as NavigationBar from 'expo-navigation-bar';
 import { THEME } from "../../styles/theme";
 import GameWrapper from "../../components/GameWrapper";
 import { getCommonSettings } from "../../store/selectors";
@@ -222,9 +221,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
 
     //Check the end of the year. Check if the loan term expired.Check if the credit term expired.
     //Generate disaster event.
-    const onScreenFocus = () => {
-        NavigationBar.setBackgroundColorAsync( THEME.FORTH_BACKGROUND_COLOR );
-        
+    const onScreenFocus = () => {        
         const { navFromGameMainScreen } = store.getState().appSettingsReducer.soundSettings;
         if( navFromGameMainScreen ) {
             dispatch(setNavFromGameMainScreenAction( false, true ));
@@ -243,6 +240,10 @@ const MainMenu = ({ navigation, forceUpdate }) => {
     }
 
     const showQuitGameAlert = () => {
+        const navState = navigation.getState();
+        const currentScreenName = navState.routes[ navState.index ].name;
+        if(currentScreenName !== 'GameMainScreen') return;
+
         setAlert({
             ...alert,
             isVisible: true,
@@ -260,11 +261,12 @@ const MainMenu = ({ navigation, forceUpdate }) => {
     useEffect(() => {
         //Back handler focus event listener
         const unsubscribe = navigation.addListener('focus', () => onScreenFocus() );
-        BackHandler.addEventListener('hardwareBackPress', () => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
             const navState = navigation.getState();
             const currentScreenName = navState.routes[ navState.index ].name;
             switch( currentScreenName ) {
                 case 'GameMainScreen':
+                    console.log('bak')
                     showQuitGameAlert();
                     return true;
                 case 'ElectionScreen':
@@ -273,7 +275,7 @@ const MainMenu = ({ navigation, forceUpdate }) => {
                 case 'InsuranceScreen':
                     const { possessionList } = store.getState().gameSettingsReducer.possessionSettings;
                     if( possessionList.indexOf( true ) === -1 ) navigation.navigate('GameMainScreen');
-                    else navigation.navigate('BankScreen');
+                    else navigation.goBack();
                     return true;
                 case 'EntertainmentScreen':
                 case 'TotalScreen':
@@ -286,8 +288,11 @@ const MainMenu = ({ navigation, forceUpdate }) => {
                     return false;
             }
         })
-        return unsubscribe;
-    });
+        return () => {
+            unsubscribe();
+            backHandler.remove();
+        };
+    }, []);
 
     //Nav to another screens
     const navToGameScreens = ( screen, timeStep = 0, params = {} ) => {
