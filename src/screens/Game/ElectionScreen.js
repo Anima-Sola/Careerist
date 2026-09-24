@@ -87,16 +87,13 @@ const Election = ({ navigation, commonSettings }) => {
     }
     
     const showSkipElectionAlert = () => {
-        const navState = navigation.getState();
-        const currentScreenName = navState.routes[ navState.index ].name;
-        if(currentScreenName !== 'ElectionScreen') return;
-
         setAlert({
             isVisible: true,
             data:  ELECTION_SCREEN_SKIP_ELECTION,
             buttonsCallbacks: [
                 () => {
                     dispatch(setElectionStatus( false, true ));
+                    setAlert({ ...alert, isVisible: false });
                     navigation.navigate('GameMainScreen');
                 }
             ]
@@ -204,9 +201,12 @@ const Election = ({ navigation, commonSettings }) => {
     }
 
     useEffect(() => {
-        const backHandler = BackHandler.addEventListener( 'hardwareBackPress', () => showSkipElectionAlert() );
+        const backHandler = BackHandler.addEventListener( 'hardwareBackPress', () => {
+            showSkipElectionAlert();
+            return true;
+        } );
         return () => backHandler.remove();
-    })
+    }, [])
 
     const election = () => {
         return (

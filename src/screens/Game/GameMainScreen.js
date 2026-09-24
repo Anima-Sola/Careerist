@@ -266,7 +266,6 @@ const MainMenu = ({ navigation, forceUpdate }) => {
             const currentScreenName = navState.routes[ navState.index ].name;
             switch( currentScreenName ) {
                 case 'GameMainScreen':
-                    console.log('bak')
                     showQuitGameAlert();
                     return true;
                 case 'ElectionScreen':

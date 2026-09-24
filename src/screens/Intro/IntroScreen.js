@@ -204,7 +204,7 @@ const IntroScreen = ({ navigation }) => {
             return true;
         })
         return () => backHandler.remove();
-    })
+    }, [])
 
     //Set initial state then focus screen
     useFocusEffect(() => {

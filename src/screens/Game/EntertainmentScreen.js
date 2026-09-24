@@ -66,15 +66,12 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     const showYouAreMiserAlert = () => {
-        const navState = navigation.getState();
-        const currentScreenName = navState.routes[ navState.index ].name;
-        if(currentScreenName !== 'EntertainmentScreen') return;
-
         setAlert({
             ...alert,
             isVisible: true,
             buttonsCallbacks: [
                 () => {
+                    setAlert({ ...alert, isVisible: false });
                     navigation.navigate('GameMainScreen');
                 }
             ]
@@ -227,9 +224,12 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
     }
 
     useEffect(() => {
-        const backHandler = BackHandler.addEventListener( 'hardwareBackPress', () => showYouAreMiserAlert() );
+        const backHandler = BackHandler.addEventListener( 'hardwareBackPress', () => {
+            showYouAreMiserAlert();
+            return true;
+        } );
         return () => backHandler.remove();
-    })
+    }, [])
 
     return (
         <View style={ styles.wrapper }>  
