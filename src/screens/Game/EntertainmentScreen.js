@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useReducer, useRef } from 'react';
+import React, { useState, useCallback, useReducer, useRef } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Image, BackHandler } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '@rneui/themed';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { THEME } from '../../styles/theme';
+import { useFocusEffect } from '@react-navigation/native';
 import GameWrapper from "../../components/GameWrapper";
 import { 
     getCommonSettings,
@@ -72,7 +73,7 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
             buttonsCallbacks: [
                 () => {
                     setAlert({ ...alert, isVisible: false });
-                    navigation.navigate('GameMainScreen');
+                    navigation.goBack();
                 }
             ]
         })
@@ -223,13 +224,23 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
 
     }
 
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener( 'hardwareBackPress', () => {
-            showYouAreMiserAlert();
-            return true;
-        } );
-        return () => backHandler.remove();
-    }, [])
+    useFocusEffect(
+        useCallback(() => {
+            const onBackPress = () => {
+                showYouAreMiserAlert();
+                return true;
+            };
+
+            const subscription = BackHandler.addEventListener(
+                'hardwareBackPress',
+                onBackPress
+            );
+
+            return () => {
+                subscription.remove();
+            };
+        }, [])
+    );
 
     return (
         <View style={ styles.wrapper }>  

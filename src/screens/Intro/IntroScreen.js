@@ -194,24 +194,24 @@ const IntroScreen = ({ navigation }) => {
         ]
     });
 
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-            const navState = navigation.getState();
-            const currentScreenName = navState.routes[ navState.index ].name;
-            if( currentScreenName !== 'IntroScreen' ) return;
-                
-            setAlert({ ...alert, isVisible: true });
-            return true;
-        })
-        return () => backHandler.remove();
-    }, [])
-
     //Set initial state then focus screen
     useFocusEffect(() => {
         dispatch( saveGameSettingsInitialState() );
         dispatch( loadAppSettings() );
         dispatch( loadGameSettings() );
         ref.current.slider.goToSlide( 0 );
+    })
+
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            const navState = navigation.getState();
+            const currentScreenName = navState.routes[ navState.index ].name;
+            if( currentScreenName === 'IntroScreen' ) {
+                setAlert({ ...alert, isVisible: true });
+                return true;
+            }
+        })
+        return () => backHandler.remove();
     })
 
     return (

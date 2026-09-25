@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { Text, View, StyleSheet, BackHandler, Image, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Button } from '@rneui/themed';
 import GameWrapper from "../../components/GameWrapper";
+import { useFocusEffect } from '@react-navigation/native';
 import { THEME } from "../../styles/theme";
 import { 
     getCommonSettings, 
@@ -94,7 +95,7 @@ const Election = ({ navigation, commonSettings }) => {
                 () => {
                     dispatch(setElectionStatus( false, true ));
                     setAlert({ ...alert, isVisible: false });
-                    navigation.navigate('GameMainScreen');
+                    navigation.goBack();
                 }
             ]
         })
@@ -111,7 +112,7 @@ const Election = ({ navigation, commonSettings }) => {
                 () => {
                     setCashAmountMinusFine( fineAmount );
                     dispatch(setElectionStatus( false, true ));
-                    navigation.navigate('GameMainScreen');
+                    navigation.goBack();
                 }
             ]
         })
@@ -127,7 +128,7 @@ const Election = ({ navigation, commonSettings }) => {
             buttonsCallbacks: [
                 () => {
                     dispatch(setElectionStatus( false, true ));
-                    navigation.navigate('GameMainScreen');
+                    navigation.goBack();
                 }
             ]
          });
@@ -144,7 +145,7 @@ const Election = ({ navigation, commonSettings }) => {
                 () => {
                     dispatch(setSocialStatusAction( currentSocialStatus + 1 ));
                     dispatch(setElectionStatus( false, true ));
-                    navigation.navigate('GameMainScreen');
+                    navigation.goBack();
                 }
             ]
          });
@@ -200,13 +201,30 @@ const Election = ({ navigation, commonSettings }) => {
         }
     }
 
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener( 'hardwareBackPress', () => {
-            showSkipElectionAlert();
-            return true;
-        } );
-        return () => backHandler.remove();
-    }, [])
+    useFocusEffect(
+        useCallback(() => {
+            const onBackPress = () => {
+                if(!electionStatus) navigation.goBack();
+
+                if(( yearsPassed % 2 ) === 0) {
+                    showSkipElectionAlert();
+                } else { 
+                    dispatch(setElectionStatus( false, true ));
+                    navigation.goBack();
+                }
+                return true;
+            };
+
+            const subscription = BackHandler.addEventListener(
+                'hardwareBackPress',
+                onBackPress
+            );
+
+            return () => {
+                subscription.remove();
+            };
+        }, [])
+    );
 
     const election = () => {
         return (
@@ -272,7 +290,7 @@ const Election = ({ navigation, commonSettings }) => {
                         onPress={ () => {
                             playButtonClick();
                             if( electionStatus ) dispatch(setElectionStatus( false, true ));
-                            navigation.navigate('GameMainScreen');
+                            navigation.goBack();
                         }}  
                     />
                 </View>

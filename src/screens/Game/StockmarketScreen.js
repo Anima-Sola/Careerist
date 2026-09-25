@@ -1,7 +1,8 @@
-import React, { useState, useReducer, useRef, useEffect } from 'react';
+import React, { useState, useReducer, useRef, useCallback } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Image, BackHandler } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@rneui/themed';
+import { useFocusEffect } from '@react-navigation/native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { THEME } from '../../styles/theme';
 import GameWrapper from '../../components/GameWrapper';
@@ -77,16 +78,25 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
         data: STOCKMARKET_SCREEN_PROBLEM
     })
 
-    useEffect(() => { 
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-            dispatch(setDividendsListAction( stocksDividendsList.current ));
-            dispatch(setStocksCostListAction( stocksCurrentPriceList.current ), true);
+    useFocusEffect(
+        useCallback(() => {
+            const onBackPress = () => {
+                dispatch(setDividendsListAction( stocksDividendsList.current ));
+                dispatch(setStocksCostListAction( stocksCurrentPriceList.current ), true);
+                navigation.goBack();
+                return true;
+            };
 
-            navigation.navigate('GameMainScreen');
-            return true;
-        })
-        return () => backHandler.remove();
-    }, [])
+            const subscription = BackHandler.addEventListener(
+                'hardwareBackPress',
+                onBackPress
+            );
+
+            return () => {
+                subscription.remove();
+            };
+        }, [])
+    );
 
     const showCheatingAlert = ( alertData, fineAmount ) => {
         setAlert({ 
