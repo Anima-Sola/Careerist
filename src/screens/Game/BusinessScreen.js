@@ -60,7 +60,7 @@ const Business = ({ navigation, forceUpdate, commonSettings }) => {
             buttonsCallbacks: [
                 () => {
                     setAlert({ ...alert, isVisible: false });
-                    navigation.navigate('GameMainScreen');
+                    navigation.goBack();
                 }
             ]
         })
@@ -76,7 +76,8 @@ const Business = ({ navigation, forceUpdate, commonSettings }) => {
             buttonsCallbacks: [
                 () => {
                     setCashAmountMinusFine( fineAmount );
-                    navigation.navigate('GameMainScreen');
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.goBack();
                 }
             ]
         })
@@ -93,7 +94,8 @@ const Business = ({ navigation, forceUpdate, commonSettings }) => {
                 },
                 () => {
                     buyOrSellBusiness( buyOrSell );
-                    navigation.navigate('GameMainScreen');
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.goBack();
                 }
             ]
         })

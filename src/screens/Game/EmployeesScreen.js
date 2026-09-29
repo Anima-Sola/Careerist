@@ -81,7 +81,8 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
             },
             buttonsCallbacks: [
                 () => {
-                    navigation.navigate('GameMainScreen');
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.goBack();
                 }
             ]
         })
@@ -93,7 +94,8 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
             data: EMPLOYEES_SCREEN_NOT_AGREE_TO_PREPAY,
             buttonsCallbacks: [
                 () => {
-                    navigation.navigate('GameMainScreen');
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.goBack();
                 }
             ]
         })
@@ -107,7 +109,7 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
                 () => {
                     setCashAmountMinusFine( fineAmount );
                     setAlert({ ...alert, isVisible: false });
-                    navigation.navigate('GameMainScreen');
+                    navigation.goBack();
                 }
             ]
         })
@@ -124,7 +126,7 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
                 },
                 () => {
                     setAlert({ ...alert, isVisible: false });
-                    navigation.navigate('GameMainScreen');
+                    navigation.goBack();
                 }
             ]
         })
@@ -166,7 +168,8 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
             },
             buttonsCallbacks: [
                 () => {
-                    navigation.navigate('GameMainScreen');
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.goBack();
                 },
             ]
         })
@@ -185,7 +188,8 @@ const Employees = ({ navigation, forceUpdate, commonSettings }) => {
                     setAlert({ ...alert, isVisible: false });
                 },
                 () => {
-                    navigation.navigate('GameMainScreen');
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.goBack();
                 }
             ]
         })

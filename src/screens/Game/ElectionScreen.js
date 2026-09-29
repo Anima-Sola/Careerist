@@ -204,14 +204,13 @@ const Election = ({ navigation, commonSettings }) => {
     useFocusEffect(
         useCallback(() => {
             const onBackPress = () => {
-                if(!electionStatus) navigation.goBack();
-
                 if(( yearsPassed % 2 ) === 0) {
                     showSkipElectionAlert();
-                } else { 
+                } else {
                     dispatch(setElectionStatus( false, true ));
                     navigation.goBack();
                 }
+
                 return true;
             };
 

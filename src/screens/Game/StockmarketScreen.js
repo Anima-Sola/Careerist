@@ -81,8 +81,10 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
     useFocusEffect(
         useCallback(() => {
             const onBackPress = () => {
-                dispatch(setDividendsListAction( stocksDividendsList.current ));
-                dispatch(setStocksCostListAction( stocksCurrentPriceList.current ), true);
+                if(posWithinYear < endOfYear) {
+                    dispatch(setDividendsListAction( stocksDividendsList.current ));
+                    dispatch(setStocksCostListAction( stocksCurrentPriceList.current ), true);
+                }
                 navigation.goBack();
                 return true;
             };
@@ -108,7 +110,8 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
             buttonsCallbacks: [
                 () => {
                     setCashAmountMinusFine( fineAmount );
-                    navigation.navigate('GameMainScreen');
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.goBack();
                 }
             ]
         })
@@ -128,7 +131,8 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                 () => {
                     dispatch(setDividendsListAction( stocksDividendsList.current ));
                     dispatch(setStocksCostListAction( stocksCurrentPriceList.current ), true);
-                    navigation.navigate('GameMainScreen');
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.goBack();
                 }
             ]
         })
@@ -142,7 +146,8 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                 () => {
                     dispatch(setDividendsListAction( stocksDividendsList.current ));
                     dispatch(setStocksCostListAction( stocksCurrentPriceList.current ), true);
-                    navigation.navigate('GameMainScreen');
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.goBack();
                 }
             ]
         })
@@ -532,7 +537,7 @@ const Stockmarket = ({ navigation, forceUpdate, commonSettings }) => {
                         title="Уйти"
                         onPress={ () => { 
                             playButtonClick();
-                            navigation.navigate('GameMainScreen');
+                            navigation.goBack();
                         }}  
                     />
                 </View>

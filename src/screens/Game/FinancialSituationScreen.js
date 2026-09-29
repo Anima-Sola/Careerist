@@ -36,7 +36,7 @@ const FinancialSituation = ({ navigation, commonSettings }) => {
                     title="Уйти"
                     onPress={ () => {
                         playButtonClick();
-                        navigation.navigate('GameMainScreen');
+                        navigation.goBack();
                     }}  
                 />
             </View>

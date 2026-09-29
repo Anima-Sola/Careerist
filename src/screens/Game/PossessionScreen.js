@@ -75,7 +75,7 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
             buttonsCallbacks: [
                 () => {
                     setAlert({ ...alert, isVisible: false });
-                    navigation.navigate('GameMainScreen');
+                    navigation.goBack();
                 }
             ]
         })
@@ -90,8 +90,9 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
             },
             buttonsCallbacks: [
                 () => {
+                    setAlert({ ...alert, isVisible: false });
                     setCashAmountMinusFine( fineAmount );
-                    navigation.navigate('GameMainScreen');
+                    navigation.goBack();
                 }
             ]
         })
@@ -108,7 +109,8 @@ const Possession = ({ navigation, forceUpdate, commonSettings }) => {
                 },
                 () => {
                     buyOrSellPossession( buyOrSell );
-                    navigation.navigate('GameMainScreen');
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.goBack();
                 }
             ]
         })

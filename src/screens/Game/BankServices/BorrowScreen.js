@@ -94,7 +94,7 @@ const Borrow = ({ navigation, commonSettings }) => {
             isVisible: true,
             buttonsCallbacks: [
                 () => {
-                    () => setAlert({ ...alert, isVisible: false });
+                    setAlert({ ...alert, isVisible: false });
                     dispatch(setCashAmountAction( cash + amount ));
                     dispatch(setBorrowAmountAction( amount ));
                     dispatch(setBorrowTermAction( term ));
@@ -115,7 +115,7 @@ const Borrow = ({ navigation, commonSettings }) => {
             },
             buttonsCallbacks: [
                 () => {
-                    () => setAlert({ ...alert, isVisible: false });
+                    setAlert({ ...alert, isVisible: false });
                     setTimeout( () => showTimeToPayAlert( persentages, amount, term ), 300 );
                 },
                 () => setAlert({ ...alert, isVisible: false })
