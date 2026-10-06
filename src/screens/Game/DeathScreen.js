@@ -49,7 +49,7 @@ const Death = ({ navigation, commonSettings }) => {
                         playButtonClick();
                         stopBackgroundTrack();
                         setTimeout( () => playBackgroundTrack(), 300 );
-                        navigation.navigate('IntroScreen'); 
+                        navigation.replace('IntroScreen'); 
                     }}  
                 />
             </View>

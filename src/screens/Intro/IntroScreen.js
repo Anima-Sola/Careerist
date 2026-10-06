@@ -194,8 +194,11 @@ const IntroScreen = ({ navigation }) => {
         ]
     });
 
+     //ERROR  Cannot update a component (`InputСashAmountScreen`) while rendering a different component (`Bankrupt`). To locate the bad setState() call inside `Bankrupt`, follow the stack trace as described in https://react.dev/link/setstate-in-render
+
     //Set initial state then focus screen
     useFocusEffect(() => {
+        console.log('focus');
         dispatch( saveGameSettingsInitialState() );
         dispatch( loadAppSettings() );
         dispatch( loadGameSettings() );

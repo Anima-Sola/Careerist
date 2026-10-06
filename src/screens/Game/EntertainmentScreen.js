@@ -162,7 +162,8 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
             buttonsCallbacks: [
                 () => {
                     dispatch(setCashAmountAction( cash - entertainmentData.current[ activeItem ].expenses + entertainmentData.current[ activeItem ].income ));
-                    navigation.navigate('GameMainScreen');
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.goBack();
                 }
             ]
         })
@@ -175,7 +176,8 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
             buttonsCallbacks: [
                 () => {
                     setCashAmountMinusFine( entertainmentData.current[ activeItem ].expenses );
-                    navigation.navigate('GameMainScreen');
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.goBack();
                 }
             ]
         })
@@ -193,7 +195,8 @@ const Entertainment = ({ navigation, forceUpdate, commonSettings }) => {
                 },
                 () => {
                     dispatch(setCashAmountAction( cash - entertainmentData.current[ activeItem ].expenses ));
-                    navigation.navigate('GameMainScreen');
+                    setAlert({ ...alert, isVisible: false });
+                    navigation.goBack();
                 }
             ]
         })

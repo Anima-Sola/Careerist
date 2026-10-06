@@ -54,7 +54,7 @@ const Jail = ({ navigation, commonSettings }) => {
                     dispatch(setYearsPassedAction( yearsPassed + prisonTerm ), true );
                     dispatch(setIsNewYearBegun( false, true ));
                     setInitialGameData();
-                    navigation.navigate('GameMainScreen');
+                    navigation.replace('GameMainScreen');
                 }
             ]
         }) 

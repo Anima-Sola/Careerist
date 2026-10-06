@@ -90,7 +90,7 @@ const SideMenu = ( props, ref ) => {
             buttonsCallbacks: [
                 () => {
                     setAlert({ ...alert, isVisible: false });
-                    props.navigation.navigate('IntroScreen');
+                    props.navigation.replace('IntroScreen');
                 },
                 () => { 
                     setAlert({ ...alert, isVisible: false });

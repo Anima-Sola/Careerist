@@ -259,7 +259,7 @@ const Bankrupt = ({ navigation, forceUpdate, commonSettings }) => {
                         title="Продолжить"
                         onPress={ () => { 
                             playButtonClick();
-                            navigation.navigate( panishmentScreen.current ) 
+                            navigation.replace( panishmentScreen.current ) 
                         }} 
                     />
                 </View>

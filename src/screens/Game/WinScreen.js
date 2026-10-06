@@ -25,7 +25,7 @@ export const WinScreen = ({ navigation }) => {
         playButtonClick();
         stopBackgroundTrack();
         setTimeout( () => playBackgroundTrack(), 300 );
-        navigation.navigate('IntroScreen');
+        navigation.replace('IntroScreen');
     }
 
     return (

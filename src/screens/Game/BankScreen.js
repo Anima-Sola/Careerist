@@ -98,7 +98,7 @@ const Bank = ({ navigation, route, forceUpdate, commonSettings }) => {
                     title="Уйти"
                     onPress={ () => {
                         playButtonClick();
-                        navigation.navigate('GameMainScreen') 
+                        navigation.goBack();
                     }}
                 />
             </View>
