@@ -16,6 +16,7 @@
 
     "android": {
       "package": "com.animasola.president",
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
