@@ -1,6 +1,6 @@
 //Enter your start age
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, StatusBar, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, TextInput, StatusBar, ImageBackground, KeyboardAvoidingView, Keyboard } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch } from 'react-redux';
 import { Button } from '@rneui/themed';
@@ -45,12 +45,16 @@ export const InputAgeScreen = ({ navigation }) => {
         const deathAge = 60 + 20 * random();
         dispatch(setDeathAge( deathAge ));
         dispatch(setPlayerAgeAction( +age, true ));
+        Keyboard.dismiss();
         navigation.navigate('InputСashAmountScreen');
     }
 
     return (
         <ImageBackground style={ styles.background } source={ BackgroundImage } resizeMode='cover'>
-            <View style={{ ...styles.container, paddingBottom: insets.bottom }}>
+            <KeyboardAvoidingView 
+                style={{ ...styles.container, paddingBottom: insets.bottom }} 
+                behavior='height'
+            >
                 <StatusBar translucent backgroundColor="transparent" />
                 <CustomAlert alert={ alert } setAlert={ setAlert } />
                 <View style={ styles.headerContainer }>
@@ -59,8 +63,8 @@ export const InputAgeScreen = ({ navigation }) => {
                 <View style={ styles.inputContainer }>
                     <TextInput
                         style={ styles.input } 
+                        autoFocus
                         keyboardType='numeric'
-                        autoFocus={ true }
                         maxLength={ 2 }
                         onChangeText={( text ) => filterData( text )}
                         value={ age }
@@ -78,7 +82,7 @@ export const InputAgeScreen = ({ navigation }) => {
                         onPress={ checkAgeAndNavToInputCashAmountScreen } 
                     />
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         </ImageBackground>
     )
 }

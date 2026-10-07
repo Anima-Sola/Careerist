@@ -3,6 +3,7 @@ import React, { useRef, useReducer } from "react";
 import { View, Text, StyleSheet, Pressable, StatusBar } from 'react-native';
 import { useStore } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
+import { NavigationBar } from "expo-navigation-bar";
 import { Directions, GestureDetector, Gesture } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -53,6 +54,7 @@ const GameWrapper = ({ wrappedComponent, commonSettings }) => {
                     <Text style={ styles.footerText }>Ваш возраст: { playerAge }</Text>
                 </View>
                 <SideMenu ref={ childRef } navigation={ wrappedComponent.props.navigation }/>
+                <NavigationBar hidden={false} />
             </View>
         </GestureDetector>
     )

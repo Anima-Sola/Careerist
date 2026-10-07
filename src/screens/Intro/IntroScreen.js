@@ -198,7 +198,6 @@ const IntroScreen = ({ navigation }) => {
 
     //Set initial state then focus screen
     useFocusEffect(() => {
-        console.log('focus');
         dispatch( saveGameSettingsInitialState() );
         dispatch( loadAppSettings() );
         dispatch( loadGameSettings() );

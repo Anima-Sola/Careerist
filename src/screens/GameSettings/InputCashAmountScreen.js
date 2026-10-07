@@ -1,6 +1,6 @@
 //Enter your start cash
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, StatusBar, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, TextInput, StatusBar, ImageBackground, KeyboardAvoidingView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@rneui/themed';
@@ -64,7 +64,10 @@ export const InputСashAmountScreen = ({ navigation }) => {
 
     return (
         <ImageBackground style={ styles.background } source={ BackgroundImage } resizeMode='cover'>
-            <View style={{ ...styles.container, paddingBottom: insets.bottom }}>
+            <KeyboardAvoidingView 
+                style={{ ...styles.container, paddingBottom: insets.bottom }}
+                behavior='height'
+            >
                 <StatusBar translucent backgroundColor="transparent" />
                 <CustomAlert alert={ alert } setAlert={ setAlert } />
                 <View style={ styles.headerContainer }>
@@ -75,7 +78,7 @@ export const InputСashAmountScreen = ({ navigation }) => {
                         style={ styles.input } 
                         keyboardType='numeric'
                         maxLength={ 12 }
-                        autoFocus={ true }
+                        autoFocus
                         onChangeText={( text ) => filterData( text )}
                         value={ cashAmount.toString() }
                     />
@@ -91,7 +94,7 @@ export const InputСashAmountScreen = ({ navigation }) => {
                         onPress={ checkCashAmount } 
                     />
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         </ImageBackground>
     )
 }
